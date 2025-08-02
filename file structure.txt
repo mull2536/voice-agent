@@ -1,0 +1,52 @@
+# SMF Communication Assistant - Simplified Project Structure
+
+```
+SMF-Communication-Assistant/
+├── .env.example
+├── .gitignore
+├── package.json
+├── README.md
+├── server/
+│   ├── index.js                    # Main server file
+│   ├── config/
+│   │   └── index.js               # Configuration management
+│   ├── services/
+│   │   ├── audioRecorder.js       # Continuous recording with VAD
+│   │   ├── transcription.js       # Speech-to-text (ElevenLabs/OpenAI)
+│   │   ├── simpleLLM.js           # Response generation with context
+│   │   ├── tts.js                 # Text-to-speech (ElevenLabs)
+│   │   ├── rag.js                 # Local knowledge base search
+│   │   └── internetSearch.js      # Web search integration
+│   ├── routes/
+│   │   ├── conversation.js        # Conversation endpoints
+│   │   ├── settings.js            # Settings management
+│   │   └── people.js              # People management
+│   └── utils/
+│       ├── simpleDataStore.js     # JSON file data management
+│       ├── fileIndexer.js         # Knowledge base file watcher
+│       ├── logger.js              # Logging utility
+│       └── silero_vad.py          # Python VAD script
+├── client/
+│   ├── index.html                 # Main UI
+│   ├── styles.css                 # Styling
+│   ├── js/
+│   │   ├── main.js                # Main app controller
+│   │   ├── eyeGazeControls.js     # Eye gaze interaction system
+│   │   ├── conversationUI.js      # Conversation display/management
+│   │   ├── settingsUI.js          # Settings interface
+│   │   └── api.js                 # API communication wrapper
+│   └── assets/
+│       └── icons/                 # UI icons
+└── data/
+    ├── conversations.json         # All conversation history
+    ├── people.json               # People you communicate with
+    ├── settings.json             # User preferences
+    ├── vector_store/             # RAG vector embeddings
+    │   └── .gitkeep
+    ├── kb/                       # Knowledge base documents
+    │   └── .gitkeep
+    ├── recordings/               # Temporary audio recordings
+    │   └── .gitkeep
+    └── logs/                     # Application logs
+        └── .gitkeep
+```

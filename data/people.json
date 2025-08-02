@@ -1,0 +1,33 @@
+[
+  {
+    "id": "family",
+    "name": "Family Member",
+    "notes": "General family conversations",
+    "addedAt": "2025-08-01T14:56:56.290Z"
+  },
+  {
+    "id": "caregiver",
+    "name": "Caregiver",
+    "notes": "Daily care and assistance",
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-02T12:29:49.225Z"
+  },
+  {
+    "id": "doctor",
+    "name": "Doctor",
+    "notes": "Medical discussions",
+    "addedAt": "2025-08-01T14:56:56.291Z"
+  },
+  {
+    "id": "friend",
+    "name": "Friend",
+    "notes": "Social conversations",
+    "addedAt": "2025-08-01T14:56:56.291Z"
+  },
+  {
+    "id": "other",
+    "name": "Other",
+    "notes": "Anyone else",
+    "addedAt": "2025-08-01T14:56:56.291Z"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "llm": {
+    "temperature": 0.7,
+    "maxTokens": 500
+  },
+  "tts": {
+    "speechRate": 1
+  },
+  "eyeGaze": {
+    "hoverDuration": 3000,
+    "visualFeedback": true
+  }
+}

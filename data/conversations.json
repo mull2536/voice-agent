@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1754078528811,
+    "timestamp": "2025-08-01T20:02:08.811Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe gaat het met jou",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754078401763,
+    "timestamp": "2025-08-01T20:00:01.763Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754137789224,
+    "timestamp": "2025-08-02T12:29:49.224Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
+      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
+      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  }
+]
