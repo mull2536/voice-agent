@@ -10,24 +10,27 @@
     "name": "Caregiver",
     "notes": "Daily care and assistance",
     "addedAt": "2025-08-01T14:56:56.291Z",
-    "lastConversation": "2025-08-02T12:29:49.225Z"
+    "lastConversation": "2025-08-02T15:16:23.725Z"
   },
   {
     "id": "doctor",
     "name": "Doctor",
     "notes": "Medical discussions",
-    "addedAt": "2025-08-01T14:56:56.291Z"
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-02T14:52:02.251Z"
   },
   {
     "id": "friend",
     "name": "Friend",
     "notes": "Social conversations",
-    "addedAt": "2025-08-01T14:56:56.291Z"
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-02T17:44:33.439Z"
   },
   {
     "id": "other",
     "name": "Other",
     "notes": "Anyone else",
-    "addedAt": "2025-08-01T14:56:56.291Z"
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-02T16:33:43.360Z"
   }
 ]

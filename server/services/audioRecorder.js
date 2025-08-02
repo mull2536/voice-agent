@@ -14,7 +14,7 @@ class AudioRecorder {
       minSpeechFrames: 8,
       preSpeechPadFrames: 3,
       redemptionFrames: 30,
-      frameSamples: 1536, // 96ms at 16kHz
+      frameSamples: 1024, // 64ms at 16kHz (use power of 2)
       sampleRate: 16000
     };
   }

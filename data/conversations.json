@@ -1,14 +1,142 @@
 [
   {
-    "id": 1754078528811,
-    "timestamp": "2025-08-01T20:02:08.811Z",
+    "id": 1754156673438,
+    "timestamp": "2025-08-02T17:44:33.438Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat zijn gangetje, dankje! En hoe voel je je vandaag? Alles onder controle aan jouw kant?\"",
+      "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+      "\"Alles loopt op rolletjes hier, dankje. En met jou? Is er iets nieuws of spannends gebeurd sinds we voor het laatst praatten?\""
+    ],
+    "selectedResponse": "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754155932741,
+    "timestamp": "2025-08-02T17:32:12.741Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat prima, bedankt! En hoe voel je je vandaag? Hopelijk een beetje beter dan gisteren.\"",
+      "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
+      "\"Goed, dankje! Zin in iets leuks om te doen binnenkort? Hoe voel jij je vandaag?\""
+    ],
+    "selectedResponse": "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754153268064,
+    "timestamp": "2025-08-02T16:47:48.064Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "wanneer is teunis geboren?",
+    "responses": [
+      "\"Teunis is geboren op 3 maart. Herinner jij je die verjaardagsfeestjes die we vroeger hadden? Altijd zo gezellig!\"",
+      "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
+      "\"Zijn verjaardag is op 3 maart. Voelt dat niet als gisteren, dat we samen zijn verjaardag vierden? Hoe denk je dat we hem dit jaar kunnen verrassen?\""
+    ],
+    "selectedResponse": "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754152423359,
+    "timestamp": "2025-08-02T16:33:43.359Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Met mij gaat het ook goed, dank je. Blij om weer van je te horen. Heb je nog iets leuks gedaan onlangs?\"",
+      "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
+      "\"Alles gaat goed hier, dankjewel. En hoe gaat het aan jouw kant? Is er iets nieuws of spannends gebeurd sinds we voor het laatst spraken?\""
+    ],
+    "selectedResponse": "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754149952291,
+    "timestamp": "2025-08-02T15:52:32.291Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. En met jou?\"",
+      "\"Redelijk, dank je. Hoe gaat het met jou?\"",
+      "\"Het gaat zijn gangetje. Hoe is het met jou?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dank je. En met jou?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754149829703,
+    "timestamp": "2025-08-02T15:50:29.703Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
+      "\"Prima, bedankt voor het vragen! Hoe ben jij? Zijn er nieuwe ontwikkelingen die je beïnvloeden?\"",
+      "\"Goed, dankjewel! Hoe is het met jou? Heeft het onderwerp waar we het laatst over hadden nog invloed op je?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754148670933,
+    "timestamp": "2025-08-02T15:31:10.933Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "dat is het punt",
+    "responses": [
+      "\"Precies, dat is een goed punt. Wat denk je dat we daaraan kunnen doen?\"",
+      "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
+      "\"Ja, daar zit wat in. Heb je ideeën over hoe we verder moeten?\""
+    ],
+    "selectedResponse": "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754146989136,
+    "timestamp": "2025-08-02T15:03:09.136Z",
     "personId": "caregiver",
     "personName": "Caregiver",
-    "userMessage": "hoe gaat het met jou",
+    "userMessage": "Test.",
     "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
+      "\"Alles gaat goed hier, dank je wel voor de testbericht. Heb je nog iets nodig op dit moment?\"",
+      "\"De test is gelukt! Hoe kan ik je vandaag verder van dienst zijn?\"",
+      "\"Test ontvangen! Voel je vrij om te delen hoe je je voelt of als er iets specifieks is waarmee ik kan helpen.\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754137789224,
+    "timestamp": "2025-08-02T12:29:49.224Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
+      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
+      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
     ],
     "selectedResponse": null,
     "context": {
@@ -32,15 +160,47 @@
     }
   },
   {
-    "id": 1754137789224,
-    "timestamp": "2025-08-02T12:29:49.224Z",
+    "id": 1754078528811,
+    "timestamp": "2025-08-01T20:02:08.811Z",
     "personId": "caregiver",
     "personName": "Caregiver",
+    "userMessage": "hoe gaat het met jou",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754146322251,
+    "timestamp": "2025-08-02T14:52:02.251Z",
+    "personId": "doctor",
+    "personName": "Doctor",
     "userMessage": "dit is een test",
     "responses": [
-      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
-      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
-      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
+      "\"Could you please provide more details on the test results?\"",
+      "\"What do the findings from the test suggest about my condition?\"",
+      "\"Are there any specific implications or next steps based on my test outcomes?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754147783725,
+    "timestamp": "2025-08-02T15:16:23.725Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Hoe gaat het met je?",
+    "responses": [
+      "\"Het gaat goed met mij, dank je. Hoe kan ik jou vandaag helpen?\"",
+      "\"Ik voel me vandaag prima, bedankt. Heb je nog speciale plannen voor ons?\"",
+      "\"Alles gaat zijn gangetje, bedankt. Is er iets specifieks waar je hulp bij nodig hebt vandaag?\""
     ],
     "selectedResponse": null,
     "context": {
