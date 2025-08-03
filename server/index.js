@@ -31,6 +31,7 @@ const io = new Server(server, {
   }
 });
 
+app.use('/assets', express.static(path.join(__dirname, '../client/assets')));
 // Middleware
 app.use(cors());
 app.use(express.json());

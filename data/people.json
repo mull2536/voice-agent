@@ -3,7 +3,8 @@
     "id": "family",
     "name": "Family Member",
     "notes": "General family conversations",
-    "addedAt": "2025-08-01T14:56:56.290Z"
+    "addedAt": "2025-08-01T14:56:56.290Z",
+    "lastConversation": "2025-08-03T12:18:01.717Z"
   },
   {
     "id": "caregiver",
@@ -17,20 +18,20 @@
     "name": "Doctor",
     "notes": "Medical discussions",
     "addedAt": "2025-08-01T14:56:56.291Z",
-    "lastConversation": "2025-08-02T14:52:02.251Z"
+    "lastConversation": "2025-08-03T11:27:54.236Z"
   },
   {
     "id": "friend",
     "name": "Friend",
     "notes": "Social conversations",
     "addedAt": "2025-08-01T14:56:56.291Z",
-    "lastConversation": "2025-08-02T17:44:33.439Z"
+    "lastConversation": "2025-08-03T10:56:52.947Z"
   },
   {
     "id": "other",
     "name": "Other",
     "notes": "Anyone else",
     "addedAt": "2025-08-01T14:56:56.291Z",
-    "lastConversation": "2025-08-02T16:33:43.360Z"
+    "lastConversation": "2025-08-03T11:00:36.395Z"
   }
 ]

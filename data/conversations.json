@@ -1,174 +1,38 @@
 [
   {
-    "id": 1754156673438,
-    "timestamp": "2025-08-02T17:44:33.438Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
+    "id": 1754223481717,
+    "timestamp": "2025-08-03T12:18:01.717Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "wie is de vader van Bernardus Muller",
     "responses": [
-      "\"Het gaat zijn gangetje, dankje! En hoe voel je je vandaag? Alles onder controle aan jouw kant?\"",
-      "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
-      "\"Alles loopt op rolletjes hier, dankje. En met jou? Is er iets nieuws of spannends gebeurd sinds we voor het laatst praatten?\""
+      "\"De vader van Bernardus Muller is Bert Muller. Het lijkt erop dat Bernard een rijke familiegeschiedenis heeft, met veel verhalen over de zee en het ondernemerschap. Is er een specifieke reden waarom je meer wilt weten over zijn familie?\"",
+      "\"Bert Muller is de naam van Bernardus Muller's vader. Het is fascinerend hoe de familie Muller generaties lang verbonden is gebleven met de scheepvaart. Heb je gehoord over hun avonturen op zee of in het bedrijfsleven?\"",
+      "\"De vader van Bernardus Muller is Bert Muller. Ze hebben een interessante familiehistorie, nietwaar? Voelt het niet speciaal om al deze verbindingen en verhalen binnen de familie te kennen?\""
     ],
-    "selectedResponse": "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+    "selectedResponse": "\"De vader van Bernardus Muller is Bert Muller. Ze hebben een interessante familiehistorie, nietwaar? Voelt het niet speciaal om al deze verbindingen en verhalen binnen de familie te kennen?\"",
     "context": {
-      "ragUsed": true
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "prive-data.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
     }
   },
   {
-    "id": 1754155932741,
-    "timestamp": "2025-08-02T17:32:12.741Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat prima, bedankt! En hoe voel je je vandaag? Hopelijk een beetje beter dan gisteren.\"",
-      "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
-      "\"Goed, dankje! Zin in iets leuks om te doen binnenkort? Hoe voel jij je vandaag?\""
-    ],
-    "selectedResponse": "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754153268064,
-    "timestamp": "2025-08-02T16:47:48.064Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "wanneer is teunis geboren?",
-    "responses": [
-      "\"Teunis is geboren op 3 maart. Herinner jij je die verjaardagsfeestjes die we vroeger hadden? Altijd zo gezellig!\"",
-      "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
-      "\"Zijn verjaardag is op 3 maart. Voelt dat niet als gisteren, dat we samen zijn verjaardag vierden? Hoe denk je dat we hem dit jaar kunnen verrassen?\""
-    ],
-    "selectedResponse": "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754152423359,
-    "timestamp": "2025-08-02T16:33:43.359Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Met mij gaat het ook goed, dank je. Blij om weer van je te horen. Heb je nog iets leuks gedaan onlangs?\"",
-      "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
-      "\"Alles gaat goed hier, dankjewel. En hoe gaat het aan jouw kant? Is er iets nieuws of spannends gebeurd sinds we voor het laatst spraken?\""
-    ],
-    "selectedResponse": "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754149952291,
-    "timestamp": "2025-08-02T15:52:32.291Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dank je. En met jou?\"",
-      "\"Redelijk, dank je. Hoe gaat het met jou?\"",
-      "\"Het gaat zijn gangetje. Hoe is het met jou?\""
-    ],
-    "selectedResponse": "\"Het gaat goed, dank je. En met jou?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754149829703,
-    "timestamp": "2025-08-02T15:50:29.703Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
-      "\"Prima, bedankt voor het vragen! Hoe ben jij? Zijn er nieuwe ontwikkelingen die je beïnvloeden?\"",
-      "\"Goed, dankjewel! Hoe is het met jou? Heeft het onderwerp waar we het laatst over hadden nog invloed op je?\""
-    ],
-    "selectedResponse": "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754148670933,
-    "timestamp": "2025-08-02T15:31:10.933Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "dat is het punt",
-    "responses": [
-      "\"Precies, dat is een goed punt. Wat denk je dat we daaraan kunnen doen?\"",
-      "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
-      "\"Ja, daar zit wat in. Heb je ideeën over hoe we verder moeten?\""
-    ],
-    "selectedResponse": "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754146989136,
-    "timestamp": "2025-08-02T15:03:09.136Z",
+    "id": 1754147783725,
+    "timestamp": "2025-08-02T15:16:23.725Z",
     "personId": "caregiver",
     "personName": "Caregiver",
-    "userMessage": "Test.",
+    "userMessage": "Hoe gaat het met je?",
     "responses": [
-      "\"Alles gaat goed hier, dank je wel voor de testbericht. Heb je nog iets nodig op dit moment?\"",
-      "\"De test is gelukt! Hoe kan ik je vandaag verder van dienst zijn?\"",
-      "\"Test ontvangen! Voel je vrij om te delen hoe je je voelt of als er iets specifieks is waarmee ik kan helpen.\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754137789224,
-    "timestamp": "2025-08-02T12:29:49.224Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "dit is een test",
-    "responses": [
-      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
-      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
-      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754078401763,
-    "timestamp": "2025-08-01T20:00:01.763Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "dit is een test",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754078528811,
-    "timestamp": "2025-08-01T20:02:08.811Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "hoe gaat het met jou",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
+      "\"Het gaat goed met mij, dank je. Hoe kan ik jou vandaag helpen?\"",
+      "\"Ik voel me vandaag prima, bedankt. Heb je nog speciale plannen voor ons?\"",
+      "\"Alles gaat zijn gangetje, bedankt. Is er iets specifieks waar je hulp bij nodig hebt vandaag?\""
     ],
     "selectedResponse": null,
     "context": {
@@ -192,19 +56,283 @@
     }
   },
   {
-    "id": 1754147783725,
-    "timestamp": "2025-08-02T15:16:23.725Z",
+    "id": 1754078528811,
+    "timestamp": "2025-08-01T20:02:08.811Z",
     "personId": "caregiver",
     "personName": "Caregiver",
-    "userMessage": "Hoe gaat het met je?",
+    "userMessage": "hoe gaat het met jou",
     "responses": [
-      "\"Het gaat goed met mij, dank je. Hoe kan ik jou vandaag helpen?\"",
-      "\"Ik voel me vandaag prima, bedankt. Heb je nog speciale plannen voor ons?\"",
-      "\"Alles gaat zijn gangetje, bedankt. Is er iets specifieks waar je hulp bij nodig hebt vandaag?\""
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
     ],
     "selectedResponse": null,
     "context": {
       "ragUsed": true
+    }
+  },
+  {
+    "id": 1754078401763,
+    "timestamp": "2025-08-01T20:00:01.763Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754137789224,
+    "timestamp": "2025-08-02T12:29:49.224Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
+      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
+      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754146989136,
+    "timestamp": "2025-08-02T15:03:09.136Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Test.",
+    "responses": [
+      "\"Alles gaat goed hier, dank je wel voor de testbericht. Heb je nog iets nodig op dit moment?\"",
+      "\"De test is gelukt! Hoe kan ik je vandaag verder van dienst zijn?\"",
+      "\"Test ontvangen! Voel je vrij om te delen hoe je je voelt of als er iets specifieks is waarmee ik kan helpen.\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754148670933,
+    "timestamp": "2025-08-02T15:31:10.933Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "dat is het punt",
+    "responses": [
+      "\"Precies, dat is een goed punt. Wat denk je dat we daaraan kunnen doen?\"",
+      "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
+      "\"Ja, daar zit wat in. Heb je ideeën over hoe we verder moeten?\""
+    ],
+    "selectedResponse": "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754149829703,
+    "timestamp": "2025-08-02T15:50:29.703Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
+      "\"Prima, bedankt voor het vragen! Hoe ben jij? Zijn er nieuwe ontwikkelingen die je beïnvloeden?\"",
+      "\"Goed, dankjewel! Hoe is het met jou? Heeft het onderwerp waar we het laatst over hadden nog invloed op je?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754149952291,
+    "timestamp": "2025-08-02T15:52:32.291Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. En met jou?\"",
+      "\"Redelijk, dank je. Hoe gaat het met jou?\"",
+      "\"Het gaat zijn gangetje. Hoe is het met jou?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dank je. En met jou?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754152423359,
+    "timestamp": "2025-08-02T16:33:43.359Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Met mij gaat het ook goed, dank je. Blij om weer van je te horen. Heb je nog iets leuks gedaan onlangs?\"",
+      "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
+      "\"Alles gaat goed hier, dankjewel. En hoe gaat het aan jouw kant? Is er iets nieuws of spannends gebeurd sinds we voor het laatst spraken?\""
+    ],
+    "selectedResponse": "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754153268064,
+    "timestamp": "2025-08-02T16:47:48.064Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "wanneer is teunis geboren?",
+    "responses": [
+      "\"Teunis is geboren op 3 maart. Herinner jij je die verjaardagsfeestjes die we vroeger hadden? Altijd zo gezellig!\"",
+      "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
+      "\"Zijn verjaardag is op 3 maart. Voelt dat niet als gisteren, dat we samen zijn verjaardag vierden? Hoe denk je dat we hem dit jaar kunnen verrassen?\""
+    ],
+    "selectedResponse": "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754155932741,
+    "timestamp": "2025-08-02T17:32:12.741Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat prima, bedankt! En hoe voel je je vandaag? Hopelijk een beetje beter dan gisteren.\"",
+      "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
+      "\"Goed, dankje! Zin in iets leuks om te doen binnenkort? Hoe voel jij je vandaag?\""
+    ],
+    "selectedResponse": "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754156673438,
+    "timestamp": "2025-08-02T17:44:33.438Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat zijn gangetje, dankje! En hoe voel je je vandaag? Alles onder controle aan jouw kant?\"",
+      "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+      "\"Alles loopt op rolletjes hier, dankje. En met jou? Is er iets nieuws of spannends gebeurd sinds we voor het laatst praatten?\""
+    ],
+    "selectedResponse": "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754218612947,
+    "timestamp": "2025-08-03T10:56:52.947Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "to the second half of the year, so let's assume 900 million. Then we go to the 1.1 billion turnover, which is comparable to the first half of 2024, where you see in the last column, the profit was 1 euro. They expected a lower margin for the whole year, so we are not going to do that, but let's say that in the second half of the year we can earn 85 cents, and that's what you end up with.",
+    "responses": [
+      "\"Klinkt alsof je echt diep in de cijfers bent gedoken! Denk je dat dit een goede kans is voor een investering?\"",
+      "\"Dat is een vrij gedetailleerde analyse! Voel je je optimistisch over hun prestaties in de tweede helft van het jaar?\"",
+      "\"Interessante berekening! Hoe denk je dat deze financiële vooruitzichten invloed zullen hebben op hun marktpositie?\""
+    ],
+    "selectedResponse": "\"Interessante berekening! Hoe denk je dat deze financiële vooruitzichten invloed zullen hebben op hun marktpositie?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754218836395,
+    "timestamp": "2025-08-03T11:00:36.395Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "We will see what CEO Mark Heine says, but for the long term his expectations have become more difficult. He wanted to achieve a turnover of 3.5 billion in 2027. That will not be possible. Heine says that will happen later.",
+    "responses": [
+      "\"Dat klinkt als een grote aanpassing in hun plannen. Denk je dat dit invloed zal hebben op hun positie in de markt op de lange termijn?\"",
+      "\"Interessant om te horen over de veranderde verwachtingen van CEO Mark Heine. Hoe denk je dat dit de strategie van het bedrijf zal beïnvloeden in de toekomst?\"",
+      "\"Het lijkt erop dat ze hun doelen moeten bijstellen. Wat voor impact denk je dat dit zal hebben op hun concurrentievermogen en innovatievermogen?\""
+    ],
+    "selectedResponse": "\"Interessant om te horen over de veranderde verwachtingen van CEO Mark Heine. Hoe denk je dat dit de strategie van het bedrijf zal beïnvloeden in de toekomst?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754219092351,
+    "timestamp": "2025-08-03T11:04:52.351Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. Hoe gaat het met jou? Zijn er nog leuke dingen gebeurd recent?\"",
+      "\"Redelijk, dank je. Een beetje dezelfde routine. Hoe is alles aan jouw kant?\"",
+      "\"Gaat wel, dank je. Ik heb mijn ups en downs. En met jou? Iets nieuws of interessants te delen?\""
+    ],
+    "selectedResponse": "\"Redelijk, dank je. Een beetje dezelfde routine. Hoe is alles aan jouw kant?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754220419255,
+    "timestamp": "2025-08-03T11:26:59.255Z",
+    "personId": "doctor",
+    "personName": "Doctor",
+    "userMessage": "Hoe gaat het",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": "I'd be happy to help you with that.",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754220474235,
+    "timestamp": "2025-08-03T11:27:54.235Z",
+    "personId": "doctor",
+    "personName": "Doctor",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Goed, dank je. Hoe kan ik u vandaag ondersteunen met uw gezondheidszorgen?\"",
+      "\"Het gaat prima, bedankt voor het vragen. Hebben we specifieke punten om vandaag te bespreken?\"",
+      "\"Ik maak het goed, dank u. Zijn er nieuwe ontwikkelingen in mijn zorgplan die we moeten overwegen?\""
+    ],
+    "selectedResponse": "\"Goed, dank je. Hoe kan ik u vandaag ondersteunen met uw gezondheidszorgen?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754223378621,
+    "timestamp": "2025-08-03T12:16:18.621Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "wanneer is teunis geboren",
+    "responses": [
+      "\"Teunis is geboren in het jaar 1738. Zo'n lange geschiedenis in de familie, vind je ook niet? Heb je meer verhalen over onze voorouders gehoord?\"",
+      "\"Hij is in 1738 geboren. Interessant om te denken aan hoe het leven toen was. Weet jij misschien meer over zijn leven of andere familieleden uit die tijd?\"",
+      "\"1738 was het geboortejaar van Teunis. Een heel ander tijdperk, hè? Benieuwd hoe hij en de familie die tijd doorkwamen. Heb jij nog familieverhalen die je kunt delen?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "prive-data.docx",
+        "prive-data.docx"
+      ]
     }
   }
 ]

@@ -3,16 +3,16 @@ const fs = require('fs').promises;
 const path = require('path');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
-const { getRAGContext, RAGService } = require('../services/rag');
+const { getRAGServiceInstance } = require('../services/rag');
 const logger = require('./logger');
 
 class FileIndexer {
   constructor() {
     this.knowledgeBasePath = process.env.KNOWLEDGE_BASE_PATH;
-    this.supportedExtensions = ['.txt', '.pdf', '.docx', '.json'];
+    this.supportedExtensions = ['.txt', '.pdf', '.docx', '.json', '.md'];
     this.watcher = null;
     this.ragService = null;
-    this.indexedFiles = new Set();
+    this.isInitialized = false;
   }
 
   async initialize() {
@@ -20,39 +20,22 @@ class FileIndexer {
       // Ensure knowledge base directory exists
       await fs.mkdir(this.knowledgeBasePath, { recursive: true });
       
-      // Initialize RAG service
-      this.ragService = new RAGService();
-      await this.ragService.initialize();
+      // Get RAG service instance (should already be initialized)
+      this.ragService = getRAGServiceInstance();
       
-      // Index existing files
-      await this.indexExistingFiles();
+      if (!this.ragService) {
+        throw new Error('RAG service not available');
+      }
       
-      // Start watching for changes
+      // Start watching for changes (but don't index existing files - RAG service already did that)
       this.startWatcher();
       
+      this.isInitialized = true;
       logger.info('File indexer initialized');
+      
     } catch (error) {
       logger.error('Failed to initialize file indexer:', error);
       throw error;
-    }
-  }
-
-  async indexExistingFiles() {
-    try {
-      const files = await fs.readdir(this.knowledgeBasePath);
-      
-      for (const file of files) {
-        const filePath = path.join(this.knowledgeBasePath, file);
-        const ext = path.extname(file).toLowerCase();
-        
-        if (this.supportedExtensions.includes(ext)) {
-          await this.indexFile(filePath);
-        }
-      }
-      
-      logger.info(`Indexed ${this.indexedFiles.size} existing files`);
-    } catch (error) {
-      logger.error('Failed to index existing files:', error);
     }
   }
 
@@ -61,49 +44,73 @@ class FileIndexer {
       ignored: /(^|[\/\\])\../, // ignore dotfiles
       persistent: true,
       awaitWriteFinish: {
-        stabilityThreshold: 2000,
+        stabilityThreshold: 2000, // Wait 2 seconds after file stops changing
         pollInterval: 100
-      }
+      },
+      ignoreInitial: true // IMPORTANT: Don't trigger events for existing files
     });
 
     this.watcher
       .on('add', (filePath) => this.handleFileAdd(filePath))
       .on('change', (filePath) => this.handleFileChange(filePath))
       .on('unlink', (filePath) => this.handleFileRemove(filePath))
-      .on('error', (error) => logger.error('Watcher error:', error));
+      .on('error', (error) => logger.error('File watcher error:', error));
 
-    logger.info('File watcher started');
+    logger.info('File watcher started (monitoring for changes only)');
   }
 
   async handleFileAdd(filePath) {
-    const ext = path.extname(filePath).toLowerCase();
+    if (!this.isValidFile(filePath)) {
+      return;
+    }
+
+    logger.info(`New file detected: ${path.basename(filePath)}`);
     
-    if (this.supportedExtensions.includes(ext)) {
-      logger.info(`New file detected: ${path.basename(filePath)}`);
-      await this.indexFile(filePath);
+    // Use RAG service's file change handler
+    if (this.ragService && this.ragService.handleFileChange) {
+      await this.ragService.handleFileChange(filePath);
+    } else {
+      // Fallback to manual indexing
+      await this.indexNewFile(filePath);
     }
   }
 
   async handleFileChange(filePath) {
-    const ext = path.extname(filePath).toLowerCase();
+    if (!this.isValidFile(filePath)) {
+      return;
+    }
+
+    logger.info(`File changed: ${path.basename(filePath)}`);
     
-    if (this.supportedExtensions.includes(ext)) {
-      logger.info(`File changed: ${path.basename(filePath)}`);
-      await this.indexFile(filePath, true);
+    // Use RAG service's file change handler
+    if (this.ragService && this.ragService.handleFileChange) {
+      await this.ragService.handleFileChange(filePath);
+    } else {
+      // Fallback to manual indexing
+      await this.indexNewFile(filePath);
     }
   }
 
   async handleFileRemove(filePath) {
-    if (this.indexedFiles.has(filePath)) {
-      logger.info(`File removed: ${path.basename(filePath)}`);
-      this.indexedFiles.delete(filePath);
-      
-      // In production, you'd also remove from vector store
-      await this.ragService.deleteDocument(filePath);
+    if (!this.isValidFile(filePath)) {
+      return;
+    }
+
+    logger.info(`File removed: ${path.basename(filePath)}`);
+    
+    // Use RAG service's file removal handler
+    if (this.ragService && this.ragService.handleFileRemoval) {
+      await this.ragService.handleFileRemoval(filePath);
     }
   }
 
-  async indexFile(filePath, isUpdate = false) {
+  isValidFile(filePath) {
+    const ext = path.extname(filePath).toLowerCase();
+    return this.supportedExtensions.includes(ext);
+  }
+
+  // Fallback method if RAG service doesn't have file handlers
+  async indexNewFile(filePath) {
     try {
       const content = await this.extractContent(filePath);
       
@@ -116,18 +123,13 @@ class FileIndexer {
         source: filePath,
         filename: path.basename(filePath),
         type: path.extname(filePath).substring(1),
-        indexed_at: new Date().toISOString(),
-        is_update: isUpdate
+        indexed_at: new Date().toISOString()
       };
 
-      if (isUpdate) {
-        await this.ragService.updateDocument(filePath, content);
-      } else {
+      // Add to RAG service using the public API
+      if (this.ragService && this.ragService.addDocument) {
         await this.ragService.addDocument(content, metadata);
       }
-
-      this.indexedFiles.add(filePath);
-      logger.info(`Successfully indexed: ${path.basename(filePath)}`);
 
     } catch (error) {
       logger.error(`Failed to index file ${filePath}:`, error);
@@ -140,6 +142,7 @@ class FileIndexer {
     try {
       switch (ext) {
         case '.txt':
+        case '.md':
           return await this.extractTextContent(filePath);
         
         case '.pdf':
@@ -209,6 +212,18 @@ class FileIndexer {
       logger.info('File watcher stopped');
     }
   }
+
+  // Get statistics about file indexing
+  async getStats() {
+    if (this.ragService && this.ragService.getStats) {
+      return await this.ragService.getStats();
+    }
+    
+    return {
+      initialized: this.isInitialized,
+      error: 'RAG service stats not available'
+    };
+  }
 }
 
 let fileIndexer = null;
@@ -228,7 +243,15 @@ async function stopFileWatcher() {
   }
 }
 
+async function getFileIndexerStats() {
+  if (fileIndexer) {
+    return await fileIndexer.getStats();
+  }
+  return { error: 'File indexer not initialized' };
+}
+
 module.exports = {
   startFileWatcher,
-  stopFileWatcher
+  stopFileWatcher,
+  getFileIndexerStats
 };
