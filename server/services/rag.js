@@ -300,17 +300,22 @@ class RAGService {
 
   async indexFile(filePath, fileInfo = {}) {
     try {
-      // Extract content based on file type
-      const content = await this.extractContent(filePath);
-      
-      if (!content || !content.trim()) {
-        logger.warn(`No content extracted from: ${path.basename(filePath)}`);
-        return;
-      }
-
       const filename = path.basename(filePath);
       const stats = await fs.stat(filePath);
       
+      // Special handling for memories.json
+      if (filename.toLowerCase() === 'memories.json') {
+        return await this.indexMemoriesFile(filePath, fileInfo, stats);
+      }
+      
+      // Regular file indexing for all other files
+      const content = await this.extractContent(filePath);
+      
+      if (!content || !content.trim()) {
+        logger.warn(`No content extracted from: ${filename}`);
+        return;
+      }
+
       const metadata = {
         source: filePath,
         filename: filename,
@@ -320,7 +325,6 @@ class RAGService {
         last_modified: fileInfo.lastModified || stats.mtime.toISOString()
       };
 
-      // Split content into chunks
       const chunks = await this.textSplitter.splitText(content);
       
       if (chunks.length === 0) {
@@ -328,7 +332,6 @@ class RAGService {
         return;
       }
 
-      // Add chunks to vector store
       const metadatas = chunks.map((_, index) => ({
         ...metadata,
         chunk_index: index,
@@ -342,7 +345,6 @@ class RAGService {
         }))
       );
 
-      // Update file index
       this.fileIndex.set(filename, {
         hash: fileInfo.hash || await this.calculateFileHash(filePath),
         lastModified: fileInfo.lastModified || stats.mtime.toISOString(),
@@ -359,8 +361,77 @@ class RAGService {
     }
   }
 
+  async indexMemoriesFile(filePath, fileInfo, stats) {
+    try {
+      const jsonContent = await fs.readFile(filePath, 'utf-8');
+      const data = JSON.parse(jsonContent);
+      
+      if (!data.memories || !Array.isArray(data.memories)) {
+        logger.warn('Invalid memories.json structure - expected { memories: [...] }');
+        return;
+      }
+
+      const filename = path.basename(filePath);
+      let totalChunks = 0;
+      
+      // Index each memory as a separate document
+      for (let i = 0; i < data.memories.length; i++) {
+        const memory = data.memories[i];
+        
+        // Create content for this memory
+        const memoryContent = [
+          memory.title ? `Title: ${memory.title}` : '',
+          memory.date ? `Date: ${memory.date}` : '',
+          memory.tags && Array.isArray(memory.tags) && memory.tags.length > 0 ? 
+            `Tags: ${memory.tags.join(', ')}` : '',
+          '',
+          memory.text || ''
+        ].filter(line => line !== '').join('\n');
+        
+        const memoryMetadata = {
+          source: filePath,
+          filename: filename,
+          type: 'memory',
+          memory_id: memory.id || `memory_${i}`,
+          memory_title: memory.title || '',
+          memory_date: memory.date || '',
+          memory_tags: memory.tags || [],
+          memory_index: i,
+          indexed_at: new Date().toISOString(),
+          file_size: stats.size,
+          last_modified: fileInfo.lastModified || stats.mtime.toISOString(),
+          chunk_index: 0,
+          total_chunks: 1
+        };
+        
+        await this.vectorStore.addDocuments([{
+          pageContent: memoryContent,
+          metadata: memoryMetadata
+        }]);
+        
+        totalChunks++;
+      }
+
+      this.fileIndex.set(filename, {
+        hash: fileInfo.hash || await this.calculateFileHash(filePath),
+        lastModified: fileInfo.lastModified || stats.mtime.toISOString(),
+        chunks: totalChunks,
+        indexed_at: new Date().toISOString(),
+        filePath: filePath,
+        memory_count: data.memories.length
+      });
+
+      logger.info(`Indexed ${filename}: ${data.memories.length} memories as ${totalChunks} searchable documents`);
+      
+    } catch (error) {
+      logger.error(`Failed to index memories file ${filePath}:`, error);
+      throw error;
+    }
+  }
+
   async extractContent(filePath) {
     const ext = path.extname(filePath).toLowerCase();
+    const filename = path.basename(filePath).toLowerCase();
 
     try {
       switch (ext) {
@@ -369,19 +440,23 @@ class RAGService {
           return await fs.readFile(filePath, 'utf-8');
         
         case '.json':
-          const jsonContent = await fs.readFile(filePath, 'utf-8');
-          const data = JSON.parse(jsonContent);
-          return this.jsonToText(data);
+          // Special handling for memories.json structure
+          if (filename === 'memories.json') {
+            return await this.extractMemoriesContent(filePath);
+          } else {
+            // Generic JSON handling for other JSON files
+            const jsonContent = await fs.readFile(filePath, 'utf-8');
+            const data = JSON.parse(jsonContent);
+            return this.jsonToText(data);
+          }
         
         case '.pdf':
-          // Note: PDF parsing requires pdf-parse library
           const pdfParse = require('pdf-parse');
           const pdfBuffer = await fs.readFile(filePath);
           const pdfData = await pdfParse(pdfBuffer);
           return pdfData.text;
         
         case '.docx':
-          // Note: DOCX parsing requires mammoth library
           const mammoth = require('mammoth');
           const docxResult = await mammoth.extractRawText({ path: filePath });
           return docxResult.value;
@@ -396,6 +471,84 @@ class RAGService {
     }
   }
 
+  async extractMemoriesContent(filePath) {
+    try {
+      const jsonContent = await fs.readFile(filePath, 'utf-8');
+      const data = JSON.parse(jsonContent);
+      
+      if (!data.memories || !Array.isArray(data.memories)) {
+        logger.warn('Invalid memories.json structure - expected { memories: [...] }');
+        return '';
+      }
+
+      const allMemoriesText = [];
+      
+      data.memories.forEach((memory, index) => {
+        const memoryTexts = [];
+        
+        // Main comprehensive content
+        const mainContent = [
+          memory.title ? `Title: ${memory.title}` : '',
+          memory.date ? `Date: ${memory.date}` : '',
+          memory.tags && Array.isArray(memory.tags) && memory.tags.length > 0 ? 
+            `Tags: ${memory.tags.join(', ')}` : '',
+          '',
+          memory.text || ''
+        ].filter(line => line !== '').join('\n');
+        
+        if (mainContent.trim()) {
+          memoryTexts.push(mainContent);
+        }
+        
+        // Searchable field-specific content
+        if (memory.title) {
+          memoryTexts.push(`Memory titled: ${memory.title}`);
+        }
+        
+        // Tag-based searchable content
+        if (memory.tags && Array.isArray(memory.tags) && memory.tags.length > 0) {
+          memory.tags.forEach(tag => {
+            if (tag && tag.trim()) {
+              memoryTexts.push(`Memory tagged: ${tag.trim()}`);
+            }
+          });
+          memoryTexts.push(`Categories: ${memory.tags.filter(t => t && t.trim()).join(' ')}`);
+        }
+        
+        // Date-based searchable content
+        if (memory.date) {
+          const date = new Date(memory.date);
+          if (!isNaN(date.getTime())) {
+            const year = date.getFullYear();
+            const month = date.toLocaleString('default', { month: 'long' });
+            
+            memoryTexts.push(`Memory from ${year}`);
+            memoryTexts.push(`Memory from ${month} ${year}`);
+            
+            const now = new Date();
+            const monthsAgo = (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 30);
+            
+            if (monthsAgo < 6) {
+              memoryTexts.push('Recent memory');
+            } else if (monthsAgo > 24) {
+              memoryTexts.push('Historical memory');
+            }
+          }
+        }
+        
+        if (memoryTexts.length > 0) {
+          allMemoriesText.push(memoryTexts.join('\n\n'));
+        }
+      });
+      
+      return allMemoriesText.join('\n\n' + '='.repeat(50) + '\n\n');
+      
+    } catch (error) {
+      logger.error('Failed to extract memories content:', error);
+      return '';
+    }
+  }
+  
   jsonToText(obj, prefix = '') {
     let text = '';
     for (const [key, value] of Object.entries(obj)) {
@@ -468,12 +621,23 @@ class RAGService {
         return [];
       }
 
-      const results = await this.vectorStore.similaritySearchWithScore(
-        query.trim(),
-        this.topK
-      );
-
-      const filteredResults = results
+      // Generate query variations for better search
+      const queryVariations = this.generateQueryVariations(query);
+      
+      let allResults = [];
+      
+      for (const queryVariation of queryVariations) {
+        const results = await this.vectorStore.similaritySearchWithScore(
+          queryVariation,
+          this.topK
+        );
+        allResults.push(...results);
+      }
+      
+      // Remove duplicates
+      const uniqueResults = this.deduplicateSearchResults(allResults);
+      
+      const filteredResults = uniqueResults
         .filter(([doc, score]) => {
           const similarity = 1 - score;
           return similarity >= minSimilarity;
@@ -487,15 +651,51 @@ class RAGService {
         .sort((a, b) => b.similarity - a.similarity);
 
       if (filteredResults.length > 0) {
-        logger.info(`RAG search for "${query}": ${filteredResults.length}/${results.length} results above threshold`);
+        logger.info(`RAG search for "${query}": ${filteredResults.length} results found`);
       }
       
-      return filteredResults;
+      return filteredResults.slice(0, this.topK);
       
     } catch (error) {
       logger.error('Failed to search vector store:', error);
       return [];
     }
+  }
+
+  generateQueryVariations(originalQuery) {
+    const variations = [originalQuery.trim()];
+    const queryLower = originalQuery.toLowerCase().trim();
+    
+    // Add memory-specific variations
+    if (!queryLower.includes('memory') && !queryLower.includes('remember')) {
+      variations.push(`memory about ${originalQuery}`);
+    }
+    
+    // Add temporal variations
+    if (queryLower.includes('recent') || queryLower.includes('latest') || queryLower.includes('when')) {
+      variations.push(`date ${originalQuery}`);
+    }
+    
+    // Add category variations
+    variations.push(`tagged ${originalQuery}`);
+    
+    return [...new Set(variations.filter(v => v.trim().length > 0))];
+  }
+
+  deduplicateSearchResults(results) {
+    const seen = new Set();
+    const unique = [];
+    
+    for (const [doc, score] of results) {
+      const identifier = `${doc.metadata.source || 'unknown'}_${doc.metadata.chunk_index || 0}`;
+      
+      if (!seen.has(identifier)) {
+        seen.add(identifier);
+        unique.push([doc, score]);
+      }
+    }
+    
+    return unique;
   }
 
   async getStats() {

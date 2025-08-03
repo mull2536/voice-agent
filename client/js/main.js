@@ -32,10 +32,10 @@ class CommunicationAssistant {
             this.setupSocketListeners();
             this.setupUIListeners();
             
-            // Load initial data
+            // Load initial data and settings FIRST
             await this.loadInitialData();
             
-            // Start eye gaze controls
+            // THEN start eye gaze controls with correct settings
             this.eyeGazeControls.init();
             
             console.log('Communication Assistant initialized');
@@ -57,9 +57,8 @@ class CommunicationAssistant {
             this.conversationUI.setConnectionStatus(false);
         });
         
-        // Person set confirmation
+        // Person selection events
         this.socket.on('person-set', (data) => {
-            console.log('Person set:', data.person);
             this.currentPerson = data.person;
             this.updatePersonDisplay(data.person);
         });
@@ -109,7 +108,28 @@ class CommunicationAssistant {
         
         this.socket.on('tts-audio', (data) => {
             console.log('TTS audio received');
-            this.playAudio(data.audio);
+            this.playAudio(data.audio, () => {
+                // Auto-start recording after response audio finishes
+                this.autoStartRecordingAfterDelay();
+            });
+        });
+        
+        // Speak text events
+        this.socket.on('speak-audio', (data) => {
+            console.log('Speak audio received');
+            this.playAudio(data.audio, () => {
+                // Auto-start recording after speak audio finishes
+                this.autoStartRecordingAfterDelay();
+            });
+        });
+        
+        this.socket.on('speak-error', (data) => {
+            console.error('Speak error:', data);
+            this.showError('Failed to synthesize speech: ' + data.message);
+            
+            // Re-enable speak button
+            const speakBtn = document.getElementById('speak-text-btn');
+            speakBtn.disabled = false;
         });
         
         // Error handling
@@ -118,7 +138,7 @@ class CommunicationAssistant {
             this.showError(data.message);
         });
     }
-    
+
     setupUIListeners() {
         // Person selector
         this.addPersonSelector();
@@ -132,9 +152,14 @@ class CommunicationAssistant {
         // Text input
         const textInput = document.getElementById('text-input');
         const sendBtn = document.getElementById('send-text-btn');
+        const speakBtn = document.getElementById('speak-text-btn');
         
         sendBtn.addEventListener('click', () => {
             this.sendTextMessage();
+        });
+        
+        speakBtn.addEventListener('click', () => {
+            this.speakTextMessage();
         });
         
         textInput.addEventListener('keypress', (e) => {
@@ -177,9 +202,33 @@ class CommunicationAssistant {
     
     async loadInitialData() {
         try {
-            // Load settings
+            // Load settings first
             const settingsResponse = await this.api.getSettings();
             this.settingsUI.loadSettings(settingsResponse.settings);
+            
+            // Apply eye gaze settings to the controls - FIXED
+            if (settingsResponse.settings.eyeGaze) {
+                const serverDuration = settingsResponse.settings.eyeGaze.hoverDuration; // Should be 3000ms
+                const durationInSeconds = serverDuration / 1000; // Convert to 3 seconds
+                
+                this.eyeGazeControls.updateSettings({
+                    hoverDuration: durationInSeconds, // Pass 3 seconds, will become 3000ms internally
+                    visualFeedback: settingsResponse.settings.eyeGaze.visualFeedback
+                });
+                
+                console.log('Eye gaze settings applied:', {
+                    serverDurationMs: serverDuration,
+                    passedSeconds: durationInSeconds,
+                    finalDurationMs: this.eyeGazeControls.hoverDuration,
+                    visualFeedback: this.eyeGazeControls.visualFeedback
+                });
+            } else {
+                // Ensure default 3-second duration
+                this.eyeGazeControls.updateSettings({
+                    hoverDuration: 3, // 3 seconds (will be converted to 3000ms internally)
+                    visualFeedback: true
+                });
+            }
             
             // Load people
             const peopleResponse = await this.api.getPeople();
@@ -267,6 +316,16 @@ class CommunicationAssistant {
             recordingIndicator.classList.remove('active');
         }
     }
+
+    autoStartRecordingAfterDelay() {
+        // Start recording automatically after AI speaks, with a short delay
+        setTimeout(() => {
+            if (!this.isRecording && this.currentPerson) {
+                console.log('Auto-starting recording after AI speech');
+                this.socket.emit('start-recording');
+            }
+        }, 800); // 800ms delay to avoid capturing audio tail
+    }
     
     sendTextMessage() {
         if (!this.currentPerson) {
@@ -279,7 +338,7 @@ class CommunicationAssistant {
         
         if (!text) return;
         
-        // Add message to UI
+        // Add message to UI as user message
         this.conversationUI.addMessage({
             speaker: 'You',
             content: text,
@@ -296,6 +355,45 @@ class CommunicationAssistant {
         textInput.value = '';
         textInput.focus();
     }
+
+    speakTextMessage() {
+        if (!this.currentPerson) {
+            this.showError('Please select who you\'re talking to first');
+            return;
+        }
+        
+        const textInput = document.getElementById('text-input');
+        const speakBtn = document.getElementById('speak-text-btn');
+        const text = textInput.value.trim();
+        
+        if (!text) return;
+        
+        // Disable button during processing
+        speakBtn.disabled = true;
+        
+        // Add message to UI as assistant message - CONSISTENT WITH selectResponse
+        this.conversationUI.addMessage({
+            speaker: 'You (via AI)',
+            content: text,
+            type: 'assistant',
+            person: this.currentPerson?.name || 'Unknown'
+        });
+        
+        // Send to server for TTS
+        this.socket.emit('speak-text', {
+            text: text,
+            personId: this.currentPerson.id
+        });
+        
+        // Clear input
+        textInput.value = '';
+        textInput.focus();
+        
+        // Re-enable button after a short delay
+        setTimeout(() => {
+            speakBtn.disabled = false;
+        }, 1000);
+    }
     
     displayResponseOptions(responses) {
         const responseSelection = document.getElementById('response-selection');
@@ -308,15 +406,15 @@ class CommunicationAssistant {
         responses.forEach((response, index) => {
             const option = document.createElement('div');
             option.className = 'response-option';
-            option.dataset.responseIndex = index;
             option.textContent = response;
+            option.dataset.responseIndex = index;
             
-            // Add click listener
+            // Add click handler
             option.addEventListener('click', () => {
                 this.selectResponse(response);
             });
             
-            // Add to eye gaze targets
+            // CRITICAL: Add to eye gaze targets for hover selection with visual feedback
             this.eyeGazeControls.addTarget(option, () => {
                 this.selectResponse(response);
             });
@@ -329,11 +427,7 @@ class CommunicationAssistant {
     }
     
     selectResponse(responseText) {
-        // Hide response selection
-        const responseSelection = document.getElementById('response-selection');
-        responseSelection.classList.remove('active');
-        
-        // Add to conversation
+        // Add response to conversation as assistant
         this.conversationUI.addMessage({
             speaker: 'You (via AI)',
             content: responseText,
@@ -341,22 +435,73 @@ class CommunicationAssistant {
             person: this.currentPerson?.name || 'Unknown'
         });
         
-        // Send to server for TTS and storage
+        // Hide response options
+        const responseSelection = document.getElementById('response-selection');
+        responseSelection.classList.remove('active');
+        
+        // CRITICAL: Clear eye gaze targets when hiding options
+        this.eyeGazeControls.clearTargets();
+        
+        // Send selection to server
         this.socket.emit('select-response', {
             responseText: responseText,
             conversationId: this.currentConversationId
         });
-        
-        // Clear eye gaze targets
-        this.eyeGazeControls.clearTargets();
     }
     
-    playAudio(audioBase64) {
+    playAudio(base64Audio, onComplete = null) {
         try {
-            const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`);
-            audio.play();
+            // Convert base64 to blob
+            const audioData = atob(base64Audio);
+            const arrayBuffer = new ArrayBuffer(audioData.length);
+            const view = new Uint8Array(arrayBuffer);
+            
+            for (let i = 0; i < audioData.length; i++) {
+                view[i] = audioData.charCodeAt(i);
+            }
+            
+            const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+            const audioUrl = URL.createObjectURL(blob);
+            
+            const audio = new Audio(audioUrl);
+            
+            // Add event listeners
+            audio.onended = () => {
+                URL.revokeObjectURL(audioUrl);
+                console.log('Audio playback completed');
+                
+                // Call completion callback if provided
+                if (onComplete && typeof onComplete === 'function') {
+                    onComplete();
+                }
+            };
+            
+            audio.onerror = (error) => {
+                console.error('Audio playback failed:', error);
+                URL.revokeObjectURL(audioUrl);
+                this.showError('Failed to play audio');
+                
+                // Still call completion callback even on error
+                if (onComplete && typeof onComplete === 'function') {
+                    onComplete();
+                }
+            };
+            
+            // Play the audio
+            audio.play().catch(error => {
+                console.error('Failed to start audio playback:', error);
+                URL.revokeObjectURL(audioUrl);
+                this.showError('Failed to play audio');
+            });
+            
         } catch (error) {
-            console.error('Failed to play audio:', error);
+            console.error('Failed to process audio:', error);
+            this.showError('Failed to process audio');
+            
+            // Call completion callback even on error
+            if (onComplete && typeof onComplete === 'function') {
+                onComplete();
+            }
         }
     }
     

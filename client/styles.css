@@ -284,6 +284,7 @@ body {
     font-size: 1rem;
     resize: none;
     transition: all 0.2s;
+    max-width: calc(100% - 200px); /* Reserve space for both buttons */
 }
 
 .text-input:focus {
@@ -300,10 +301,40 @@ body {
     color: white;
     cursor: pointer;
     transition: all 0.2s;
+    min-width: 80px;
+    flex-shrink: 0;
 }
 
 .send-btn:hover {
     background-color: var(--primary-hover);
+}
+
+.speak-btn {
+    background-color: var(--success-color);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0 1.5rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 80px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.speak-btn:hover {
+    background-color: #059669;
+}
+
+.speak-btn:disabled {
+    background-color: #6b7280;
+    cursor: not-allowed;
+}
+
+.speak-btn img {
+    filter: brightness(0) invert(1);
 }
 
 .control-buttons {

@@ -7,6 +7,8 @@ class AudioRecorder {
         this.microphone = null;
         this.isRecording = false;
         this.audioChunks = [];
+        this.autoRecordingEnabled = true;
+        this.manualStopRequested = false;
         
         // VAD settings
         this.vadSettings = null;
@@ -28,10 +30,20 @@ class AudioRecorder {
         this.socket.on('stop-client-recording', () => {
             this.stopRecording();
         });
+
+        this.socket.on('auto-start-recording', () => {
+            if (this.autoRecordingEnabled && !this.isRecording) {
+                console.log('Auto-starting recording after AI speech');
+                this.socket.emit('start-recording');
+            }
+        });
     }
 
     async startRecording() {
         try {
+            // Reset manual stop flag
+            this.manualStopRequested = false;
+
             // Get microphone access with noise reduction
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: {
@@ -71,6 +83,14 @@ class AudioRecorder {
             this.mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     this.audioChunks.push(event.data);
+                }
+            };
+
+            // Handle MediaRecorder stop event
+            this.mediaRecorder.onstop = () => {
+                // Send any remaining audio chunks when recording stops
+                if (this.audioChunks.length > 0) {
+                    this.sendPendingAudio();
                 }
             };
 
@@ -183,19 +203,57 @@ class AudioRecorder {
         // Reset for next recording
         this.audioBuffer = [];
         
-        // Restart MediaRecorder for continuous recording
-        if (this.isRecording && this.mediaRecorder.state === 'inactive') {
+        // Restart MediaRecorder for continuous recording (if not manually stopped)
+        if (this.isRecording && this.mediaRecorder.state === 'inactive' && !this.manualStopRequested) {
             setTimeout(() => {
-                if (this.isRecording) {
+                if (this.isRecording && !this.manualStopRequested) {
                     this.mediaRecorder.start();
                 }
             }, 500);
         }
     }
 
+    async sendPendingAudio() {
+        // This is called when recording is manually stopped
+        // Send any audio chunks that were recorded but not yet sent
+        if (this.audioChunks.length === 0) return;
+
+        console.log('Sending pending audio before stopping recording');
+        
+        // Combine audio chunks
+        const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+        this.audioChunks = [];
+
+        // Convert to base64
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64Audio = reader.result.split(',')[1];
+            this.socket.emit('audio-data', { 
+                audio: base64Audio,
+                finalChunk: true  // Flag to indicate this is the final chunk before stop
+            });
+        };
+        reader.readAsDataURL(audioBlob);
+
+        // Reset buffers
+        this.audioBuffer = [];
+    }
+
     async stopRecording() {
+        console.log('Stopping recording...');
+        this.manualStopRequested = true;
         this.isRecording = false;
 
+        // If we're currently speaking, stop MediaRecorder and send pending audio
+        if (this.isSpeaking && this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+            this.isSpeaking = false;
+            this.mediaRecorder.stop(); // This will trigger onstop event which calls sendPendingAudio
+        } else if (this.audioChunks.length > 0) {
+            // Send any pending chunks even if not actively speaking
+            await this.sendPendingAudio();
+        }
+
+        // Clean up resources
         if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
             this.mediaRecorder.stop();
         }
@@ -215,6 +273,11 @@ class AudioRecorder {
 
         this.socket.emit('recording-status', { status: 'stopped' });
         console.log('Audio recording stopped');
+    }
+
+    setAutoRecording(enabled) {
+        this.autoRecordingEnabled = enabled;
+        console.log(`Auto-recording ${enabled ? 'enabled' : 'disabled'}`);
     }
 }
 

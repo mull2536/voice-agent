@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
   // Recording controls
   socket.on('start-recording', async () => {
     try {
-      await audioRecorder.startRecording();
+      await audioRecorder.startRecording(socket.id);
       socket.emit('recording-started');
     } catch (error) {
       logger.error('Failed to start recording:', error);
@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
   
   socket.on('stop-recording', async () => {
     try {
-      await audioRecorder.stopRecording();
+      await audioRecorder.stopRecording(socket.id);
       socket.emit('recording-stopped');
     } catch (error) {
       logger.error('Failed to stop recording:', error);
@@ -124,21 +124,36 @@ io.on('connection', (socket) => {
   // Process audio from client
   socket.on('audio-data', async (data) => {
     try {
-      // Save audio data
-      const audioInfo = await audioRecorder.processAudioData(data.audio);
+      // Save audio data with enhanced final chunk handling
+      const audioInfo = await audioRecorder.processAudioData(data.audio, {
+        finalChunk: data.finalChunk || false
+      });
       
       // Transcribe audio
       const transcript = await transcriptionService.transcribe(audioInfo.filepath);
-      socket.emit('transcription', { text: transcript });
       
-      // Generate responses with person context
-      const personId = socket.data.currentPerson?.id || 'other';
-      const result = await llmService.generateResponses(transcript, personId);
-      
-      socket.emit('responses-generated', { 
-        responses: result.responses,
-        conversationId: result.conversationId
-      });
+      // Only proceed if we got meaningful transcription
+      if (transcript && transcript.trim().length > 0) {
+        socket.emit('transcription', { text: transcript });
+        
+        // Generate responses with person context
+        const personId = socket.data.currentPerson?.id || 'other';
+        const result = await llmService.generateResponses(transcript, personId);
+        
+        socket.emit('responses-generated', { 
+          responses: result.responses,
+          conversationId: result.conversationId
+        });
+      } else {
+        logger.info('Empty or unclear transcription, skipping response generation');
+        
+        // If this was a final chunk before stop, still auto-restart recording
+        if (data.finalChunk) {
+          setTimeout(() => {
+            socket.emit('auto-start-recording');
+          }, 1000);
+        }
+      }
       
     } catch (error) {
       logger.error('Failed to process audio:', error);
@@ -148,7 +163,7 @@ io.on('connection', (socket) => {
   
   // Recording status updates
   socket.on('recording-status', (data) => {
-    logger.info(`Recording status: ${data.status}`);
+    logger.info(`Recording status for ${socket.id}: ${data.status}`);
   });
   
   // Response selection
@@ -166,6 +181,29 @@ io.on('connection', (socket) => {
     } catch (error) {
       logger.error('Failed to process response selection:', error);
       socket.emit('error', { message: 'Failed to process response' });
+    }
+  });
+
+  // Speak text functionality (NEW)
+  socket.on('speak-text', async (data) => {
+    try {
+      logger.info(`Speak text request: "${data.text.slice(0, 50)}..."`);
+      
+      // Generate TTS audio
+      const audioBase64 = await ttsService.synthesize(data.text);
+      
+      // Send audio back to client
+      socket.emit('speak-audio', {
+        audio: audioBase64,
+        text: data.text,
+        personId: data.personId
+      });
+      
+    } catch (error) {
+      logger.error('Speak text error:', error);
+      socket.emit('speak-error', {
+        message: error.message || 'Failed to synthesize speech'
+      });
     }
   });
   
@@ -189,8 +227,18 @@ io.on('connection', (socket) => {
     }
   });
   
-  socket.on('disconnect', () => {
+  // Handle client disconnect
+  socket.on('disconnect', async () => {
     logger.info('Client disconnected:', socket.id);
+    
+    // Clean up any ongoing recordings for this socket
+    try {
+      if (audioRecorder && audioRecorder.handleSocketDisconnect) {
+        await audioRecorder.handleSocketDisconnect(socket.id);
+      }
+    } catch (error) {
+      logger.error('Failed to cleanup recording on disconnect:', error);
+    }
   });
 });
 
