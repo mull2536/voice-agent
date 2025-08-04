@@ -1,62 +1,14 @@
 [
   {
-    "id": 1754251011061,
-    "timestamp": "2025-08-03T19:56:51.061Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "goh leuk wat zullen we tested testen",
+    "id": 1754250285281,
+    "timestamp": "2025-08-03T19:44:45.281Z",
+    "personId": "doctor",
+    "personName": "Doctor",
+    "userMessage": "Thank you. Thank you. Thank you. ",
     "responses": [
-      "\"Zeker leuk! Wat dacht je ervan om samen met Bernardus en de familie een nieuwe uitdaging aan te gaan? Misschien kunnen we iets kiezen dat ons allemaal inspireert, zoals een project dat Bernardus heeft genoemd in zijn blogposts. Het samen aanpakken van iets betekenisvols kan ons sterker verbinden. Heb je een specifiek idee in gedachten?\"",
-      "\"Het is altijd een goed idee om nieuwe dingen te testen. Misschien kunnen we een familie-uitje plannen naar een plek die Bernardus mooi vindt of iets nieuws samen leren? Bernardus spreekt vaak over het belang van samen blijven in uitdagingen. Een gezamenlijke activiteit zou ons kunnen helpen om ook de mooie momenten te blijven delen.\"",
-      "\"Leuk idee! Wat dacht je van een nieuw recept proberen te koken dat iedereen lekker vindt? Ik herinner me dat Bernardus in zijn blogpost heeft gesproken over de waarde van familietijd en samen activiteiten doen. Samen koken en daarna genieten van het eten kan een mooie manier zijn om dichtbij elkaar te blijven en nieuwe dingen te ervaren. Misschien iets speciaals dat ook aansluit bij de interesses van Bernardus?\""
-    ],
-    "selectedResponse": "\"Zeker leuk! Wat dacht je ervan om samen met Bernardus en de familie een nieuwe uitdaging aan te gaan? Misschien kunnen we iets kiezen dat ons allemaal inspireert, zoals een project dat Bernardus heeft genoemd in zijn blogposts. Het samen aanpakken van iets betekenisvols kan ons sterker verbinden. Heb je een specifiek idee in gedachten?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "memories.json",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246425396,
-    "timestamp": "2025-08-03T18:40:25.396Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"Reflecting on the idea of peace, it brings to mind the importance of accepting our challenges and finding strength in the connections we share with others. Bernardus Muller's journey with ALS, as shared in his biography, emphasizes the liberation found in acceptance and the power of rebelling against adversity with spirit. It's a reminder of the resilience within us all. How do you see peace playing a role in your life amidst challenges?\"",
-      "\"The pursuit of peace, both personally and globally, often brings us back to the core of what truly matters in life. In the writings of Bernardus Muller, he speaks about the essence of existence, love, and the beauty that lies beyond the horizon. It's a powerful reminder that peace starts with acceptance and is fueled by the love of those around us. In light of this, how do you find peace in day-to-day life?\"",
-      "\"Considering peace, it's interesting to think about the lessons learned from Bernardus Muller's life, such as the power of acceptance and the importance of maintaining a rebellious spark to challenge the status quo, especially in the face of something as daunting as ALS. These lessons can be a guiding light for finding peace in adversity. What aspects of his outlook resonate with you as you navigate your own challenges?\""
-    ],
-    "selectedResponse": "\"The pursuit of peace, both personally and globally, often brings us back to the core of what truly matters in life. In the writings of Bernardus Muller, he speaks about the essence of existence, love, and the beauty that lies beyond the horizon. It's a powerful reminder that peace starts with acceptance and is fueled by the love of those around us. In light of this, how do you find peace in day-to-day life?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754245900275,
-    "timestamp": "2025-08-03T18:31:40.275Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Okay.",
-    "responses": [
-      "\"Het is zeker interessant om te zien hoe de plannen en doelstellingen van bedrijven kunnen veranderen door onvoorziene omstandigheden. Denk je dat het uitstellen van de omzetdoelen van Mark Heine ook kansen kan bieden voor het bedrijf om zich op andere gebieden te verbeteren?\"",
-      "\"Veranderingen in de verwachtingen van een CEO zoals Mark Heine kunnen een grote impact hebben. Denk je dat dit invloed zal hebben op hoe het bedrijf zich op korte termijn gaat focussen, bijvoorbeeld door meer te investeren in innovatie of duurzaamheid?\"",
-      "\"Het lijkt erop dat Mark Heine en zijn team voor een uitdaging staan met de aangepaste omzetverwachtingen. Hoe zie jij dat het bedrijf zich hierdoor kan aanpassen? Zou het bijvoorbeeld de bedrijfsstrategie kunnen veranderen of nieuwe markten kunnen aanboren?\""
+      "\"Graag gedaan. Staat er nog iets specifieks op de agenda voor vandaag waarover u met mij wilt spreken? Misschien updates over behandelingen of nieuwe zorgplannen?\"",
+      "\"U bent meer dan welkom. Heeft u vragen of zorgen die ik vandaag voor u kan verduidelijken? Ik ben hier om te helpen, of het nu gaat om details over uw gezondheid of iets anders dat u op het hart hebt.\"",
+      "\"Altijd blij om te helpen. Zijn er bepaalde gebieden van uw gezondheid of behandeling waarover u vandaag meer informatie zou willen ontvangen of bespreken?\""
     ],
     "selectedResponse": null,
     "context": {
@@ -64,711 +16,23 @@
       "ragSourcesCount": 3,
       "ragSources": [
         "memories.json",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754244507267,
-    "timestamp": "2025-08-03T18:08:27.267Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Met mij gaat het goed, dankje! Ik heb onlangs wat tijd doorgebracht met het lezen over de kracht van vriendschap en hoe belangrijk het is, vooral tijdens moeilijke tijden. Het deed me denken aan hoe waardevol onze gesprekken zijn. Hoe is het met jou?\"",
-      "\"Het gaat prima, bedankt voor het vragen! Ik kwam iets interessants tegen over hoe sociale media zoals Facebook en Twitter kunnen worden gebruikt om contact te houden en steun te vinden. Het herinnerde me eraan hoe fijn het is om met jou in contact te zijn. Hoe voel jij je vandaag?\"",
-      "\"Bedankt dat je het vraagt, met mij gaat het goed. Ik heb nagedacht over hoe onze vriendschap door de jaren heen is gebleven, net zoals het verhaal van Bernard en Eric Lap. Het is echt iets bijzonders. Hoe is alles aan jouw kant?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754244366109,
-    "timestamp": "2025-08-03T18:06:06.109Z",
-    "personId": "1754239552047",
-    "personName": "Michaela ",
-    "userMessage": "I go over.",
-    "responses": [
-      "**Interest in Asian Culture:** \"Michaela, have you seen any good Asian movies or listened to new music artists recently? I remember you love everything from Asia, and I'd love to hear your recommendations!\"",
-      "**Sharing Memories:** \"Hey Michaela, I was just reminiscing about some old memories and funny stories. Do you have any memorable experiences from the Czech Republic that you'd be willing to share? I bet you have some fascinating stories.\"",
-      "**Discussing Patience and Support:** \"Michaela, I really appreciate your help and patience, especially knowing how fast-paced you like to be. It means a lot to me. How do you find adapting to a slower pace when assisting me?\""
-    ],
-    "selectedResponse": "**Sharing Memories:** \"Hey Michaela, I was just reminiscing about some old memories and funny stories. Do you have any memorable experiences from the Czech Republic that you'd be willing to share? I bet you have some fascinating stories.\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
         "biografie Bernardus Muller a5 nl.docx",
         "biografie Bernardus Muller a5 nl.docx"
       ]
     }
   },
   {
-    "id": 1754237526842,
-    "timestamp": "2025-08-03T16:12:06.842Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "met mij goed",
-    "responses": [
-      "\"Fijn om te horen dat het goed met je gaat! Heb je de laatste tijd nog iets leuks gedaan of mooie momenten ervaren die je wilt delen?\"",
-      "\"Goed om te horen dat je je goed voelt. Ik dacht laatst terug aan onze herinneringen, zoals die keer bij papa achter de bar. Heb jij ook van die momenten die je bijblijven?\"",
-      "\"Dat is mooi om te horen. We moeten onze geest blijven voeden met positieve ervaringen, net zoals onze ontmoetingen altijd doen. Plannen om binnenkort iets samen te doen?\""
-    ],
-    "selectedResponse": "\"Fijn om te horen dat het goed met je gaat! Heb je de laatste tijd nog iets leuks gedaan of mooie momenten ervaren die je wilt delen?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754231702015,
-    "timestamp": "2025-08-03T14:35:02.015Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "\"Hans Klok in Scheveningen was fantastisch! De show was echt een spektakel, en hoewel de entree voor rolstoelen een beetje een uitdaging was, is alles goed gekomen. Ik heb zelfs na de show Hans Klok zelf ontmoet en een gelukskaart van hem gekregen. Echt een onvergetelijke ervaring!\"",
-      "\"De show van Hans Klok was geweldig! Het was zo'n wervelende ervaring, vol magie en verbazing. Ondanks de uitdaging met de rolstoeltoegang, hebben we enorm genoten. En raad eens? Ik mocht zelfs backstage komen en Hans Klok persoonlijk ontmoeten. Hij gaf me zelfs een gelukskaart. Ik voel me echt gelukkig!\"",
-      "\"Het was een ongelofelijke ervaring bij Hans Klok in Scheveningen! Zijn show is echt adembenemend. Het was wel een avontuur om met de rolstoel binnen te komen, maar dat maakte de ervaring alleen maar memorabeler. En als kers op de taart mocht ik backstage Hans Klok ontmoeten en kreeg ik een bijzondere gelukskaart van hem. Ik kan nog steeds niet geloven hoe geweldig het was!\""
-    ],
-    "selectedResponse": "\"Hans Klok in Scheveningen was fantastisch! De show was echt een spektakel, en hoewel de entree voor rolstoelen een beetje een uitdaging was, is alles goed gekomen. Ik heb zelfs na de show Hans Klok zelf ontmoet en een gelukskaart van hem gekregen. Echt een onvergetelijke ervaring!\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ]
-    }
-  },
-  {
-    "id": 1754225703324,
-    "timestamp": "2025-08-03T12:55:03.324Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "update behandeling van Antoinette",
-    "responses": [
-      "\"Antoinette blijft sterk ondersteunen, ondanks de uitdagingen. Ze is een constante bron van liefde en zorg voor Bernard, vooral nu hij door zo'n moeilijke periode gaat. Het is echt bewonderenswaardig hoe ze samen deze strijd aangaan. Hoe houden jullie je onder zulke omstandigheden?\"",
-      "\"De behandeling van Antoinette lijkt haar goed te doen. Ze blijft een onwrikbare steun voor Bernard door dik en dun. Hun gezamenlijke kracht is een licht in deze uitdagende tijden. Hoe voelt het om zulke veerkracht in de familie te zien?\"",
-      "\"Antoinette's zorg voor Bernard blijft onveranderd sterk, ondanks de afstand en de zware omstandigheden. Hun liefde en toewijding aan elkaar zijn echt inspirerend. Hebben jullie recent nog updates over haar welzijn gehad?\""
-    ],
-    "selectedResponse": "\"Antoinette blijft sterk ondersteunen, ondanks de uitdagingen. Ze is een constante bron van liefde en zorg voor Bernard, vooral nu hij door zo'n moeilijke periode gaat. Het is echt bewonderenswaardig hoe ze samen deze strijd aangaan. Hoe houden jullie je onder zulke omstandigheden?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754223378621,
-    "timestamp": "2025-08-03T12:16:18.621Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "wanneer is teunis geboren",
-    "responses": [
-      "\"Teunis is geboren in het jaar 1738. Zo'n lange geschiedenis in de familie, vind je ook niet? Heb je meer verhalen over onze voorouders gehoord?\"",
-      "\"Hij is in 1738 geboren. Interessant om te denken aan hoe het leven toen was. Weet jij misschien meer over zijn leven of andere familieleden uit die tijd?\"",
-      "\"1738 was het geboortejaar van Teunis. Een heel ander tijdperk, hè? Benieuwd hoe hij en de familie die tijd doorkwamen. Heb jij nog familieverhalen die je kunt delen?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "prive-data.docx",
-        "prive-data.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754220474235,
-    "timestamp": "2025-08-03T11:27:54.235Z",
+    "id": 1754250254861,
+    "timestamp": "2025-08-03T19:44:14.861Z",
     "personId": "doctor",
     "personName": "Doctor",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Goed, dank je. Hoe kan ik u vandaag ondersteunen met uw gezondheidszorgen?\"",
-      "\"Het gaat prima, bedankt voor het vragen. Hebben we specifieke punten om vandaag te bespreken?\"",
-      "\"Ik maak het goed, dank u. Zijn er nieuwe ontwikkelingen in mijn zorgplan die we moeten overwegen?\""
-    ],
-    "selectedResponse": "\"Goed, dank je. Hoe kan ik u vandaag ondersteunen met uw gezondheidszorgen?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754220419255,
-    "timestamp": "2025-08-03T11:26:59.255Z",
-    "personId": "doctor",
-    "personName": "Doctor",
-    "userMessage": "Hoe gaat het",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": "I'd be happy to help you with that.",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754219092351,
-    "timestamp": "2025-08-03T11:04:52.351Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dank je. Hoe gaat het met jou? Zijn er nog leuke dingen gebeurd recent?\"",
-      "\"Redelijk, dank je. Een beetje dezelfde routine. Hoe is alles aan jouw kant?\"",
-      "\"Gaat wel, dank je. Ik heb mijn ups en downs. En met jou? Iets nieuws of interessants te delen?\""
-    ],
-    "selectedResponse": "\"Redelijk, dank je. Een beetje dezelfde routine. Hoe is alles aan jouw kant?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754218836395,
-    "timestamp": "2025-08-03T11:00:36.395Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "We will see what CEO Mark Heine says, but for the long term his expectations have become more difficult. He wanted to achieve a turnover of 3.5 billion in 2027. That will not be possible. Heine says that will happen later.",
-    "responses": [
-      "\"Dat klinkt als een grote aanpassing in hun plannen. Denk je dat dit invloed zal hebben op hun positie in de markt op de lange termijn?\"",
-      "\"Interessant om te horen over de veranderde verwachtingen van CEO Mark Heine. Hoe denk je dat dit de strategie van het bedrijf zal beïnvloeden in de toekomst?\"",
-      "\"Het lijkt erop dat ze hun doelen moeten bijstellen. Wat voor impact denk je dat dit zal hebben op hun concurrentievermogen en innovatievermogen?\""
-    ],
-    "selectedResponse": "\"Interessant om te horen over de veranderde verwachtingen van CEO Mark Heine. Hoe denk je dat dit de strategie van het bedrijf zal beïnvloeden in de toekomst?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754218612947,
-    "timestamp": "2025-08-03T10:56:52.947Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "to the second half of the year, so let's assume 900 million. Then we go to the 1.1 billion turnover, which is comparable to the first half of 2024, where you see in the last column, the profit was 1 euro. They expected a lower margin for the whole year, so we are not going to do that, but let's say that in the second half of the year we can earn 85 cents, and that's what you end up with.",
-    "responses": [
-      "\"Klinkt alsof je echt diep in de cijfers bent gedoken! Denk je dat dit een goede kans is voor een investering?\"",
-      "\"Dat is een vrij gedetailleerde analyse! Voel je je optimistisch over hun prestaties in de tweede helft van het jaar?\"",
-      "\"Interessante berekening! Hoe denk je dat deze financiële vooruitzichten invloed zullen hebben op hun marktpositie?\""
-    ],
-    "selectedResponse": "\"Interessante berekening! Hoe denk je dat deze financiële vooruitzichten invloed zullen hebben op hun marktpositie?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754156673438,
-    "timestamp": "2025-08-02T17:44:33.438Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat zijn gangetje, dankje! En hoe voel je je vandaag? Alles onder controle aan jouw kant?\"",
-      "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
-      "\"Alles loopt op rolletjes hier, dankje. En met jou? Is er iets nieuws of spannends gebeurd sinds we voor het laatst praatten?\""
-    ],
-    "selectedResponse": "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754155932741,
-    "timestamp": "2025-08-02T17:32:12.741Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat prima, bedankt! En hoe voel je je vandaag? Hopelijk een beetje beter dan gisteren.\"",
-      "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
-      "\"Goed, dankje! Zin in iets leuks om te doen binnenkort? Hoe voel jij je vandaag?\""
-    ],
-    "selectedResponse": "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754153268064,
-    "timestamp": "2025-08-02T16:47:48.064Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "wanneer is teunis geboren?",
-    "responses": [
-      "\"Teunis is geboren op 3 maart. Herinner jij je die verjaardagsfeestjes die we vroeger hadden? Altijd zo gezellig!\"",
-      "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
-      "\"Zijn verjaardag is op 3 maart. Voelt dat niet als gisteren, dat we samen zijn verjaardag vierden? Hoe denk je dat we hem dit jaar kunnen verrassen?\""
-    ],
-    "selectedResponse": "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754152423359,
-    "timestamp": "2025-08-02T16:33:43.359Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Met mij gaat het ook goed, dank je. Blij om weer van je te horen. Heb je nog iets leuks gedaan onlangs?\"",
-      "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
-      "\"Alles gaat goed hier, dankjewel. En hoe gaat het aan jouw kant? Is er iets nieuws of spannends gebeurd sinds we voor het laatst spraken?\""
-    ],
-    "selectedResponse": "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754149952291,
-    "timestamp": "2025-08-02T15:52:32.291Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dank je. En met jou?\"",
-      "\"Redelijk, dank je. Hoe gaat het met jou?\"",
-      "\"Het gaat zijn gangetje. Hoe is het met jou?\""
-    ],
-    "selectedResponse": "\"Het gaat goed, dank je. En met jou?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754149829703,
-    "timestamp": "2025-08-02T15:50:29.703Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
-      "\"Prima, bedankt voor het vragen! Hoe ben jij? Zijn er nieuwe ontwikkelingen die je beïnvloeden?\"",
-      "\"Goed, dankjewel! Hoe is het met jou? Heeft het onderwerp waar we het laatst over hadden nog invloed op je?\""
-    ],
-    "selectedResponse": "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754148670933,
-    "timestamp": "2025-08-02T15:31:10.933Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "dat is het punt",
-    "responses": [
-      "\"Precies, dat is een goed punt. Wat denk je dat we daaraan kunnen doen?\"",
-      "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
-      "\"Ja, daar zit wat in. Heb je ideeën over hoe we verder moeten?\""
-    ],
-    "selectedResponse": "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754146989136,
-    "timestamp": "2025-08-02T15:03:09.136Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "Test.",
-    "responses": [
-      "\"Alles gaat goed hier, dank je wel voor de testbericht. Heb je nog iets nodig op dit moment?\"",
-      "\"De test is gelukt! Hoe kan ik je vandaag verder van dienst zijn?\"",
-      "\"Test ontvangen! Voel je vrij om te delen hoe je je voelt of als er iets specifieks is waarmee ik kan helpen.\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754137789224,
-    "timestamp": "2025-08-02T12:29:49.224Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "dit is een test",
-    "responses": [
-      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
-      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
-      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754078401763,
-    "timestamp": "2025-08-01T20:00:01.763Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "dit is een test",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754078528811,
-    "timestamp": "2025-08-01T20:02:08.811Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "hoe gaat het met jou",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754146322251,
-    "timestamp": "2025-08-02T14:52:02.251Z",
-    "personId": "doctor",
-    "personName": "Doctor",
-    "userMessage": "dit is een test",
-    "responses": [
-      "\"Could you please provide more details on the test results?\"",
-      "\"What do the findings from the test suggest about my condition?\"",
-      "\"Are there any specific implications or next steps based on my test outcomes?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754147783725,
-    "timestamp": "2025-08-02T15:16:23.725Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "Hoe gaat het met je?",
-    "responses": [
-      "\"Het gaat goed met mij, dank je. Hoe kan ik jou vandaag helpen?\"",
-      "\"Ik voel me vandaag prima, bedankt. Heb je nog speciale plannen voor ons?\"",
-      "\"Alles gaat zijn gangetje, bedankt. Is er iets specifieks waar je hulp bij nodig hebt vandaag?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true
-    }
-  },
-  {
-    "id": 1754223481717,
-    "timestamp": "2025-08-03T12:18:01.717Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "wie is de vader van Bernardus Muller",
-    "responses": [
-      "\"De vader van Bernardus Muller is Bert Muller. Het lijkt erop dat Bernard een rijke familiegeschiedenis heeft, met veel verhalen over de zee en het ondernemerschap. Is er een specifieke reden waarom je meer wilt weten over zijn familie?\"",
-      "\"Bert Muller is de naam van Bernardus Muller's vader. Het is fascinerend hoe de familie Muller generaties lang verbonden is gebleven met de scheepvaart. Heb je gehoord over hun avonturen op zee of in het bedrijfsleven?\"",
-      "\"De vader van Bernardus Muller is Bert Muller. Ze hebben een interessante familiehistorie, nietwaar? Voelt het niet speciaal om al deze verbindingen en verhalen binnen de familie te kennen?\""
-    ],
-    "selectedResponse": "\"De vader van Bernardus Muller is Bert Muller. Ze hebben een interessante familiehistorie, nietwaar? Voelt het niet speciaal om al deze verbindingen en verhalen binnen de familie te kennen?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "prive-data.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754225624130,
-    "timestamp": "2025-08-03T12:53:44.130Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "vertel over hans klok in scheveningen",
-    "responses": [
-      "\"Hans Klok in Scheveningen, dat klinkt als een spectaculaire show! Heb je zin om samen te gaan kijken? Zijn illusies zijn wereldberoemd en het zou een geweldige ervaring zijn om dat live te zien, vooral in zo'n mooie plaats als Scheveningen.\"",
-      "\"Heb je gehoord dat Hans Klok optreedt in Scheveningen? Zijn shows zijn echt adembenemend. Misschien is het iets wat we als familie zouden kunnen doen. Het zou een leuke uitstap zijn en een mooie gelegenheid om samen tijd door te brengen.\"",
-      "\"Wist je dat Hans Klok naar Scheveningen komt? Zijn magische optredens zijn onvergetelijk. Het zou leuk zijn om dat samen te beleven. Denk je dat het iets is waar de rest van de familie ook in geïnteresseerd zou zijn? We kunnen er een familie-uitje van maken.\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754245232768,
-    "timestamp": "2025-08-03T18:20:32.768Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Goedemorgen! Ik voel me vandaag best goed, dank je. Hoe is jouw dag begonnen? Ik waardeer echt al je ondersteuning en zorg, zoals Michaela en het team mij zo goed helpen.\"",
-      "\"Hallo, het gaat redelijk, dank je. Het is fijn om te weten dat ik in zo goede handen ben, net zoals Bernardus zich voelde met zijn zorgteam. Hoe gaat het met jou vandaag?\"",
-      "\"Vandaag is een goede dag, dank je voor het vragen. Ik denk veel aan hoe Bernardus de steun van zijn zorgteam waardeerde. Ik ben net zo dankbaar voor jou. Hoe voel jij je vandaag?\""
-    ],
-    "selectedResponse": "\"Hallo, het gaat redelijk, dank je. Het is fijn om te weten dat ik in zo goede handen ben, net zoals Bernardus zich voelde met zijn zorgteam. Hoe gaat het met jou vandaag?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754245674624,
-    "timestamp": "2025-08-03T18:27:54.624Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "yeah yeah yeah yeah",
-    "responses": [
-      "\"Lijkt alsof we vandaag allemaal een beetje in de herhaalmodus zijn, net zoals Bernardus soms had met zijn avonturen. Hoe kan ik jou vandaag helpen om de routine een beetje te doorbreken?\"",
-      "\"Dat klinkt alsof je misschien een beetje verveeld bent. Zullen we kijken of we iets kunnen plannen dat net zo interessant is als een van Bernardus' reizen?\"",
-      "\"Herinner je je de verhalen van Bernardus over zijn onverwachte avonturen? Misschien is het tijd voor ons om vandaag ons eigen kleine avontuur te creëren. Wat denk je ervan?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754245962819,
-    "timestamp": "2025-08-03T18:32:42.819Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "coffee machine",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": "I'd be happy to help you with that.",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246424357,
-    "timestamp": "2025-08-03T18:40:24.357Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"I agree, finding peace in any situation is crucial. It's interesting how, despite challenges like ALS, finding peace can offer a sense of liberation and acceptance, as Bernardus Muller found. It's a powerful reminder of what's truly important. How do you find your peace amidst challenges?\"",
-      "\"Indeed, peace is so vital. Reflecting on the stories of individuals like Bernardus Muller, who found peace and acceptance through his journey with ALS, really puts into perspective the strength of the human spirit. How has your journey influenced your understanding of peace?\"",
-      "\"Peace is such a profound concept, especially in the context of overcoming personal challenges. Bernardus Muller's journey with ALS shows us that acceptance can lead to a form of peace that is deeply liberating. What are your thoughts on finding peace in difficult circumstances?\""
-    ],
-    "selectedResponse": "\"Indeed, peace is so vital. Reflecting on the stories of individuals like Bernardus Muller, who found peace and acceptance through his journey with ALS, really puts into perspective the strength of the human spirit. How has your journey influenced your understanding of peace?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246426895,
-    "timestamp": "2025-08-03T18:40:26.895Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"Peace is indeed a precious goal, in both our personal journeys and in the broader world. Reflecting on the complexities of achieving peace, whether it's within ourselves or in geopolitical contexts, reminds us of the importance of understanding and empathy. How do you envision contributing to a more peaceful existence?\"",
-      "\"The pursuit of peace, whether on a global scale or in personal health challenges like ALS, is both noble and essential. It's interesting to consider how acts of kindness, acceptance, and resilience can lead to peace in various aspects of life. What are some ways you find peace amidst challenges?\"",
-      "\"Finding peace in the face of adversity is a powerful testament to the human spirit. Whether it's advocating for peace in conflict zones or finding inner peace despite health struggles, every step towards peace is valuable. What does peace mean to you in the context of your own life and experiences?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246430374,
-    "timestamp": "2025-08-03T18:40:30.374Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"Reflecting on our discussions about expectations and challenges, I'm reminded of the importance of adaptability and resilience. How do you think we can apply these principles in our current situation?\"",
-      "\"Given the changes in expectations and the delays mentioned, it seems like a time for reevaluation and perhaps finding new avenues to explore. Do you see any opportunities in this situation that we might not have considered before?\"",
-      "\"Considering the shift in timelines and goals, it feels like a reminder of how unpredictable paths can lead to unexpected opportunities. Do you feel this might open up different paths for innovation or strategic adjustments that weren't on the radar before?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246475045,
-    "timestamp": "2025-08-03T18:41:15.045Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat redelijk goed, dank je. Er zijn ups en downs, zoals altijd, maar we blijven sterk en verbonden als familie. Het herinnert me aan wat Bernardus altijd zegt over het belang van samen zijn, ongeacht de uitdagingen. Hoe voel jij je deze dagen?\"",
-      "\"Alles gaat zijn gangetje hier. Het is interessant hoe, ondanks alles, we blijven leren en groeien door de ervaringen. Bernardus heeft onlangs iets gedeeld over het vinden van kleine momenten van vreugde, zelfs op de moeilijke dagen. Dat heeft me echt aan het denken gezet. En hoe is het met jou?\"",
-      "\"We houden het hoofd boven water, dank je. Ik probeer de lessen van Bernardus toe te passen, vooral zijn kijk op het omgaan met tegenslagen en het koesteren van familiebanden. Het is zeker niet gemakkelijk, maar zijn inzichten geven kracht. Hoe gaat het aan jouw kant?\""
-    ],
-    "selectedResponse": "\"Het gaat redelijk goed, dank je. Er zijn ups en downs, zoals altijd, maar we blijven sterk en verbonden als familie. Het herinnert me aan wat Bernardus altijd zegt over het belang van samen zijn, ongeacht de uitdagingen. Hoe voel jij je deze dagen?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754247564532,
-    "timestamp": "2025-08-03T18:59:24.532Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dank je. Ik probeer positief te blijven, net zoals Bernardus dat altijd benadrukte - met hoop en liefde, ondanks de uitdagingen. En hoe gaat het met jou? Nog interessante verhalen of updates vanuit Puttershoek?\"",
-      "\"Redelijk, dank je. Ik hou me bezig met herinneringen aan warme momenten met familie, zoals die keren bij oom Leen en tante Corrie. Het brengt een lach op mijn gezicht, zelfs op moeilijkere dagen. Hoe voel jij je vandaag?\"",
-      "\"Vandaag is een goede dag. Ik denk veel na over hoe we, net zoals Bernardus altijd zegt, sterk en verbonden blijven als familie, ongeacht wat er op ons pad komt. En jij? Hoe heb je de laatste tijd de 'uitdagingen' aangepakt?\""
-    ],
-    "selectedResponse": "\"Het gaat goed, dank je. Ik probeer positief te blijven, net zoals Bernardus dat altijd benadrukte - met hoop en liefde, ondanks de uitdagingen. En hoe gaat het met jou? Nog interessante verhalen of updates vanuit Puttershoek?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754248421609,
-    "timestamp": "2025-08-03T19:13:41.609Z",
-    "personId": "other",
-    "personName": "Other",
     "userMessage": "test",
     "responses": [
-      "\"It's great to see you testing new things. Remember Bernardus Muller's approach to trying and adjusting as necessary. How do you feel this test is going so far?\"",
-      "\"Testing new ideas or systems can be quite exciting. How do you think this test compares to the process Bernardus Muller described in his blog about learning through trial and error?\"",
-      "\"I admire your curiosity and willingness to embark on tests and trials. It reminds me of Bernardus Muller's philosophy of blending cultures and strategies for better outcomes. What are you hoping to learn from this test?\""
+      "\"Kunt u mij meer vertellen over de huidige stand van zaken rondom mijn behandeling?\"",
+      "\"Heeft u recente updates of veranderingen in de behandelingsstrategieën die voor mij relevant kunnen zijn?\"",
+      "\"Kunnen we bespreken hoe mijn feedback over de behandeling tot nu toe wordt geïntegreerd in het toekomstige zorgplan?\""
     ],
-    "selectedResponse": "\"It's great to see you testing new things. Remember Bernardus Muller's approach to trying and adjusting as necessary. How do you feel this test is going so far?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "system",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "memories.json",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754248797599,
-    "timestamp": "2025-08-03T19:19:57.599Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "test",
-    "responses": [
-      "\"Haha, lijkt alsof de 'test' geslaagd is! Hoe gaat het verder met je? Heb je nog iets interessants meegemaakt sinds onze laatste chat?\"",
-      "\"Leuk dat je een testbericht stuurt! Alles goed aan jouw kant? Nog nieuws of leuke plannen voor de komende tijd?\"",
-      "\"Hey, zag je berichtje! Alles in orde? Vertel eens, heb je onlangs nog iets leuks gedaan of staat er iets speciaals op de agenda?\""
-    ],
-    "selectedResponse": "\"Hey, zag je berichtje! Alles in orde? Vertel eens, heb je onlangs nog iets leuks gedaan of staat er iets speciaals op de agenda?\"",
+    "selectedResponse": "\"Kunt u mij meer vertellen over de huidige stand van zaken rondom mijn behandeling?\"",
     "context": {
       "ragUsed": true,
       "ragSourcesCount": 5,
@@ -806,17 +70,17 @@
     }
   },
   {
-    "id": 1754250254861,
-    "timestamp": "2025-08-03T19:44:14.861Z",
-    "personId": "doctor",
-    "personName": "Doctor",
+    "id": 1754248797599,
+    "timestamp": "2025-08-03T19:19:57.599Z",
+    "personId": "friend",
+    "personName": "Friend",
     "userMessage": "test",
     "responses": [
-      "\"Kunt u mij meer vertellen over de huidige stand van zaken rondom mijn behandeling?\"",
-      "\"Heeft u recente updates of veranderingen in de behandelingsstrategieën die voor mij relevant kunnen zijn?\"",
-      "\"Kunnen we bespreken hoe mijn feedback over de behandeling tot nu toe wordt geïntegreerd in het toekomstige zorgplan?\""
+      "\"Haha, lijkt alsof de 'test' geslaagd is! Hoe gaat het verder met je? Heb je nog iets interessants meegemaakt sinds onze laatste chat?\"",
+      "\"Leuk dat je een testbericht stuurt! Alles goed aan jouw kant? Nog nieuws of leuke plannen voor de komende tijd?\"",
+      "\"Hey, zag je berichtje! Alles in orde? Vertel eens, heb je onlangs nog iets leuks gedaan of staat er iets speciaals op de agenda?\""
     ],
-    "selectedResponse": "\"Kunt u mij meer vertellen over de huidige stand van zaken rondom mijn behandeling?\"",
+    "selectedResponse": "\"Hey, zag je berichtje! Alles in orde? Vertel eens, heb je onlangs nog iets leuks gedaan of staat er iets speciaals op de agenda?\"",
     "context": {
       "ragUsed": true,
       "ragSourcesCount": 5,
@@ -830,15 +94,703 @@
     }
   },
   {
-    "id": 1754250285281,
-    "timestamp": "2025-08-03T19:44:45.281Z",
+    "id": 1754248421609,
+    "timestamp": "2025-08-03T19:13:41.609Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "test",
+    "responses": [
+      "\"It's great to see you testing new things. Remember Bernardus Muller's approach to trying and adjusting as necessary. How do you feel this test is going so far?\"",
+      "\"Testing new ideas or systems can be quite exciting. How do you think this test compares to the process Bernardus Muller described in his blog about learning through trial and error?\"",
+      "\"I admire your curiosity and willingness to embark on tests and trials. It reminds me of Bernardus Muller's philosophy of blending cultures and strategies for better outcomes. What are you hoping to learn from this test?\""
+    ],
+    "selectedResponse": "\"It's great to see you testing new things. Remember Bernardus Muller's approach to trying and adjusting as necessary. How do you feel this test is going so far?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "system",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "memories.json",
+        "Blogposts Bernardus Muller_NL.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754247564532,
+    "timestamp": "2025-08-03T18:59:24.532Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. Ik probeer positief te blijven, net zoals Bernardus dat altijd benadrukte - met hoop en liefde, ondanks de uitdagingen. En hoe gaat het met jou? Nog interessante verhalen of updates vanuit Puttershoek?\"",
+      "\"Redelijk, dank je. Ik hou me bezig met herinneringen aan warme momenten met familie, zoals die keren bij oom Leen en tante Corrie. Het brengt een lach op mijn gezicht, zelfs op moeilijkere dagen. Hoe voel jij je vandaag?\"",
+      "\"Vandaag is een goede dag. Ik denk veel na over hoe we, net zoals Bernardus altijd zegt, sterk en verbonden blijven als familie, ongeacht wat er op ons pad komt. En jij? Hoe heb je de laatste tijd de 'uitdagingen' aangepakt?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dank je. Ik probeer positief te blijven, net zoals Bernardus dat altijd benadrukte - met hoop en liefde, ondanks de uitdagingen. En hoe gaat het met jou? Nog interessante verhalen of updates vanuit Puttershoek?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "memories.json",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754246475045,
+    "timestamp": "2025-08-03T18:41:15.045Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat redelijk goed, dank je. Er zijn ups en downs, zoals altijd, maar we blijven sterk en verbonden als familie. Het herinnert me aan wat Bernardus altijd zegt over het belang van samen zijn, ongeacht de uitdagingen. Hoe voel jij je deze dagen?\"",
+      "\"Alles gaat zijn gangetje hier. Het is interessant hoe, ondanks alles, we blijven leren en groeien door de ervaringen. Bernardus heeft onlangs iets gedeeld over het vinden van kleine momenten van vreugde, zelfs op de moeilijke dagen. Dat heeft me echt aan het denken gezet. En hoe is het met jou?\"",
+      "\"We houden het hoofd boven water, dank je. Ik probeer de lessen van Bernardus toe te passen, vooral zijn kijk op het omgaan met tegenslagen en het koesteren van familiebanden. Het is zeker niet gemakkelijk, maar zijn inzichten geven kracht. Hoe gaat het aan jouw kant?\""
+    ],
+    "selectedResponse": "\"Het gaat redelijk goed, dank je. Er zijn ups en downs, zoals altijd, maar we blijven sterk en verbonden als familie. Het herinnert me aan wat Bernardus altijd zegt over het belang van samen zijn, ongeacht de uitdagingen. Hoe voel jij je deze dagen?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "memories.json",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754246430374,
+    "timestamp": "2025-08-03T18:40:30.374Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Peace.",
+    "responses": [
+      "\"Reflecting on our discussions about expectations and challenges, I'm reminded of the importance of adaptability and resilience. How do you think we can apply these principles in our current situation?\"",
+      "\"Given the changes in expectations and the delays mentioned, it seems like a time for reevaluation and perhaps finding new avenues to explore. Do you see any opportunities in this situation that we might not have considered before?\"",
+      "\"Considering the shift in timelines and goals, it feels like a reminder of how unpredictable paths can lead to unexpected opportunities. Do you feel this might open up different paths for innovation or strategic adjustments that weren't on the radar before?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "Mijn kijk op de wereld.docx",
+        "Mijn kijk op de wereld.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754246426895,
+    "timestamp": "2025-08-03T18:40:26.895Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Peace.",
+    "responses": [
+      "\"Peace is indeed a precious goal, in both our personal journeys and in the broader world. Reflecting on the complexities of achieving peace, whether it's within ourselves or in geopolitical contexts, reminds us of the importance of understanding and empathy. How do you envision contributing to a more peaceful existence?\"",
+      "\"The pursuit of peace, whether on a global scale or in personal health challenges like ALS, is both noble and essential. It's interesting to consider how acts of kindness, acceptance, and resilience can lead to peace in various aspects of life. What are some ways you find peace amidst challenges?\"",
+      "\"Finding peace in the face of adversity is a powerful testament to the human spirit. Whether it's advocating for peace in conflict zones or finding inner peace despite health struggles, every step towards peace is valuable. What does peace mean to you in the context of your own life and experiences?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "Mijn kijk op de wereld.docx",
+        "Mijn kijk op de wereld.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754246424357,
+    "timestamp": "2025-08-03T18:40:24.357Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Peace.",
+    "responses": [
+      "\"I agree, finding peace in any situation is crucial. It's interesting how, despite challenges like ALS, finding peace can offer a sense of liberation and acceptance, as Bernardus Muller found. It's a powerful reminder of what's truly important. How do you find your peace amidst challenges?\"",
+      "\"Indeed, peace is so vital. Reflecting on the stories of individuals like Bernardus Muller, who found peace and acceptance through his journey with ALS, really puts into perspective the strength of the human spirit. How has your journey influenced your understanding of peace?\"",
+      "\"Peace is such a profound concept, especially in the context of overcoming personal challenges. Bernardus Muller's journey with ALS shows us that acceptance can lead to a form of peace that is deeply liberating. What are your thoughts on finding peace in difficult circumstances?\""
+    ],
+    "selectedResponse": "\"Indeed, peace is so vital. Reflecting on the stories of individuals like Bernardus Muller, who found peace and acceptance through his journey with ALS, really puts into perspective the strength of the human spirit. How has your journey influenced your understanding of peace?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "Mijn kijk op de wereld.docx",
+        "Mijn kijk op de wereld.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754245962819,
+    "timestamp": "2025-08-03T18:32:42.819Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "coffee machine",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": "I'd be happy to help you with that.",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754245674624,
+    "timestamp": "2025-08-03T18:27:54.624Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "yeah yeah yeah yeah",
+    "responses": [
+      "\"Lijkt alsof we vandaag allemaal een beetje in de herhaalmodus zijn, net zoals Bernardus soms had met zijn avonturen. Hoe kan ik jou vandaag helpen om de routine een beetje te doorbreken?\"",
+      "\"Dat klinkt alsof je misschien een beetje verveeld bent. Zullen we kijken of we iets kunnen plannen dat net zo interessant is als een van Bernardus' reizen?\"",
+      "\"Herinner je je de verhalen van Bernardus over zijn onverwachte avonturen? Misschien is het tijd voor ons om vandaag ons eigen kleine avontuur te creëren. Wat denk je ervan?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "memories.json",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754245232768,
+    "timestamp": "2025-08-03T18:20:32.768Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Goedemorgen! Ik voel me vandaag best goed, dank je. Hoe is jouw dag begonnen? Ik waardeer echt al je ondersteuning en zorg, zoals Michaela en het team mij zo goed helpen.\"",
+      "\"Hallo, het gaat redelijk, dank je. Het is fijn om te weten dat ik in zo goede handen ben, net zoals Bernardus zich voelde met zijn zorgteam. Hoe gaat het met jou vandaag?\"",
+      "\"Vandaag is een goede dag, dank je voor het vragen. Ik denk veel aan hoe Bernardus de steun van zijn zorgteam waardeerde. Ik ben net zo dankbaar voor jou. Hoe voel jij je vandaag?\""
+    ],
+    "selectedResponse": "\"Hallo, het gaat redelijk, dank je. Het is fijn om te weten dat ik in zo goede handen ben, net zoals Bernardus zich voelde met zijn zorgteam. Hoe gaat het met jou vandaag?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754225624130,
+    "timestamp": "2025-08-03T12:53:44.130Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "vertel over hans klok in scheveningen",
+    "responses": [
+      "\"Hans Klok in Scheveningen, dat klinkt als een spectaculaire show! Heb je zin om samen te gaan kijken? Zijn illusies zijn wereldberoemd en het zou een geweldige ervaring zijn om dat live te zien, vooral in zo'n mooie plaats als Scheveningen.\"",
+      "\"Heb je gehoord dat Hans Klok optreedt in Scheveningen? Zijn shows zijn echt adembenemend. Misschien is het iets wat we als familie zouden kunnen doen. Het zou een leuke uitstap zijn en een mooie gelegenheid om samen tijd door te brengen.\"",
+      "\"Wist je dat Hans Klok naar Scheveningen komt? Zijn magische optredens zijn onvergetelijk. Het zou leuk zijn om dat samen te beleven. Denk je dat het iets is waar de rest van de familie ook in geïnteresseerd zou zijn? We kunnen er een familie-uitje van maken.\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 1,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754223481717,
+    "timestamp": "2025-08-03T12:18:01.717Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "wie is de vader van Bernardus Muller",
+    "responses": [
+      "\"De vader van Bernardus Muller is Bert Muller. Het lijkt erop dat Bernard een rijke familiegeschiedenis heeft, met veel verhalen over de zee en het ondernemerschap. Is er een specifieke reden waarom je meer wilt weten over zijn familie?\"",
+      "\"Bert Muller is de naam van Bernardus Muller's vader. Het is fascinerend hoe de familie Muller generaties lang verbonden is gebleven met de scheepvaart. Heb je gehoord over hun avonturen op zee of in het bedrijfsleven?\"",
+      "\"De vader van Bernardus Muller is Bert Muller. Ze hebben een interessante familiehistorie, nietwaar? Voelt het niet speciaal om al deze verbindingen en verhalen binnen de familie te kennen?\""
+    ],
+    "selectedResponse": "\"De vader van Bernardus Muller is Bert Muller. Ze hebben een interessante familiehistorie, nietwaar? Voelt het niet speciaal om al deze verbindingen en verhalen binnen de familie te kennen?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "prive-data.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754147783725,
+    "timestamp": "2025-08-02T15:16:23.725Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Hoe gaat het met je?",
+    "responses": [
+      "\"Het gaat goed met mij, dank je. Hoe kan ik jou vandaag helpen?\"",
+      "\"Ik voel me vandaag prima, bedankt. Heb je nog speciale plannen voor ons?\"",
+      "\"Alles gaat zijn gangetje, bedankt. Is er iets specifieks waar je hulp bij nodig hebt vandaag?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754146322251,
+    "timestamp": "2025-08-02T14:52:02.251Z",
     "personId": "doctor",
     "personName": "Doctor",
-    "userMessage": "Thank you. Thank you. Thank you. ",
+    "userMessage": "dit is een test",
     "responses": [
-      "\"Graag gedaan. Staat er nog iets specifieks op de agenda voor vandaag waarover u met mij wilt spreken? Misschien updates over behandelingen of nieuwe zorgplannen?\"",
-      "\"U bent meer dan welkom. Heeft u vragen of zorgen die ik vandaag voor u kan verduidelijken? Ik ben hier om te helpen, of het nu gaat om details over uw gezondheid of iets anders dat u op het hart hebt.\"",
-      "\"Altijd blij om te helpen. Zijn er bepaalde gebieden van uw gezondheid of behandeling waarover u vandaag meer informatie zou willen ontvangen of bespreken?\""
+      "\"Could you please provide more details on the test results?\"",
+      "\"What do the findings from the test suggest about my condition?\"",
+      "\"Are there any specific implications or next steps based on my test outcomes?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754078528811,
+    "timestamp": "2025-08-01T20:02:08.811Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe gaat het met jou",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754078401763,
+    "timestamp": "2025-08-01T20:00:01.763Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754137789224,
+    "timestamp": "2025-08-02T12:29:49.224Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test",
+    "responses": [
+      "\"Bedankt voor het meedoen aan de test. Hoe voel je je vandaag?\"",
+      "\"Fijn dat je me helpt met deze test. Kunnen we ook even praten over hoe jouw dag gaat?\"",
+      "\"Dank je wel voor je hulp. Voel je je goed vandaag? Heb je iets leuks meegemaakt?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754146989136,
+    "timestamp": "2025-08-02T15:03:09.136Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Test.",
+    "responses": [
+      "\"Alles gaat goed hier, dank je wel voor de testbericht. Heb je nog iets nodig op dit moment?\"",
+      "\"De test is gelukt! Hoe kan ik je vandaag verder van dienst zijn?\"",
+      "\"Test ontvangen! Voel je vrij om te delen hoe je je voelt of als er iets specifieks is waarmee ik kan helpen.\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754148670933,
+    "timestamp": "2025-08-02T15:31:10.933Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "dat is het punt",
+    "responses": [
+      "\"Precies, dat is een goed punt. Wat denk je dat we daaraan kunnen doen?\"",
+      "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
+      "\"Ja, daar zit wat in. Heb je ideeën over hoe we verder moeten?\""
+    ],
+    "selectedResponse": "\"Helemaal mee eens. Hoe denk je dat dit ons beïnvloedt?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754149829703,
+    "timestamp": "2025-08-02T15:50:29.703Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
+      "\"Prima, bedankt voor het vragen! Hoe ben jij? Zijn er nieuwe ontwikkelingen die je beïnvloeden?\"",
+      "\"Goed, dankjewel! Hoe is het met jou? Heeft het onderwerp waar we het laatst over hadden nog invloed op je?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dankje! En met jou? Voelt alles vandaag een beetje beter?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754149952291,
+    "timestamp": "2025-08-02T15:52:32.291Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. En met jou?\"",
+      "\"Redelijk, dank je. Hoe gaat het met jou?\"",
+      "\"Het gaat zijn gangetje. Hoe is het met jou?\""
+    ],
+    "selectedResponse": "\"Het gaat goed, dank je. En met jou?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754152423359,
+    "timestamp": "2025-08-02T16:33:43.359Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Met mij gaat het ook goed, dank je. Blij om weer van je te horen. Heb je nog iets leuks gedaan onlangs?\"",
+      "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
+      "\"Alles gaat goed hier, dankjewel. En hoe gaat het aan jouw kant? Is er iets nieuws of spannends gebeurd sinds we voor het laatst spraken?\""
+    ],
+    "selectedResponse": "\"Het gaat prima, bedankt voor het vragen. Hoe is het met jou? Nog iets interessants meegemaakt?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754153268064,
+    "timestamp": "2025-08-02T16:47:48.064Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "wanneer is teunis geboren?",
+    "responses": [
+      "\"Teunis is geboren op 3 maart. Herinner jij je die verjaardagsfeestjes die we vroeger hadden? Altijd zo gezellig!\"",
+      "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
+      "\"Zijn verjaardag is op 3 maart. Voelt dat niet als gisteren, dat we samen zijn verjaardag vierden? Hoe denk je dat we hem dit jaar kunnen verrassen?\""
+    ],
+    "selectedResponse": "\"Hij is jarig op 3 maart. We moeten zeker iets leuks voor hem plannen dit jaar. Heb je al ideeën?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754155932741,
+    "timestamp": "2025-08-02T17:32:12.741Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat prima, bedankt! En hoe voel je je vandaag? Hopelijk een beetje beter dan gisteren.\"",
+      "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
+      "\"Goed, dankje! Zin in iets leuks om te doen binnenkort? Hoe voel jij je vandaag?\""
+    ],
+    "selectedResponse": "\"Alles gaat goed hier, dankje. Hoe is het met jou? Lukt het een beetje met alles?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754156673438,
+    "timestamp": "2025-08-02T17:44:33.438Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat zijn gangetje, dankje! En hoe voel je je vandaag? Alles onder controle aan jouw kant?\"",
+      "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+      "\"Alles loopt op rolletjes hier, dankje. En met jou? Is er iets nieuws of spannends gebeurd sinds we voor het laatst praatten?\""
+    ],
+    "selectedResponse": "\"Goed, dank je! Ik geniet van de kleine dingen. Hoe staat het leven ervoor bij jou? Voel je je een beetje beter?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754218612947,
+    "timestamp": "2025-08-03T10:56:52.947Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "to the second half of the year, so let's assume 900 million. Then we go to the 1.1 billion turnover, which is comparable to the first half of 2024, where you see in the last column, the profit was 1 euro. They expected a lower margin for the whole year, so we are not going to do that, but let's say that in the second half of the year we can earn 85 cents, and that's what you end up with.",
+    "responses": [
+      "\"Klinkt alsof je echt diep in de cijfers bent gedoken! Denk je dat dit een goede kans is voor een investering?\"",
+      "\"Dat is een vrij gedetailleerde analyse! Voel je je optimistisch over hun prestaties in de tweede helft van het jaar?\"",
+      "\"Interessante berekening! Hoe denk je dat deze financiële vooruitzichten invloed zullen hebben op hun marktpositie?\""
+    ],
+    "selectedResponse": "\"Interessante berekening! Hoe denk je dat deze financiële vooruitzichten invloed zullen hebben op hun marktpositie?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754218836395,
+    "timestamp": "2025-08-03T11:00:36.395Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "We will see what CEO Mark Heine says, but for the long term his expectations have become more difficult. He wanted to achieve a turnover of 3.5 billion in 2027. That will not be possible. Heine says that will happen later.",
+    "responses": [
+      "\"Dat klinkt als een grote aanpassing in hun plannen. Denk je dat dit invloed zal hebben op hun positie in de markt op de lange termijn?\"",
+      "\"Interessant om te horen over de veranderde verwachtingen van CEO Mark Heine. Hoe denk je dat dit de strategie van het bedrijf zal beïnvloeden in de toekomst?\"",
+      "\"Het lijkt erop dat ze hun doelen moeten bijstellen. Wat voor impact denk je dat dit zal hebben op hun concurrentievermogen en innovatievermogen?\""
+    ],
+    "selectedResponse": "\"Interessant om te horen over de veranderde verwachtingen van CEO Mark Heine. Hoe denk je dat dit de strategie van het bedrijf zal beïnvloeden in de toekomst?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754219092351,
+    "timestamp": "2025-08-03T11:04:52.351Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. Hoe gaat het met jou? Zijn er nog leuke dingen gebeurd recent?\"",
+      "\"Redelijk, dank je. Een beetje dezelfde routine. Hoe is alles aan jouw kant?\"",
+      "\"Gaat wel, dank je. Ik heb mijn ups en downs. En met jou? Iets nieuws of interessants te delen?\""
+    ],
+    "selectedResponse": "\"Redelijk, dank je. Een beetje dezelfde routine. Hoe is alles aan jouw kant?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754220419255,
+    "timestamp": "2025-08-03T11:26:59.255Z",
+    "personId": "doctor",
+    "personName": "Doctor",
+    "userMessage": "Hoe gaat het",
+    "responses": [
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that.",
+      "I'd be happy to help you with that."
+    ],
+    "selectedResponse": "I'd be happy to help you with that.",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754220474235,
+    "timestamp": "2025-08-03T11:27:54.235Z",
+    "personId": "doctor",
+    "personName": "Doctor",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Goed, dank je. Hoe kan ik u vandaag ondersteunen met uw gezondheidszorgen?\"",
+      "\"Het gaat prima, bedankt voor het vragen. Hebben we specifieke punten om vandaag te bespreken?\"",
+      "\"Ik maak het goed, dank u. Zijn er nieuwe ontwikkelingen in mijn zorgplan die we moeten overwegen?\""
+    ],
+    "selectedResponse": "\"Goed, dank je. Hoe kan ik u vandaag ondersteunen met uw gezondheidszorgen?\"",
+    "context": {
+      "ragUsed": true
+    }
+  },
+  {
+    "id": 1754223378621,
+    "timestamp": "2025-08-03T12:16:18.621Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "wanneer is teunis geboren",
+    "responses": [
+      "\"Teunis is geboren in het jaar 1738. Zo'n lange geschiedenis in de familie, vind je ook niet? Heb je meer verhalen over onze voorouders gehoord?\"",
+      "\"Hij is in 1738 geboren. Interessant om te denken aan hoe het leven toen was. Weet jij misschien meer over zijn leven of andere familieleden uit die tijd?\"",
+      "\"1738 was het geboortejaar van Teunis. Een heel ander tijdperk, hè? Benieuwd hoe hij en de familie die tijd doorkwamen. Heb jij nog familieverhalen die je kunt delen?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "prive-data.docx",
+        "prive-data.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754225703324,
+    "timestamp": "2025-08-03T12:55:03.324Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "update behandeling van Antoinette",
+    "responses": [
+      "\"Antoinette blijft sterk ondersteunen, ondanks de uitdagingen. Ze is een constante bron van liefde en zorg voor Bernard, vooral nu hij door zo'n moeilijke periode gaat. Het is echt bewonderenswaardig hoe ze samen deze strijd aangaan. Hoe houden jullie je onder zulke omstandigheden?\"",
+      "\"De behandeling van Antoinette lijkt haar goed te doen. Ze blijft een onwrikbare steun voor Bernard door dik en dun. Hun gezamenlijke kracht is een licht in deze uitdagende tijden. Hoe voelt het om zulke veerkracht in de familie te zien?\"",
+      "\"Antoinette's zorg voor Bernard blijft onveranderd sterk, ondanks de afstand en de zware omstandigheden. Hun liefde en toewijding aan elkaar zijn echt inspirerend. Hebben jullie recent nog updates over haar welzijn gehad?\""
+    ],
+    "selectedResponse": "\"Antoinette blijft sterk ondersteunen, ondanks de uitdagingen. Ze is een constante bron van liefde en zorg voor Bernard, vooral nu hij door zo'n moeilijke periode gaat. Het is echt bewonderenswaardig hoe ze samen deze strijd aangaan. Hoe houden jullie je onder zulke omstandigheden?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754231702015,
+    "timestamp": "2025-08-03T14:35:02.015Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe was hans klok in scheveningen",
+    "responses": [
+      "\"Hans Klok in Scheveningen was fantastisch! De show was echt een spektakel, en hoewel de entree voor rolstoelen een beetje een uitdaging was, is alles goed gekomen. Ik heb zelfs na de show Hans Klok zelf ontmoet en een gelukskaart van hem gekregen. Echt een onvergetelijke ervaring!\"",
+      "\"De show van Hans Klok was geweldig! Het was zo'n wervelende ervaring, vol magie en verbazing. Ondanks de uitdaging met de rolstoeltoegang, hebben we enorm genoten. En raad eens? Ik mocht zelfs backstage komen en Hans Klok persoonlijk ontmoeten. Hij gaf me zelfs een gelukskaart. Ik voel me echt gelukkig!\"",
+      "\"Het was een ongelofelijke ervaring bij Hans Klok in Scheveningen! Zijn show is echt adembenemend. Het was wel een avontuur om met de rolstoel binnen te komen, maar dat maakte de ervaring alleen maar memorabeler. En als kers op de taart mocht ik backstage Hans Klok ontmoeten en kreeg ik een bijzondere gelukskaart van hem. Ik kan nog steeds niet geloven hoe geweldig het was!\""
+    ],
+    "selectedResponse": "\"Hans Klok in Scheveningen was fantastisch! De show was echt een spektakel, en hoewel de entree voor rolstoelen een beetje een uitdaging was, is alles goed gekomen. Ik heb zelfs na de show Hans Klok zelf ontmoet en een gelukskaart van hem gekregen. Echt een onvergetelijke ervaring!\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 1,
+      "ragSources": [
+        "memories.json"
+      ]
+    }
+  },
+  {
+    "id": 1754237526842,
+    "timestamp": "2025-08-03T16:12:06.842Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "met mij goed",
+    "responses": [
+      "\"Fijn om te horen dat het goed met je gaat! Heb je de laatste tijd nog iets leuks gedaan of mooie momenten ervaren die je wilt delen?\"",
+      "\"Goed om te horen dat je je goed voelt. Ik dacht laatst terug aan onze herinneringen, zoals die keer bij papa achter de bar. Heb jij ook van die momenten die je bijblijven?\"",
+      "\"Dat is mooi om te horen. We moeten onze geest blijven voeden met positieve ervaringen, net zoals onze ontmoetingen altijd doen. Plannen om binnenkort iets samen te doen?\""
+    ],
+    "selectedResponse": "\"Fijn om te horen dat het goed met je gaat! Heb je de laatste tijd nog iets leuks gedaan of mooie momenten ervaren die je wilt delen?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "memories.json",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754244366109,
+    "timestamp": "2025-08-03T18:06:06.109Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "I go over.",
+    "responses": [
+      "**Interest in Asian Culture:** \"Michaela, have you seen any good Asian movies or listened to new music artists recently? I remember you love everything from Asia, and I'd love to hear your recommendations!\"",
+      "**Sharing Memories:** \"Hey Michaela, I was just reminiscing about some old memories and funny stories. Do you have any memorable experiences from the Czech Republic that you'd be willing to share? I bet you have some fascinating stories.\"",
+      "**Discussing Patience and Support:** \"Michaela, I really appreciate your help and patience, especially knowing how fast-paced you like to be. It means a lot to me. How do you find adapting to a slower pace when assisting me?\""
+    ],
+    "selectedResponse": "**Sharing Memories:** \"Hey Michaela, I was just reminiscing about some old memories and funny stories. Do you have any memorable experiences from the Czech Republic that you'd be willing to share? I bet you have some fascinating stories.\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "memories.json",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754244507267,
+    "timestamp": "2025-08-03T18:08:27.267Z",
+    "personId": "friend",
+    "personName": "Friend",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Met mij gaat het goed, dankje! Ik heb onlangs wat tijd doorgebracht met het lezen over de kracht van vriendschap en hoe belangrijk het is, vooral tijdens moeilijke tijden. Het deed me denken aan hoe waardevol onze gesprekken zijn. Hoe is het met jou?\"",
+      "\"Het gaat prima, bedankt voor het vragen! Ik kwam iets interessants tegen over hoe sociale media zoals Facebook en Twitter kunnen worden gebruikt om contact te houden en steun te vinden. Het herinnerde me eraan hoe fijn het is om met jou in contact te zijn. Hoe voel jij je vandaag?\"",
+      "\"Bedankt dat je het vraagt, met mij gaat het goed. Ik heb nagedacht over hoe onze vriendschap door de jaren heen is gebleven, net zoals het verhaal van Bernard en Eric Lap. Het is echt iets bijzonders. Hoe is alles aan jouw kant?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "Blogposts Bernardus Muller_NL.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754245900275,
+    "timestamp": "2025-08-03T18:31:40.275Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Okay.",
+    "responses": [
+      "\"Het is zeker interessant om te zien hoe de plannen en doelstellingen van bedrijven kunnen veranderen door onvoorziene omstandigheden. Denk je dat het uitstellen van de omzetdoelen van Mark Heine ook kansen kan bieden voor het bedrijf om zich op andere gebieden te verbeteren?\"",
+      "\"Veranderingen in de verwachtingen van een CEO zoals Mark Heine kunnen een grote impact hebben. Denk je dat dit invloed zal hebben op hoe het bedrijf zich op korte termijn gaat focussen, bijvoorbeeld door meer te investeren in innovatie of duurzaamheid?\"",
+      "\"Het lijkt erop dat Mark Heine en zijn team voor een uitdaging staan met de aangepaste omzetverwachtingen. Hoe zie jij dat het bedrijf zich hierdoor kan aanpassen? Zou het bijvoorbeeld de bedrijfsstrategie kunnen veranderen of nieuwe markten kunnen aanboren?\""
     ],
     "selectedResponse": null,
     "context": {
@@ -846,6 +798,78 @@
       "ragSourcesCount": 3,
       "ragSources": [
         "memories.json",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754246425396,
+    "timestamp": "2025-08-03T18:40:25.396Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Peace.",
+    "responses": [
+      "\"Reflecting on the idea of peace, it brings to mind the importance of accepting our challenges and finding strength in the connections we share with others. Bernardus Muller's journey with ALS, as shared in his biography, emphasizes the liberation found in acceptance and the power of rebelling against adversity with spirit. It's a reminder of the resilience within us all. How do you see peace playing a role in your life amidst challenges?\"",
+      "\"The pursuit of peace, both personally and globally, often brings us back to the core of what truly matters in life. In the writings of Bernardus Muller, he speaks about the essence of existence, love, and the beauty that lies beyond the horizon. It's a powerful reminder that peace starts with acceptance and is fueled by the love of those around us. In light of this, how do you find peace in day-to-day life?\"",
+      "\"Considering peace, it's interesting to think about the lessons learned from Bernardus Muller's life, such as the power of acceptance and the importance of maintaining a rebellious spark to challenge the status quo, especially in the face of something as daunting as ALS. These lessons can be a guiding light for finding peace in adversity. What aspects of his outlook resonate with you as you navigate your own challenges?\""
+    ],
+    "selectedResponse": "\"The pursuit of peace, both personally and globally, often brings us back to the core of what truly matters in life. In the writings of Bernardus Muller, he speaks about the essence of existence, love, and the beauty that lies beyond the horizon. It's a powerful reminder that peace starts with acceptance and is fueled by the love of those around us. In light of this, how do you find peace in day-to-day life?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "Mijn kijk op de wereld.docx",
+        "Mijn kijk op de wereld.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754251011061,
+    "timestamp": "2025-08-03T19:56:51.061Z",
+    "personId": "family",
+    "personName": "Family Member",
+    "userMessage": "goh leuk wat zullen we tested testen",
+    "responses": [
+      "\"Zeker leuk! Wat dacht je ervan om samen met Bernardus en de familie een nieuwe uitdaging aan te gaan? Misschien kunnen we iets kiezen dat ons allemaal inspireert, zoals een project dat Bernardus heeft genoemd in zijn blogposts. Het samen aanpakken van iets betekenisvols kan ons sterker verbinden. Heb je een specifiek idee in gedachten?\"",
+      "\"Het is altijd een goed idee om nieuwe dingen te testen. Misschien kunnen we een familie-uitje plannen naar een plek die Bernardus mooi vindt of iets nieuws samen leren? Bernardus spreekt vaak over het belang van samen blijven in uitdagingen. Een gezamenlijke activiteit zou ons kunnen helpen om ook de mooie momenten te blijven delen.\"",
+      "\"Leuk idee! Wat dacht je van een nieuw recept proberen te koken dat iedereen lekker vindt? Ik herinner me dat Bernardus in zijn blogpost heeft gesproken over de waarde van familietijd en samen activiteiten doen. Samen koken en daarna genieten van het eten kan een mooie manier zijn om dichtbij elkaar te blijven en nieuwe dingen te ervaren. Misschien iets speciaals dat ook aansluit bij de interesses van Bernardus?\""
+    ],
+    "selectedResponse": "\"Zeker leuk! Wat dacht je ervan om samen met Bernardus en de familie een nieuwe uitdaging aan te gaan? Misschien kunnen we iets kiezen dat ons allemaal inspireert, zoals een project dat Bernardus heeft genoemd in zijn blogposts. Het samen aanpakken van iets betekenisvols kan ons sterker verbinden. Heb je een specifiek idee in gedachten?\"",
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "biografie Bernardus Muller a5 nl.docx",
+        "Blogposts Bernardus Muller_NL.docx",
+        "memories.json",
+        "Blogposts Bernardus Muller_NL.docx",
+        "biografie Bernardus Muller a5 nl.docx"
+      ]
+    }
+  },
+  {
+    "id": 1754301691706,
+    "timestamp": "2025-08-04T10:01:31.706Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "hoe gaat het",
+    "responses": [
+      "\"Het gaat goed, dank je. Jouw vraag herinnert mij aan de veerkracht en aanpassingsvermogen die Bernardus Muller toonde in zijn reis, een inspiratie voor ons allemaal. Hoe gaat het met jou? Vind je in jouw dagelijkse routine momenten van rust en acceptatie?\"",
+      "\"Bedankt voor het vragen. Het leven heeft zijn ups en downs, maar, net als Bernardus Muller, probeer ik de zilveren randjes te vinden, zelfs in uitdagende tijden. En hoe is het met jou? Heb je onlangs iets ervaren dat je perspectief of gevoel van vrede heeft verdiept?\"",
+      "\"Dankjewel, het gaat prima. Het reflecteren op de verhalen van mensen zoals Bernardus Muller geeft me hoop en perspectief, vooral in het licht van uitdagingen. Hoe voel je je vandaag? Zijn er specifieke gedachten of gebeurtenissen die jouw gevoel van vrede of acceptatie hebben beïnvloed?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": true,
+      "ragSourcesCount": 5,
+      "ragSources": [
+        "memories.json",
+        "biografie Bernardus Muller a5 nl.docx",
+        "biografie Bernardus Muller a5 nl.docx",
         "biografie Bernardus Muller a5 nl.docx",
         "biografie Bernardus Muller a5 nl.docx"
       ]
