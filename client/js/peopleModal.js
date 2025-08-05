@@ -159,16 +159,8 @@ function setMode(mode) {
         addSection.style.display = 'none';
         editSection.style.display = 'block';
         saveBtn.style.display = 'block';
-        saveBtn.textContent = 'Save';  // Always use 'Save' instead of 'Update'
-        
-        // Show delete button only for non-default people
-        const defaultPeople = ['family', 'caregiver', 'doctor', 'friend', 'other'];
-        if (selectedPersonForAction && !defaultPeople.includes(selectedPersonForAction.id)) {
-            deleteBtn.style.display = 'block';
-        } else {
-            deleteBtn.style.display = 'none';
-        }
-        
+        saveBtn.textContent = 'Save';
+        deleteBtn.style.display = 'block';  // Always show delete button
         useBtn.style.display = 'block';
     }
 }
@@ -286,13 +278,7 @@ async function updatePerson() {
 async function deletePerson() {
     if (!selectedPersonForAction) return;
     
-    // Check if it's a default person
-    const defaultPeople = ['family', 'caregiver', 'doctor', 'friend', 'other'];
-    if (defaultPeople.includes(selectedPersonForAction.id)) {
-        showNotification('Cannot delete default people', 'error');
-        return;
-    }
-    
+    // Remove the default people check - allow deletion of any person
     if (!confirm(`Are you sure you want to delete ${selectedPersonForAction.name}?`)) {
         return;
     }
