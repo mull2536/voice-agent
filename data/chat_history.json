@@ -1,0 +1,76 @@
+{
+  "conversations": [
+    {
+      "id": "conv_1754388142028_b632a42a",
+      "person": "Michaela ",
+      "person_notes": "My caregiver from Czech Republic, she's adorable, but impatient and loves everything from Asia! From boys till music and movies.",
+      "timestamp": "2025-08-05T11:09:37.918Z",
+      "exchanges": [
+        {
+          "user": "how are you",
+          "assistant": "Hi Michaela! I’m doing well, thank you. How about you? Have you found any new Asian music or movies lately that you’re loving?",
+          "timestamp": "2025-08-05T10:02:22.028Z",
+          "vectorized": false
+        },
+        {
+          "user": "It's something important.",
+          "assistant": "Yes, Michaela, it truly is something important. Just like how trust and connection were everything in old business deals, our bond means so much to me. Do you have any new favorite Asian songs or movies that inspire you lately?",
+          "timestamp": "2025-08-05T11:07:44.347Z",
+          "vectorized": false
+        },
+        {
+          "user": "Yes, I do. I have... I'm now watching Planet 2 Boys. No, Boys to Planet, actually. It's the Asian program. And... yeah. It's nice. They are singing. They try to be idols from K-pop. Yeah.",
+          "assistant": "That sounds really fun, Michaela! K-pop idols have such amazing energy and talent. Do you have a favorite member or group so far in Boys to Planet? I’d love to hear what draws you to the show.",
+          "timestamp": "2025-08-05T11:08:50.344Z",
+          "vectorized": false
+        },
+        {
+          "user": "I don't know their name yet.",
+          "assistant": "No worries about the names yet, Michaela! The most fun part is discovering all their talents little by little. Have you noticed any particular style or song that really stands out to you in the show?",
+          "timestamp": "2025-08-05T11:09:37.918Z",
+          "vectorized": false
+        }
+      ]
+    },
+    {
+      "id": "conv_1754395432994_487e30ce",
+      "person": "Friend",
+      "person_notes": "Social conversations",
+      "timestamp": "2025-08-05T12:04:26.416Z",
+      "exchanges": [
+        {
+          "user": "how are you",
+          "assistant": "I'm doing well, thanks! How about you? What’s new with you lately?",
+          "timestamp": "2025-08-05T12:03:52.994Z",
+          "vectorized": false
+        },
+        {
+          "user": "Also in a good mood.",
+          "assistant": "That’s wonderful to hear! Any new adventures or moments that have brightened your days lately?",
+          "timestamp": "2025-08-05T12:04:26.416Z",
+          "vectorized": false
+        }
+      ]
+    },
+    {
+      "id": "conv_1754396022282_bd7f78a1",
+      "person": "Family Member",
+      "person_notes": "General family conversations",
+      "timestamp": "2025-08-05T12:14:08.774Z",
+      "exchanges": [
+        {
+          "user": "how are you",
+          "assistant": "I’m doing well, thank you! How about you? How’s everything at home?",
+          "timestamp": "2025-08-05T12:13:42.282Z",
+          "vectorized": false
+        },
+        {
+          "user": "So, all in a good mood.",
+          "assistant": "That’s wonderful to hear! I’ve been thinking about how those little moments of connection, like your visits, really brighten my days. How have you been spending your time lately?",
+          "timestamp": "2025-08-05T12:14:08.774Z",
+          "vectorized": false
+        }
+      ]
+    }
+  ]
+}

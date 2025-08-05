@@ -157,7 +157,8 @@ body {
 }
 
 .message-content {
-    background-color: var(--surface);
+    background-color: var(--success-color);
+    color: white;
     padding: 1rem 1.5rem;
     border-radius: 1rem;
     border: 1px solid var(--border-color);

@@ -19,8 +19,8 @@ class RAGService {
       chunkOverlap: parseInt(process.env.CHUNK_OVERLAP) || 200
     });
     
-    this.topK = parseInt(process.env.TOP_K_RESULTS) || 5;
-    this.similarityThreshold = 0.7;
+    this.topK = parseInt(process.env.TOP_K_RESULTS) || 2;
+    this.similarityThreshold = 0.4;
     this.isInitialized = false;
     
     // File tracking
@@ -621,23 +621,14 @@ class RAGService {
         return [];
       }
 
-      // Generate query variations for better search
-      const queryVariations = this.generateQueryVariations(query);
-      
-      let allResults = [];
-      
-      for (const queryVariation of queryVariations) {
-        const results = await this.vectorStore.similaritySearchWithScore(
-          queryVariation,
-          this.topK
-        );
-        allResults.push(...results);
-      }
-      
-      // Remove duplicates
-      const uniqueResults = this.deduplicateSearchResults(allResults);
-      
-      const filteredResults = uniqueResults
+      // SIMPLIFIED: Direct search without query variations
+      const results = await this.vectorStore.similaritySearchWithScore(
+        query.trim(),
+        this.topK // Should be 2 to match old app speed
+      );
+
+      // Filter by similarity threshold and format results
+      const filteredResults = results
         .filter(([doc, score]) => {
           const similarity = 1 - score;
           return similarity >= minSimilarity;
@@ -654,7 +645,7 @@ class RAGService {
         logger.info(`RAG search for "${query}": ${filteredResults.length} results found`);
       }
       
-      return filteredResults.slice(0, this.topK);
+      return filteredResults;
       
     } catch (error) {
       logger.error('Failed to search vector store:', error);
