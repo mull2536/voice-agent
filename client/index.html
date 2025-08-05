@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMF Communication Assistant</title>
+    <title>SMF Voice Agent</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,12 +17,16 @@
         <header class="app-header">
             <h1>SMF VOICE AGENT</h1>
             <div class="header-controls">
-                <button id="settings-btn" class="icon-btn" aria-label="Settings">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m16.24-6.36l-4.24 4.24m-6.12 6.12l-4.24 4.24m14.64 0l-4.24-4.24m-6.12-6.12L4.76 4.76"></path>
-                    </svg>
-                </button>
+                <img src="assets/people.ico" 
+                     alt="People" 
+                     class="header-icon people-icon" 
+                     onclick="openPeopleModal()" 
+                     title="Select Person">
+                <img src="assets/settings.ico"
+                     alt="Settings"
+                     class="header-icon settings-icon"
+                     id="settings-btn"
+                     title="Settings">
                 <div class="speaker-indicator">
                     <span id="current-speaker">No one selected</span>
                 </div>
@@ -150,6 +154,57 @@
                 </div>
             </div>
         </div>
+        <!-- People Selection Modal -->
+        <div id="peopleModal" class="modal">
+            <div class="modal-content people-modal-content">
+                <div class="modal-header">
+                    <h2>People Management</h2>
+                    <span class="close-modal" onclick="closePeopleModal()">&times;</span>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="people-section">
+                        <h3>Select a Person:</h3>
+                        <div id="peopleGrid" class="people-grid">
+                            <!-- People buttons will be dynamically loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="edit-person-section" id="editPersonSection" style="display: none;">
+                        <h3>Edit Person</h3>
+                        <div class="edit-person-form">
+                            <input type="text" 
+                                   id="editPersonName" 
+                                   placeholder="Person's name" 
+                                   class="person-input">
+                            <textarea id="editPersonNotes" 
+                                      placeholder="Enter details about this person..." 
+                                      class="person-textarea"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="add-person-section" id="addPersonSection">
+                        <h3>Add New Person</h3>
+                        <div class="add-person-form">
+                            <input type="text" 
+                                   id="newPersonName" 
+                                   placeholder="Person's name (e.g. John)" 
+                                   class="person-input">
+                            <textarea id="newPersonNotes" 
+                                      placeholder="Enter details about this person..." 
+                                      class="person-textarea"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Action buttons at bottom -->
+                    <div id="personActions" class="person-actions">
+                        <button onclick="saveOrUpdatePerson()" class="btn-primary action-btn" id="saveBtn">Save</button>
+                        <button onclick="deletePerson()" class="btn-danger action-btn" id="deleteBtn" style="display: none;">Delete</button>
+                        <button onclick="usePerson()" class="btn-success action-btn" id="useBtn" style="display: none;">Use</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -165,6 +220,7 @@
     <script src="js/eyeGazeControls.js"></script>
     <script src="js/conversationUI.js"></script>
     <script src="js/settingsUI.js"></script>
+    <script src="js/peopleModal.js"></script> 
     <script src="js/main.js"></script>
 </body>
 </html>

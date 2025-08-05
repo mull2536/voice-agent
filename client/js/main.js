@@ -140,8 +140,6 @@ class CommunicationAssistant {
     }
 
     setupUIListeners() {
-        // Person selector
-        this.addPersonSelector();
         
         // Recording button
         const recordBtn = document.getElementById('record-btn');
@@ -173,30 +171,6 @@ class CommunicationAssistant {
         const settingsBtn = document.getElementById('settings-btn');
         settingsBtn.addEventListener('click', () => {
             this.settingsUI.open();
-        });
-    }
-    
-    addPersonSelector() {
-        // Add person selector to header
-        const headerControls = document.querySelector('.header-controls');
-        const personSelector = document.createElement('div');
-        personSelector.className = 'person-selector';
-        personSelector.innerHTML = `
-            <label for="person-select">Talking to:</label>
-            <select id="person-select" class="person-select">
-                <option value="">Select person...</option>
-            </select>
-        `;
-        
-        headerControls.insertBefore(personSelector, headerControls.firstChild);
-        
-        // Add change listener
-        const select = document.getElementById('person-select');
-        select.addEventListener('change', (e) => {
-            const personId = e.target.value;
-            if (personId) {
-                this.selectPerson(personId);
-            }
         });
     }
     
@@ -245,18 +219,6 @@ class CommunicationAssistant {
     
     loadPeople(people) {
         this.people = people;
-        const select = document.getElementById('person-select');
-        
-        // Clear existing options
-        select.innerHTML = '<option value="">Select person...</option>';
-        
-        // Add people options
-        people.forEach(person => {
-            const option = document.createElement('option');
-            option.value = person.id;
-            option.textContent = person.name;
-            select.appendChild(option);
-        });
         
         // Also update settings UI
         if (this.settingsUI) {
@@ -280,12 +242,8 @@ class CommunicationAssistant {
     
     updatePersonDisplay(person) {
         const indicator = document.getElementById('current-speaker');
-        indicator.textContent = `Talking to: ${person.name}`;
-        
-        // Update dropdown if needed
-        const select = document.getElementById('person-select');
-        if (select.value !== person.id) {
-            select.value = person.id;
+        if (indicator) {
+            indicator.textContent = `Talking to: ${person.name}`;
         }
     }
     

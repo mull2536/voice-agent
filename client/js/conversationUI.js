@@ -47,7 +47,14 @@ class ConversationUI {
     }
     
     scrollToBottom() {
-        this.transcriptContainer.scrollTop = this.transcriptContainer.scrollHeight;
+        // Use setTimeout to ensure DOM has updated
+        setTimeout(() => {
+            // Get the conversation display container (the scrollable element)
+            const conversationDisplay = document.querySelector('.conversation-display');
+            if (conversationDisplay) {
+                conversationDisplay.scrollTop = conversationDisplay.scrollHeight;
+            }
+        }, 50);
     }
     
     showSpeechIndicator() {

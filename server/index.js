@@ -143,92 +143,114 @@ io.on('connection', (socket) => {
   
   // Process audio from client - WITH TIMING ADDED
  socket.on('audio-data', async (data) => {
-    const pipelineStartTime = performance.now();
+  const pipelineStartTime = performance.now();
+  
+  try {
+    // 1. AUDIO PROCESSING
+    const audioStartTime = performance.now();
+    const audioInfo = await audioRecorder.processAudioData(data.audio, {
+      finalChunk: data.finalChunk || false
+    });
+    const audioEndTime = performance.now();
     
-    try {
-      // Save audio data with enhanced final chunk handling
-      const audioStartTime = performance.now();
-      const audioInfo = await audioRecorder.processAudioData(data.audio, {
-        finalChunk: data.finalChunk || false
-      });
-      const audioEndTime = performance.now();
+    // 2. TRANSCRIPTION
+    const transcriptionStartTime = performance.now();
+    const transcript = await transcriptionService.transcribe(audioInfo.filepath);
+    const transcriptionEndTime = performance.now();
+    
+    // Only proceed if we got meaningful transcription
+    if (transcript && transcript.trim().length > 0) {
+      socket.emit('transcription', { text: transcript });
       
-      // Transcribe audio
-      const transcriptionStartTime = performance.now();
-      const transcript = await transcriptionService.transcribe(audioInfo.filepath);
-      const transcriptionEndTime = performance.now();
+      // Add transcript to session queue with deduplication
+      const addedToQueue = sessionQueueManager.addTranscript(socket.id, transcript);
+      let llmResult = null;
       
-      // Only proceed if we got meaningful transcription
-      if (transcript && transcript.trim().length > 0) {
-        socket.emit('transcription', { text: transcript });
+      if (addedToQueue) {
+        // Clean up old unresponded transcripts
+        sessionQueueManager.cleanupOldTranscripts(socket.id);
         
-        // Add transcript to session queue with deduplication
-        const addedToQueue = sessionQueueManager.addTranscript(socket.id, transcript);
-        let llmTime = 0;
+        // 3. LLM PROCESSING WITH DETAILED TIMING
+        const llmStartTime = performance.now();
+        const personId = socket.data.currentPerson?.id || 'other';
+        llmResult = await llmService.generateResponses(transcript, personId, socket.id);
+        const llmEndTime = performance.now();
         
-        if (addedToQueue) {
-          // Clean up old unresponded transcripts
-          sessionQueueManager.cleanupOldTranscripts(socket.id);
-          
-          // Generate responses with person context - WITH TIMING AND SOCKET ID
-          const llmStartTime = performance.now();
-          const personId = socket.data.currentPerson?.id || 'other';
-          const result = await llmService.generateResponses(transcript, personId, socket.id); // Pass socket ID
-          const llmEndTime = performance.now();
-          llmTime = llmEndTime - llmStartTime;
-          
-          // Store context for later use in response selection
-          socket.data.lastContext = {
-            userMessage: transcript,
-            personName: result.personName,
-            personNotes: result.personNotes,
-            conversationId: result.conversationId
-          };
-          
-          socket.emit('responses-generated', { 
-            responses: result.responses,
-            conversationId: result.conversationId,
-            userMessage: transcript,
-            personName: result.personName,
-            personNotes: result.personNotes
-          });
-          
-          // Log queue status
-          const queueStatus = sessionQueueManager.getQueueStatus(socket.id);
-          logger.info(`Queue status - Conv: ${queueStatus.conversationCount}, Transcripts: ${queueStatus.transcriptCount}, Unresponded: ${queueStatus.unrespondedCount}`);
-        } else {
-          logger.info('Transcript was duplicate, responses not generated');
-        }
+        // Store context for later use in response selection
+        socket.data.lastContext = {
+          userMessage: transcript,
+          personName: llmResult.personName,
+          personNotes: llmResult.personNotes,
+          conversationId: llmResult.conversationId
+        };
         
-        // LOG TIMING BREAKDOWN
+        socket.emit('responses-generated', { 
+          responses: llmResult.responses,
+          conversationId: llmResult.conversationId,
+          userMessage: transcript,
+          personName: llmResult.personName,
+          personNotes: llmResult.personNotes
+        });
+        
+        // Log queue status
+        const queueStatus = sessionQueueManager.getQueueStatus(socket.id);
+        logger.info(`Queue status - Conv: ${queueStatus.conversationCount}, Transcripts: ${queueStatus.transcriptCount}, Unresponded: ${queueStatus.unrespondedCount}`);
+        
+        // COMPREHENSIVE TIMING BREAKDOWN
         const pipelineEndTime = performance.now();
         const totalTime = pipelineEndTime - pipelineStartTime;
         const audioTime = audioEndTime - audioStartTime;
         const transcriptionTime = transcriptionEndTime - transcriptionStartTime;
+        const llmTotalTime = llmEndTime - llmStartTime;
+        
+        // Calculate auxiliary time (everything except LLM API call)
+        const auxiliaryTime = llmResult.timings ? 
+          Object.entries(llmResult.timings)
+            .filter(([key]) => key !== 'llmApi')
+            .reduce((sum, [, value]) => sum + value, 0) : 0;
         
         logger.info(`🚀 PIPELINE TIMING:
-  ├─ Total: ${totalTime.toFixed(2)}ms
-  ├─ Audio processing: ${audioTime.toFixed(2)}ms (${((audioTime/totalTime)*100).toFixed(1)}%)
-  ├─ Transcription: ${transcriptionTime.toFixed(2)}ms (${((transcriptionTime/totalTime)*100).toFixed(1)}%)
-  └─ LLM processing: ${llmTime.toFixed(2)}ms (${((llmTime/totalTime)*100).toFixed(1)}%)`);
+├─ Total: ${totalTime.toFixed(2)}ms
+├─ Audio processing: ${audioTime.toFixed(2)}ms (${((audioTime/totalTime)*100).toFixed(1)}%)
+├─ Transcription: ${transcriptionTime.toFixed(2)}ms (${((transcriptionTime/totalTime)*100).toFixed(1)}%)
+└─ LLM processing: ${llmTotalTime.toFixed(2)}ms (${((llmTotalTime/totalTime)*100).toFixed(1)}%)
+   ├─ LLM API call: ${(llmResult.timings?.llmApi || 0).toFixed(2)}ms (${((llmResult.timings?.llmApi || 0)/llmTotalTime*100).toFixed(1)}% of LLM time)
+   └─ Auxiliary services: ${auxiliaryTime.toFixed(2)}ms (${(auxiliaryTime/llmTotalTime*100).toFixed(1)}% of LLM time)`);
+        
+        // Detailed LLM breakdown if timings are available
+        if (llmResult.timings) {
+          logger.info(`   📊 LLM Service Breakdown:
+      ├─ Person lookup: ${llmResult.timings.personLookup.toFixed(2)}ms
+      ├─ Recent context: ${llmResult.timings.recentContext.toFixed(2)}ms
+      ├─ Session context: ${llmResult.timings.sessionContext.toFixed(2)}ms
+      ├─ RAG lookup: ${llmResult.timings.ragLookup.toFixed(2)}ms
+      ├─ Chat history search: ${llmResult.timings.chatHistorySearch.toFixed(2)}ms
+      ├─ Message building: ${llmResult.timings.messageBuilding.toFixed(2)}ms
+      ├─ Response parsing: ${llmResult.timings.responseParsing.toFixed(2)}ms
+      └─ Chat history save: ${llmResult.timings.chatHistorySave.toFixed(2)}ms`);
+        }
         
       } else {
-        logger.info('Empty or unclear transcription, skipping response generation');
-        
-        // If this was a final chunk before stop, still auto-restart recording
-        if (data.finalChunk) {
-          setTimeout(() => {
-            socket.emit('auto-start-recording');
-          }, 1000);
-        }
+        logger.info('Transcript was duplicate, responses not generated');
       }
       
-    } catch (error) {
-      const pipelineEndTime = performance.now();
-      logger.error(`❌ Pipeline failed after ${(pipelineEndTime - pipelineStartTime).toFixed(2)}ms:`, error);
-      socket.emit('error', { message: 'Failed to process audio' });
+    } else {
+      logger.info('Empty or unclear transcription, skipping response generation');
+      
+      // If this was a final chunk before stop, still auto-restart recording
+      if (data.finalChunk) {
+        setTimeout(() => {
+          socket.emit('auto-start-recording');
+        }, 1000);
+      }
     }
-  });
+    
+  } catch (error) {
+    const pipelineEndTime = performance.now();
+    logger.error(`❌ Pipeline failed after ${(pipelineEndTime - pipelineStartTime).toFixed(2)}ms:`, error);
+    socket.emit('error', { message: 'Failed to process audio' });
+  }
+});
   
   // Recording status updates
   socket.on('recording-status', (data) => {

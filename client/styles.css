@@ -62,46 +62,27 @@ body {
     gap: 1.5rem;
 }
 
-.person-selector {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.person-selector label {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.person-select {
-    background-color: var(--surface-hover);
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    color: var(--text-primary);
-    font-size: 1rem;
-    min-width: 200px;
+/* Common header icon styles */
+.header-icon {
+    width: 48px;
+    height: 48px;
     cursor: pointer;
-}
-
-.person-select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
-.icon-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 0.5rem;
+    transition: transform 0.3s ease;
+    filter: brightness(0) invert(1); /* Make icons white */
+    padding: 4px;
     border-radius: 0.5rem;
-    transition: all 0.2s;
 }
 
-.icon-btn:hover {
-    background-color: var(--surface-hover);
-    color: var(--text-primary);
+/* People icon */
+.people-icon {
+    width: 48px;
+    height: 48px;
+}
+
+/* Settings icon  */
+.settings-icon {
+    width: 48px;
+    height: 48px;
 }
 
 .speaker-indicator {
@@ -111,6 +92,216 @@ body {
     font-size: 0.875rem;
     color: var(--text-secondary);
 }
+
+/* People Modal Styles */
+.people-modal-content {
+    max-width: 800px;
+    width: 90%;
+}
+
+.people-section {
+    margin-bottom: 30px;
+}
+
+.people-section h3,
+.add-person-section h3 {
+    color: #64b5f6;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+/* People Grid - 4 per row */
+.people-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+/* Person Button - 25% smaller */
+.person-btn {
+    background: #2c3e50;
+    color: white;
+    border: 2px solid #34495e;
+    padding: 15px 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+}
+
+.person-btn:hover {
+    background: #34495e;
+    border-color: #4a90e2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Remove the active class styling that causes green border */
+.person-btn.selected {
+    background: #4a90e2;
+    border-color: #64b5f6;
+}
+
+.person-btn:active {
+    transform: translateY(0);
+}
+
+/* Person Actions - At bottom of modal */
+.person-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #34495e;
+}
+
+.action-btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+/* Edit Person Section */
+.edit-person-section {
+    border-top: 1px solid #34495e;
+    padding-top: 20px;
+}
+
+.edit-person-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Add Person Form */
+.add-person-section {
+    border-top: 1px solid #34495e;
+    padding-top: 20px;
+}
+
+.add-person-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.person-input,
+.person-textarea {
+    background: #2c3e50;
+    color: white;
+    border: 1px solid #34495e;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.person-input:focus,
+.person-textarea:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.person-textarea {
+    min-height: 80px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #4a90e2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #357abd;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #34495e;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #2c3e50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .people-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+    
+    .person-btn {
+        font-size: 14px;
+        padding: 12px 8px;
+        min-height: 50px;
+    }
+    
+    .person-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        max-width: 100%;
+    }
+}
+
 
 /* Main Content */
 .main-content {
