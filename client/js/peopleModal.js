@@ -25,19 +25,14 @@ async function initializePeopleModal() {
         }
     });
 
-    // Initialize with stored person if available
-    const storedPersonId = localStorage.getItem('selectedPersonId');
-    if (storedPersonId) {
-        selectedPersonId = storedPersonId;
-        // Load people first to ensure currentPeople is populated
-        await loadPeople();
-        updatePersonIndicator();
-    } else {
-        // Set default text if no one selected
-        const indicator = document.getElementById('current-speaker');
-        if (indicator) {
-            indicator.textContent = 'No one selected';
-        }
+    // CLEAR the stored selection on page load - start fresh each time
+    localStorage.removeItem('selectedPersonId');
+    selectedPersonId = null;
+    
+    // Always show "No one selected" on initial load
+    const indicator = document.getElementById('current-speaker');
+    if (indicator) {
+        indicator.textContent = 'No one selected';
     }
 }
 
@@ -325,6 +320,10 @@ function usePerson() {
     // Notify server
     if (window.socket) {
         window.socket.emit('set-person', selectedPersonForAction.id);
+    }
+     // IMPORTANT: Also update the main app's currentPerson
+     if (window.app) {
+        window.app.selectPerson(selectedPersonForAction.id);
     }
     
     showNotification(`Now talking to: ${selectedPersonForAction.name}`, 'success');

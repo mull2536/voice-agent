@@ -4,7 +4,7 @@
       "id": "conv_1754388142028_b632a42a",
       "person": "Michaela ",
       "person_notes": "My caregiver from Czech Republic, she's adorable, but impatient and loves everything from Asia! From boys till music and movies.",
-      "timestamp": "2025-08-05T11:09:37.918Z",
+      "timestamp": "2025-08-06T10:56:32.189Z",
       "exchanges": [
         {
           "user": "how are you",
@@ -28,6 +28,12 @@
           "user": "I don't know their name yet.",
           "assistant": "No worries about the names yet, Michaela! The most fun part is discovering all their talents little by little. Have you noticed any particular style or song that really stands out to you in the show?",
           "timestamp": "2025-08-05T11:09:37.918Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": "I'm here to help.",
+          "timestamp": "2025-08-06T10:56:32.189Z",
           "vectorized": false
         }
       ]

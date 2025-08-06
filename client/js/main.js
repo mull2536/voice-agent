@@ -207,6 +207,8 @@ class CommunicationAssistant {
             // Load people
             const peopleResponse = await this.api.getPeople();
             this.loadPeople(peopleResponse.people);
+
+            this.currentPerson = null;
             
             // Load recent conversations
             const conversations = await this.api.getRecentConversations(5);
