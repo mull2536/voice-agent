@@ -77,6 +77,40 @@
           "vectorized": false
         }
       ]
+    },
+    {
+      "id": "conv_1754482379097_6d67279d",
+      "person": "Other",
+      "person_notes": "Anyone else",
+      "timestamp": "2025-08-06T12:12:59.097Z",
+      "exchanges": [
+        {
+          "user": "It's different in this program than in the other program that is running.",
+          "assistant": "I'm here to help.",
+          "timestamp": "2025-08-06T12:12:59.097Z",
+          "vectorized": false
+        }
+      ]
+    },
+    {
+      "id": "conv_1754485254084_e7bf8295",
+      "person": "Caregiver",
+      "person_notes": "Daily care and assistance",
+      "timestamp": "2025-08-06T13:06:02.555Z",
+      "exchanges": [
+        {
+          "user": "dit is een test for chat history",
+          "assistant": "\"Got it! Thanks for testing. How has your day been going so far?\"",
+          "timestamp": "2025-08-06T13:00:54.084Z",
+          "vectorized": false
+        },
+        {
+          "user": "en another one",
+          "assistant": "\"You're keeping me on my toes! Anything specific you'd like to test or talk about next?\"",
+          "timestamp": "2025-08-06T13:06:02.555Z",
+          "vectorized": false
+        }
+      ]
     }
   ]
 }

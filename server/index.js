@@ -286,7 +286,7 @@ io.on('connection', (socket) => {
         // Also save complete exchange to chat history
         if (socket.data.currentPerson) {
           try {
-            await llmService.chatHistoryService.saveConversationExchange(
+            await llmService.chatHistoryService.saveConversation(
               socket.data.currentPerson.id || 'other',
               socket.data.currentPerson.name,
               socket.data.currentPerson.notes || '',

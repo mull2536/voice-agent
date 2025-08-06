@@ -1,5 +1,26 @@
 [
   {
+    "id": 1754485247454,
+    "timestamp": "2025-08-06T13:00:47.454Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "dit is een test for chat history",
+    "responses": [
+      "Sure! Here are three response options you could use:",
+      "\"Got it! Thanks for testing. How has your day been going so far?\"",
+      "\"Looks like the test worked! Is there anything specific you'd like to talk about today?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": null,
+      "ragSourcesCount": 0,
+      "ragSources": [],
+      "chatHistoryUsed": false,
+      "chatHistorySourcesCount": 0,
+      "timestamp": "2025-08-06T13:00:47.453Z"
+    }
+  },
+  {
     "id": 1754396041637,
     "timestamp": "2025-08-05T12:14:01.637Z",
     "personId": "family",
@@ -1959,6 +1980,27 @@
       "chatHistoryUsed": true,
       "chatHistorySourcesCount": 2,
       "timestamp": "2025-08-05T11:11:00.543Z"
+    }
+  },
+  {
+    "id": 1754485555062,
+    "timestamp": "2025-08-06T13:05:55.062Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "en another one",
+    "responses": [
+      "Of course! Here are three response options:",
+      "\"You're keeping me on my toes! Anything specific you'd like to test or talk about next?\"",
+      "\"More tests! You must be busy today. How can I assist you further?\""
+    ],
+    "selectedResponse": null,
+    "context": {
+      "ragUsed": null,
+      "ragSourcesCount": 0,
+      "ragSources": [],
+      "chatHistoryUsed": false,
+      "chatHistorySourcesCount": 0,
+      "timestamp": "2025-08-06T13:05:55.061Z"
     }
   }
 ]

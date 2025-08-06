@@ -171,10 +171,43 @@ class ChatHistoryService {
         }
     }
 
-    async saveConversationExchange(personId, personName, personNotes, userMessage, assistantResponse = null) {
+    async saveConversation(personId, personName, personNotes, userMessage, responses, ragContext = null) {
         const startTime = performance.now();
         
         try {
+            // Handle both cases:
+            // 1. Initial save with array of responses (from LLM)
+            // 2. Final save with selected response (from user selection)
+            
+            const isInitialSave = Array.isArray(responses);
+            const selectedResponse = isInitialSave ? null : responses; // If not array, it's the selected response
+            
+            // Use dataStore for the initial save with all responses
+            if (isInitialSave) {
+                const dataStore = require('../utils/simpleDataStore');
+                const conversation = await dataStore.saveConversation({
+                    personId: personId,
+                    personName: personName,
+                    userMessage: userMessage,
+                    responses: responses,
+                    selectedResponse: null,
+                    context: {
+                        ragUsed: ragContext && ragContext.length > 0,
+                        ragSourcesCount: ragContext ? ragContext.length : 0,
+                        ragSources: ragContext ? ragContext.map(r => r.source) : [],
+                        chatHistoryUsed: false,
+                        chatHistorySourcesCount: 0,
+                        timestamp: new Date().toISOString()
+                    }
+                });
+                
+                const endTime = performance.now();
+                logger.info(`Initial conversation saved in ${(endTime - startTime).toFixed(2)}ms`);
+                
+                return conversation;
+            }
+            
+            // Handle the case where a response has been selected
             const chatHistory = await this.loadChatHistory();
             const timestamp = new Date().toISOString();
             
@@ -192,32 +225,59 @@ class ChatHistoryService {
                 chatHistory.conversations.push(conversation);
             }
 
-            // Create exchange object - only save what appears in conversationUI
+            // Create exchange object - only save the selected response
             const exchange = {
                 user: userMessage,
-                assistant: assistantResponse, // Only the selected/spoken response
+                assistant: selectedResponse,
                 timestamp: timestamp,
-                vectorized: false // Will be vectorized on next rebuild
+                vectorized: false
             };
 
             conversation.exchanges.push(exchange);
-            conversation.timestamp = timestamp; // Update conversation timestamp
+            conversation.timestamp = timestamp;
 
             // Save to file
             await this.saveChatHistory(chatHistory);
 
-            // Add to vector store immediately (incremental) - only if we have assistant response
-            if (assistantResponse) {
+            // Add to vector store immediately
+            if (selectedResponse) {
                 await this.addExchangeToVectorStore(exchange, conversation);
             }
 
             const endTime = performance.now();
             logger.info(`Chat exchange saved in ${(endTime - startTime).toFixed(2)}ms`);
 
-            return conversation.id;
+            return conversation;
             
         } catch (error) {
-            logger.error('Failed to save conversation exchange:', error);
+            logger.error('Failed to save conversation:', error);
+            throw error;
+        }
+    }
+
+    // Also add this helper method to update a conversation with the selected response
+    async updateSelectedResponse(conversationId, selectedResponse) {
+        try {
+            const dataStore = require('../utils/simpleDataStore');
+            const conversations = await dataStore.getConversations();
+            const conversation = conversations.find(c => c.id === conversationId);
+            
+            if (conversation) {
+                conversation.selectedResponse = selectedResponse;
+                await dataStore.updateConversation(conversationId, conversation);
+                
+                // Also save to chat history for vector store
+                await this.saveConversation(
+                    conversation.personId,
+                    conversation.personName,
+                    conversation.personNotes || '',
+                    conversation.userMessage,
+                    selectedResponse // Pass single response, not array
+                );
+            }
+            
+        } catch (error) {
+            logger.error('Failed to update selected response:', error);
             throw error;
         }
     }

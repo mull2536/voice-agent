@@ -799,7 +799,7 @@ input[type="checkbox"] {
 /* Notifications */
 .notification {
     position: fixed;
-    top: 20px;
+    top: 80px;
     right: 20px;
     background-color: var(--surface);
     border: 1px solid var(--border-color);
