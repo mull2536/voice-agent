@@ -62,7 +62,7 @@
       "id": "conv_1754396022282_bd7f78a1",
       "person": "Family Member",
       "person_notes": "General family conversations",
-      "timestamp": "2025-08-05T12:14:08.774Z",
+      "timestamp": "2025-08-06T18:07:45.082Z",
       "exchanges": [
         {
           "user": "how are you",
@@ -75,6 +75,24 @@
           "assistant": "That’s wonderful to hear! I’ve been thinking about how those little moments of connection, like your visits, really brighten my days. How have you been spending your time lately?",
           "timestamp": "2025-08-05T12:14:08.774Z",
           "vectorized": false
+        },
+        {
+          "user": "tegen wie speelt feyenoord vanavond",
+          "assistant": "Feyenoord speelt vanavond tegen FC Emmen. Het belooft een interessante wedstrijd te worden! Zijn jullie van plan om de wedstrijd samen te kijken?",
+          "timestamp": "2025-08-06T17:22:21.882Z",
+          "vectorized": false
+        },
+        {
+          "user": "tegen wie speelt feyenoord vanavond",
+          "assistant": "I understand. Please tell me more.",
+          "timestamp": "2025-08-06T18:06:44.437Z",
+          "vectorized": false
+        },
+        {
+          "user": "ga je naar de kuip",
+          "assistant": "Ik ga niet zelf naar De Kuip, maar ik kan je wel alles vertellen over de sfeer, het team en het programma! Ga jij zelf naar de wedstrijd vanavond?",
+          "timestamp": "2025-08-06T18:07:45.082Z",
+          "vectorized": false
         }
       ]
     },
@@ -82,12 +100,18 @@
       "id": "conv_1754482379097_6d67279d",
       "person": "Other",
       "person_notes": "Anyone else",
-      "timestamp": "2025-08-06T12:12:59.097Z",
+      "timestamp": "2025-08-06T17:46:10.970Z",
       "exchanges": [
         {
           "user": "It's different in this program than in the other program that is running.",
           "assistant": "I'm here to help.",
           "timestamp": "2025-08-06T12:12:59.097Z",
+          "vectorized": false
+        },
+        {
+          "user": "tegen wie speelt feyenoord vanavond",
+          "assistant": "Feyenoord speelt vanavond, woensdag 6 augustus 2025, om 21:00 uur tegen Fenerbahçe in de derde kwalificatieronde van de UEFA Champions League. De wedstrijd vindt plaats in De Kuip, Rotterdam. ([ziggo.nl](https://www.ziggo.nl/entertainment/sport/voetbal/champions-league/feyenoord-fenerbahce-06-08-2025?utm_source=openai)) Je kunt de wedstrijd live volgen op Ziggo Sport en Ziggo Sport Free. Als je tv kijkt via Ziggo, is de wedstrijd te zien op kanaal 14. Kijk je via een andere aanbieder, dan kun je de wedstrijd gratis bekijken met Ziggo Sport Free via de",
+          "timestamp": "2025-08-06T17:46:10.970Z",
           "vectorized": false
         }
       ]

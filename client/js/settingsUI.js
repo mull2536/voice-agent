@@ -95,19 +95,19 @@ class SettingsUI {
             }
         }
         
-        // LLM Settings
+        // Add internet search settings
+        if (settings.internetSearch) {
+            const searchEnabled = document.getElementById('search-enabled');
+            const maxResults = document.getElementById('max-search-results');
+            
+            if (searchEnabled) searchEnabled.checked = settings.internetSearch.enabled !== false;
+            if (maxResults) maxResults.value = settings.internetSearch.maxResults || 3;
+        }
+        
+        // Add LLM system prompt
         if (settings.llm) {
-            const temperature = document.getElementById('temperature');
-            const maxTokens = document.getElementById('max-tokens');
-            
-            if (temperature && settings.llm.temperature !== undefined) {
-                temperature.value = settings.llm.temperature;
-                temperature.dispatchEvent(new Event('input'));
-            }
-            
-            if (maxTokens && settings.llm.maxTokens) {
-                maxTokens.value = settings.llm.maxTokens;
-            }
+            const systemPrompt = document.getElementById('llm-system-prompt');
+            if (systemPrompt) systemPrompt.value = settings.llm.systemPrompt || '';
         }
     }
     
@@ -183,10 +183,23 @@ class SettingsUI {
                 hoverDuration: parseFloat(hoverDuration.value) * 1000,
                 visualFeedback: visualFeedback.checked
             };
-            
+
+            // Add LLM system prompt to existing LLM settings
+            const systemPrompt = document.getElementById('llm-system-prompt');
             updates.llm = {
+                ...this.settings.llm,  // Keep any existing LLM settings
                 temperature: parseFloat(temperature.value),
-                maxTokens: parseInt(maxTokens.value)
+                maxTokens: parseInt(maxTokens.value),
+                systemPrompt: systemPrompt ? systemPrompt.value : ''
+            };
+            
+            // Add internet search settings
+            const searchEnabled = document.getElementById('search-enabled');
+            const maxResults = document.getElementById('max-search-results');
+            
+            updates.internetSearch = {
+                enabled: searchEnabled ? searchEnabled.checked : true,
+                maxResults: maxResults ? parseInt(maxResults.value) : 3
             };
             
             // Save to server

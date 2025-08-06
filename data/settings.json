@@ -1,7 +1,9 @@
 {
   "llm": {
+    "model": "gpt-4.1-mini",
     "temperature": 0.7,
-    "maxTokens": 100
+    "maxTokens": 150,
+    "systemPrompt": ""
   },
   "tts": {
     "voiceId": "",
@@ -10,5 +12,9 @@
   "eyeGaze": {
     "hoverDuration": 3000,
     "visualFeedback": true
+  },
+  "internetSearch": {
+    "enabled": true,
+    "maxResults": 3
   }
 }

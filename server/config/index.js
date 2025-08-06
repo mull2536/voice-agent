@@ -15,7 +15,7 @@ const config = {
   
   // LLM settings
   llm: {
-    model: process.env.LLM_MODEL || 'gpt-4-0125-preview',
+    model: process.env.LLM_MODEL || 'gpt-4.1-mini',
     temperature: parseFloat(process.env.LLM_TEMPERATURE) || 0.7,
     maxTokens: parseInt(process.env.LLM_MAX_TOKENS) || 500
   },

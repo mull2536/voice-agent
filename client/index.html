@@ -129,15 +129,54 @@
                     </div>
 
                     <div class="settings-section">
-                        <h3>LLM Settings</h3>
-                        <div class="setting-item">
-                            <label for="temperature">Temperature</label>
-                            <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7" class="setting-control">
-                            <span class="value-display">0.7</span>
+                    <h3>LLM Settings</h3>
+                        <div></div>
+                        <div class="settings-group">
+                            <label for="llm-model">Model</label>
+                            <select id="llm-model" style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px;">
+                                <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                            </select>
                         </div>
-                        <div class="setting-item">
-                            <label for="max-tokens">Max Tokens</label>
-                            <input type="number" id="max-tokens" min="50" max="1000" value="500" class="setting-control">
+                        <div class="settings-section">
+                            <h3>Language Model</h3>
+                            <div class="settings-group">
+                                <label for="temperature">Temperature</label>
+                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                                <span class="value-display">0.7</span>
+                            </div>
+                            <div class="settings-group">
+                                <label for="max-tokens">Max Tokens</label>
+                                <input type="number" id="max-tokens" min="50" max="2000" value="150">
+                            </div>
+                            <!-- Add this new custom prompt field -->
+                            <div class="settings-group">
+                                <label for="llm-system-prompt">Custom System Prompt</label>
+                                <textarea id="llm-system-prompt" rows="4" 
+                                          placeholder="Enter custom instructions for the AI assistant..."
+                                          style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px;"></textarea>
+                                <p class="help-text">Define how the AI assistant should behave. Leave empty to use default.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Add this new Internet Search section -->
+                        <div class="settings-section">
+                            <h3>Internet Search</h3>
+                            <div class="settings-group">
+                                <label class="switch-label">
+                                    <input type="checkbox" id="search-enabled" checked>
+                                    <span class="switch"></span>
+                                    <span>Enable automatic web search</span>
+                                </label>
+                                <p class="help-text">Allow the AI to search the internet for current information when needed</p>
+                            </div>
+                            <div class="settings-group">
+                                <label for="max-search-results">Max search results</label>
+                                <input type="number" id="max-search-results" min="1" max="10" value="3"
+                                       style="width: 80px; padding: 8px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px;">
+                                <p class="help-text">Number of search results to retrieve when searching</p>
+                            </div>
                         </div>
                     </div>
 

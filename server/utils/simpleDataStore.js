@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const logger = require('../utils/logger');
 
 class SimpleDataStore {
     constructor() {
@@ -134,26 +135,101 @@ class SimpleDataStore {
     }
 
     // Settings
+    // Settings
     async getSettings() {
         try {
+            // Check if settings file exists
+            try {
+                await fs.access(this.settingsFile);
+            } catch {
+                // Create default settings if file doesn't exist
+                const defaultSettings = {
+                    llm: {
+                        temperature: 0.7,
+                        maxTokens: 150,
+                        model: 'gpt-4.1-mini',
+                        systemPrompt: ''
+                    },
+                    tts: {
+                        voiceId: process.env.ELEVENLABS_VOICE_ID || 'default',
+                        speechRate: 1.0
+                    },
+                    eyeGaze: {
+                        hoverDuration: 3000,
+                        visualFeedback: true
+                    },
+                    internetSearch: {
+                        enabled: true,
+                        maxResults: 3
+                    }
+                };
+                await fs.writeFile(this.settingsFile, JSON.stringify(defaultSettings, null, 2));
+                return defaultSettings;
+            }
+            
             const data = await fs.readFile(this.settingsFile, 'utf-8');
-            return JSON.parse(data);
+            const settings = JSON.parse(data);
+            
+            // Ensure internetSearch settings exist
+            if (!settings.internetSearch) {
+                settings.internetSearch = {
+                    enabled: true,
+                    maxResults: 3
+                };
+                await fs.writeFile(this.settingsFile, JSON.stringify(settings, null, 2));
+            }
+            
+            return settings;
         } catch (error) {
             console.error('Failed to get settings:', error);
-            return {};
+            // Return default structure instead of empty object
+            return {
+                llm: {},
+                tts: {},
+                eyeGaze: {},
+                internetSearch: {
+                    enabled: true,
+                    maxResults: 3
+                }
+            };
         }
     }
 
+    // Update the updateSettings method to merge properly:
     async updateSettings(updates) {
         try {
-            const settings = await this.getSettings();
-            const newSettings = { ...settings, ...updates };
+            const currentSettings = await this.getSettings();
             
-            await fs.writeFile(this.settingsFile, JSON.stringify(newSettings, null, 2));
+            // Deep merge the settings
+            const mergedSettings = {
+                ...currentSettings,
+                ...updates,
+                // Ensure nested objects are properly merged
+                llm: {
+                    ...currentSettings.llm,
+                    ...(updates.llm || {})
+                },
+                tts: {
+                    ...currentSettings.tts,
+                    ...(updates.tts || {})
+                },
+                eyeGaze: {
+                    ...currentSettings.eyeGaze,
+                    ...(updates.eyeGaze || {})
+                },
+                internetSearch: {
+                    ...currentSettings.internetSearch,
+                    ...(updates.internetSearch || {})
+                }
+            };
             
-            return newSettings;
+            const settingsPath = path.join(this.dataDir, 'settings.json');
+            await this.writeJSON(settingsPath, mergedSettings);
+            
+            logger.info('Settings updated successfully');
+            return mergedSettings;
         } catch (error) {
-            console.error('Failed to update settings:', error);
+            logger.error('Failed to update settings:', error);
             throw error;
         }
     }
