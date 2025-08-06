@@ -36,7 +36,19 @@ class LLMService {
 
 When the user asks about current events, recent information, or anything that requires up-to-date knowledge, 
 you will automatically have access to web search results. Use this information to provide accurate, current responses.
-Never mention that you performed a search - just integrate the information naturally into your response.`;
+
+IMPORTANT FORMATTING RULES FOR VOICE OUTPUT:
+- Never include URLs, links, or web addresses in your response
+- Do not use markdown formatting like [text](url)
+- Avoid citation numbers or references like [1], (1), or superscripts
+- Do not mention sources inline - focus on the information itself
+- Keep responses concise and natural for text-to-speech
+- Use simple, clear language suitable for voice synthesis
+- Never mention that you performed a search - just integrate the information naturally into your response
+- Avoid phrases like "according to my search" or "I found online"
+- Present information as direct statements without attribution markers
+
+Remember: The user is using voice/eye-gaze technology, so the response must be clean, natural speech without any visual formatting or references.`;
 
         return systemPrompt + searchInstructions;
     }
@@ -45,10 +57,31 @@ Never mention that you performed a search - just integrate the information natur
     cleanResponse(text) {
         if (!text) return text;
         
-        // The Responses API should handle citations internally, but just in case:
-        // Remove any search-related mentions
+        // Remove markdown links [text](url) -> text
+        text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+        
+        // Remove standalone URLs (http/https)
+        text = text.replace(/https?:\/\/[^\s<>"\{\}\|\\^\[\]`]+/g, '');
+        
+        // Remove citation numbers in various formats
+        // Removes patterns like [1], (1), <1>, {1}, ¹, ², ³, etc.
+        text = text.replace(/[\[\(\{\<]\d+[\]\)\}\>]/g, '');
+        text = text.replace(/[\u00B9\u00B2\u00B3\u2074-\u2079\u2070]/g, ''); // Superscript numbers
+        
+        // Remove any remaining citation-style references like "Source: ..."
+        text = text.replace(/\(Source:.*?\)/gi, '');
+        text = text.replace(/Source:\s*[^\n\.]*/gi, '');
+        
+        // Remove any search-related mentions (existing logic)
         text = text.replace(/I (searched|looked up|found online|checked the internet)[\s\S]*?\./gi, '');
         text = text.replace(/According to (my search|the search results|online sources)[\s\S]*?,/gi, '');
+        
+        // Remove any brackets with just whitespace or dots
+        text = text.replace(/\[[\.:\s]*\]/g, '');
+        text = text.replace(/\([\.:\s]*\)/g, '');
+        
+        // Clean up any double spaces created by removals
+        text = text.replace(/\s{2,}/g, ' ');
         
         // Remove multiple consecutive newlines
         text = text.replace(/\n{3,}/g, '\n\n');
