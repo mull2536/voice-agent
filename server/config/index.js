@@ -31,6 +31,12 @@ const config = {
   
   // VAD settings
   vad: {
+    positiveSpeechThreshold: parseFloat(process.env.VAD_POSITIVE_THRESHOLD) || 0.4,
+    negativeSpeechThreshold: parseFloat(process.env.VAD_NEGATIVE_THRESHOLD) || 0.55,
+    minSpeechFrames: parseInt(process.env.VAD_MIN_SPEECH_FRAMES) || 8,
+    preSpeechPadFrames: parseInt(process.env.VAD_PRE_SPEECH_PAD_FRAMES) || 3,
+    redemptionFrames: parseInt(process.env.VAD_REDEMPTION_FRAMES) || 30,
+    // Keep existing if they exist
     threshold: parseFloat(process.env.VAD_THRESHOLD) || 0.5,
     minSpeechDuration: parseInt(process.env.VAD_MIN_SPEECH_DURATION) || 250,
     maxSpeechDuration: parseInt(process.env.VAD_MAX_SPEECH_DURATION) || 10000

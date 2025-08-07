@@ -96,100 +96,266 @@
         <div id="settings-modal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Settings</h2>
+                    <h2>Voice Agent Settings</h2>
                     <button class="close-btn" id="close-settings">&times;</button>
                 </div>
+                
+                <!-- Tab Navigation -->
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="voice">Voice</button>
+                    <button class="tab-btn" data-tab="recorder">Recorder</button>
+                    <button class="tab-btn" data-tab="llm">LLM</button>
+                    <button class="tab-btn" data-tab="system">System</button>
+                </div>
+                
                 <div class="modal-body">
-                    <div class="settings-section">
-                        <h3>Voice Settings</h3>
-                        <div class="setting-item">
-                            <label for="voice-select">Voice</label>
-                            <select id="voice-select" class="setting-control"></select>
-                        </div>
-                        <div class="setting-item">
-                            <label for="speech-rate">Speech Rate</label>
-                            <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1" class="setting-control">
-                            <span class="value-display">1.0x</span>
-                        </div>
-                    </div>
-
-                    <div class="settings-section">
-                        <h3>Eye Gaze Settings</h3>
-                        <div class="setting-item">
-                            <label for="hover-duration">Hover Duration (seconds)</label>
-                            <input type="range" id="hover-duration" min="1" max="5" step="0.5" value="3" class="setting-control">
-                            <span class="value-display">3.0s</span>
-                        </div>
-                        <div class="setting-item">
-                            <label for="visual-feedback">
-                                <input type="checkbox" id="visual-feedback" checked>
-                                Visual Feedback
+                    <!-- Voice Tab -->
+                    <div id="voice-tab" class="tab-content active">
+                        <div class="settings-section">
+                            <h3>Text-to-Speech Settings</h3>
+                            
+                            <div class="setting-item horizontal-layout">
+                                <div class="control-row">
+                                    <label for="voice-select">Voice</label>
+                                    <select id="voice-select" class="setting-control"></select>
+                                </div>
+                                <p class="setting-description">Choose the voice for text-to-speech output</p>
+                            </div>
+                            
+                            <div class="setting-item horizontal-layout">
+                                <div class="control-row">
+                                    <label for="tts-model">Model</label>
+                                    <select id="tts-model" class="setting-control">
+                                        <option value="eleven_monolingual_v1">Eleven Monolingual v1</option>
+                                        <option value="eleven_multilingual_v1">Eleven Multilingual v1</option>
+                                        <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2</option>
+                                        <option value="eleven_turbo_v2">Eleven Turbo v2</option>
+                                    </select>
+                                </div>
+                                <p class="setting-description">Select the TTS model - v2 models provide better quality</p>
+                            </div>
+                            
+                            <div class="setting-item horizontal-layout">
+                                <div class="control-row">
+                                    <label for="output-quality">Output Quality</label>
+                                    <select id="output-quality" class="setting-control">
+                                        <option value="mp3_22050_32">Low (mp3 22kHz 32kbps)</option>
+                                        <option value="mp3_44100_64">Medium (mp3 44kHz 64kbps)</option>
+                                        <option value="mp3_44100_128">High (mp3 44kHz 128kbps)</option>
+                                        <option value="mp3_44100_192" selected>Ultra (mp3 44kHz 192kbps)</option>
+                                    </select>
+                                </div>
+                                <p class="setting-description">Higher quality means better audio but larger file sizes</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Stability (0-1)</span>
+                                    <span class="value-display">0.5</span>
+                                </div>
+                                <input type="range" id="stability" min="0" max="1" step="0.05" value="0.5" class="setting-control">
+                                <p class="setting-description">Higher values make speech more stable and consistent, lower values add expressiveness</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Similarity Boost (0-1)</span>
+                                    <span class="value-display">0.75</span>
+                                </div>
+                                <input type="range" id="similarity-boost" min="0" max="1" step="0.05" value="0.75" class="setting-control">
+                                <p class="setting-description">Higher values make output more similar to the original voice</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Speech Rate</span>
+                                    <span class="value-display">1.0x</span>
+                                </div>
+                                <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1" class="setting-control">
+                                <p class="setting-description">Adjust the speed of speech (0.5x = slower, 2x = faster)</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Style Exaggeration (0-1)</span>
+                                    <span class="value-display">0.0</span>
+                                </div>
+                                <input type="range" id="style-exaggeration" min="0" max="1" step="0.05" value="0" class="setting-control">
+                                <p class="setting-description">Exaggerate the style of the original voice (0 = no exaggeration)</p>
+                            </div>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="speaker-boost" checked>
+                                <span>Speaker Boost</span>
                             </label>
+                            <p class="setting-description">Enhance clarity and reduce background artifacts</p>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="use-fixed-seed">
+                                <span>Use Fixed Seed</span>
+                            </label>
+                            <p class="setting-description">Enable for consistent voice generation across requests</p>
+                            
+                            <div class="setting-item" id="fixed-seed-container" style="display: none;">
+                                <label for="fixed-seed">Fixed Seed</label>
+                                <input type="number" id="fixed-seed" class="setting-control" placeholder="Enter seed value" min="1" pattern="[0-9]+">
+                                <p class="setting-description">Seed value for deterministic voice generation (must be > 0)</p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="settings-section">
-                    <h3>LLM Settings</h3>
-                        <div></div>
-                        <div class="settings-group">
-                            <label for="llm-model">Model</label>
-                            <select id="llm-model" style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px;">
-                                <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
-                                <option value="gpt-4">GPT-4</option>
-                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                            </select>
-                        </div>
+                    
+                    <!-- Recorder Tab -->
+                    <div id="recorder-tab" class="tab-content">
                         <div class="settings-section">
-                            <h3>Language Model</h3>
-                            <div class="settings-group">
-                                <label for="temperature">Temperature</label>
-                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
-                                <span class="value-display">0.7</span>
+                            <h3>Audio Recorder Settings (Silero VAD)</h3>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Positive Speech Threshold (0-1)</span>
+                                    <span class="value-display">0.4</span>
+                                </div>
+                                <input type="range" id="positive-threshold" min="0" max="1" step="0.05" value="0.4" class="setting-control">
+                                <p class="setting-description">Lower = more sensitive to speech. Default: 0.5</p>
                             </div>
-                            <div class="settings-group">
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Negative Speech Threshold (0-1)</span>
+                                    <span class="value-display">0.55</span>
+                                </div>
+                                <input type="range" id="negative-threshold" min="0" max="1" step="0.05" value="0.55" class="setting-control">
+                                <p class="setting-description">Lower = more likely to cut off speech. Default: 0.35</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Min Speech Frames (1-20)</span>
+                                    <span class="value-display">8</span>
+                                </div>
+                                <input type="range" id="min-speech-frames" min="1" max="20" step="1" value="8" class="setting-control">
+                                <p class="setting-description">Minimum consecutive speech frames to trigger. Default: 4</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Pre Speech Pad Frames (0-10)</span>
+                                    <span class="value-display">3</span>
+                                </div>
+                                <input type="range" id="pre-speech-pad" min="0" max="10" step="1" value="3" class="setting-control">
+                                <p class="setting-description">Frames to include before speech starts. Default: 1</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Redemption Frames (0-30)</span>
+                                    <span class="value-display">30</span>
+                                </div>
+                                <input type="range" id="redemption-frames" min="0" max="30" step="1" value="30" class="setting-control">
+                                <p class="setting-description">Frames of non-speech allowed before ending. Default: 8</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- LLM Tab -->
+                    <div id="llm-tab" class="tab-content">
+                        <div class="settings-section">
+                            <h3>Language Model Settings</h3>
+                            
+                            <div class="setting-item">
+                                <label for="llm-model">Model</label>
+                                <select id="llm-model" class="setting-control">
+                                    <option value="gpt-4-turbo-preview">GPT-4 Turbo</option>
+                                    <option value="gpt-4">GPT-4</option>
+                                    <option value="gpt-4-1106-preview">GPT-4 1106</option>
+                                    <option value="gpt-4.1-mini" selected>GPT-4.1 Mini</option>
+                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                </select>
+                                <p class="setting-description">Choose the AI model for generating responses</p>
+                            </div>
+                            
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span>Temperature (0-1)</span>
+                                    <span class="value-display">0.7</span>
+                                </div>
+                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7" class="setting-control">
+                                <p class="setting-description">Higher values make output more creative, lower values more focused</p>
+                            </div>
+                            
+                            <div class="setting-item">
                                 <label for="max-tokens">Max Tokens</label>
-                                <input type="number" id="max-tokens" min="50" max="2000" value="150">
+                                <input type="number" id="max-tokens" min="1" max="4294967295" value="150" class="setting-control" pattern="[0-9]+">
+                                <p class="setting-description">Maximum length of generated responses (1 token ≈ 0.75 words)</p>
                             </div>
-                            <!-- Add this new custom prompt field -->
-                            <div class="settings-group">
-                                <label for="llm-system-prompt">Custom System Prompt</label>
-                                <textarea id="llm-system-prompt" rows="4" 
-                                          placeholder="Enter custom instructions for the AI assistant..."
-                                          style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px;"></textarea>
-                                <p class="help-text">Define how the AI assistant should behave. Leave empty to use default.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Add this new Internet Search section -->
-                        <div class="settings-section">
-                            <h3>Internet Search</h3>
-                            <div class="settings-group">
-                                <label class="switch-label">
-                                    <input type="checkbox" id="search-enabled" checked>
-                                    <span class="switch"></span>
-                                    <span>Enable automatic web search</span>
-                                </label>
-                                <p class="help-text">Allow the AI to search the internet for current information when needed</p>
-                            </div>
-                            <div class="settings-group">
-                                <label for="max-search-results">Max search results</label>
-                                <input type="number" id="max-search-results" min="1" max="10" value="3"
-                                       style="width: 80px; padding: 8px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px;">
-                                <p class="help-text">Number of search results to retrieve when searching</p>
-                            </div>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="search-enabled" checked>
+                                <span>Enable Internet Search</span>
+                            </label>
+                            <p class="setting-description">Allow AI to search the internet for current information</p>
                         </div>
                     </div>
-
-                    <div class="settings-section">
-                        <h3>People Management</h3>
-                        <div class="speaker-list" id="speaker-list">
-                            <!-- People list will be populated here -->
+                    
+                    <!-- System Tab -->
+                    <div id="system-tab" class="tab-content">
+                        <div class="settings-section">
+                            <h3>System Settings</h3>
+                            
+                            <div class="setting-item">
+                                <label for="system-prompt">System Prompt</label>
+                                <textarea id="system-prompt" rows="6" class="setting-control" 
+                                        placeholder="Enter custom instructions for the AI assistant..."></textarea>
+                                <p class="setting-description">Define how the AI assistant should behave and respond</p>
+                            </div>
+                            
+                            <div class="horizontal-group">
+                                <div class="setting-item slider-group">
+                                    <div class="slider-label">
+                                        <span>Eye Gaze Duration (seconds)</span>
+                                        <span class="value-display">3.0s</span>
+                                    </div>
+                                    <input type="range" id="hover-duration" min="1" max="5" step="0.5" value="3" class="setting-control">
+                                    <p class="setting-description">How long to look at an option before it's selected</p>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="visual-feedback" checked>
+                                        <span>Eye Gaze Visual Feedback</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label for="default-language">Default Language</label>
+                                    <select id="default-language" class="setting-control">
+                                        <option value="en" selected>English</option>
+                                        <option value="nl">Dutch (Nederlands)</option>
+                                        <option value="es">Spanish (Español)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <h3>RAG Settings</h3>
+                            
+                            <div class="rag-grid">
+                                <div class="rag-labels">
+                                    <label>Chunk Size</label>
+                                    <label>Chunk Overlap</label>
+                                    <label>Number of Results</label>
+                                </div>
+                                <div class="rag-inputs">
+                                    <input type="number" id="chunk-size" min="100" max="2000" value="1000" class="setting-control" pattern="[0-9]+">
+                                    <input type="number" id="chunk-overlap" min="0" max="500" value="200" class="setting-control" pattern="[0-9]+">
+                                    <input type="number" id="top-k-results" min="1" max="20" value="5" class="setting-control" pattern="[0-9]+">
+                                </div>
+                                <p class="setting-description">Configure how documents are indexed and retrieved from the knowledge base. Chunk size determines text segment length, overlap maintains context between chunks, and number of results controls how many relevant documents are returned.</p>
+                            </div>
                         </div>
-                        <button id="add-speaker-btn" class="add-speaker-btn">Add New Person</button>
                     </div>
                 </div>
+                
                 <div class="modal-footer">
-                    <button id="save-settings" class="save-btn">Save Settings</button>
+                    <button class="save-btn" id="save-settings">Save Settings</button>
                 </div>
             </div>
         </div>

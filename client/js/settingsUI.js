@@ -4,7 +4,6 @@ class SettingsUI {
         this.api = api;
         this.modal = document.getElementById('settings-modal');
         this.settings = {};
-        this.people = [];
         
         this.setupEventListeners();
     }
@@ -14,16 +13,45 @@ class SettingsUI {
         document.getElementById('close-settings').addEventListener('click', () => {
             this.close();
         });
+
+        // Click outside to close
+        this.modal.addEventListener('click', (event) => {
+            if (event.target === this.modal) {
+                this.close();
+            }
+        });
         
         // Save button
         document.getElementById('save-settings').addEventListener('click', () => {
             this.saveSettings();
         });
         
-        // Add person button
-        document.getElementById('add-speaker-btn').addEventListener('click', () => {
-            this.showAddPersonDialog();
+        // Tab switching
+        const tabButtons = this.modal.querySelectorAll('.tab-btn');
+        const tabContents = this.modal.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Update active states
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                button.classList.add('active');
+                document.getElementById(`${targetTab}-tab`).classList.add('active');
+            });
         });
+        
+        // Fixed seed toggle
+        const useFixedSeed = document.getElementById('use-fixed-seed');
+        const fixedSeedContainer = document.getElementById('fixed-seed-container');
+        
+        if (useFixedSeed) {
+            useFixedSeed.addEventListener('change', (e) => {
+                fixedSeedContainer.style.display = e.target.checked ? 'block' : 'none';
+            });
+        }
         
         // Range inputs - show value
         const rangeInputs = this.modal.querySelectorAll('input[type="range"]');
@@ -32,15 +60,36 @@ class SettingsUI {
                 const valueDisplay = e.target.parentElement.querySelector('.value-display');
                 if (valueDisplay) {
                     const value = e.target.value;
-                    if (e.target.id === 'hover-duration') {
-                        valueDisplay.textContent = `${value}s`;
-                    } else if (e.target.id === 'speech-rate') {
-                        valueDisplay.textContent = `${value}x`;
-                    } else {
-                        valueDisplay.textContent = value;
+                    
+                    // Format based on input ID
+                    switch(e.target.id) {
+                        case 'hover-duration':
+                            valueDisplay.textContent = `${value}s`;
+                            break;
+                        case 'speech-rate':
+                            valueDisplay.textContent = `${value}x`;
+                            break;
+                        case 'positive-threshold':
+                        case 'negative-threshold':
+                        case 'stability':
+                        case 'similarity-boost':
+                        case 'style-exaggeration':
+                        case 'temperature':
+                            valueDisplay.textContent = value;
+                            break;
+                        case 'min-speech-frames':
+                        case 'pre-speech-pad':
+                        case 'redemption-frames':
+                            valueDisplay.textContent = value;
+                            break;
+                        default:
+                            valueDisplay.textContent = value;
                     }
                 }
             });
+            
+            // Trigger initial update
+            input.dispatchEvent(new Event('input'));
         });
     }
     
@@ -54,11 +103,9 @@ class SettingsUI {
             
             // Load voices
             const voicesResponse = await this.api.getVoices();
-            this.loadVoices(voicesResponse.voices);
+            // Pass the entire response to loadVoices - it will handle the structure
+            this.loadVoices(voicesResponse);
             
-            // Load people
-            const peopleResponse = await this.api.getPeople();
-            this.loadPeople(peopleResponse.people);
         } catch (error) {
             console.error('Failed to load settings:', error);
         }
@@ -71,229 +118,278 @@ class SettingsUI {
     loadSettings(settings) {
         this.settings = settings;
         
-        // TTS Settings
+        // Voice Tab Settings
         if (settings.tts) {
+            const voiceSelect = document.getElementById('voice-select');
+            const ttsModel = document.getElementById('tts-model');
+            const outputQuality = document.getElementById('output-quality');
+            const stability = document.getElementById('stability');
+            const similarityBoost = document.getElementById('similarity-boost');
             const speechRate = document.getElementById('speech-rate');
+            const styleExaggeration = document.getElementById('style-exaggeration');
+            const speakerBoost = document.getElementById('speaker-boost');
+            
+            if (voiceSelect && settings.tts.voiceId) {
+                voiceSelect.value = settings.tts.voiceId;
+            }
+            if (ttsModel && settings.tts.model) {
+                ttsModel.value = settings.tts.model;
+            }
+            if (outputQuality && settings.tts.outputQuality) {
+                outputQuality.value = settings.tts.outputQuality;
+            }
+            if (stability && settings.tts.stability !== undefined) {
+                stability.value = settings.tts.stability;
+                stability.dispatchEvent(new Event('input'));
+            }
+            if (similarityBoost && settings.tts.similarityBoost !== undefined) {
+                similarityBoost.value = settings.tts.similarityBoost;
+                similarityBoost.dispatchEvent(new Event('input'));
+            }
             if (speechRate && settings.tts.speechRate) {
                 speechRate.value = settings.tts.speechRate;
                 speechRate.dispatchEvent(new Event('input'));
             }
-        }
-        
-        // Eye Gaze Settings
-        if (settings.eyeGaze) {
-            const hoverDuration = document.getElementById('hover-duration');
-            const visualFeedback = document.getElementById('visual-feedback');
-            
-            if (hoverDuration && settings.eyeGaze.hoverDuration) {
-                hoverDuration.value = settings.eyeGaze.hoverDuration / 1000;
-                hoverDuration.dispatchEvent(new Event('input'));
+            if (styleExaggeration && settings.tts.style !== undefined) {
+                styleExaggeration.value = settings.tts.style;
+                styleExaggeration.dispatchEvent(new Event('input'));
             }
-            
-            if (visualFeedback) {
-                visualFeedback.checked = settings.eyeGaze.visualFeedback !== false;
+            if (speakerBoost) {
+                speakerBoost.checked = settings.tts.useSpeakerBoost !== false;
             }
         }
         
-        // Add internet search settings
-        if (settings.internetSearch) {
-            const searchEnabled = document.getElementById('search-enabled');
-            const maxResults = document.getElementById('max-search-results');
+        // Recorder Tab Settings
+        if (settings.vad) {
+            const positiveThreshold = document.getElementById('positive-threshold');
+            const negativeThreshold = document.getElementById('negative-threshold');
+            const minSpeechFrames = document.getElementById('min-speech-frames');
+            const preSpeechPad = document.getElementById('pre-speech-pad');
+            const redemptionFrames = document.getElementById('redemption-frames');
             
-            if (searchEnabled) searchEnabled.checked = settings.internetSearch.enabled !== false;
-            if (maxResults) maxResults.value = settings.internetSearch.maxResults || 3;
+            if (positiveThreshold && settings.vad.positiveSpeechThreshold !== undefined) {
+                positiveThreshold.value = settings.vad.positiveSpeechThreshold;
+                positiveThreshold.dispatchEvent(new Event('input'));
+            }
+            if (negativeThreshold && settings.vad.negativeSpeechThreshold !== undefined) {
+                negativeThreshold.value = settings.vad.negativeSpeechThreshold;
+                negativeThreshold.dispatchEvent(new Event('input'));
+            }
+            if (minSpeechFrames && settings.vad.minSpeechFrames !== undefined) {
+                minSpeechFrames.value = settings.vad.minSpeechFrames;
+                minSpeechFrames.dispatchEvent(new Event('input'));
+            }
+            if (preSpeechPad && settings.vad.preSpeechPadFrames !== undefined) {
+                preSpeechPad.value = settings.vad.preSpeechPadFrames;
+                preSpeechPad.dispatchEvent(new Event('input'));
+            }
+            if (redemptionFrames && settings.vad.redemptionFrames !== undefined) {
+                redemptionFrames.value = settings.vad.redemptionFrames;
+                redemptionFrames.dispatchEvent(new Event('input'));
+            }
         }
         
-        // Add LLM system prompt
+        // LLM Tab Settings
         if (settings.llm) {
-            const systemPrompt = document.getElementById('llm-system-prompt');
-            if (systemPrompt) systemPrompt.value = settings.llm.systemPrompt || '';
+            const llmModel = document.getElementById('llm-model');
+            const temperature = document.getElementById('temperature');
+            const maxTokens = document.getElementById('max-tokens');
+            const searchEnabled = document.getElementById('search-enabled');
+            
+            if (llmModel && settings.llm.model) {
+                llmModel.value = settings.llm.model;
+            }
+            if (temperature && settings.llm.temperature !== undefined) {
+                temperature.value = settings.llm.temperature;
+                temperature.dispatchEvent(new Event('input'));
+            }
+            if (maxTokens && settings.llm.maxTokens) {
+                maxTokens.value = settings.llm.maxTokens;
+            }
+            if (searchEnabled && settings.internetSearch) {
+                searchEnabled.checked = settings.internetSearch.enabled !== false;
+            }
+        }
+        
+        // System Tab Settings
+        const systemPrompt = document.getElementById('system-prompt');
+        const hoverDuration = document.getElementById('hover-duration');
+        const visualFeedback = document.getElementById('visual-feedback');
+        const defaultLanguage = document.getElementById('default-language');
+        const chunkSize = document.getElementById('chunk-size');
+        const chunkOverlap = document.getElementById('chunk-overlap');
+        const topKResults = document.getElementById('top-k-results');
+        
+        if (systemPrompt && settings.llm && settings.llm.systemPrompt) {
+            systemPrompt.value = settings.llm.systemPrompt;
+        }
+        if (hoverDuration && settings.eyeGaze && settings.eyeGaze.hoverDuration) {
+            hoverDuration.value = settings.eyeGaze.hoverDuration / 1000;
+            hoverDuration.dispatchEvent(new Event('input'));
+        }
+        if (visualFeedback && settings.eyeGaze) {
+            visualFeedback.checked = settings.eyeGaze.visualFeedback !== false;
+        }
+        if (defaultLanguage && settings.system && settings.system.defaultLanguage) {
+            defaultLanguage.value = settings.system.defaultLanguage;
+        }
+        if (chunkSize && settings.rag && settings.rag.chunkSize) {
+            chunkSize.value = settings.rag.chunkSize;
+        }
+        if (chunkOverlap && settings.rag && settings.rag.chunkOverlap) {
+            chunkOverlap.value = settings.rag.chunkOverlap;
+        }
+        if (topKResults && settings.rag && settings.rag.topK) {
+            topKResults.value = settings.rag.topK;
         }
     }
     
-    loadVoices(voices) {
+    loadVoices(voicesData) {
         const voiceSelect = document.getElementById('voice-select');
+        if (!voiceSelect) return;
+        
         voiceSelect.innerHTML = '';
         
+        // Handle the response structure
+        let voices = [];
+        if (voicesData && voicesData.voices) {
+            voices = voicesData.voices;
+        } else if (Array.isArray(voicesData)) {
+            voices = voicesData;
+        }
+        
+        // Check if we have voices
+        if (voices.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No voices available';
+            voiceSelect.appendChild(option);
+            console.warn('No voices available from ElevenLabs');
+            return;
+        }
+        
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '-- Select a voice --';
+        voiceSelect.appendChild(defaultOption);
+        
+        // Add voices
         voices.forEach(voice => {
             const option = document.createElement('option');
-            option.value = voice.voice_id;
-            option.textContent = voice.name;
+            // ElevenLabs API returns voice_id (with underscore)
+            option.value = voice.voice_id || voice.voiceId || '';
             
-            if (this.settings.tts && this.settings.tts.voiceId === voice.voice_id) {
+            // Create descriptive label
+            let label = voice.name || 'Unnamed Voice';
+            if (voice.category) {
+                label += ` (${voice.category})`;
+            }
+            
+            option.textContent = label;
+            
+            // Check if currently selected
+            if (this.settings.tts && this.settings.tts.voiceId && 
+                (this.settings.tts.voiceId === voice.voice_id || 
+                 this.settings.tts.voiceId === voice.voiceId)) {
                 option.selected = true;
             }
             
             voiceSelect.appendChild(option);
         });
-    }
-    
-    loadPeople(people) {
-        this.people = people;
-        const peopleList = document.getElementById('speaker-list');
-        peopleList.innerHTML = '';
         
-        people.forEach(person => {
-            const personItem = this.createPersonItem(person);
-            peopleList.appendChild(personItem);
-        });
-    }
-    
-    createPersonItem(person) {
-        const item = document.createElement('div');
-        item.className = 'speaker-item';
-        
-        const lastConv = person.lastConversation 
-            ? new Date(person.lastConversation).toLocaleDateString() 
-            : 'Never';
-        
-        item.innerHTML = `
-            <div class="speaker-info">
-                <div class="speaker-name">${person.name}</div>
-                <div class="speaker-notes">${person.notes || 'No notes'}</div>
-                <div class="speaker-last">Last conversation: ${lastConv}</div>
-            </div>
-            <div class="speaker-actions">
-                <button onclick="app.settingsUI.editPerson('${person.id}')">Edit</button>
-                <button onclick="app.settingsUI.deletePerson('${person.id}')">Delete</button>
-            </div>
-        `;
-        
-        return item;
+        // Try to select saved voice if not already selected
+        if (!voiceSelect.value && this.settings.tts && this.settings.tts.voiceId) {
+            voiceSelect.value = this.settings.tts.voiceId;
+        }
     }
     
     async saveSettings() {
         try {
             const updates = {};
             
-            // Collect all settings
-            const voiceSelect = document.getElementById('voice-select');
-            const speechRate = document.getElementById('speech-rate');
-            const hoverDuration = document.getElementById('hover-duration');
-            const visualFeedback = document.getElementById('visual-feedback');
-            const temperature = document.getElementById('temperature');
-            const maxTokens = document.getElementById('max-tokens');
-            
-            updates.tts = {
-                voiceId: voiceSelect.value,
-                speechRate: parseFloat(speechRate.value)
-            };
-            
-            updates.eyeGaze = {
-                hoverDuration: parseFloat(hoverDuration.value) * 1000,
-                visualFeedback: visualFeedback.checked
-            };
+            // Collect Voice settings
+            const voiceSelectElement = document.getElementById('voice-select');
+            const selectedVoiceId = voiceSelectElement ? voiceSelectElement.value : '';
 
-            // Add LLM system prompt to existing LLM settings
-            const systemPrompt = document.getElementById('llm-system-prompt');
-            updates.llm = {
-                ...this.settings.llm,  // Keep any existing LLM settings
-                temperature: parseFloat(temperature.value),
-                maxTokens: parseInt(maxTokens.value),
-                systemPrompt: systemPrompt ? systemPrompt.value : ''
+            // If no voice is selected, log a warning
+            if (!selectedVoiceId) {
+                console.warn('No voice selected in settings');
+            }
+
+            updates.tts = {
+                voiceId: selectedVoiceId || this.settings.tts?.voiceId || '',
+                model: document.getElementById('tts-model').value,
+                outputQuality: document.getElementById('output-quality').value,
+                stability: parseFloat(document.getElementById('stability').value),
+                similarityBoost: parseFloat(document.getElementById('similarity-boost').value),
+                speechRate: parseFloat(document.getElementById('speech-rate').value),
+                style: parseFloat(document.getElementById('style-exaggeration').value),
+                useSpeakerBoost: document.getElementById('speaker-boost').checked,
+                useFixedSeed: document.getElementById('use-fixed-seed').checked,
+                fixedSeed: document.getElementById('use-fixed-seed').checked ? 
+                           (parseInt(document.getElementById('fixed-seed').value) || null) : null
             };
             
-            // Add internet search settings
-            const searchEnabled = document.getElementById('search-enabled');
-            const maxResults = document.getElementById('max-search-results');
+            // Collect Recorder settings
+            updates.vad = {
+                positiveSpeechThreshold: parseFloat(document.getElementById('positive-threshold').value),
+                negativeSpeechThreshold: parseFloat(document.getElementById('negative-threshold').value),
+                minSpeechFrames: parseInt(document.getElementById('min-speech-frames').value),
+                preSpeechPadFrames: parseInt(document.getElementById('pre-speech-pad').value),
+                redemptionFrames: parseInt(document.getElementById('redemption-frames').value)
+            };
             
+            // Collect LLM settings
+            updates.llm = {
+                model: document.getElementById('llm-model').value,
+                temperature: parseFloat(document.getElementById('temperature').value),
+                maxTokens: parseInt(document.getElementById('max-tokens').value),
+                systemPrompt: document.getElementById('system-prompt').value
+            };
+            
+            // Collect Internet Search settings
             updates.internetSearch = {
-                enabled: searchEnabled ? searchEnabled.checked : true,
-                maxResults: maxResults ? parseInt(maxResults.value) : 3
+                enabled: document.getElementById('search-enabled').checked
+            };
+            
+            // Collect System settings
+            updates.eyeGaze = {
+                hoverDuration: parseFloat(document.getElementById('hover-duration').value) * 1000,
+                visualFeedback: document.getElementById('visual-feedback').checked
+            };
+            
+            updates.system = {
+                defaultLanguage: document.getElementById('default-language').value
+            };
+            
+            updates.rag = {
+                chunkSize: parseInt(document.getElementById('chunk-size').value),
+                chunkOverlap: parseInt(document.getElementById('chunk-overlap').value),
+                topK: parseInt(document.getElementById('top-k-results').value)
             };
             
             // Save to server
             await this.api.updateSettings(updates);
             
-            // Update local eye gaze settings
+            // Update local eye gaze settings if needed
             if (window.app && window.app.eyeGazeControls) {
                 window.app.eyeGazeControls.updateSettings({
-                    hoverDuration: parseFloat(hoverDuration.value),
-                    visualFeedback: visualFeedback.checked
+                    hoverDuration: parseFloat(document.getElementById('hover-duration').value),
+                    visualFeedback: document.getElementById('visual-feedback').checked
                 });
             }
             
             this.showNotification('Settings saved successfully!', 'success');
-            this.close();
+            
+            // Close modal after short delay
+            setTimeout(() => {
+                this.close();
+            }, 1500);
             
         } catch (error) {
             console.error('Failed to save settings:', error);
             this.showNotification('Failed to save settings', 'error');
-        }
-    }
-    
-    showAddPersonDialog() {
-        const name = prompt('Enter person\'s name:');
-        if (!name) return;
-        
-        const notes = prompt('Enter notes about this person (optional):\nExample: "My wife, likes to hear about my day"');
-        
-        this.addPerson(name, notes || '');
-    }
-    
-    async addPerson(name, notes) {
-        try {
-            const response = await this.api.addPerson(name, notes);
-            
-            if (response.success) {
-                // Reload people
-                const peopleResponse = await this.api.getPeople();
-                this.loadPeople(peopleResponse.people);
-                
-                this.showNotification(`Added "${name}" successfully!`, 'success');
-            }
-        } catch (error) {
-            console.error('Failed to add person:', error);
-            this.showNotification('Failed to add person', 'error');
-        }
-    }
-    
-    async editPerson(id) {
-        const person = this.people.find(p => p.id === id);
-        if (!person) return;
-        
-        const name = prompt('Edit name:', person.name);
-        if (!name) return;
-        
-        const notes = prompt('Edit notes:', person.notes || '');
-        
-        try {
-            await this.api.updatePerson(id, { name, notes });
-            
-            // Reload people
-            const peopleResponse = await this.api.getPeople();
-            this.loadPeople(peopleResponse.people);
-            
-            this.showNotification('Person updated successfully!', 'success');
-        } catch (error) {
-            console.error('Failed to update person:', error);
-            this.showNotification('Failed to update person', 'error');
-        }
-    }
-    
-    async deletePerson(id) {
-        const person = this.people.find(p => p.id === id);
-        if (!person) return;
-        
-        // Don't allow deleting default people
-        if (['family', 'caregiver', 'doctor', 'friend', 'other'].includes(id)) {
-            this.showNotification('Cannot delete default people', 'error');
-            return;
-        }
-        
-        if (!confirm(`Delete "${person.name}"?`)) return;
-        
-        try {
-            await this.api.deletePerson(id);
-            
-            // Reload people
-            const peopleResponse = await this.api.getPeople();
-            this.loadPeople(peopleResponse.people);
-            
-            this.showNotification('Person deleted successfully!', 'success');
-        } catch (error) {
-            console.error('Failed to delete person:', error);
-            this.showNotification('Failed to delete person', 'error');
         }
     }
     

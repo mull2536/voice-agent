@@ -135,7 +135,6 @@ class SimpleDataStore {
     }
 
     // Settings
-    // Settings
     async getSettings() {
         try {
             // Check if settings file exists
@@ -148,15 +147,36 @@ class SimpleDataStore {
                         temperature: 0.7,
                         maxTokens: 150,
                         model: 'gpt-4.1-mini',
-                        systemPrompt: ''
+                        systemPrompt: '',
+                        defaultLanguage: 'en'
                     },
                     tts: {
                         voiceId: process.env.ELEVENLABS_VOICE_ID || 'default',
-                        speechRate: 1.0
+                        speechRate: 1.0,
+                        model: 'eleven_multilingual_v2',
+                        outputQuality: 'mp3_44100_192',
+                        stability: 0.5,
+                        similarityBoost: 0.75,
+                        style: 0.0,
+                        useSpeakerBoost: true,
+                        useFixedSeed: false,
+                        fixedSeed: null
+                    },
+                    vad: {
+                        positiveSpeechThreshold: 0.4,
+                        negativeSpeechThreshold: 0.55,
+                        minSpeechFrames: 8,
+                        preSpeechPadFrames: 3,
+                        redemptionFrames: 30
                     },
                     eyeGaze: {
                         hoverDuration: 3000,
                         visualFeedback: true
+                    },
+                    rag: {
+                        chunkSize: 1000,
+                        chunkOverlap: 200,
+                        topK: 5
                     },
                     internetSearch: {
                         enabled: true,
@@ -170,27 +190,39 @@ class SimpleDataStore {
             const data = await fs.readFile(this.settingsFile, 'utf-8');
             const settings = JSON.parse(data);
             
-            // Ensure internetSearch settings exist
-            if (!settings.internetSearch) {
-                settings.internetSearch = {
-                    enabled: true,
-                    maxResults: 3
-                };
-                await fs.writeFile(this.settingsFile, JSON.stringify(settings, null, 2));
-            }
+            // Ensure all categories exist in loaded settings
+            const defaultStructure = {
+                llm: {},
+                tts: {},
+                vad: {},
+                eyeGaze: {},
+                rag: {},
+                internetSearch: {}
+            };
             
-            return settings;
+            // Merge with defaults to ensure all categories exist
+            const completeSettings = {
+                ...defaultStructure,
+                ...settings,
+                llm: { ...defaultStructure.llm, ...(settings.llm || {}) },
+                tts: { ...defaultStructure.tts, ...(settings.tts || {}) },
+                vad: { ...defaultStructure.vad, ...(settings.vad || {}) },
+                eyeGaze: { ...defaultStructure.eyeGaze, ...(settings.eyeGaze || {}) },
+                rag: { ...defaultStructure.rag, ...(settings.rag || {}) },
+                internetSearch: { ...defaultStructure.internetSearch, ...(settings.internetSearch || {}) }
+            };
+            
+            return completeSettings;
         } catch (error) {
             console.error('Failed to get settings:', error);
-            // Return default structure instead of empty object
+            // Return default structure on error
             return {
                 llm: {},
                 tts: {},
+                vad: {},
                 eyeGaze: {},
-                internetSearch: {
-                    enabled: true,
-                    maxResults: 3
-                }
+                rag: {},
+                internetSearch: {}
             };
         }
     }
@@ -200,7 +232,7 @@ class SimpleDataStore {
         try {
             const currentSettings = await this.getSettings();
             
-            // Deep merge the settings
+            // Deep merge the settings - handle all possible categories
             const mergedSettings = {
                 ...currentSettings,
                 ...updates,
@@ -213,9 +245,17 @@ class SimpleDataStore {
                     ...currentSettings.tts,
                     ...(updates.tts || {})
                 },
+                vad: {
+                    ...currentSettings.vad,
+                    ...(updates.vad || {})
+                },
                 eyeGaze: {
                     ...currentSettings.eyeGaze,
                     ...(updates.eyeGaze || {})
+                },
+                rag: {
+                    ...currentSettings.rag,
+                    ...(updates.rag || {})
                 },
                 internetSearch: {
                     ...currentSettings.internetSearch,
@@ -223,8 +263,8 @@ class SimpleDataStore {
                 }
             };
             
-            const settingsPath = path.join(this.dataDir, 'settings.json');
-            await this.writeJSON(settingsPath, mergedSettings);
+            // Save to file using the existing helper method
+            await fs.writeFile(this.settingsFile, JSON.stringify(mergedSettings, null, 2));
             
             logger.info('Settings updated successfully');
             return mergedSettings;

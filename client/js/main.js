@@ -203,11 +203,7 @@ class CommunicationAssistant {
                     visualFeedback: true
                 });
             }
-            
-            // Load people
-            const peopleResponse = await this.api.getPeople();
-            this.loadPeople(peopleResponse.people);
-
+ 
             this.currentPerson = null;
             
             // Load recent conversations
@@ -216,15 +212,6 @@ class CommunicationAssistant {
             
         } catch (error) {
             console.error('Failed to load initial data:', error);
-        }
-    }
-    
-    loadPeople(people) {
-        this.people = people;
-        
-        // Also update settings UI
-        if (this.settingsUI) {
-            this.settingsUI.loadPeople(people);
         }
     }
     

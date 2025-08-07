@@ -37,30 +37,27 @@ router.put('/', async (req, res) => {
   try {
     const updates = req.body;
     
+    // Log what we're receiving for debugging
+    logger.info('Received settings update:', JSON.stringify(updates, null, 2));
+    
     // Get current settings
     const currentSettings = await dataStore.getSettings();
     
-    // Merge updates
-    const newSettings = {
-      ...currentSettings,
-      ...updates
-    };
-    
     // Save settings
-    await dataStore.updateSettings(newSettings);
+    await dataStore.updateSettings(updates);
     
-    logger.info('Settings updated');
+    logger.info('Settings updated successfully');
     
     res.json({
       success: true,
-      message: 'Settings updated successfully',
-      settings: newSettings
+      message: 'Settings updated successfully'
     });
   } catch (error) {
     logger.error('Failed to update settings:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to update settings'
+      error: 'Failed to update settings',
+      details: error.message
     });
   }
 });
@@ -188,17 +185,31 @@ router.get('/voices', async (req, res) => {
   try {
     const TTSService = require('../services/tts');
     const tts = new TTSService();
-    const voices = await tts.listVoices();
+    
+    // This will return the voices array from ElevenLabs
+    // The listVoices method handles both SDK and HTTP fallback
+    const voicesData = await tts.listVoices();
+    
+    // Check if we got the voices directly or wrapped
+    let voices = [];
+    if (Array.isArray(voicesData)) {
+      voices = voicesData;
+    } else if (voicesData && voicesData.voices) {
+      voices = voicesData.voices;
+    }
+    
+    logger.info(`Retrieved ${voices.length} voices from ElevenLabs`);
     
     res.json({
       success: true,
-      voices
+      voices: voices
     });
   } catch (error) {
     logger.error('Failed to get voices:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to retrieve voices'
+      error: 'Failed to retrieve voices from ElevenLabs',
+      voices: [] // Return empty array on error
     });
   }
 });

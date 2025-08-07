@@ -712,6 +712,448 @@ input[type="checkbox"] {
     margin-right: 0.5rem;
 }
 
+/* Tab Navigation */
+.settings-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--surface);
+    padding: 0 2rem;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-hover);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Base setting item structure */
+.setting-item {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Horizontal layout for voice tab dropdowns */
+.setting-item.horizontal-layout {
+    margin-bottom: 1.5rem;
+}
+
+.setting-item.horizontal-layout .control-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.setting-item.horizontal-layout label {
+    min-width: 150px;
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 500;
+    text-align: left;
+    display: block;
+}
+
+.setting-item.horizontal-layout .setting-control {
+    flex: 1;
+    max-width: 600px;
+}
+
+/* Override any centering that might be inherited */
+#voice-tab .control-row label {
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
+/* Standard setting item label */
+.setting-item label {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+/* Input controls */
+.setting-control {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Select and text inputs */
+select.setting-control,
+input[type="text"].setting-control,
+input[type="number"].setting-control {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem;
+    background-color: var(--surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+/* Voice Tab Specific Fixes - Add this after your existing CSS */
+
+/* Force all Voice tab select boxes to use flexbox instead of grid */
+#settings-modal #voice-tab .setting-item.horizontal-layout .control-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+}
+
+#settings-modal #voice-tab .setting-item.horizontal-layout .control-row label {
+    text-align: left !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 120px !important;
+    flex-shrink: 0 !important;
+}
+
+#settings-modal #voice-tab .setting-item.horizontal-layout .control-row select.setting-control {
+    flex: 1 !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    min-width: 300px !important;
+}
+
+/* Force exact same size for all three select boxes */
+#settings-modal #voice-tab select#voice-select,
+#settings-modal #voice-tab select#tts-model,
+#settings-modal #voice-tab select#output-quality {
+    width: 100% !important;
+    max-width: 400px !important;
+    min-width: 300px !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure consistent spacing between items */
+#settings-modal #voice-tab .setting-item.horizontal-layout {
+    margin-bottom: 1.5rem !important;
+    width: 100% !important;
+}
+
+/* Make sure description text is consistent */
+#settings-modal #voice-tab .setting-item.horizontal-layout .setting-description {
+    margin-top: 0.5rem !important;
+    width: 100% !important;
+}
+
+select.setting-control:focus,
+input[type="text"].setting-control:focus,
+input[type="number"].setting-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Number inputs - smaller width */
+input[type="number"].setting-control {
+    max-width: 150px;
+}
+
+/* Range inputs */
+input[type="range"] {
+    width: 100%;
+    max-width: 400px;
+    height: 6px;
+    background: var(--surface-hover);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Value display for sliders */
+.value-display {
+    margin-left: 1rem;
+    color: var(--text-secondary);
+    min-width: 50px;
+    text-align: right;
+}
+
+/* Textarea - larger for system prompt */
+textarea.setting-control {
+    width: 100%;
+    max-width: 600px;
+    padding: 0.75rem;
+    background-color: var(--surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    resize: vertical;
+    min-height: 150px;
+}
+
+textarea.setting-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Description text */
+.setting-description {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+    max-width: 600px;
+}
+
+/* Checkbox/Toggle items */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Horizontal group for system tab */
+.horizontal-group {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.horizontal-group .setting-item {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/* RAG settings grid */
+.rag-grid {
+    margin-bottom: 1rem;
+}
+
+.rag-labels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.rag-labels label {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin: 0;
+}
+
+.rag-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.rag-inputs input {
+    width: 100%;
+    max-width: 120px;
+}
+
+/* Slider group with value display */
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.slider-label .value-display {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-left: 1rem;
+}
+
+/* Settings section headers */
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    color: var(--primary-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-section:first-child h3 {
+    margin-top: 0;
+}
+
+/* Tab specific adjustments */
+#voice-tab .setting-control {
+    margin-bottom: 0.5rem;
+}
+
+#voice-tab .checkbox-label {
+    margin-top: 1rem;
+}
+
+#recorder-tab .slider-group {
+    margin-bottom: 1.5rem;
+}
+
+#recorder-tab .slider-label {
+    margin-bottom: 1rem;
+}
+
+#llm-tab .setting-item {
+    margin-bottom: 2.5rem;
+}
+
+#llm-tab input[type="number"] {
+    max-width: 120px;
+}
+
+#system-tab textarea {
+    margin-bottom: 1rem;
+}
+
+#system-tab .horizontal-group {
+    margin-top: 2rem;
+}
+
+/* System tab RAG number inputs */
+#system-tab input[type="number"] {
+    max-width: 120px;
+}
+
+/* Hidden element - Fixed seed container */
+#fixed-seed-container {
+    transition: all 0.3s ease;
+}
+
+/* Save button */
+.save-btn {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 2rem;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.save-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .settings-tabs {
+        padding: 0 1rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .horizontal-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .setting-item.horizontal-layout .control-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .setting-item.horizontal-layout label {
+        min-width: auto;
+    }
+    
+    .rag-labels,
+    .rag-inputs {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .setting-control,
+    input[type="range"].setting-control,
+    textarea.setting-control {
+        max-width: 100%;
+    }
+}
+
 /* Speaker Management */
 .speaker-list {
     margin-bottom: 1rem;
