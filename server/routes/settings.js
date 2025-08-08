@@ -37,14 +37,44 @@ router.put('/', async (req, res) => {
   try {
     const updates = req.body;
     
-    // Log what we're receiving for debugging
-    logger.info('Received settings update:', JSON.stringify(updates, null, 2));
+    // Log what we're receiving for debugging (simplified)
+    logger.info('Received settings update for categories:', Object.keys(updates).join(', '));
     
-    // Get current settings
-    const currentSettings = await dataStore.getSettings();
+    // Clean up any unwanted properties
+    if (updates.tts) {
+      // Remove properties that shouldn't be saved
+      delete updates.tts.model;
+      delete updates.tts.outputQuality;
+      delete updates.tts.useFixedSeed;
+      
+      // Ensure fixedSeed is boolean, not null
+      if (updates.tts.fixedSeed === null) {
+        updates.tts.fixedSeed = false;
+      }
+      
+      // Ensure seed is either a number or null
+      if (updates.tts.seed === '' || updates.tts.seed === undefined) {
+        updates.tts.seed = null;
+      }
+    }
+    
+    // Ensure model is set for LLM
+    if (updates.llm && !updates.llm.model) {
+      updates.llm.model = 'gpt-4.1-mini';
+    }
     
     // Save settings
     await dataStore.updateSettings(updates);
+    
+    // Try to reload config if possible (without crashing)
+    try {
+      if (config.reloadSettings && typeof config.reloadSettings === 'function') {
+        config.reloadSettings();
+      }
+    } catch (reloadError) {
+      logger.warn('Failed to reload config:', reloadError);
+      // Don't crash, just log the warning
+    }
     
     logger.info('Settings updated successfully');
     
@@ -110,20 +140,30 @@ router.post('/reset', async (req, res) => {
   try {
     const { category } = req.body;
     
-    // Define defaults
+    // Define defaults with correct values
     const defaults = {
       llm: {
+        model: 'gpt-4.1-mini',
         temperature: 0.7,
-        maxTokens: 500
+        maxTokens: 150,  // Fixed to 150
+        systemPrompt: ''
       },
       tts: {
+        voiceId: 'JBFqnCBsd6RMkjVDRZzb',
         speechRate: 1.0,
         stability: 0.5,
         similarityBoost: 0.75,
         style: 0.0,
-        useSpeakerBoost: true
+        useSpeakerBoost: true,
+        seed: null,
+        fixedSeed: false
       },
       vad: {
+        positiveSpeechThreshold: 0.4,
+        negativeSpeechThreshold: 0.55,
+        minSpeechFrames: 8,
+        preSpeechPadFrames: 3,
+        redemptionFrames: 30,
         threshold: 0.5,
         minSpeechDuration: 250,
         maxSpeechDuration: 10000
@@ -138,7 +178,11 @@ router.post('/reset', async (req, res) => {
         topK: 5
       },
       internetSearch: {
-        autoEnabled: true
+        enabled: true,
+        maxResults: 3
+      },
+      system: {
+        defaultLanguage: 'en'
       }
     };
     

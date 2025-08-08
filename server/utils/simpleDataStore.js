@@ -29,16 +29,26 @@ class SimpleDataStore {
             } catch {
                 // Default people to get started
                 const defaultPeople = [
-                    { id: 'family', name: 'Family Member', notes: 'General family conversations' },
-                    { id: 'caregiver', name: 'Caregiver', notes: 'Daily care and assistance' },
-                    { id: 'doctor', name: 'Doctor', notes: 'Medical discussions' },
-                    { id: 'friend', name: 'Friend', notes: 'Social conversations' },
-                    { id: 'other', name: 'Other', notes: 'Anyone else' }
+                    { id: 'family', name: 'Family Member', notes: 'General family conversations', addedAt: new Date().toISOString() },
+                    { id: 'caregiver', name: 'Caregiver', notes: 'Daily care and assistance', addedAt: new Date().toISOString() },
+                    { id: 'doctor', name: 'Doctor', notes: 'Medical discussions', addedAt: new Date().toISOString() },
+                    { id: 'friend', name: 'Friend', notes: 'Social conversations', addedAt: new Date().toISOString() },
+                    { id: 'other', name: 'Other', notes: 'Anyone else', addedAt: new Date().toISOString() }
                 ];
                 await fs.writeFile(this.peopleFile, JSON.stringify(defaultPeople, null, 2));
             }
         } catch (error) {
             console.error('Failed to ensure data files:', error);
+        }
+    }
+
+    // Helper method to check if file exists
+    async fileExists(filePath) {
+        try {
+            await fs.access(filePath);
+            return true;
+        } catch {
+            return false;
         }
     }
 
@@ -53,16 +63,15 @@ class SimpleDataStore {
                 personId: conversation.personId || 'other',
                 personName: conversation.personName || 'Other',
                 userMessage: conversation.userMessage,
-                responses: conversation.responses,
-                selectedResponse: conversation.selectedResponse || null,
-                context: conversation.context || {}
+                responses: conversation.responses || [],
+                selectedResponse: conversation.selectedResponse || null
             };
             
             conversations.push(newConversation);
             
-            // Keep only last 1000 conversations in memory
-            if (conversations.length > 1000) {
-                conversations.shift(); // Remove oldest
+            // Keep only last 100 conversations
+            if (conversations.length > 100) {
+                conversations.splice(0, conversations.length - 100);
             }
             
             await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
@@ -74,58 +83,45 @@ class SimpleDataStore {
         }
     }
 
-    async getConversations(limit = 100) {
+    async getConversations() {
         try {
             const data = await fs.readFile(this.conversationsFile, 'utf-8');
-            const conversations = JSON.parse(data);
-            
-            // Return most recent conversations
-            return conversations.slice(-limit).reverse();
+            return JSON.parse(data);
         } catch (error) {
             console.error('Failed to get conversations:', error);
             return [];
         }
     }
 
-    async getRecentContext(hoursBack = 24, personId = null) {
+    async addConversation(conversation) {
         try {
-            const conversations = await this.getConversations(50);
-            const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000);
+            const conversations = await this.getConversations();
+            conversations.push(conversation);
             
-            // Filter conversations within time window
-            let recentConversations = conversations.filter(conv => 
-                new Date(conv.timestamp) > cutoffTime
-            );
-            
-            // Filter by person if specified
-            if (personId) {
-                recentConversations = recentConversations.filter(conv => 
-                    conv.personId === personId
-                );
+            // Keep only last 100 conversations
+            if (conversations.length > 100) {
+                conversations.splice(0, conversations.length - 100);
             }
             
-            // Format for LLM context
-            return recentConversations.map(conv => ({
-                person: conv.personName,
-                user: conv.userMessage,
-                assistant: conv.selectedResponse,
-                timestamp: conv.timestamp
-            }));
+            await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
+            return conversation;
         } catch (error) {
-            console.error('Failed to get recent context:', error);
-            return [];
+            console.error('Failed to add conversation:', error);
+            throw error;
         }
     }
 
-    async updateConversation(id, updates) {
+    async updateConversation(conversationId, updates) {
         try {
             const conversations = await this.getConversations();
-            const index = conversations.findIndex(c => c.id === id);
+            const index = conversations.findIndex(c => c.id === conversationId);
             
-            if (index !== -1) {
-                conversations[index] = { ...conversations[index], ...updates };
-                await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
+            if (index === -1) {
+                throw new Error('Conversation not found');
             }
+            
+            conversations[index] = { ...conversations[index], ...updates };
+            await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
             
             return conversations[index];
         } catch (error) {
@@ -138,36 +134,38 @@ class SimpleDataStore {
     async getSettings() {
         try {
             // Check if settings file exists
-            try {
-                await fs.access(this.settingsFile);
-            } catch {
-                // Create default settings if file doesn't exist
+            const exists = await this.fileExists(this.settingsFile);
+            if (!exists) {
+                // Create default settings
                 const defaultSettings = {
                     llm: {
+                        model: 'gpt-4.1-mini',
                         temperature: 0.7,
                         maxTokens: 150,
-                        model: 'gpt-4.1-mini',
-                        systemPrompt: '',
-                        defaultLanguage: 'en'
+                        systemPrompt: ''  // Empty means use default
                     },
                     tts: {
-                        voiceId: process.env.ELEVENLABS_VOICE_ID || 'default',
+                        voiceId: 'JBFqnCBsd6RMkjVDRZzb',  // Default voice ID as requested
                         speechRate: 1.0,
-                        model: 'eleven_multilingual_v2',
-                        outputQuality: 'mp3_44100_192',
                         stability: 0.5,
                         similarityBoost: 0.75,
                         style: 0.0,
                         useSpeakerBoost: true,
-                        useFixedSeed: false,
-                        fixedSeed: null
+                        seed: null,
+                        fixedSeed: false
+                    },
+                    transcription: {
+                        language: 'en'
                     },
                     vad: {
                         positiveSpeechThreshold: 0.4,
                         negativeSpeechThreshold: 0.55,
                         minSpeechFrames: 8,
                         preSpeechPadFrames: 3,
-                        redemptionFrames: 30
+                        redemptionFrames: 30,
+                        threshold: 0.5,
+                        minSpeechDuration: 250,
+                        maxSpeechDuration: 10000
                     },
                     eyeGaze: {
                         hoverDuration: 3000,
@@ -181,6 +179,9 @@ class SimpleDataStore {
                     internetSearch: {
                         enabled: true,
                         maxResults: 3
+                    },
+                    system: {
+                        defaultLanguage: 'en'  // en, nl, es
                     }
                 };
                 await fs.writeFile(this.settingsFile, JSON.stringify(defaultSettings, null, 2));
@@ -190,107 +191,155 @@ class SimpleDataStore {
             const data = await fs.readFile(this.settingsFile, 'utf-8');
             const settings = JSON.parse(data);
             
-            // Ensure all categories exist in loaded settings
+            // Ensure all categories exist in loaded settings with proper defaults
             const defaultStructure = {
-                llm: {},
-                tts: {},
-                vad: {},
-                eyeGaze: {},
-                rag: {},
-                internetSearch: {}
+                llm: {
+                    model: 'gpt-4.1-mini',
+                    temperature: 0.7,
+                    maxTokens: 150,
+                    systemPrompt: ''
+                },
+                tts: {
+                    voiceId: 'JBFqnCBsd6RMkjVDRZzb',
+                    speechRate: 1.0,
+                    stability: 0.5,
+                    similarityBoost: 0.75,
+                    style: 0.0,
+                    useSpeakerBoost: true,
+                    seed: null,
+                    fixedSeed: false
+                },
+                transcription: {
+                    language: 'en'
+                },
+                vad: {
+                    positiveSpeechThreshold: 0.4,
+                    negativeSpeechThreshold: 0.55,
+                    minSpeechFrames: 8,
+                    preSpeechPadFrames: 3,
+                    redemptionFrames: 30
+                },
+                eyeGaze: {
+                    hoverDuration: 3000,
+                    visualFeedback: true
+                },
+                rag: {
+                    chunkSize: 1000,
+                    chunkOverlap: 200,
+                    topK: 5
+                },
+                internetSearch: {
+                    enabled: true,
+                    maxResults: 3
+                },
+                system: {
+                    defaultLanguage: 'en'
+                }
             };
             
-            // Merge with defaults to ensure all categories exist
-            const completeSettings = {
-                ...defaultStructure,
-                ...settings,
-                llm: { ...defaultStructure.llm, ...(settings.llm || {}) },
-                tts: { ...defaultStructure.tts, ...(settings.tts || {}) },
-                vad: { ...defaultStructure.vad, ...(settings.vad || {}) },
-                eyeGaze: { ...defaultStructure.eyeGaze, ...(settings.eyeGaze || {}) },
-                rag: { ...defaultStructure.rag, ...(settings.rag || {}) },
-                internetSearch: { ...defaultStructure.internetSearch, ...(settings.internetSearch || {}) }
+            // Deep merge function
+            const deepMerge = (target, source) => {
+                const output = Object.assign({}, target);
+                if (isObject(target) && isObject(source)) {
+                    Object.keys(source).forEach(key => {
+                        if (isObject(source[key])) {
+                            if (!(key in target))
+                                Object.assign(output, { [key]: source[key] });
+                            else
+                                output[key] = deepMerge(target[key], source[key]);
+                        } else {
+                            Object.assign(output, { [key]: source[key] });
+                        }
+                    });
+                }
+                return output;
             };
+            
+            const isObject = (item) => {
+                return item && typeof item === 'object' && !Array.isArray(item);
+            };
+            
+            // Merge with defaults to ensure all properties exist
+            const completeSettings = deepMerge(defaultStructure, settings);
             
             return completeSettings;
         } catch (error) {
             console.error('Failed to get settings:', error);
             // Return default structure on error
             return {
-                llm: {},
-                tts: {},
+                llm: {
+                    model: 'gpt-4.1-mini',
+                    temperature: 0.7,
+                    maxTokens: 150,
+                    systemPrompt: ''
+                },
+                tts: {
+                    voiceId: 'JBFqnCBsd6RMkjVDRZzb',
+                    speechRate: 1.0,
+                    stability: 0.5,
+                    similarityBoost: 0.75,
+                    style: 0.0,
+                    useSpeakerBoost: true,
+                    seed: null,
+                    fixedSeed: false
+                },
+                transcription: {
+                    language: 'en'
+                },
                 vad: {},
                 eyeGaze: {},
                 rag: {},
-                internetSearch: {}
+                internetSearch: {},
+                system: {
+                    defaultLanguage: 'en'
+                }
             };
         }
     }
 
-    // Update the updateSettings method to merge properly:
     async updateSettings(updates) {
         try {
+            // Get current settings
             const currentSettings = await this.getSettings();
             
-            // Deep merge the settings - handle all possible categories
-            const mergedSettings = {
-                ...currentSettings,
-                ...updates,
-                // Ensure nested objects are properly merged
-                llm: {
-                    ...currentSettings.llm,
-                    ...(updates.llm || {})
-                },
-                tts: {
-                    ...currentSettings.tts,
-                    ...(updates.tts || {})
-                },
-                vad: {
-                    ...currentSettings.vad,
-                    ...(updates.vad || {})
-                },
-                eyeGaze: {
-                    ...currentSettings.eyeGaze,
-                    ...(updates.eyeGaze || {})
-                },
-                rag: {
-                    ...currentSettings.rag,
-                    ...(updates.rag || {})
-                },
-                internetSearch: {
-                    ...currentSettings.internetSearch,
-                    ...(updates.internetSearch || {})
+            // Deep merge function
+            const deepMerge = (target, source) => {
+                const output = Object.assign({}, target);
+                if (isObject(target) && isObject(source)) {
+                    Object.keys(source).forEach(key => {
+                        if (isObject(source[key])) {
+                            if (!(key in target))
+                                Object.assign(output, { [key]: source[key] });
+                            else
+                                output[key] = deepMerge(target[key], source[key]);
+                        } else {
+                            Object.assign(output, { [key]: source[key] });
+                        }
+                    });
                 }
+                return output;
             };
             
-            // Save to file using the existing helper method
-            await fs.writeFile(this.settingsFile, JSON.stringify(mergedSettings, null, 2));
+            const isObject = (item) => {
+                return item && typeof item === 'object' && !Array.isArray(item);
+            };
             
-            logger.info('Settings updated successfully');
-            return mergedSettings;
+            // Merge updates with current settings
+            const newSettings = deepMerge(currentSettings, updates);
+            
+            // Save to file
+            await fs.writeFile(this.settingsFile, JSON.stringify(newSettings, null, 2));
+            
+            logger.info('Settings updated in dataStore');
+            
+            return newSettings;
         } catch (error) {
-            logger.error('Failed to update settings:', error);
+            console.error('Failed to update settings:', error);
             throw error;
         }
     }
 
-    // Simple search
-    async searchConversations(query) {
-        try {
-            const conversations = await this.getConversations(500);
-            const searchTerm = query.toLowerCase();
-            
-            return conversations.filter(conv => 
-                conv.userMessage.toLowerCase().includes(searchTerm) ||
-                (conv.selectedResponse && conv.selectedResponse.toLowerCase().includes(searchTerm))
-            );
-        } catch (error) {
-            console.error('Failed to search conversations:', error);
-            return [];
-        }
-    }
-
-    // People Management
+    // People
     async getPeople() {
         try {
             const data = await fs.readFile(this.peopleFile, 'utf-8');
@@ -306,11 +355,10 @@ class SimpleDataStore {
             const people = await this.getPeople();
             
             const newPerson = {
-                id: person.id || Date.now().toString(),
+                id: Date.now().toString(),
                 name: person.name,
                 notes: person.notes || '',
-                addedAt: new Date().toISOString(),
-                lastConversation: null
+                addedAt: new Date().toISOString()
             };
             
             people.push(newPerson);
@@ -323,15 +371,17 @@ class SimpleDataStore {
         }
     }
 
-    async updatePerson(id, updates) {
+    async updatePerson(personId, updates) {
         try {
             const people = await this.getPeople();
-            const index = people.findIndex(p => p.id === id);
+            const index = people.findIndex(p => p.id === personId);
             
-            if (index !== -1) {
-                people[index] = { ...people[index], ...updates };
-                await fs.writeFile(this.peopleFile, JSON.stringify(people, null, 2));
+            if (index === -1) {
+                throw new Error('Person not found');
             }
+            
+            people[index] = { ...people[index], ...updates };
+            await fs.writeFile(this.peopleFile, JSON.stringify(people, null, 2));
             
             return people[index];
         } catch (error) {
@@ -340,12 +390,16 @@ class SimpleDataStore {
         }
     }
 
-    async deletePerson(id) {
+    async deletePerson(personId) {
         try {
             const people = await this.getPeople();
-            const filtered = people.filter(p => p.id !== id);
+            const filteredPeople = people.filter(p => p.id !== personId);
             
-            await fs.writeFile(this.peopleFile, JSON.stringify(filtered, null, 2));
+            if (filteredPeople.length === people.length) {
+                throw new Error('Person not found');
+            }
+            
+            await fs.writeFile(this.peopleFile, JSON.stringify(filteredPeople, null, 2));
             
             return true;
         } catch (error) {
@@ -354,75 +408,16 @@ class SimpleDataStore {
         }
     }
 
-    async getPersonContext(personId) {
+    async findPersonById(personId) {
         try {
             const people = await this.getPeople();
-            const person = people.find(p => p.id === personId);
-            
-            if (!person) return null;
-            
-            // Get recent conversations with this person
-            const conversations = await this.getConversations(100);
-            const personConversations = conversations
-                .filter(c => c.personId === personId)
-                .slice(0, 10); // Last 10 conversations
-            
-            // Extract common topics from conversations
-            const topics = this.extractTopics(personConversations);
-            
-            return {
-                person,
-                recentConversations: personConversations.slice(0, 5),
-                topics,
-                conversationCount: personConversations.length
-            };
+            return people.find(p => p.id === personId) || null;
         } catch (error) {
-            console.error('Failed to get person context:', error);
+            console.error('Failed to find person:', error);
             return null;
-        }
-    }
-
-    extractTopics(conversations) {
-        const words = {};
-        const commonWords = new Set(['the', 'and', 'for', 'that', 'this', 'with', 'from', 'have', 'what', 'where', 'when']);
-        
-        conversations.forEach(conv => {
-            const text = `${conv.userMessage} ${conv.selectedResponse || ''}`.toLowerCase();
-            text.split(/\s+/).forEach(word => {
-                word = word.replace(/[^a-z]/g, '');
-                if (word.length > 4 && !commonWords.has(word)) {
-                    words[word] = (words[word] || 0) + 1;
-                }
-            });
-        });
-        
-        return Object.entries(words)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 5)
-            .map(([word, count]) => ({ word, count }));
-    }
-
-    // Export for backup
-    async exportData() {
-        try {
-            const conversations = await this.getConversations(9999);
-            const settings = await this.getSettings();
-            const people = await this.getPeople();
-            
-            return {
-                exportDate: new Date().toISOString(),
-                conversations,
-                settings,
-                people
-            };
-        } catch (error) {
-            console.error('Failed to export data:', error);
-            throw error;
         }
     }
 }
 
-// Singleton instance
-const dataStore = new SimpleDataStore();
-
-module.exports = dataStore;
+// Export singleton instance
+module.exports = new SimpleDataStore();

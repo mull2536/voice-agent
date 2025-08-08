@@ -5,6 +5,7 @@ const { getRAGContext } = require('./rag');
 const logger = require('../utils/logger');
 const ChatHistoryService = require('./chatHistory');
 const sessionQueueManager = require('../utils/sessionQueueManager');
+const config = require('../config');
 
 class LLMService {
     constructor() {
@@ -12,7 +13,8 @@ class LLMService {
             apiKey: process.env.OPENAI_API_KEY
         });
         
-        this.systemPrompt = `You are a helpful AI assistant designed to support natural 
+        // Default system prompt (used when settings.llm.systemPrompt is empty)
+        this.defaultSystemPrompt = `You are a helpful AI assistant designed to support natural 
         conversation for someone with ALS who uses eye gaze technology. Be concise but warm. 
         Understand that communication may be slower, so be patient and supportive. Provide 
         thoughtful, contextual responses that continue the conversation naturally.`;
@@ -28,6 +30,17 @@ class LLMService {
         } catch (error) {
             logger.error('Failed to initialize chat history service:', error);
         }
+    }
+
+    // Get language instruction based on settings
+    getLanguageInstruction(language) {
+        const languageInstructions = {
+            'en': '\n\nIMPORTANT: You MUST respond in English.',
+            'nl': '\n\nIMPORTANT: You MUST respond in Dutch (Nederlands).',
+            'es': '\n\nIMPORTANT: You MUST respond in Spanish (Español).'
+        };
+        
+        return languageInstructions[language] || languageInstructions['en'];
     }
 
     // Append search instructions to the system prompt
@@ -64,66 +77,136 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         text = text.replace(/https?:\/\/[^\s<>"\{\}\|\\^\[\]`]+/g, '');
         
         // Remove citation numbers in various formats
-        // Removes patterns like [1], (1), <1>, {1}, ¹, ², ³, etc.
-        text = text.replace(/[\[\(\{\<]\d+[\]\)\}\>]/g, '');
-        text = text.replace(/[\u00B9\u00B2\u00B3\u2074-\u2079\u2070]/g, ''); // Superscript numbers
+        text = text.replace(/\[\d+\]/g, '');
+        text = text.replace(/\(\d+\)/g, '');
+        text = text.replace(/\<\d+\>/g, '');
+        text = text.replace(/\{\d+\}/g, '');
+        text = text.replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]+/g, '');
         
-        // Remove any remaining citation-style references like "Source: ..."
-        text = text.replace(/\(Source:.*?\)/gi, '');
-        text = text.replace(/Source:\s*[^\n\.]*/gi, '');
+        // Remove "according to" phrases that reference searches
+        text = text.replace(/according to (?:my |the )?(?:search|results|findings|web|internet|online sources)[^,.]*/gi, '');
+        text = text.replace(/(?:I |I've |I have )?(?:searched|found|discovered|looked up)[^,.]*/gi, '');
+        text = text.replace(/(?:from |based on |per )(?:my |the )?(?:search|results|findings|web|internet)[^,.]*/gi, '');
         
-        // Remove any search-related mentions (existing logic)
-        text = text.replace(/I (searched|looked up|found online|checked the internet)[\s\S]*?\./gi, '');
-        text = text.replace(/According to (my search|the search results|online sources)[\s\S]*?,/gi, '');
+        // Remove double spaces and trim
+        text = text.replace(/\s+/g, ' ').trim();
         
-        // Remove any brackets with just whitespace or dots
-        text = text.replace(/\[[\.:\s]*\]/g, '');
-        text = text.replace(/\([\.:\s]*\)/g, '');
-        
-        // Clean up any double spaces created by removals
-        text = text.replace(/\s{2,}/g, ' ');
-        
-        // Remove multiple consecutive newlines
-        text = text.replace(/\n{3,}/g, '\n\n');
-        
-        // Trim whitespace
-        return text.trim();
+        return text;
     }
 
-    async generateResponses(userMessage, personId = 'other', socketId = null) {
-        const timings = {}; // Collect all timing data to return
+    buildContextMessage(userMessage, person, recentContext, ragContext, chatHistory, sessionContext, personContext) {
+        let contextParts = [];
+        
+        // Add person context
+        if (person) {
+            if (person.name && person.name !== 'Other') {
+                contextParts.push(`You are talking to ${person.name}.`);
+            }
+            if (person.notes) {
+                contextParts.push(`About them: ${person.notes}`);
+            }
+            if (personContext) {
+                contextParts.push(`Recent interactions: ${personContext}`);
+            }
+        }
+        
+        // Add session context (recent conversation in this session)
+        if (sessionContext && sessionContext.length > 0) {
+            contextParts.push('\nRecent conversation in this session:');
+            sessionContext.forEach(exchange => {
+                contextParts.push(`User: ${exchange.userMessage}`);
+                contextParts.push(`Assistant: ${exchange.assistantResponse}`);
+            });
+        }
+        
+        // Add relevant chat history
+        if (chatHistory && chatHistory.length > 0) {
+            contextParts.push('\nRelevant conversation history:');
+            chatHistory.forEach(entry => {
+                contextParts.push(`[${entry.timestamp}] User: ${entry.userMessage}`);
+                contextParts.push(`[${entry.timestamp}] Assistant: ${entry.assistantResponse}`);
+            });
+        }
+        
+        // Add RAG context
+        if (ragContext && ragContext.length > 0) {
+            contextParts.push('\nRelevant information from knowledge base:');
+            ragContext.forEach(doc => {
+                if (doc.metadata?.memory_title) {
+                    contextParts.push(`Memory "${doc.metadata.memory_title}": ${doc.content}`);
+                } else {
+                    contextParts.push(`From ${doc.metadata?.filename || 'document'}: ${doc.content}`);
+                }
+            });
+        }
+        
+        return contextParts.join('\n');
+    }
+
+    async generateResponses(userMessage, personId, socketId = null) {
+        const timings = {};
         
         try {
-            // 1-5. GET ALL CONTEXT (same as before)
+            // 1. LOOK UP PERSON DETAILS
             const personStartTime = Date.now();
-            const personContext = await dataStore.getPersonContext(personId);
-            const person = personContext?.person || { name: 'Other', notes: '' };
+            const person = await dataStore.findPersonById(personId);
             timings.personLookup = Date.now() - personStartTime;
-
+            
+            // 2. GET RECENT CONTEXT FROM SESSION QUEUE
             const recentStartTime = Date.now();
-            const recentContext = await this.chatHistoryService.getRecentExchanges(person.name, 4);
+            const recentContext = socketId ? 
+                sessionQueueManager.getConversationExchanges(socketId) : [];
             timings.recentContext = Date.now() - recentStartTime;
             
+            // 3. GET SESSION CONVERSATION CONTEXT
             const sessionStartTime = Date.now();
-            const sessionContext = socketId ? sessionQueueManager.buildSessionContext(socketId) : '';
+            const sessionContext = socketId ? 
+                sessionQueueManager.getConversationExchanges(socketId) : [];
             timings.sessionContext = Date.now() - sessionStartTime;
             
+            // 4. GET RAG CONTEXT
             const ragStartTime = Date.now();
-            const ragContext = await this.getEnhancedRAGContext(userMessage, person);
+            const ragContext = await getRAGContext(userMessage);
             timings.ragLookup = Date.now() - ragStartTime;
-
+            
+            // 5. GET RELEVANT CHAT HISTORY
             const chatHistoryStartTime = Date.now();
-            const chatHistoryContext = await this.chatHistoryService.searchChatHistory(userMessage, person.name, 2, 0.3);
+            const chatHistoryContext = await this.chatHistoryService.searchRelevantHistory(
+                personId,
+                userMessage,
+                5  // Get top 5 relevant past conversations
+            );
             timings.chatHistorySearch = Date.now() - chatHistoryStartTime;
             
-            // 6. BUILD CONTEXT MESSAGE
+            // 6. GET PERSON-SPECIFIC CONTEXT
+            const personContext = person ? 
+                await this.chatHistoryService.getPersonContext(personId, 3) : null;
+            
+            // 7. BUILD CONTEXT MESSAGE
             const buildStartTime = Date.now();
-            let systemPromptContent = this.buildContextMessage(userMessage, person, recentContext, ragContext, chatHistoryContext, sessionContext, personContext);
+            let systemPromptContent = this.buildContextMessage(
+                userMessage, 
+                person, 
+                recentContext, 
+                ragContext, 
+                chatHistoryContext, 
+                sessionContext, 
+                personContext
+            );
             
             // Get settings from dataStore
             const settings = await dataStore.getSettings();
-            const customSystemPrompt = settings?.llm?.systemPrompt || this.systemPrompt;
-            systemPromptContent = customSystemPrompt + '\n\n' + systemPromptContent;
+            
+            // Use custom system prompt if provided, otherwise use default
+            const customSystemPrompt = settings?.llm?.systemPrompt || '';
+            const baseSystemPrompt = customSystemPrompt.trim() || this.defaultSystemPrompt;
+            
+            // Add language instruction based on default language setting
+            const defaultLanguage = settings?.system?.defaultLanguage || 'en';
+            const languageInstruction = this.getLanguageInstruction(defaultLanguage);
+            
+            // Combine prompts: base + language + context
+            systemPromptContent = baseSystemPrompt + languageInstruction + '\n\n' + systemPromptContent;
             
             // Append search instructions if search is enabled
             const searchEnabled = settings?.internetSearch?.enabled !== false; // Default to true
@@ -131,9 +214,11 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                 systemPromptContent = this.appendSearchInstructions(systemPromptContent);
             }
             
+            logger.info(`Using language: ${defaultLanguage}, Search enabled: ${searchEnabled}`);
+            
             timings.messageBuilding = Date.now() - buildStartTime;
             
-            // 7. USE RESPONSES API WITH WEB SEARCH
+            // 8. USE RESPONSES API WITH WEB SEARCH
             const llmStartTime = Date.now();
             
             try {
@@ -231,7 +316,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         
         // Build the request payload
         const requestPayload = {
-            model: settings?.llm?.model || process.env.LLM_MODEL || "gpt-4.1-mini",
+            model: settings?.llm?.model || config.llm.model || "gpt-4.1-mini",
             input: [
                 {
                     role: "system",
@@ -244,7 +329,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             ],
             tools: tools,
             temperature: temperature,
-            max_output_tokens: parseInt(settings?.llm?.maxTokens || process.env.LLM_MAX_TOKENS || 150)
+            max_output_tokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150)
         };
         
         // LOG THE EXACT REQUEST
@@ -256,7 +341,6 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         logger.info(`Tools: ${JSON.stringify(tools)}`);
         logger.info(`User Message: "${userMessage}"`);
         logger.info(`System Prompt Length: ${systemPrompt.length} characters`);
-        //logger.info('Full Request Payload:', JSON.stringify(requestPayload, null, 2));
         
         try {
             const response = await this.openai.responses.create(requestPayload);
@@ -264,8 +348,8 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             // LOG THE RESPONSE
             logger.info('=== OPENAI RESPONSES API RESPONSE ===');
             logger.info(`Response ID: ${response.id}`);
-            logger.info(`Output Text: "${response.output_text}"`);
-            logger.info('Full Response:', JSON.stringify(response, null, 2));
+            logger.info(`Output Text: "${response.output_text?.substring(0, 100)}..."`);
+            // Don't log full response to avoid verbose output
             
             // The response.output_text contains the complete response with search results already integrated
             return this.cleanResponse(response.output_text);
@@ -284,10 +368,10 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         ];
         
         const apiParams = {
-            model: settings?.llm?.model || process.env.LLM_MODEL || 'gpt-4.1-mini',
+            model: settings?.llm?.model || config.llm.model || 'gpt-4.1-mini',
             messages: messages,
             temperature: 0.9,
-            max_tokens: parseInt(settings?.llm?.maxTokens || process.env.LLM_MAX_TOKENS || 150)
+            max_tokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150)
         };
         
         if (socketId) {
@@ -296,9 +380,17 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             apiParams.n = 3;
             
             const completion = await this.openai.chat.completions.create(apiParams);
+            
             for (const choice of completion.choices) {
                 responses.push(this.cleanResponse(choice.message.content));
             }
+            
+            // Ensure we have 3 responses
+            while (responses.length < 3) {
+                responses.push("I understand. Please tell me more.");
+            }
+            
+            timings.llmApi = Date.now() - (timings.messageBuilding + Date.now());
             
             return await this.finalizeResponses(
                 responses.slice(0, 3),
@@ -313,6 +405,8 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             const completion = await this.openai.chat.completions.create(apiParams);
             const response = this.cleanResponse(completion.choices[0].message.content);
             
+            timings.llmApi = Date.now() - (timings.messageBuilding + Date.now());
+            
             return await this.finalizeResponses(
                 [response],
                 person,
@@ -325,141 +419,56 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
     }
 
     async finalizeResponses(responses, person, userMessage, ragContext, timings, socketId) {
-        // Save to chat history
-        const chatSaveStartTime = Date.now();
-        const conversationPromise = this.chatHistoryService.saveConversation(
-            person.id || 'other',
-            person.name,
-            person.notes || '',
-            userMessage,
-            responses,
-            ragContext.length > 0 ? `Retrieved ${ragContext.length} knowledge items` : null
-        );
+        // 9. SAVE TO CONVERSATION HISTORY
+        const saveStartTime = Date.now();
+        const conversationId = Date.now().toString();
         
-        conversationPromise.catch(error => {
-            logger.error('Failed to save conversation:', error);
-        });
+        const conversationEntry = {
+            id: conversationId,
+            timestamp: new Date().toISOString(),
+            personId: person?.id || 'other',
+            personName: person?.name || 'Other',
+            userMessage: userMessage,
+            responses: responses,
+            selectedResponse: null,
+            ragContext: ragContext.map(r => ({
+                content: r.content.substring(0, 200) + '...',
+                source: r.metadata?.filename || r.metadata?.source || 'unknown'
+            }))
+        };
         
-        timings.chatHistorySave = Date.now() - chatSaveStartTime;
+        await dataStore.addConversation(conversationEntry);
+        timings.chatHistorySave = Date.now() - saveStartTime;
         
-        // If this is for the session queue, add the exchange
-        if (socketId && responses.length > 0) {
-            sessionQueueManager.addConversationExchange(socketId, userMessage, responses[0]);
-        }
-        
-        const conversationId = await conversationPromise.then(
-            result => result?.id || Date.now().toString(),
-            () => Date.now().toString()
-        );
-        
+        // RETURN STRUCTURED RESPONSE
         return {
             responses: responses,
-            conversationId,
-            personName: person.name,
-            personNotes: person.notes,
-            timings
+            conversationId: conversationId,
+            personName: person?.name || 'Other',
+            personNotes: person?.notes || '',
+            timings: timings
         };
     }
 
-    // Keep all other methods unchanged
-    async getEnhancedRAGContext(query, person) {
+    async selectResponse(conversationId, selectedText) {
         try {
-            const results = await getRAGContext(query);
+            // Update the conversation with the selected response
+            const conversations = await dataStore.getConversations();
+            const conversation = conversations.find(c => c.id === conversationId);
             
-            if (person && person.name !== 'Other') {
-                results.sort((a, b) => {
-                    const aHasPerson = a.metadata?.tags?.includes(person.name);
-                    const bHasPerson = b.metadata?.tags?.includes(person.name);
-                    if (aHasPerson && !bHasPerson) return -1;
-                    if (!aHasPerson && bHasPerson) return 1;
-                    return 0;
-                });
+            if (conversation) {
+                conversation.selectedResponse = selectedText;
+                await dataStore.updateConversation(conversationId, conversation);
+                logger.info(`Response selected for conversation ${conversationId}`);
             }
-            
-            return results.slice(0, 3).map(result => ({
-                content: result.content,
-                source: result.metadata?.source || 'knowledge base'
-            }));
         } catch (error) {
-            logger.error('Failed to get RAG context:', error);
-            return [];
+            logger.error('Failed to save selected response:', error);
         }
     }
 
-    buildContextMessage(userMessage, person, recentContext, ragContext, chatHistoryContext, sessionContext, personContext) {
-        let context = '';
-        
-        // Add person-specific context
-        if (person.name !== 'Other') {
-            context += `\n\nYou are talking with ${person.name}.`;
-            if (person.notes) {
-                context += ` Here's what you should know about them: ${person.notes}`;
-            }
-        }
-        
-        // Add recent conversation context
-        if (recentContext && recentContext.length > 0) {
-            context += '\n\nRecent conversation:';
-            recentContext.forEach(exchange => {
-                context += `\nUser: ${exchange.userMessage}`;
-                context += `\nAssistant: ${exchange.selectedResponse}`;
-            });
-        }
-        
-        // Add session context
-        if (sessionContext) {
-            context += `\n\n${sessionContext}`;
-        }
-        
-        // Add chat history context
-        if (chatHistoryContext && chatHistoryContext.length > 0) {
-            context += '\n\nRelevant past conversations:';
-            chatHistoryContext.forEach(conv => {
-                context += `\n- User: ${conv.userMessage} | Assistant: ${conv.selectedResponse}`;
-            });
-        }
-        
-        // Add RAG context
-        if (ragContext && ragContext.length > 0) {
-            context += '\n\nRelevant information from knowledge base:';
-            ragContext.forEach(item => {
-                context += `\n- ${item.content} (from: ${item.source})`;
-            });
-        }
-        
-        // Add extended person context if available
-        if (personContext?.extendedContext) {
-            context += `\n\n${personContext.extendedContext}`;
-        }
-        
-        return context;
-    }
-
-    async selectResponse(conversationId, responseText) {
-        try {
-            await this.chatHistoryService.updateSelectedResponse(conversationId, responseText);
-            logger.info(`Response selected for conversation ${conversationId}`);
-        } catch (error) {
-            logger.error('Failed to update selected response:', error);
-        }
-    }
-
-    async getConversationHistory(personName, limit = 10) {
-        try {
-            return await this.chatHistoryService.getRecentExchanges(personName, limit);
-        } catch (error) {
-            logger.error('Failed to get conversation history:', error);
-            return [];
-        }
-    }
-
-    async searchKnowledge(query) {
-        try {
-            return await getRAGContext(query);
-        } catch (error) {
-            logger.error('Failed to search knowledge:', error);
-            return [];
-        }
+    // Clean up old sessions periodically
+    cleanupSessions() {
+        sessionQueueManager.cleanupInactiveSessions();
     }
 }
 

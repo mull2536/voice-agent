@@ -4,7 +4,7 @@
       "id": "conv_1754388142028_b632a42a",
       "person": "Michaela ",
       "person_notes": "My caregiver from Czech Republic, she's adorable, but impatient and loves everything from Asia! From boys till music and movies.",
-      "timestamp": "2025-08-06T10:56:32.189Z",
+      "timestamp": "2025-08-08T15:46:15.418Z",
       "exchanges": [
         {
           "user": "how are you",
@@ -34,6 +34,12 @@
           "user": "test",
           "assistant": "I'm here to help.",
           "timestamp": "2025-08-06T10:56:32.189Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test",
+          "assistant": "Hello Michaela! I see you’re testing. How can I assist you today?",
+          "timestamp": "2025-08-08T15:46:15.418Z",
           "vectorized": false
         }
       ]

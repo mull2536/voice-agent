@@ -7,15 +7,18 @@ const { OpenAIEmbeddings } = require('@langchain/openai');
 const { RecursiveCharacterTextSplitter } = require('langchain/text_splitter');
 const logger = require('../utils/logger');
 const { performance } = require('perf_hooks');
+const config = require('../config');
 
 class ChatHistoryService {
     constructor() {
-        this.chatHistoryPath = path.join(process.env.VECTOR_STORE_PATH, '../chat_history.json');
-        this.chatVectorStorePath = path.join(process.env.VECTOR_STORE_PATH, '../chat_vector_store');
+        // Use config paths instead of environment variables
+        const dataPath = path.join(__dirname, '../../data');
+        this.chatHistoryPath = path.join(dataPath, 'chat_history.json');
+        this.chatVectorStorePath = path.join(dataPath, 'chat_vector_store');
         
         this.embeddings = new OpenAIEmbeddings({
             openAIApiKey: process.env.OPENAI_API_KEY,
-            modelName: 'text-embedding-ada-002'
+            modelName: config.rag.embeddingModel || 'text-embedding-ada-002'
         });
         
         this.chatVectorStore = null;
@@ -134,7 +137,7 @@ class ChatHistoryService {
                 this.chatVectorStore = await FaissStore.fromTexts(texts, metadatas, this.embeddings);
                 await this.chatVectorStore.save(this.chatVectorStorePath);
                 
-                logger.info(`Chat vector store rebuilt with ${documents.length} exchanges in ${(performance.now() - startTime).toFixed(2)}ms`);
+                logger.info(`Built chat vector store with ${documents.length} exchanges in ${(performance.now() - startTime).toFixed(2)}ms`);
             } else {
                 // Create empty vector store
                 this.chatVectorStore = await FaissStore.fromTexts(
@@ -142,7 +145,6 @@ class ChatHistoryService {
                     [{ type: 'placeholder' }], 
                     this.embeddings
                 );
-                await this.chatVectorStore.save(this.chatVectorStorePath);
                 logger.info('Created empty chat vector store');
             }
             
@@ -154,7 +156,7 @@ class ChatHistoryService {
 
     async loadChatHistory() {
         try {
-            const data = await fs.readFile(this.chatHistoryPath, 'utf8');
+            const data = await fs.readFile(this.chatHistoryPath, 'utf-8');
             return JSON.parse(data);
         } catch (error) {
             logger.error('Failed to load chat history:', error);
@@ -162,44 +164,40 @@ class ChatHistoryService {
         }
     }
 
-    async saveChatHistory(chatHistory) {
+    async saveChatHistory(data) {
         try {
-            await fs.writeFile(this.chatHistoryPath, JSON.stringify(chatHistory, null, 2));
+            await fs.writeFile(this.chatHistoryPath, JSON.stringify(data, null, 2));
         } catch (error) {
             logger.error('Failed to save chat history:', error);
             throw error;
         }
     }
 
-    async saveConversation(personId, personName, personNotes, userMessage, responses, ragContext = null) {
+    async saveConversation(personId, personName, personNotes, userMessage, selectedResponse, ragContext = []) {
         const startTime = performance.now();
         
         try {
-            // Handle both cases:
-            // 1. Initial save with array of responses (from LLM)
-            // 2. Final save with selected response (from user selection)
-            
-            const isInitialSave = Array.isArray(responses);
-            const selectedResponse = isInitialSave ? null : responses; // If not array, it's the selected response
-            
-            // Use dataStore for the initial save with all responses
-            if (isInitialSave) {
-                const dataStore = require('../utils/simpleDataStore');
-                const conversation = await dataStore.saveConversation({
-                    personId: personId,
-                    personName: personName,
-                    userMessage: userMessage,
-                    responses: responses,
-                    selectedResponse: null,
-                    context: {
-                        ragUsed: ragContext && ragContext.length > 0,
+            // If selectedResponse is null, this is the initial save before responses are generated
+            if (!selectedResponse) {
+                // Just store temporarily - will be updated when response is selected
+                const conversation = {
+                    personId,
+                    personName,
+                    personNotes,
+                    userMessage,
+                    ragContext: ragContext ? ragContext.map(r => ({
+                        content: r.content.substring(0, 200) + '...',
+                        source: r.metadata?.filename || r.metadata?.source || 'unknown'
+                    })) : [],
+                    metadata: {
+                        ragUsed: ragContext ? ragContext.length > 0 : false,
                         ragSourcesCount: ragContext ? ragContext.length : 0,
                         ragSources: ragContext ? ragContext.map(r => r.source) : [],
                         chatHistoryUsed: false,
                         chatHistorySourcesCount: 0,
                         timestamp: new Date().toISOString()
                     }
-                });
+                };
                 
                 const endTime = performance.now();
                 logger.info(`Initial conversation saved in ${(endTime - startTime).toFixed(2)}ms`);
@@ -255,37 +253,13 @@ class ChatHistoryService {
         }
     }
 
-    // Also add this helper method to update a conversation with the selected response
-    async updateSelectedResponse(conversationId, selectedResponse) {
-        try {
-            const dataStore = require('../utils/simpleDataStore');
-            const conversations = await dataStore.getConversations();
-            const conversation = conversations.find(c => c.id === conversationId);
-            
-            if (conversation) {
-                conversation.selectedResponse = selectedResponse;
-                await dataStore.updateConversation(conversationId, conversation);
-                
-                // Also save to chat history for vector store
-                await this.saveConversation(
-                    conversation.personId,
-                    conversation.personName,
-                    conversation.personNotes || '',
-                    conversation.userMessage,
-                    selectedResponse // Pass single response, not array
-                );
-            }
-            
-        } catch (error) {
-            logger.error('Failed to update selected response:', error);
-            throw error;
-        }
-    }
-
     async addExchangeToVectorStore(exchange, conversation) {
         try {
-            if (!this.chatVectorStore || !exchange.assistant) return;
-
+            if (!this.chatVectorStore) {
+                logger.warn('Chat vector store not initialized');
+                return;
+            }
+            
             const combinedText = `User: ${exchange.user}\nAssistant: ${exchange.assistant}`;
             
             await this.chatVectorStore.addDocuments([{
@@ -300,85 +274,51 @@ class ChatHistoryService {
                     exchange_assistant: exchange.assistant
                 }
             }]);
-
+            
+            // Save vector store periodically
             await this.chatVectorStore.save(this.chatVectorStorePath);
+            
+            exchange.vectorized = true;
             
         } catch (error) {
             logger.error('Failed to add exchange to vector store:', error);
         }
     }
 
-    async updateSelectedResponse(personName, exchangeTimestamp, selectedResponse) {
+    async searchRelevantHistory(personId, query, topK = 5, minSimilarity = 0.6) {
         const startTime = performance.now();
         
         try {
-            const chatHistory = await this.loadChatHistory();
-            
-            // Find the conversation and exchange
-            const conversation = chatHistory.conversations.find(conv => conv.person === personName);
-            if (!conversation) return false;
-
-            const exchange = conversation.exchanges.find(ex => ex.timestamp === exchangeTimestamp);
-            if (!exchange) return false;
-
-            // Update the assistant response
-            exchange.assistant = selectedResponse;
-
-            // Save to file
-            await this.saveChatHistory(chatHistory);
-
-            // Add/update in vector store
-            await this.addExchangeToVectorStore(exchange, conversation);
-
-            const endTime = performance.now();
-            logger.info(`Selected response updated in ${(endTime - startTime).toFixed(2)}ms`);
-
-            return true;
-            
-        } catch (error) {
-            logger.error('Failed to update selected response:', error);
-            return false;
-        }
-    }
-
-    async searchChatHistory(query, personName = null, topK = 2, minSimilarity = 0.3) {
-        const startTime = performance.now();
-        
-        try {
-            if (!this.chatVectorStore || !query.trim()) {
+            if (!this.chatVectorStore) {
+                logger.warn('Chat vector store not initialized');
                 return [];
             }
-
-            // Perform similarity search
-            const results = await this.chatVectorStore.similaritySearchWithScore(query, topK * 2); // Get more then filter
-
-            // Filter and format results
-            let filteredResults = results
-                .filter(([doc, score]) => {
-                    const similarity = 1 - score;
-                    if (similarity < minSimilarity) return false;
-                    
-                    // If person specified, filter by person
-                    if (personName && doc.metadata.person !== personName) return false;
-                    
-                    return true;
-                })
-                .map(([doc, score]) => ({
-                    content: doc.pageContent,
-                    metadata: doc.metadata,
-                    similarity: 1 - score,
-                    score: score
-                }))
-                .sort((a, b) => b.similarity - a.similarity)
-                .slice(0, topK);
-
-            const endTime = performance.now();
             
-            if (filteredResults.length > 0) {
-                logger.info(`Chat history search: ${filteredResults.length} results in ${(endTime - startTime).toFixed(2)}ms`);
-            }
-
-            return filteredResults;
+            // Search for similar conversations
+            const searchResults = await this.chatVectorStore.similaritySearchWithScore(
+                query,
+                topK * 2 // Get more results to filter
+            );
+            
+            // Filter by similarity threshold and person
+            const relevantResults = searchResults
+                .filter(([doc, score]) => {
+                    return score >= minSimilarity;
+                    // Optionally filter by person: && doc.metadata.person === personId
+                })
+                .slice(0, topK)
+                .map(([doc, score]) => ({
+                    userMessage: doc.metadata.exchange_user,
+                    assistantResponse: doc.metadata.exchange_assistant,
+                    timestamp: doc.metadata.timestamp,
+                    person: doc.metadata.person,
+                    score: score
+                }));
+            
+            const endTime = performance.now();
+            logger.info(`Chat history search completed in ${(endTime - startTime).toFixed(2)}ms, found ${relevantResults.length} relevant exchanges`);
+            
+            return relevantResults;
             
         } catch (error) {
             logger.error('Failed to search chat history:', error);
@@ -386,26 +326,88 @@ class ChatHistoryService {
         }
     }
 
-    async getRecentExchanges(personName, limit = 5) {
+    async getPersonContext(personId, limit = 5) {
+        const startTime = performance.now();
+        
         try {
             const chatHistory = await this.loadChatHistory();
-            const conversation = chatHistory.conversations.find(conv => conv.person === personName);
             
-            if (!conversation || !conversation.exchanges) {
-                return [];
+            // Find conversations for this person
+            const personConversations = chatHistory.conversations.filter(
+                conv => conv.person === personId || conv.person.toLowerCase() === personId.toLowerCase()
+            );
+            
+            if (personConversations.length === 0) {
+                return null;
             }
-
-            return conversation.exchanges
-                .slice(-limit)
-                .map(exchange => ({
-                    user: exchange.user,
-                    assistant: exchange.assistant,
-                    timestamp: exchange.timestamp
-                }));
-                
+            
+            // Get recent exchanges
+            const allExchanges = [];
+            for (const conv of personConversations) {
+                for (const exchange of conv.exchanges) {
+                    allExchanges.push({
+                        ...exchange,
+                        person: conv.person,
+                        person_notes: conv.person_notes
+                    });
+                }
+            }
+            
+            // Sort by timestamp and get most recent
+            allExchanges.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            const recentExchanges = allExchanges.slice(0, limit);
+            
+            // Build context string
+            const contextParts = [];
+            for (const exchange of recentExchanges) {
+                contextParts.push(`[${new Date(exchange.timestamp).toLocaleString()}] User: ${exchange.user}`);
+                if (exchange.assistant) {
+                    contextParts.push(`Assistant: ${exchange.assistant}`);
+                }
+            }
+            
+            const endTime = performance.now();
+            logger.info(`Retrieved person context in ${(endTime - startTime).toFixed(2)}ms`);
+            
+            return contextParts.join('\n');
+            
         } catch (error) {
-            logger.error('Failed to get recent exchanges:', error);
-            return [];
+            logger.error('Failed to get person context:', error);
+            return null;
+        }
+    }
+
+    async getStats() {
+        try {
+            const chatHistory = await this.loadChatHistory();
+            const totalConversations = chatHistory.conversations.length;
+            const totalExchanges = chatHistory.conversations.reduce(
+                (sum, conv) => sum + conv.exchanges.length, 0
+            );
+            
+            const peopleStats = {};
+            for (const conv of chatHistory.conversations) {
+                if (!peopleStats[conv.person]) {
+                    peopleStats[conv.person] = {
+                        exchanges: 0,
+                        lastInteraction: null
+                    };
+                }
+                peopleStats[conv.person].exchanges += conv.exchanges.length;
+                peopleStats[conv.person].lastInteraction = conv.timestamp;
+            }
+            
+            return {
+                initialized: this.isInitialized,
+                totalConversations,
+                totalExchanges,
+                peopleStats,
+                vectorStoreExists: this.chatVectorStore !== null
+            };
+            
+        } catch (error) {
+            logger.error('Failed to get chat history stats:', error);
+            return { initialized: false, error: error.message };
         }
     }
 }

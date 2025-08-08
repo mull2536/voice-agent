@@ -2149,5 +2149,19 @@
       "chatHistorySourcesCount": 0,
       "timestamp": "2025-08-06T18:59:17.226Z"
     }
+  },
+  {
+    "id": "1754667965126",
+    "timestamp": "2025-08-08T15:46:05.126Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "dit is een test",
+    "responses": [
+      "Hello Michaela! I see you wrote \"dit is een test,\" which means \"this is a test\" in Dutch. How can I assist you today?",
+      "Hello Michaela! I see you're testing. How can I assist you today?",
+      "Hello Michaela! I see you’re testing. How can I assist you today?"
+    ],
+    "selectedResponse": "Hello Michaela! I see you’re testing. How can I assist you today?",
+    "ragContext": []
   }
 ]

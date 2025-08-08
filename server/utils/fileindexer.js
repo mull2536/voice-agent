@@ -5,10 +5,11 @@ const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 const { getRAGServiceInstance } = require('../services/rag');
 const logger = require('./logger');
+const config = require('../config');
 
 class FileIndexer {
   constructor() {
-    this.knowledgeBasePath = process.env.KNOWLEDGE_BASE_PATH;
+    this.knowledgeBasePath = config.paths.knowledgeBase;
     this.supportedExtensions = ['.txt', '.pdf', '.docx', '.json', '.md'];
     this.watcher = null;
     this.ragService = null;
@@ -122,15 +123,15 @@ class FileIndexer {
       const metadata = {
         source: filePath,
         filename: path.basename(filePath),
-        type: path.extname(filePath).substring(1),
+        type: path.extname(filePath),
         indexed_at: new Date().toISOString()
       };
 
-      // Add to RAG service using the public API
+      // Use the RAG service's addDocument method
       if (this.ragService && this.ragService.addDocument) {
         await this.ragService.addDocument(content, metadata);
+        logger.info(`Successfully indexed: ${path.basename(filePath)}`);
       }
-
     } catch (error) {
       logger.error(`Failed to index file ${filePath}:`, error);
     }
@@ -143,19 +144,24 @@ class FileIndexer {
       switch (ext) {
         case '.txt':
         case '.md':
-          return await this.extractTextContent(filePath);
-        
-        case '.pdf':
-          return await this.extractPDFContent(filePath);
-        
-        case '.docx':
-          return await this.extractDocxContent(filePath);
+          return await fs.readFile(filePath, 'utf-8');
         
         case '.json':
-          return await this.extractJSONContent(filePath);
+          const jsonContent = await fs.readFile(filePath, 'utf-8');
+          const data = JSON.parse(jsonContent);
+          return this.jsonToText(data);
+        
+        case '.pdf':
+          const pdfBuffer = await fs.readFile(filePath);
+          const pdfData = await pdfParse(pdfBuffer);
+          return pdfData.text;
+        
+        case '.docx':
+          const docxBuffer = await fs.readFile(filePath);
+          const result = await mammoth.extractRawText({ buffer: docxBuffer });
+          return result.value;
         
         default:
-          logger.warn(`Unsupported file type: ${ext}`);
           return null;
       }
     } catch (error) {
@@ -164,33 +170,9 @@ class FileIndexer {
     }
   }
 
-  async extractTextContent(filePath) {
-    const content = await fs.readFile(filePath, 'utf-8');
-    return content.trim();
-  }
-
-  async extractPDFContent(filePath) {
-    const dataBuffer = await fs.readFile(filePath);
-    const data = await pdfParse(dataBuffer);
-    return data.text.trim();
-  }
-
-  async extractDocxContent(filePath) {
-    const result = await mammoth.extractRawText({ path: filePath });
-    return result.value.trim();
-  }
-
-  async extractJSONContent(filePath) {
-    const content = await fs.readFile(filePath, 'utf-8');
-    const data = JSON.parse(content);
-    
-    // Convert JSON to readable text format
-    return this.jsonToText(data);
-  }
-
   jsonToText(obj, prefix = '') {
     let text = '';
-
+    
     for (const [key, value] of Object.entries(obj)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
 

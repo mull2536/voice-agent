@@ -203,8 +203,31 @@ class CommunicationAssistant {
                     visualFeedback: true
                 });
             }
- 
-            this.currentPerson = null;
+            
+            // ADD THIS: Load people
+            try {
+                const peopleResponse = await this.api.getPeople();
+                this.people = peopleResponse.people || peopleResponse || [];
+            } catch (err) {
+                console.error('Failed to load people:', err);
+                this.people = [];
+            }
+            
+            // ADD THIS: Check for saved person
+            const savedPersonId = localStorage.getItem('selectedPersonId');
+            if (savedPersonId && this.people && this.people.length > 0) {
+                const savedPerson = this.people.find(p => p.id === savedPersonId);
+                if (savedPerson) {
+                    this.currentPerson = savedPerson;
+                    this.socket.emit('set-person', savedPersonId);
+                    this.updatePersonDisplay(savedPerson);
+                    console.log('Restored selected person:', savedPerson.name);
+                } else {
+                    this.currentPerson = null;
+                }
+            } else {
+                this.currentPerson = null;
+            }
             
             // Load recent conversations
             const conversations = await this.api.getRecentConversations(5);

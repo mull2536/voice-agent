@@ -5,32 +5,43 @@ const fs = require('fs').promises;
 const path = require('path');
 const crypto = require('crypto');
 const logger = require('../utils/logger');
+const config = require('../config');
+const dataStore = require('../utils/simpleDataStore');
 
 class RAGService {
   constructor() {
     this.embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
-      modelName: process.env.EMBEDDING_MODEL || 'text-embedding-ada-002'
+      modelName: config.rag.embeddingModel || 'text-embedding-ada-002'
     });
     
     this.vectorStore = null;
-    this.textSplitter = new RecursiveCharacterTextSplitter({
-      chunkSize: parseInt(process.env.CHUNK_SIZE) || 1000,
-      chunkOverlap: parseInt(process.env.CHUNK_OVERLAP) || 200
-    });
-    
-    this.topK = parseInt(process.env.TOP_K_RESULTS) || 2;
+    this.topK = config.rag.topK || 2;
     this.similarityThreshold = 0.4;
     this.isInitialized = false;
     
-    // File tracking
-    this.fileIndexPath = path.join(process.env.VECTOR_STORE_PATH, 'file_index.json');
+    // File tracking - use config paths
+    this.vectorStorePath = config.paths.vectorStore;
+    this.knowledgeBasePath = config.paths.knowledgeBase;
+    this.fileIndexPath = path.join(config.paths.vectorStore, 'file_index.json');
     this.fileIndex = new Map();
+    
+    // Initialize text splitter with settings
+    this.updateTextSplitter();
+  }
+
+  updateTextSplitter() {
+    // Get current settings
+    const settings = config.settings?.rag || config.rag;
+    this.textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: settings.chunkSize || 1000,
+      chunkOverlap: settings.chunkOverlap || 200
+    });
   }
 
   async initialize() {
     try {
-      const vectorStorePath = process.env.VECTOR_STORE_PATH;
+      const vectorStorePath = this.vectorStorePath;
       await fs.mkdir(vectorStorePath, { recursive: true });
       
       // Load existing file index first
@@ -38,7 +49,7 @@ class RAGService {
       
       // Check what vector store files exist
       const vectorStoreStatus = await this.checkVectorStoreFiles(vectorStorePath);
-      logger.info(`Vector store status: ${JSON.stringify(vectorStoreStatus)}`);
+      logger.info(`Vector store status: ${vectorStoreStatus.hasRequiredFiles ? 'valid' : 'needs creation'}`);
       
       if (vectorStoreStatus.hasRequiredFiles) {
         try {
@@ -68,6 +79,32 @@ class RAGService {
     } catch (error) {
       logger.error('Failed to initialize RAG service:', error);
       throw error;
+    }
+  }
+
+  async loadFileIndex() {
+    try {
+      const indexData = await fs.readFile(this.fileIndexPath, 'utf-8');
+      const indexArray = JSON.parse(indexData);
+      
+      this.fileIndex = new Map(indexArray);
+      logger.info(`Loaded file index with ${this.fileIndex.size} files`);
+      
+    } catch (error) {
+      // File doesn't exist yet, that's okay
+      if (error.code !== 'ENOENT') {
+        logger.error('Failed to load file index:', error);
+      }
+      this.fileIndex = new Map();
+    }
+  }
+
+  async saveFileIndex() {
+    try {
+      const indexArray = Array.from(this.fileIndex.entries());
+      await fs.writeFile(this.fileIndexPath, JSON.stringify(indexArray, null, 2));
+    } catch (error) {
+      logger.error('Failed to save file index:', error);
     }
   }
 
@@ -114,50 +151,26 @@ class RAGService {
     }
   }
 
-  async loadFileIndex() {
-    try {
-      const indexData = await fs.readFile(this.fileIndexPath, 'utf-8');
-      const indexArray = JSON.parse(indexData);
-      
-      this.fileIndex = new Map(indexArray);
-      logger.info(`Loaded file index with ${this.fileIndex.size} tracked files`);
-      
-    } catch (error) {
-      this.fileIndex = new Map();
-      logger.info('Starting with empty file index');
-    }
-  }
-
-  async saveFileIndex() {
-    try {
-      const indexArray = Array.from(this.fileIndex.entries());
-      await fs.writeFile(this.fileIndexPath, JSON.stringify(indexArray, null, 2));
-    } catch (error) {
-      logger.error('Failed to save file index:', error);
-    }
-  }
-
   async createNewVectorStore() {
     try {
-      // Clear any existing corrupted files
-      await this.clearVectorStoreFiles();
-      
-      // Create new vector store with minimal content
+      // Create empty vector store with a dummy document
+      const dummyText = "This is an initialization document for the vector store.";
       this.vectorStore = await FaissStore.fromTexts(
-        ['RAG system initialized'],
-        [{ source: 'system', type: 'init', indexed_at: new Date().toISOString() }],
+        [dummyText],
+        [{ source: 'initialization', type: 'system' }],
         this.embeddings
       );
       
-      await this.vectorStore.save(process.env.VECTOR_STORE_PATH);
+      // Save the empty store
+      await this.vectorStore.save(this.vectorStorePath);
       
-      // Clear file index since we're starting fresh
+      // Clear file index
       this.fileIndex.clear();
       await this.saveFileIndex();
       
       logger.info('Created new vector store');
       
-      // Index all files
+      // Now index all files in knowledge base
       await this.indexAllFiles();
       
     } catch (error) {
@@ -166,78 +179,51 @@ class RAGService {
     }
   }
 
-  async clearVectorStoreFiles() {
-    try {
-      const vectorStorePath = process.env.VECTOR_STORE_PATH;
-      const files = await fs.readdir(vectorStorePath);
-      
-      // Remove vector store files but keep file_index.json
-      const vectorStoreFiles = files.filter(f => 
-        f === 'faiss.index' || f === 'index.faiss' || f.endsWith('.pkl') || 
-        f === 'docstore.json' || f === 'args.json'
-      );
-      
-      for (const file of vectorStoreFiles) {
-        try {
-          await fs.unlink(path.join(vectorStorePath, file));
-          logger.info(`Removed old vector store file: ${file}`);
-        } catch (error) {
-          logger.warn(`Failed to remove ${file}:`, error.message);
-        }
-      }
-      
-    } catch (error) {
-      logger.error('Failed to clear vector store files:', error);
-    }
-  }
-
   async syncFilesWithVectorStore() {
     try {
-      const kbPath = process.env.KNOWLEDGE_BASE_PATH;
+      const kbPath = this.knowledgeBasePath;
+      
+      // Ensure knowledge base directory exists
       await fs.mkdir(kbPath, { recursive: true });
       
       const files = await fs.readdir(kbPath);
       const supportedExtensions = ['.txt', '.md', '.json', '.pdf', '.docx'];
       
-      let newFiles = 0;
-      let updatedFiles = 0;
-      let skippedFiles = 0;
+      let addedCount = 0;
+      let updatedCount = 0;
       
       for (const file of files) {
         const filePath = path.join(kbPath, file);
         const ext = path.extname(file).toLowerCase();
         
-        if (!supportedExtensions.includes(ext)) continue;
-        
-        try {
-          const stats = await fs.stat(filePath);
-          const fileHash = await this.calculateFileHash(filePath);
-          const lastModified = stats.mtime.toISOString();
-          
-          const existing = this.fileIndex.get(file);
-          
-          if (!existing) {
-            await this.indexFile(filePath, { hash: fileHash, lastModified });
-            newFiles++;
-          } else if (existing.hash !== fileHash) {
-            logger.info(`File modified: ${file}`);
-            await this.indexFile(filePath, { hash: fileHash, lastModified });
-            updatedFiles++;
-          } else {
-            skippedFiles++;
+        if (supportedExtensions.includes(ext)) {
+          try {
+            const stats = await fs.stat(filePath);
+            const fileHash = await this.calculateFileHash(filePath);
+            const lastModified = stats.mtime.toISOString();
+            
+            const existingFile = this.fileIndex.get(file);
+            
+            if (!existingFile) {
+              // New file - add it
+              await this.indexFile(filePath, { hash: fileHash, lastModified });
+              addedCount++;
+            } else if (existingFile.hash !== fileHash || existingFile.lastModified !== lastModified) {
+              // File changed - reindex it
+              await this.indexFile(filePath, { hash: fileHash, lastModified });
+              updatedCount++;
+            }
+            
+          } catch (error) {
+            logger.error(`Failed to sync file ${file}:`, error);
           }
-          
-        } catch (error) {
-          logger.error(`Failed to process file ${file}:`, error);
         }
       }
       
-      if (newFiles > 0 || updatedFiles > 0) {
-        await this.vectorStore.save(process.env.VECTOR_STORE_PATH);
+      if (addedCount > 0 || updatedCount > 0) {
+        await this.vectorStore.save(this.vectorStorePath);
         await this.saveFileIndex();
-        logger.info(`File sync complete: ${newFiles} new, ${updatedFiles} updated, ${skippedFiles} unchanged`);
-      } else {
-        logger.info(`All ${skippedFiles} files are up to date, no indexing needed`);
+        logger.info(`Sync complete: ${addedCount} added, ${updatedCount} updated`);
       }
       
     } catch (error) {
@@ -247,7 +233,9 @@ class RAGService {
 
   async indexAllFiles() {
     try {
-      const kbPath = process.env.KNOWLEDGE_BASE_PATH;
+      const kbPath = this.knowledgeBasePath;
+      
+      // Ensure knowledge base directory exists
       await fs.mkdir(kbPath, { recursive: true });
       
       const files = await fs.readdir(kbPath);
@@ -276,7 +264,7 @@ class RAGService {
       }
       
       if (indexedCount > 0) {
-        await this.vectorStore.save(process.env.VECTOR_STORE_PATH);
+        await this.vectorStore.save(this.vectorStorePath);
         await this.saveFileIndex();
         logger.info(`Indexed ${indexedCount} files`);
       } else {
@@ -312,30 +300,29 @@ class RAGService {
       const content = await this.extractContent(filePath);
       
       if (!content || !content.trim()) {
-        logger.warn(`No content extracted from: ${filename}`);
+        logger.warn(`No content extracted from ${filename}`);
         return;
       }
 
-      const metadata = {
-        source: filePath,
-        filename: filename,
-        type: path.extname(filePath).substring(1),
-        indexed_at: new Date().toISOString(),
-        file_size: stats.size,
-        last_modified: fileInfo.lastModified || stats.mtime.toISOString()
-      };
+      // Update text splitter with current settings
+      await this.updateTextSplitterFromSettings();
 
       const chunks = await this.textSplitter.splitText(content);
       
       if (chunks.length === 0) {
-        logger.warn(`No chunks created for: ${filename}`);
+        logger.warn(`No chunks created from ${filename}`);
         return;
       }
 
       const metadatas = chunks.map((_, index) => ({
-        ...metadata,
+        source: filePath,
+        filename: filename,
+        type: path.extname(filePath),
         chunk_index: index,
-        total_chunks: chunks.length
+        total_chunks: chunks.length,
+        indexed_at: new Date().toISOString(),
+        file_size: stats.size,
+        last_modified: fileInfo.lastModified || stats.mtime.toISOString()
       }));
 
       await this.vectorStore.addDocuments(
@@ -363,22 +350,22 @@ class RAGService {
 
   async indexMemoriesFile(filePath, fileInfo, stats) {
     try {
-      const jsonContent = await fs.readFile(filePath, 'utf-8');
-      const data = JSON.parse(jsonContent);
+      const filename = path.basename(filePath);
+      const content = await fs.readFile(filePath, 'utf-8');
+      const data = JSON.parse(content);
       
       if (!data.memories || !Array.isArray(data.memories)) {
-        logger.warn('Invalid memories.json structure - expected { memories: [...] }');
+        logger.warn(`Invalid memories.json structure in ${filePath}`);
         return;
       }
-
-      const filename = path.basename(filePath);
+      
       let totalChunks = 0;
       
-      // Index each memory as a separate document
+      // Index each memory as a separate document with rich metadata
       for (let i = 0; i < data.memories.length; i++) {
         const memory = data.memories[i];
         
-        // Create content for this memory
+        // Create structured content for better search
         const memoryContent = [
           memory.title ? `Title: ${memory.title}` : '',
           memory.date ? `Date: ${memory.date}` : '',
@@ -458,8 +445,9 @@ class RAGService {
         
         case '.docx':
           const mammoth = require('mammoth');
-          const docxResult = await mammoth.extractRawText({ path: filePath });
-          return docxResult.value;
+          const docxBuffer = await fs.readFile(filePath);
+          const result = await mammoth.extractRawText({ buffer: docxBuffer });
+          return result.value;
         
         default:
           logger.warn(`Unsupported file type: ${ext}`);
@@ -473,86 +461,36 @@ class RAGService {
 
   async extractMemoriesContent(filePath) {
     try {
-      const jsonContent = await fs.readFile(filePath, 'utf-8');
-      const data = JSON.parse(jsonContent);
+      const content = await fs.readFile(filePath, 'utf-8');
+      const data = JSON.parse(content);
       
       if (!data.memories || !Array.isArray(data.memories)) {
-        logger.warn('Invalid memories.json structure - expected { memories: [...] }');
-        return '';
+        return this.jsonToText(data);
       }
-
-      const allMemoriesText = [];
       
-      data.memories.forEach((memory, index) => {
-        const memoryTexts = [];
-        
-        // Main comprehensive content
-        const mainContent = [
-          memory.title ? `Title: ${memory.title}` : '',
-          memory.date ? `Date: ${memory.date}` : '',
-          memory.tags && Array.isArray(memory.tags) && memory.tags.length > 0 ? 
-            `Tags: ${memory.tags.join(', ')}` : '',
-          '',
-          memory.text || ''
-        ].filter(line => line !== '').join('\n');
-        
-        if (mainContent.trim()) {
-          memoryTexts.push(mainContent);
-        }
-        
-        // Searchable field-specific content
-        if (memory.title) {
-          memoryTexts.push(`Memory titled: ${memory.title}`);
-        }
-        
-        // Tag-based searchable content
-        if (memory.tags && Array.isArray(memory.tags) && memory.tags.length > 0) {
-          memory.tags.forEach(tag => {
-            if (tag && tag.trim()) {
-              memoryTexts.push(`Memory tagged: ${tag.trim()}`);
-            }
-          });
-          memoryTexts.push(`Categories: ${memory.tags.filter(t => t && t.trim()).join(' ')}`);
-        }
-        
-        // Date-based searchable content
-        if (memory.date) {
-          const date = new Date(memory.date);
-          if (!isNaN(date.getTime())) {
-            const year = date.getFullYear();
-            const month = date.toLocaleString('default', { month: 'long' });
-            
-            memoryTexts.push(`Memory from ${year}`);
-            memoryTexts.push(`Memory from ${month} ${year}`);
-            
-            const now = new Date();
-            const monthsAgo = (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24 * 30);
-            
-            if (monthsAgo < 6) {
-              memoryTexts.push('Recent memory');
-            } else if (monthsAgo > 24) {
-              memoryTexts.push('Historical memory');
-            }
-          }
-        }
-        
-        if (memoryTexts.length > 0) {
-          allMemoriesText.push(memoryTexts.join('\n\n'));
-        }
-      });
+      // For memories, create a concatenated string of all memories
+      const memoriesText = data.memories.map((memory, index) => {
+        const parts = [`Memory ${index + 1}:`];
+        if (memory.title) parts.push(`Title: ${memory.title}`);
+        if (memory.date) parts.push(`Date: ${memory.date}`);
+        if (memory.tags && memory.tags.length > 0) parts.push(`Tags: ${memory.tags.join(', ')}`);
+        if (memory.text) parts.push(`Content: ${memory.text}`);
+        return parts.join('\n');
+      }).join('\n\n---\n\n');
       
-      return allMemoriesText.join('\n\n' + '='.repeat(50) + '\n\n');
-      
+      return memoriesText;
     } catch (error) {
       logger.error('Failed to extract memories content:', error);
-      return '';
+      return null;
     }
   }
-  
+
   jsonToText(obj, prefix = '') {
     let text = '';
+    
     for (const [key, value] of Object.entries(obj)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
+
       if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
         text += this.jsonToText(value, fullKey);
       } else if (Array.isArray(value)) {
@@ -561,34 +499,94 @@ class RAGService {
         text += `${fullKey}: ${value}\n`;
       }
     }
+
     return text;
   }
 
-  // File change handlers for the file watcher
+  async updateTextSplitterFromSettings() {
+    try {
+      const settings = await dataStore.getSettings();
+      const ragSettings = settings?.rag || {};
+      
+      this.textSplitter = new RecursiveCharacterTextSplitter({
+        chunkSize: ragSettings.chunkSize || config.rag.chunkSize || 1000,
+        chunkOverlap: ragSettings.chunkOverlap || config.rag.chunkOverlap || 200
+      });
+      
+      this.topK = ragSettings.topK || config.rag.topK || 5;
+    } catch (error) {
+      logger.warn('Failed to update text splitter from settings:', error);
+    }
+  }
+
+  async search(query, minSimilarity = 0.7) {
+    try {
+      if (!this.isInitialized || !this.vectorStore) {
+        logger.warn('RAG service not initialized');
+        return [];
+      }
+
+      // Update settings before search
+      await this.updateTextSplitterFromSettings();
+
+      // Get more results than needed to filter by similarity
+      const searchResults = await this.vectorStore.similaritySearchWithScore(
+        query,
+        this.topK * 2  // Get double to allow filtering
+      );
+
+      // Filter by similarity threshold and limit to topK
+      const filteredResults = searchResults
+        .filter(([_, score]) => score >= minSimilarity)
+        .slice(0, this.topK)
+        .map(([doc, score]) => ({
+          content: doc.pageContent,
+          metadata: doc.metadata,
+          score: score
+        }));
+
+      logger.info(`RAG search for "${query.substring(0, 50)}..." returned ${filteredResults.length} results`);
+      
+      return this.uniqueResults(filteredResults);
+      
+    } catch (error) {
+      logger.error('RAG search failed:', error);
+      return [];
+    }
+  }
+
+  uniqueResults(results) {
+    const seen = new Set();
+    const unique = [];
+    
+    for (const result of results) {
+      const key = `${result.metadata.source}-${result.metadata.chunk_index}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        unique.push(result);
+      }
+    }
+    
+    return unique;
+  }
+
   async handleFileChange(filePath) {
     try {
       const filename = path.basename(filePath);
-      const supportedExtensions = ['.txt', '.md', '.json', '.pdf', '.docx'];
-      const ext = path.extname(filename).toLowerCase();
-      
-      if (!supportedExtensions.includes(ext)) {
-        return;
-      }
-      
       const stats = await fs.stat(filePath);
       const fileHash = await this.calculateFileHash(filePath);
       const lastModified = stats.mtime.toISOString();
       
-      const existing = this.fileIndex.get(filename);
+      logger.info(`Handling file change for: ${filename}`);
       
-      if (!existing || existing.hash !== fileHash) {
-        logger.info(`File ${existing ? 'changed' : 'added'}: ${filename}`);
-        
-        await this.indexFile(filePath, { hash: fileHash, lastModified });
-        await this.vectorStore.save(process.env.VECTOR_STORE_PATH);
-        await this.saveFileIndex();
-      }
+      // Reindex the file
+      await this.indexFile(filePath, { hash: fileHash, lastModified });
       
+      // Save vector store
+      await this.vectorStore.save(this.vectorStorePath);
+      await this.saveFileIndex();
+      
+      logger.info(`Successfully reindexed: ${filename}`);
     } catch (error) {
       logger.error(`Failed to handle file change for ${filePath}:`, error);
     }
@@ -597,96 +595,20 @@ class RAGService {
   async handleFileRemoval(filePath) {
     try {
       const filename = path.basename(filePath);
-      const existing = this.fileIndex.get(filename);
       
-      if (existing) {
-        this.fileIndex.delete(filename);
-        await this.saveFileIndex();
-        logger.info(`Removed ${filename} from file index (${existing.chunks} chunks)`);
-      }
+      logger.info(`Handling file removal for: ${filename}`);
       
+      // Remove from file index
+      this.fileIndex.delete(filename);
+      await this.saveFileIndex();
+      
+      logger.info(`Removed from index: ${filename}`);
+      
+      // Note: We can't easily remove specific documents from FAISS,
+      // so a full reindex might be needed for actual removal
     } catch (error) {
       logger.error(`Failed to handle file removal for ${filePath}:`, error);
     }
-  }
-
-  async search(query, minSimilarity = 0.7) {
-    try {
-      if (!this.isInitialized || !this.vectorStore) {
-        logger.warn('RAG service not initialized, returning empty results');
-        return [];
-      }
-
-      if (!query || query.trim().length === 0) {
-        return [];
-      }
-
-      // SIMPLIFIED: Direct search without query variations
-      const results = await this.vectorStore.similaritySearchWithScore(
-        query.trim(),
-        this.topK // Should be 2 to match old app speed
-      );
-
-      // Filter by similarity threshold and format results
-      const filteredResults = results
-        .filter(([doc, score]) => {
-          const similarity = 1 - score;
-          return similarity >= minSimilarity;
-        })
-        .map(([doc, score]) => ({
-          content: doc.pageContent,
-          metadata: doc.metadata,
-          similarity: 1 - score,
-          score: score
-        }))
-        .sort((a, b) => b.similarity - a.similarity);
-
-      if (filteredResults.length > 0) {
-        logger.info(`RAG search for "${query}": ${filteredResults.length} results found`);
-      }
-      
-      return filteredResults;
-      
-    } catch (error) {
-      logger.error('Failed to search vector store:', error);
-      return [];
-    }
-  }
-
-  generateQueryVariations(originalQuery) {
-    const variations = [originalQuery.trim()];
-    const queryLower = originalQuery.toLowerCase().trim();
-    
-    // Add memory-specific variations
-    if (!queryLower.includes('memory') && !queryLower.includes('remember')) {
-      variations.push(`memory about ${originalQuery}`);
-    }
-    
-    // Add temporal variations
-    if (queryLower.includes('recent') || queryLower.includes('latest') || queryLower.includes('when')) {
-      variations.push(`date ${originalQuery}`);
-    }
-    
-    // Add category variations
-    variations.push(`tagged ${originalQuery}`);
-    
-    return [...new Set(variations.filter(v => v.trim().length > 0))];
-  }
-
-  deduplicateSearchResults(results) {
-    const seen = new Set();
-    const unique = [];
-    
-    for (const [doc, score] of results) {
-      const identifier = `${doc.metadata.source || 'unknown'}_${doc.metadata.chunk_index || 0}`;
-      
-      if (!seen.has(identifier)) {
-        seen.add(identifier);
-        unique.push([doc, score]);
-      }
-    }
-    
-    return unique;
   }
 
   async getStats() {
@@ -741,7 +663,7 @@ class RAGService {
         }))
       );
 
-      await this.vectorStore.save(process.env.VECTOR_STORE_PATH);
+      await this.vectorStore.save(this.vectorStorePath);
       
       logger.info(`Added document: ${metadata.source || 'unknown'}, ${chunks.length} chunks`);
       

@@ -1,21 +1,25 @@
 {
   "llm": {
     "model": "gpt-4.1-mini",
-    "temperature": 0.7,
+    "temperature": 0.9,
     "maxTokens": 150,
     "systemPrompt": ""
   },
   "tts": {
     "voiceId": "RRH9oZEaBFwuWBWtFxC4",
     "speechRate": 1,
-    "model": "eleven_multilingual_v2",
-    "outputQuality": "mp3_44100_192",
     "stability": 0.5,
     "similarityBoost": 0.75,
     "style": 0,
     "useSpeakerBoost": true,
-    "useFixedSeed": false,
-    "fixedSeed": null
+    "seed": null,
+    "fixedSeed": false,
+    "model": "eleven_multilingual_v2",
+    "outputQuality": "mp3_44100_192",
+    "useFixedSeed": false
+  },
+  "transcription": {
+    "language": "en"
   },
   "vad": {
     "positiveSpeechThreshold": 0.4,

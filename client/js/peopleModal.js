@@ -25,15 +25,11 @@ async function initializePeopleModal() {
         }
     });
 
-    // CLEAR the stored selection on page load - start fresh each time
-    localStorage.removeItem('selectedPersonId');
-    selectedPersonId = null;
+    // Check if we have a stored selection
+    selectedPersonId = localStorage.getItem('selectedPersonId');
     
-    // Always show "No one selected" on initial load
-    const indicator = document.getElementById('current-speaker');
-    if (indicator) {
-        indicator.textContent = 'No one selected';
-    }
+    // Update indicator based on stored selection
+    updatePersonIndicator();
 }
 
 // Open people modal

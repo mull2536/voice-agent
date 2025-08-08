@@ -2,6 +2,8 @@
 
 const { ElevenLabsClient } = require('@elevenlabs/elevenlabs-js');
 const logger = require('../utils/logger');
+const config = require('../config');
+const dataStore = require('../utils/simpleDataStore');
 
 class TTSService {
   constructor() {
@@ -10,16 +12,32 @@ class TTSService {
       apiKey: process.env.ELEVENLABS_API_KEY
     });
 
-    // Load your default voice ID from env
-    this.voiceId = process.env.ELEVENLABS_VOICE_ID;
-
-    // Prepare camel-cased voice settings
+    // Load initial voice settings from config
+    this.voiceId = config.tts.voiceId || process.env.ELEVENLABS_VOICE_ID;
     this.voiceSettings = {
-      stability:       parseFloat(process.env.TTS_STABILITY)       || 0.5,
-      similarityBoost: parseFloat(process.env.TTS_SIMILARITY_BOOST) || 0.75,
-      style:           parseFloat(process.env.TTS_STYLE)           || 0.0,
-      useSpeakerBoost: process.env.TTS_USE_SPEAKER_BOOST === 'true'
+      stability: config.tts.stability,
+      similarityBoost: config.tts.similarityBoost,
+      style: config.tts.style,
+      useSpeakerBoost: config.tts.useSpeakerBoost
     };
+    
+    // Speech rate and seed settings
+    this.speechRate = config.tts.speechRate || 1.0;
+    this.seed = config.tts.seed || null;
+    this.fixedSeed = config.tts.fixedSeed || false;
+  }
+
+  /**
+   * Get current settings from dataStore
+   */
+  async getCurrentSettings() {
+    try {
+      const settings = await dataStore.getSettings();
+      return settings.tts || {};
+    } catch (error) {
+      logger.warn('Failed to get TTS settings, using defaults:', error);
+      return {};
+    }
   }
 
   /**
@@ -28,21 +46,46 @@ class TTSService {
    */
   async synthesize(text) {
     try {
-      // ⚠️ Use two arguments: (voiceId, options)
-      const audioStream = await this.client.textToSpeech.convert(
-        this.voiceId,
-        {
-          text,                                    // required
-          modelId:     'eleven_multilingual_v2',   // camelCase
-          outputFormat:'mp3_44100_192',            // camelCase
-          enableLogging: false,                    // optional
-          voiceSettings: {                         // camelCase inner keys
-            stability:       this.voiceSettings.stability,
-            similarityBoost: this.voiceSettings.similarityBoost,
-            style:           this.voiceSettings.style,
-            useSpeakerBoost: this.voiceSettings.useSpeakerBoost
-          }
+      // Get current settings
+      const currentSettings = await this.getCurrentSettings();
+      
+      // Use settings from dataStore, fallback to config/defaults
+      const voiceId = currentSettings.voiceId || this.voiceId;
+      const speechRate = currentSettings.speechRate !== undefined ? currentSettings.speechRate : this.speechRate;
+      const fixedSeed = currentSettings.fixedSeed !== undefined ? currentSettings.fixedSeed : this.fixedSeed;
+      const seed = fixedSeed && currentSettings.seed ? currentSettings.seed : null;
+      
+      // Prepare request options
+      const options = {
+        text,
+        modelId: 'eleven_multilingual_v2',
+        outputFormat: 'mp3_44100_192',
+        enableLogging: false,
+        voiceSettings: {
+          stability: currentSettings.stability !== undefined ? currentSettings.stability : this.voiceSettings.stability,
+          similarityBoost: currentSettings.similarityBoost !== undefined ? currentSettings.similarityBoost : this.voiceSettings.similarityBoost,
+          style: currentSettings.style !== undefined ? currentSettings.style : this.voiceSettings.style,
+          useSpeakerBoost: currentSettings.useSpeakerBoost !== undefined ? currentSettings.useSpeakerBoost : this.voiceSettings.useSpeakerBoost
         }
+      };
+      
+      // Add speed (speechRate) to the payload - ElevenLabs expects 'speed' parameter
+      if (speechRate !== 1.0) {
+        options.speed = speechRate; // Value between 0-1, where 1.0 is normal speed
+      }
+      
+      // Add seed if enabled
+      if (seed !== null && fixedSeed) {
+        options.seed = parseInt(seed);
+        logger.info(`Using fixed seed for TTS: ${seed}`);
+      }
+      
+      logger.info(`TTS synthesis with voiceId: ${voiceId}, speed: ${speechRate}, seed: ${seed || 'random'}`);
+      
+      // Use two arguments: (voiceId, options)
+      const audioStream = await this.client.textToSpeech.convert(
+        voiceId,
+        options
       );
 
       // Accumulate the stream into a Buffer
@@ -67,25 +110,44 @@ class TTSService {
    */
   async synthesizeFallback(text) {
     try {
+      const currentSettings = await this.getCurrentSettings();
+      const voiceId = currentSettings.voiceId || this.voiceId;
+      const speechRate = currentSettings.speechRate !== undefined ? currentSettings.speechRate : this.speechRate;
+      const fixedSeed = currentSettings.fixedSeed !== undefined ? currentSettings.fixedSeed : this.fixedSeed;
+      const seed = fixedSeed && currentSettings.seed ? parseInt(currentSettings.seed) : null;
+      
       const axios = require('axios');
+      
+      const payload = {
+        text,
+        model_id: 'eleven_multilingual_v2',
+        output_format: 'mp3_44100_192',
+        voice_settings: {
+          stability: currentSettings.stability !== undefined ? currentSettings.stability : this.voiceSettings.stability,
+          similarity_boost: currentSettings.similarityBoost !== undefined ? currentSettings.similarityBoost : this.voiceSettings.similarityBoost,
+          style: currentSettings.style !== undefined ? currentSettings.style : this.voiceSettings.style,
+          use_speaker_boost: currentSettings.useSpeakerBoost !== undefined ? currentSettings.useSpeakerBoost : this.voiceSettings.useSpeakerBoost
+        }
+      };
+      
+      // Add speed to payload if not default
+      if (speechRate !== 1.0) {
+        payload.speed = speechRate;
+      }
+      
+      // Add seed if enabled
+      if (seed !== null && fixedSeed) {
+        payload.seed = seed;
+      }
+      
       const response = await axios.post(
-        `https://api.elevenlabs.io/v1/text-to-speech/${this.voiceId}`,
-        {
-          text,
-          model_id:      'eleven_multilingual_v2', // snake_case for HTTP API
-          output_format: 'mp3_44100_192',
-          voice_settings:{
-            stability:       this.voiceSettings.stability,
-            similarity_boost:this.voiceSettings.similarityBoost,
-            style:           this.voiceSettings.style,
-            use_speaker_boost:this.voiceSettings.useSpeakerBoost
-          }
-        },
+        `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+        payload,
         {
           headers: {
-            'Accept':        'audio/mpeg',
-            'Content-Type':  'application/json',
-            'xi-api-key':    process.env.ELEVENLABS_API_KEY
+            'Accept': 'audio/mpeg',
+            'Content-Type': 'application/json',
+            'xi-api-key': process.env.ELEVENLABS_API_KEY
           },
           responseType: 'arraybuffer'
         }
@@ -105,11 +167,23 @@ class TTSService {
    */
   async updateVoiceSettings(newSettings) {
     Object.assign(this.voiceSettings, {
-      stability:       newSettings.stability ?? this.voiceSettings.stability,
+      stability: newSettings.stability ?? this.voiceSettings.stability,
       similarityBoost: newSettings.similarityBoost ?? this.voiceSettings.similarityBoost,
-      style:           newSettings.style ?? this.voiceSettings.style,
+      style: newSettings.style ?? this.voiceSettings.style,
       useSpeakerBoost: newSettings.useSpeakerBoost ?? this.voiceSettings.useSpeakerBoost
     });
+    
+    // Update speech rate and seed settings
+    if (newSettings.speechRate !== undefined) {
+      this.speechRate = newSettings.speechRate;
+    }
+    if (newSettings.seed !== undefined) {
+      this.seed = newSettings.seed;
+    }
+    if (newSettings.fixedSeed !== undefined) {
+      this.fixedSeed = newSettings.fixedSeed;
+    }
+    
     logger.info('TTS voice settings updated:', this.voiceSettings);
   }
 
@@ -123,7 +197,7 @@ class TTSService {
       logger.error('Failed to list voices via SDK:', error);
       // HTTP fallback
       const axios = require('axios');
-      const resp  = await axios.get('https://api.elevenlabs.io/v1/voices', {
+      const resp = await axios.get('https://api.elevenlabs.io/v1/voices', {
         headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY }
       });
       return resp.data.voices;

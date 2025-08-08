@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const logger = require('../utils/logger');
+const config = require('../config'); // ADD THIS IMPORT
 
 class AudioRecorder {
   constructor(io) {
@@ -8,13 +9,14 @@ class AudioRecorder {
     this.isRecording = false;
     this.activeConnections = new Set(); // Track active recording connections
     
-    // Silero VAD settings from your screenshot
+    // Get VAD settings from config
+    const settings = config.settings?.vad || config.vad;
     this.vadSettings = {
-      positiveSpeechThreshold: 0.4,
-      negativeSpeechThreshold: 0.55,
-      minSpeechFrames: 8,
-      preSpeechPadFrames: 3,
-      redemptionFrames: 30,
+      positiveSpeechThreshold: settings.positiveSpeechThreshold || 0.4,
+      negativeSpeechThreshold: settings.negativeSpeechThreshold || 0.55,
+      minSpeechFrames: settings.minSpeechFrames || 8,
+      preSpeechPadFrames: settings.preSpeechPadFrames || 3,
+      redemptionFrames: settings.redemptionFrames || 30,
       frameSamples: 1024, // 64ms at 16kHz (use power of 2)
       sampleRate: 16000
     };
@@ -35,7 +37,18 @@ class AudioRecorder {
     
     logger.info('Recording started (waiting for client audio)');
     
-    // Notify client to start recording
+    // Get current VAD settings
+    const dataStore = require('../utils/simpleDataStore');
+    try {
+      const settings = await dataStore.getSettings();
+      if (settings.vad) {
+        Object.assign(this.vadSettings, settings.vad);
+      }
+    } catch (error) {
+      logger.warn('Failed to get VAD settings, using defaults');
+    }
+    
+    // Notify client to start recording with current settings
     this.io.emit('start-client-recording', this.vadSettings);
   }
 
@@ -67,11 +80,10 @@ class AudioRecorder {
       // Save the audio data to a file
       const timestamp = Date.now();
       const filename = `speech_${timestamp}.webm`;
-      const filepath = path.join(process.env.RECORDINGS_PATH, filename);
+      const filepath = path.join(config.paths.recordings, filename); // FIXED: Use config.paths
       
       // Ensure directory exists
-      const dir = process.env.RECORDINGS_PATH;
-      await fs.mkdir(dir, { recursive: true });
+      await fs.mkdir(config.paths.recordings, { recursive: true }); // FIXED: Use config.paths
       
       // Convert base64 to buffer and save
       const buffer = Buffer.from(audioData, 'base64');
@@ -94,7 +106,9 @@ class AudioRecorder {
   }
 
   async cleanup() {
-    await this.stopRecording();
+    if (this.isRecording) {
+      await this.stopRecording();
+    }
     this.activeConnections.clear();
   }
 
@@ -109,6 +123,11 @@ class AudioRecorder {
       logger.info(`Cleaning up recording for disconnected socket: ${socketId}`);
       await this.stopRecording(socketId);
     }
+  }
+
+  // Add this method that was referenced but missing
+  handleDisconnect(socketId) {
+    return this.handleSocketDisconnect(socketId);
   }
 }
 
