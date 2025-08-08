@@ -1,68 +1,5 @@
 [
   {
-    "id": 1754503657997,
-    "timestamp": "2025-08-06T18:07:37.997Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "ga je naar de kuip",
-    "responses": [
-      "Ik ga zelf niet naar De Kuip, maar het is natuurlijk een geweldige plek om een wedstrijd te beleven! Ga jij vanavond naar de wedstrijd van Feyenoord?",
-      "Ik ga niet zelf naar De Kuip, maar ik kan je wel alles vertellen over de sfeer, het team en het programma! Ga jij zelf naar de wedstrijd vanavond?",
-      "Ik zou heel graag naar De Kuip gaan, zeker voor een Feyenoord-wedstrijd! Helaas kan ik niet echt ergens naartoe, maar ik kan je wel helpen met informatie of leuke tips als je er zelf naartoe gaat. Ga jij vanavond naar de wedstrijd?"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": null,
-      "ragSourcesCount": 0,
-      "ragSources": [],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-06T18:07:37.995Z"
-    }
-  },
-  {
-    "id": 1754502331999,
-    "timestamp": "2025-08-06T17:45:31.999Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "tegen wie speelt feyenoord vanavond",
-    "responses": [
-      "Feyenoord speelt vanavond, woensdag 6 augustus 2025, om 21:00 uur tegen Fenerbahçe in de derde kwalificatieronde van de UEFA Champions League. De wedstrijd vindt plaats in De Kuip, Rotterdam. ([ziggo.nl](https://www.ziggo.nl/entertainment/sport/voetbal/champions-league/feyenoord-fenerbahce-06-08-2025?utm_source=openai)) Je kunt de wedstrijd live volgen op Ziggo Sport en Ziggo Sport Free. ([ziggo.nl](https://www.ziggo.nl/entertainment/sport/voetbal/champions-league/feyenoord-fenerbahce-06-08-2025?utm_source=openai))",
-      "Feyenoord speelt vanavond, woensdag 6 augustus 2025, om 21:00 uur tegen Fenerbahçe in de derde kwalificatieronde van de UEFA Champions League. De wedstrijd vindt plaats in De Kuip, Rotterdam. ([ziggo.nl](https://www.ziggo.nl/entertainment/sport/voetbal/champions-league/feyenoord-fenerbahce-06-08-2025?utm_source=openai)) Je kunt de wedstrijd live volgen op Ziggo Sport en Ziggo Sport Free. Als je tv kijkt via Ziggo, is de wedstrijd te zien op kanaal 14. Kijk je via een andere aanbieder, dan kun je de wedstrijd gratis bekijken met Ziggo Sport Free via de",
-      "I understand. Please tell me more."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": null,
-      "ragSourcesCount": 0,
-      "ragSources": [],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-06T17:45:31.998Z"
-    }
-  },
-  {
-    "id": 1754500935331,
-    "timestamp": "2025-08-06T17:22:15.331Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "tegen wie speelt feyenoord vanavond",
-    "responses": [
-      "Feyenoord speelt vanavond tegen FC Emmen. Het belooft een interessante wedstrijd te worden! Zijn jullie van plan om de wedstrijd samen te kijken?",
-      "Feyenoord speelt vanavond tegen FC Emmen. Het belooft een spannende wedstrijd te worden! Kijk je ernaar uit?",
-      "Feyenoord speelt vanavond tegen FC Emmen. Het belooft een interessante wedstrijd te worden! Kijk je ernaar uit?"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": null,
-      "ragSourcesCount": 0,
-      "ragSources": [],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-06T17:22:15.328Z"
-    }
-  },
-  {
     "id": 1754485555062,
     "timestamp": "2025-08-06T13:05:55.062Z",
     "personId": "caregiver",
@@ -2162,6 +2099,48 @@
       "Hello Michaela! I see you’re testing. How can I assist you today?"
     ],
     "selectedResponse": "Hello Michaela! I see you’re testing. How can I assist you today?",
+    "ragContext": []
+  },
+  {
+    "id": "1754672114169",
+    "timestamp": "2025-08-08T16:55:14.169Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "The reading to the file paths from ent file is not wanted. Use the oupaths in the code.",
+    "responses": [
+      "Got it. You want to stop reading file paths from the ent file and instead use the oupaths directly in your code. If you share the part of your code where this happens, I can help you adjust it to use the oupaths properly. Would you like to do that?",
+      "Got it! You want to avoid reading file paths from the ent file and use the output paths directly in your code instead. If you want, you can share the code snippet you're working on, and I can help adjust it for you.",
+      "Got it. You want to use the output paths directly in the code instead of reading file paths from an ent file. If you want, I can help you update the code to use the oupaths or output paths explicitly. Could you share the part of your code you're working on? That way, I can assist you in modifying it properly."
+    ],
+    "selectedResponse": "Got it! You want to avoid reading file paths from the ent file and use the output paths directly in your code instead. If you want, you can share the code snippet you're working on, and I can help adjust it for you.",
+    "ragContext": []
+  },
+  {
+    "id": "1754676724506",
+    "timestamp": "2025-08-08T18:12:04.506Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "test",
+    "responses": [
+      "Hi Michaela! Your test came through perfectly. How can I help you today?",
+      "Hi Michaela! Your test worked perfectly. How are you feeling today?",
+      "Hello Michaela! Your message came through loud and clear. How are you doing today?"
+    ],
+    "selectedResponse": "Hi Michaela! Your test came through perfectly. How can I help you today?",
+    "ragContext": []
+  },
+  {
+    "id": "1754676755329",
+    "timestamp": "2025-08-08T18:12:35.329Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "I, I attest.",
+    "responses": [
+      "Thank you, Michaela. Is there something specific you would like to talk about or share? I'm here to listen and help.",
+      "Thank you, Michaela. Is there something specific you would like to talk about or any way I can assist you right now?",
+      "Thank you for sharing that, Michaela. How are you feeling today? Is there anything special you'd like to talk about?"
+    ],
+    "selectedResponse": "Thank you for sharing that, Michaela. How are you feeling today? Is there anything special you'd like to talk about?",
     "ragContext": []
   }
 ]

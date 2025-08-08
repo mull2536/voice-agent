@@ -14,7 +14,7 @@ function loadSettings() {
       systemPrompt: ''  // Empty means use default from LLM service
     },
     tts: {
-      voiceId: 'JBFqnCBsd6RMkjVDRZzb',  // Default voice ID as requested
+      voiceId: 'JBFqnCBsd6RMkjVDRZzb',  // Default voice ID
       speechRate: 1.0,
       stability: 0.5,
       similarityBoost: 0.75,
@@ -149,33 +149,33 @@ const config = {
   port: parseInt(process.env.PORT) || 5050,
   env: process.env.NODE_ENV || 'development',
   
-  // Paths - from environment variables only
+  // Paths - hardcoded relative to project structure
   paths: {
-    vectorStore: process.env.VECTOR_STORE_PATH || path.join(__dirname, '../../data/vector_store'),
-    knowledgeBase: process.env.KNOWLEDGE_BASE_PATH || path.join(__dirname, '../../data/kb'),
-    recordings: process.env.RECORDINGS_PATH || path.join(__dirname, '../../data/recordings'),
-    archives: process.env.ARCHIVES_PATH || path.join(__dirname, '../../data/archives')
+    vectorStore: path.join(__dirname, '../../data/vector_store'),
+    knowledgeBase: path.join(__dirname, '../../data/kb'),
+    recordings: path.join(__dirname, '../../data/recordings'),
+    archives: path.join(__dirname, '../../data/archives')
   },
   
   // Settings from settings.json
   settings: settings,
   
-  // LLM settings (merged)
+  // LLM settings (merged from settings.json)
   llm: {
-    model: settings.llm.model || process.env.LLM_MODEL || 'gpt-4.1-mini',
-    temperature: settings.llm.temperature || parseFloat(process.env.LLM_TEMPERATURE) || 0.7,
-    maxTokens: settings.llm.maxTokens || parseInt(process.env.LLM_MAX_TOKENS) || 150,
-    systemPrompt: settings.llm.systemPrompt || ''  // Empty string means use default
+    model: settings.llm.model || 'gpt-4.1-mini',
+    temperature: settings.llm.temperature || 0.7,
+    maxTokens: settings.llm.maxTokens || 150,
+    systemPrompt: settings.llm.systemPrompt || ''
   },
   
-  // TTS settings (merged)
+  // TTS settings (merged from settings.json)
   tts: {
-    voiceId: settings.tts.voiceId || process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVDRZzb',
+    voiceId: settings.tts.voiceId || 'JBFqnCBsd6RMkjVDRZzb',
     speechRate: settings.tts.speechRate || 1.0,
-    stability: settings.tts.stability || parseFloat(process.env.TTS_STABILITY) || 0.5,
-    similarityBoost: settings.tts.similarityBoost || parseFloat(process.env.TTS_SIMILARITY_BOOST) || 0.75,
-    style: settings.tts.style || parseFloat(process.env.TTS_STYLE) || 0.0,
-    useSpeakerBoost: settings.tts.useSpeakerBoost !== undefined ? settings.tts.useSpeakerBoost : process.env.TTS_USE_SPEAKER_BOOST === 'true',
+    stability: settings.tts.stability || 0.5,
+    similarityBoost: settings.tts.similarityBoost || 0.75,
+    style: settings.tts.style || 0.0,
+    useSpeakerBoost: settings.tts.useSpeakerBoost !== undefined ? settings.tts.useSpeakerBoost : true,
     seed: settings.tts.seed || null,
     fixedSeed: settings.tts.fixedSeed || false
   },
@@ -185,41 +185,41 @@ const config = {
     language: settings.transcription?.language || settings.system?.defaultLanguage || 'en'
   },
   
-  // VAD settings (merged)
+  // VAD settings (merged from settings.json)
   vad: {
-    positiveSpeechThreshold: settings.vad.positiveSpeechThreshold || parseFloat(process.env.VAD_POSITIVE_THRESHOLD) || 0.4,
-    negativeSpeechThreshold: settings.vad.negativeSpeechThreshold || parseFloat(process.env.VAD_NEGATIVE_THRESHOLD) || 0.55,
-    minSpeechFrames: settings.vad.minSpeechFrames || parseInt(process.env.VAD_MIN_SPEECH_FRAMES) || 8,
-    preSpeechPadFrames: settings.vad.preSpeechPadFrames || parseInt(process.env.VAD_PRE_SPEECH_PAD_FRAMES) || 3,
-    redemptionFrames: settings.vad.redemptionFrames || parseInt(process.env.VAD_REDEMPTION_FRAMES) || 30,
-    threshold: settings.vad.threshold || parseFloat(process.env.VAD_THRESHOLD) || 0.5,
-    minSpeechDuration: settings.vad.minSpeechDuration || parseInt(process.env.VAD_MIN_SPEECH_DURATION) || 250,
-    maxSpeechDuration: settings.vad.maxSpeechDuration || parseInt(process.env.VAD_MAX_SPEECH_DURATION) || 10000
+    positiveSpeechThreshold: settings.vad.positiveSpeechThreshold || 0.4,
+    negativeSpeechThreshold: settings.vad.negativeSpeechThreshold || 0.55,
+    minSpeechFrames: settings.vad.minSpeechFrames || 8,
+    preSpeechPadFrames: settings.vad.preSpeechPadFrames || 3,
+    redemptionFrames: settings.vad.redemptionFrames || 30,
+    threshold: settings.vad.threshold || 0.5,
+    minSpeechDuration: settings.vad.minSpeechDuration || 250,
+    maxSpeechDuration: settings.vad.maxSpeechDuration || 10000
   },
   
   // Eye gaze settings
   eyeGaze: settings.eyeGaze || {
-    hoverDuration: parseInt(process.env.HOVER_DURATION) || 3000,
-    visualFeedback: process.env.VISUAL_FEEDBACK !== 'false'
+    hoverDuration: 3000,
+    visualFeedback: true
   },
   
   // RAG settings
   rag: {
-    embeddingModel: process.env.EMBEDDING_MODEL || 'text-embedding-ada-002',
-    chunkSize: settings.rag?.chunkSize || parseInt(process.env.CHUNK_SIZE) || 1000,
-    chunkOverlap: settings.rag?.chunkOverlap || parseInt(process.env.CHUNK_OVERLAP) || 200,
-    topK: settings.rag?.topK || parseInt(process.env.TOP_K_RESULTS) || 5
+    embeddingModel: 'text-embedding-ada-002',
+    chunkSize: settings.rag?.chunkSize || 1000,
+    chunkOverlap: settings.rag?.chunkOverlap || 200,
+    topK: settings.rag?.topK || 5
   },
   
   // Speaker recognition
   speakerRecognition: {
-    enabled: process.env.SPEAKER_RECOGNITION_ENABLED === 'true',
-    threshold: parseFloat(process.env.SPEAKER_RECOGNITION_THRESHOLD) || 0.85
+    enabled: true,
+    threshold: 0.85
   },
   
   // Internet search
   internetSearch: {
-    enabled: settings.internetSearch?.enabled !== undefined ? settings.internetSearch.enabled : process.env.AUTO_SEARCH_ENABLED === 'true'
+    enabled: settings.internetSearch?.enabled !== undefined ? settings.internetSearch.enabled : true
   },
   
   // System settings
@@ -253,8 +253,20 @@ config.reloadSettings = function() {
   config.llm.maxTokens = settings.llm.maxTokens || config.llm.maxTokens;
   config.llm.systemPrompt = settings.llm.systemPrompt || '';
   
-  // Update other merged properties...
-  // (similar updates for tts, transcription, vad, etc.)
+  // Update TTS settings
+  config.tts.voiceId = settings.tts.voiceId || config.tts.voiceId;
+  config.tts.speechRate = settings.tts.speechRate || config.tts.speechRate;
+  config.tts.stability = settings.tts.stability || config.tts.stability;
+  config.tts.similarityBoost = settings.tts.similarityBoost || config.tts.similarityBoost;
+  config.tts.style = settings.tts.style || config.tts.style;
+  config.tts.useSpeakerBoost = settings.tts.useSpeakerBoost !== undefined ? settings.tts.useSpeakerBoost : config.tts.useSpeakerBoost;
+  
+  // Update VAD settings
+  Object.assign(config.vad, settings.vad);
+  
+  // Update other settings
+  config.eyeGaze = settings.eyeGaze || config.eyeGaze;
+  config.internetSearch.enabled = settings.internetSearch?.enabled !== undefined ? settings.internetSearch.enabled : config.internetSearch.enabled;
   
   console.log('Settings reloaded');
 };

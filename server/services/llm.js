@@ -468,7 +468,18 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
 
     // Clean up old sessions periodically
     cleanupSessions() {
-        sessionQueueManager.cleanupInactiveSessions();
+        try {
+            // Log current session count for monitoring
+            const sessionCount = sessionQueueManager.getSessionCount();
+            if (sessionCount > 0) {
+                logger.info(`Active sessions in queue manager: ${sessionCount}`);
+            }
+            
+            // The sessionQueueManager already handles cleanup when sockets disconnect
+            // No additional cleanup needed here
+        } catch (error) {
+            logger.error('Error in LLM cleanup check:', error);
+        }
     }
 }
 

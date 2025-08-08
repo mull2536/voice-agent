@@ -4,7 +4,7 @@
       "id": "conv_1754388142028_b632a42a",
       "person": "Michaela ",
       "person_notes": "My caregiver from Czech Republic, she's adorable, but impatient and loves everything from Asia! From boys till music and movies.",
-      "timestamp": "2025-08-08T15:46:15.418Z",
+      "timestamp": "2025-08-08T18:44:56.589Z",
       "exchanges": [
         {
           "user": "how are you",
@@ -40,6 +40,24 @@
           "user": "dit is een test",
           "assistant": "Hello Michaela! I see you’re testing. How can I assist you today?",
           "timestamp": "2025-08-08T15:46:15.418Z",
+          "vectorized": false
+        },
+        {
+          "user": "The reading to the file paths from ent file is not wanted. Use the oupaths in the code.",
+          "assistant": "Got it! You want to avoid reading file paths from the ent file and use the output paths directly in your code instead. If you want, you can share the code snippet you're working on, and I can help adjust it for you.",
+          "timestamp": "2025-08-08T16:55:28.318Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": "Hi Michaela! Your test came through perfectly. How can I help you today?",
+          "timestamp": "2025-08-08T18:12:14.673Z",
+          "vectorized": false
+        },
+        {
+          "user": "I, I attest.",
+          "assistant": "Thank you for sharing that, Michaela. How are you feeling today? Is there anything special you'd like to talk about?",
+          "timestamp": "2025-08-08T18:44:56.589Z",
           "vectorized": false
         }
       ]
