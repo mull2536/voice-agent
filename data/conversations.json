@@ -1,101 +1,5 @@
 [
   {
-    "id": 1754485555062,
-    "timestamp": "2025-08-06T13:05:55.062Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "en another one",
-    "responses": [
-      "Of course! Here are three response options:",
-      "\"You're keeping me on my toes! Anything specific you'd like to test or talk about next?\"",
-      "\"More tests! You must be busy today. How can I assist you further?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": null,
-      "ragSourcesCount": 0,
-      "ragSources": [],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-06T13:05:55.061Z"
-    }
-  },
-  {
-    "id": 1754392260544,
-    "timestamp": "2025-08-05T11:11:00.544Z",
-    "personId": "1754239552047",
-    "personName": "Michaela ",
-    "userMessage": "Pssst. Pssst. Pssst.",
-    "responses": [
-      "Pssst, Michaela! Is that your secret way to get my attention? I’m all ears—what’s on your mind? Maybe something exciting about Boys to Planet or a new song you discovered?",
-      "Hey Michaela, I hear you! Could it be that you’re about to share something important again? I’m ready whenever you are—take your time, no rush at all.",
-      "Pssst, I love your playful style! Reminds me of how little moments with friends bring light, even on tougher days. So, what’s the secret message? More K-pop inspiration or a new Asian movie to recommend?"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ],
-      "chatHistoryUsed": true,
-      "chatHistorySourcesCount": 2,
-      "timestamp": "2025-08-05T11:11:00.543Z"
-    }
-  },
-  {
-    "id": 1754392241706,
-    "timestamp": "2025-08-05T11:10:41.706Z",
-    "personId": "1754239552047",
-    "personName": "Michaela ",
-    "userMessage": "Thank you. ",
-    "responses": [
-      "You’re very welcome, Michaela! I’m glad to hear you’re enjoying Boys to Planet. If you find any songs from the show you like, I’d love to listen along with you sometime. What kind of music style do you find most exciting so far?",
-      "Thank you, Michaela! It’s always a joy to chat with you about your favorite Asian shows and music. Do you think you might explore more K-pop groups after Boys to Planet? I’m curious which ones might catch your eye next!",
-      "You’re so welcome, Michaela. I appreciate you sharing your interests with me. Watching idols train and perform can be so inspiring. Are there any moments from Boys to Planet that made you smile or surprised"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": false,
-      "ragSourcesCount": 0,
-      "ragSources": [],
-      "chatHistoryUsed": true,
-      "chatHistorySourcesCount": 2,
-      "timestamp": "2025-08-05T11:10:41.705Z"
-    }
-  },
-  {
-    "id": 1754392200139,
-    "timestamp": "2025-08-05T11:10:00.139Z",
-    "personId": "1754239552047",
-    "personName": "Michaela ",
-    "userMessage": "No, not at all.",
-    "responses": [
-      "That’s great, Michaela! Sometimes it’s just about enjoying the energy and vibe, even without knowing all the names right away. Does any song or moment from Boys to Planet make you want to sing along or dance?",
-      "It’s perfectly fine not to know their names yet, Michaela. Discovering idols slowly is part of the fun. What do you think makes the show special for you? Is it the music, the performances, or maybe their personalities?",
-      "No pressure to remember names, Michaela. Just like in life, sometimes the journey and feelings matter more than the details. How does watching Boys to Planet make you feel? Does it lift your mood or inspire you in some way?"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "prive-data.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ],
-      "chatHistoryUsed": true,
-      "chatHistorySourcesCount": 2,
-      "timestamp": "2025-08-05T11:10:00.138Z"
-    }
-  },
-  {
     "id": 1754387842402,
     "timestamp": "2025-08-05T09:57:22.402Z",
     "personId": "1754239552047",
@@ -2141,6 +2045,62 @@
       "Thank you for sharing that, Michaela. How are you feeling today? Is there anything special you'd like to talk about?"
     ],
     "selectedResponse": "Thank you for sharing that, Michaela. How are you feeling today? Is there anything special you'd like to talk about?",
+    "ragContext": []
+  },
+  {
+    "id": "1754682442972",
+    "timestamp": "2025-08-08T19:47:22.972Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "Spits, Weghorst die wat ouder zijn dan gelijk iemand die één werelddoelpunt scoort naar Oranje te bombarderen vind ik iets te ver gaan, want hij staat op de tweede plek. Bert is de eerste spits. Dat zei Koeman gisteren ook aan tafel. Die zei Ja, als hij.",
+    "responses": [
+      "Het klinkt alsof je het hebt over de discussie rond de spitsen voor het Nederlands elftal, vooral over wie de voorkeur krijgt als doelpuntenmaker. Het klopt dat Weghorst qua doelpunten op de tweede plek staat, maar als Bert de eerste spits is volgens Koeman, betekent dat waarschijnlijk dat hij de belangrijkste aanvalspositie heeft, ook al scoort iemand anders misschien net iets meer. Het blijft natuurlijk altijd spannend om te zien wie uiteindelijk het vaakst scoort en wie het vertrouwen krijgt van de coach. Wat vind jij, wie moet volgens jou echt de eerste spits zijn?",
+      "Het klinkt alsof je het hebt over de situatie bij het Nederlands elftal en de discussie over wie de belangrijkste spits moet zijn. Het is logisch dat Bert, als eerste spits en ervaren speler, als de hoofdkeus wordt gezien. Iemand met een wereldgoal op zijn naam hoeft daarom niet meteen de rol over te nemen, vooral als die andere speler goede prestaties levert en dicht bij de top staat. Koeman lijkt die balans ook te erkennen. Wat vind jij zelf van die keuze, Michaela?",
+      "Het klinkt alsof je vindt dat Weghorst niet zomaar de beste spits moet worden genoemd alleen omdat hij één werelddoelpunt scoorde, zeker omdat hij al wat ouder is en er al een andere spits is zoals Bert die de belangrijkste rol heeft. Dat Koeman dat ook zei, ondersteunt je punt. Wat vind je van deze discussie over wie de echte spits van Oranje moet zijn?"
+    ],
+    "selectedResponse": "Het klinkt alsof je vindt dat Weghorst niet zomaar de beste spits moet worden genoemd alleen omdat hij één werelddoelpunt scoorde, zeker omdat hij al wat ouder is en er al een andere spits is zoals Bert die de belangrijkste rol heeft. Dat Koeman dat ook zei, ondersteunt je punt. Wat vind je van deze discussie over wie de echte spits van Oranje moet zijn?",
+    "ragContext": []
+  },
+  {
+    "id": "1754682496124",
+    "timestamp": "2025-08-08T19:48:16.124Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "Hope you're ready. We made a bit of what's going to come, but you have one big football lover at home.",
+    "responses": [
+      "That sounds exciting! I’m ready whenever you are. Which football team does the big fan at your home love the most?",
+      "That sounds exciting! I’m ready whenever you are. I’d love to hear about your football fan and what’s planned. Which team or player do they love the most?",
+      "That sounds exciting! Having a big football lover at home must bring lots of energy and fun. Are you celebrating any special football event or game soon? I'd love to hear more about their favorite team or player."
+    ],
+    "selectedResponse": "That sounds exciting! I’m ready whenever you are. I’d love to hear about your football fan and what’s planned. Which team or player do they love the most?",
+    "ragContext": []
+  },
+  {
+    "id": "1754682524136",
+    "timestamp": "2025-08-08T19:48:44.136Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "I like my steak.",
+    "responses": [
+      "Steak is delicious! Do you like it rare, medium, or well done?",
+      "That sounds great, Michaela! How do you like your steak cooked? Rare, medium, or well done?",
+      "That sounds delicious! How do you like your steak cooked—rare, medium, or well done?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754682893303",
+    "timestamp": "2025-08-08T19:54:53.303Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "What you're supposed to do is check up. And we found that it was too much for my length. I wasn't healthy enough. And that's when I started with lines. Sorry, the baker is quite a well-known line cook. Yes.",
+    "responses": [
+      "It sounds like you went through a health check and realized your condition needed more support, which led to starting with lines. That must have been a big step. How are you feeling about it all now? If you want to share more, I'm here to listen.",
+      "It sounds like you were explaining a time when things got too much for your health, and that's when you started using feeding lines. The baker being a well-known line cook is an interesting detail—are you talking about someone special or is it connected to a story you want to share?",
+      "It sounds like you were talking about a health check-up and realizing things were a bit too much for you, leading to starting with feeding lines. It's great that you're sharing your experience. How are you feeling about everything now?"
+    ],
+    "selectedResponse": null,
     "ragContext": []
   }
 ]

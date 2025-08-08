@@ -4,7 +4,7 @@
       "id": "conv_1754388142028_b632a42a",
       "person": "Michaela ",
       "person_notes": "My caregiver from Czech Republic, she's adorable, but impatient and loves everything from Asia! From boys till music and movies.",
-      "timestamp": "2025-08-08T18:44:56.589Z",
+      "timestamp": "2025-08-08T19:48:22.623Z",
       "exchanges": [
         {
           "user": "how are you",
@@ -58,6 +58,18 @@
           "user": "I, I attest.",
           "assistant": "Thank you for sharing that, Michaela. How are you feeling today? Is there anything special you'd like to talk about?",
           "timestamp": "2025-08-08T18:44:56.589Z",
+          "vectorized": false
+        },
+        {
+          "user": "Spits, Weghorst die wat ouder zijn dan gelijk iemand die één werelddoelpunt scoort naar Oranje te bombarderen vind ik iets te ver gaan, want hij staat op de tweede plek. Bert is de eerste spits. Dat zei Koeman gisteren ook aan tafel. Die zei Ja, als hij.",
+          "assistant": "Het klinkt alsof je vindt dat Weghorst niet zomaar de beste spits moet worden genoemd alleen omdat hij één werelddoelpunt scoorde, zeker omdat hij al wat ouder is en er al een andere spits is zoals Bert die de belangrijkste rol heeft. Dat Koeman dat ook zei, ondersteunt je punt. Wat vind je van deze discussie over wie de echte spits van Oranje moet zijn?",
+          "timestamp": "2025-08-08T19:47:39.852Z",
+          "vectorized": false
+        },
+        {
+          "user": "Hope you're ready. We made a bit of what's going to come, but you have one big football lover at home.",
+          "assistant": "That sounds exciting! I’m ready whenever you are. I’d love to hear about your football fan and what’s planned. Which team or player do they love the most?",
+          "timestamp": "2025-08-08T19:48:22.623Z",
           "vectorized": false
         }
       ]
