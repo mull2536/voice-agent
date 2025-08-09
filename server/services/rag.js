@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const logger = require('../utils/logger');
 const config = require('../config');
 const dataStore = require('../utils/simpleDataStore');
+let instance = null;
 
 class RAGService {
   constructor() {
@@ -692,6 +693,68 @@ class RAGService {
     } catch (error) {
       logger.error('Failed to delete document:', error);
     }
+  }
+}
+
+// Add method to remove file from vector store
+removeFile = async (filename) => {
+  try {
+    logger.info(`Removing file from index: ${filename}`);
+    
+    if (!this.fileIndex.has(filename)) {
+      logger.info(`File ${filename} not found in index`);
+      return;
+    }
+
+    // Remove from file index
+    this.fileIndex.delete(filename);
+    
+    // Save the updated index
+    await this.saveFileIndex();
+    
+    logger.info(`Successfully removed ${filename} from index`);
+    
+    // Note: FAISS doesn't support removing individual documents easily,
+    // so we just remove from index. A full rebuild might be needed for complete removal.
+  } catch (error) {
+    logger.error(`Failed to remove file ${filename}:`, error);
+    // Don't throw - just log the error
+  }
+}
+
+// Add method to rebuild vector store
+rebuildVectorStore = async function() {
+  try {
+    logger.info('Rebuilding vector store...');
+    
+    // Create new empty store
+    const dummyText = "This is an initialization document for the vector store.";
+    this.vectorStore = await FaissStore.fromTexts(
+      [dummyText],
+      [{ source: 'initialization', type: 'system' }],
+      this.embeddings
+    );
+
+    // Re-index all files in the file index
+    for (const [filename, fileInfo] of this.fileIndex.entries()) {
+      const filePath = path.join(this.knowledgeBasePath, filename);
+      
+      try {
+        await fs.access(filePath);
+        await this.indexFile(filePath, fileInfo);
+      } catch (error) {
+        logger.error(`File ${filename} not found, removing from index`);
+        this.fileIndex.delete(filename);
+      }
+    }
+
+    await this.vectorStore.save(this.vectorStorePath);
+    await this.saveFileIndex();
+    
+    logger.info('Vector store rebuilt successfully');
+  } catch (error) {
+    logger.error('Failed to rebuild vector store:', error);
+    throw error;
   }
 }
 

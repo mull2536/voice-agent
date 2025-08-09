@@ -1238,6 +1238,552 @@ input[type="checkbox"] {
     background-color: var(--primary-hover);
 }
 
+/* File Manager Modal Styles - Add to styles.css */
+
+/* File Manager Modal */
+.file-manager-modal-content {
+    max-width: 900px;
+    width: 90%;
+    height: 80vh;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modal header - more compact */
+.file-manager-modal-content .modal-header {
+    padding: 1rem 1.5rem;
+}
+
+.file-manager-modal-content .modal-header h2 {
+    font-size: 1.25rem;
+}
+.file-manager-modal-content .modal-body {
+    flex: 1;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* File Manager Tabs - more compact */
+.file-manager-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--surface);
+    padding: 0 1.5rem;
+}
+
+.file-manager-tabs .tab-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+}
+
+/* Tab Content - reduced padding */
+.tab-content {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+/* Files Tab Specific */
+#files-tab {
+    position: relative;
+}
+
+.files-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.files-header {
+    flex-shrink: 0;
+}
+
+.files-header-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.files-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.file-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.file-row:last-child {
+    border-bottom: none;
+}
+
+.file-row:hover {
+    background-color: var(--surface-hover);
+}
+
+.file-row.selected {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid var(--primary-color);
+}
+
+.file-name {
+    flex: 1;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-status {
+    display: flex;
+    align-items: center;
+    min-width: 40px;
+    justify-content: center;
+}
+
+.status-icon {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.status-icon.indexed {
+    color: var(--success-color);
+}
+
+.status-icon.not-indexed {
+    color: var(--danger-color);
+}
+
+/* Indexing spinner */
+.indexing-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Files bottom section - more compact */
+.files-bottom {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--surface);
+    padding-top: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.files-info {
+    background-color: var(--surface-hover);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    flex: 1;
+}
+
+.files-info p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.2;
+}
+
+.file-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Memories Tab Specific */
+#memories-tab {
+    position: relative;
+}
+
+.memories-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.memories-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+
+/* Memory row - compact */
+.memory-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.memory-row:last-child {
+    border-bottom: none;
+}
+
+.memory-row:hover {
+    background-color: var(--surface-hover);
+}
+
+.memory-row.selected {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid var(--primary-color);
+}
+
+.memory-title {
+    flex: 1;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.memory-date {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+/* Load More Button - more compact */
+.load-more-btn {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: var(--surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+}
+
+.load-more-btn:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Memory Form */
+.memory-form {
+    background-color: var(--surface-hover);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.memory-input {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.memory-input.full-width {
+    width: 100%;
+}
+
+.memory-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 1rem;
+}
+
+.memory-input:focus,
+.memory-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+/* Memory actions - FIXED AT BOTTOM */
+.memory-actions {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--surface);
+    padding-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Action buttons - more compact */
+.action-btn {
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: #059669;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: #dc2626;
+}
+
+.btn-secondary {
+    background-color: var(--surface-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--surface);
+}
+
+/* KB Icon in header */
+.kb-icon {
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    filter: brightness(0) invert(1);
+    padding: 4px;
+    border-radius: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .file-manager-modal-content {
+        max-width: 100%;
+        width: 95%;
+        margin: 1rem;
+        height: 90vh;
+    }
+    
+    .file-manager-tabs {
+        padding: 0 1rem;
+    }
+    
+    .tab-content {
+        padding: 1rem;
+    }
+    
+    .files-header-labels {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+    }
+    
+    .file-row,
+    .memory-row {
+        padding: 0.5rem;
+    }
+    
+    .file-name,
+    .memory-title {
+        font-size: 0.875rem;
+    }
+    
+    .memory-date {
+        font-size: 0.75rem;
+    }
+    
+    .files-bottom {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .files-info {
+        width: 100%;
+        padding: 0.5rem;
+    }
+    
+    .files-info p {
+        font-size: 0.75rem;
+    }
+    
+    .file-actions,
+    .memory-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
+    .action-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    /* Memory form on mobile */
+    .form-row {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .memory-input {
+        width: 100%;
+    }
+    
+    .memory-textarea {
+        font-size: 0.875rem;
+        min-height: 120px;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+    
+    .form-actions .action-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-manager-modal-content {
+        width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
+    
+    .file-manager-tabs .tab-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .files-list,
+    .memories-list {
+        margin-top: 0.5rem;
+    }
+    
+    /* Smaller status icons on mobile */
+    .status-icon {
+        font-size: 1rem;
+    }
+    
+    .indexing-spinner {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Stack file info on small screens */
+    .files-header-labels {
+        display: none;
+    }
+    
+    .file-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .file-status {
+        align-self: flex-end;
+        margin-top: -1.5rem;
+    }
+    
+    /* Adjust memory rows on small screens */
+    .memory-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .memory-date {
+        align-self: flex-end;
+        margin-top: -1.25rem;
+    }
+}
+
 /* Notifications */
 .notification {
     position: fixed;

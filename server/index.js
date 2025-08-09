@@ -24,6 +24,8 @@ const sessionQueueManager = require('./utils/sessionQueueManager');
 const conversationRoutes = require('./routes/conversation');
 const settingsRoutes = require('./routes/settings');
 const peopleRoutes = require('./routes/people');
+const filesRoutes = require('./routes/files');
+const memoriesRoutes = require('./routes/memories');
 
 // Import services
 const AudioRecorder = require('./services/audioRecorder');
@@ -43,8 +45,11 @@ const io = new Server(server, {
   pingInterval: 25000
 });
 
-app.use('/assets', express.static(path.join(__dirname, '../client/assets')));
+// Add socket.io instance to app.locals so routes can access it
+app.locals.io = io;
+
 // Middleware
+app.use('/assets', express.static(path.join(__dirname, '../client/assets')));
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
@@ -53,6 +58,8 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.use('/api/conversation', conversationRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/people', peopleRoutes);
+app.use('/api/files', filesRoutes);
+app.use('/api/memories', memoriesRoutes);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {

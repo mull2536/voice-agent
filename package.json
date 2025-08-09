@@ -9,27 +9,34 @@
     "setup": "node scripts/setup.js",
     "client": "cd client && python -m http.server 3000"
   },
-  "keywords": ["ALS", "AAC", "eye-gaze", "communication", "AI"],
+  "keywords": [
+    "ALS",
+    "AAC",
+    "eye-gaze",
+    "communication",
+    "AI"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "socket.io": "^4.7.2",
-    "openai": "^4.20.1",
-    "langchain": "^0.0.212",
+    "@elevenlabs/elevenlabs-js": "^2.1.0",
     "@langchain/community": "^0.0.50",
     "@langchain/openai": "^0.0.34",
-    "@elevenlabs/elevenlabs-js": "^2.1.0",
-    "faiss-node": "^0.5.1",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
-    "winston": "^3.11.0",
-    "pdf-parse": "^1.1.1",
-    "mammoth": "^1.6.0",
     "chokidar": "^3.5.3",
-    "form-data": "^4.0.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "faiss-node": "^0.5.1",
+    "form-data": "^4.0.0",
+    "langchain": "^0.0.212",
+    "mammoth": "^1.6.0",
+    "multer": "^2.0.2",
+    "openai": "^4.20.1",
+    "pdf-parse": "^1.1.1",
+    "socket.io": "^4.7.2",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

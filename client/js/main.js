@@ -21,6 +21,9 @@ class CommunicationAssistant {
             // Initialize socket connection
             this.socket = io();
             
+            // Make socket globally available for other modules
+            window.socket = this.socket;
+            
             // Initialize modules
             this.api = new API();
             this.conversationUI = new ConversationUI();
@@ -37,6 +40,12 @@ class CommunicationAssistant {
             
             // THEN start eye gaze controls with correct settings
             this.eyeGazeControls.init();
+            
+            // Initialize file manager
+            initializeFileManager();
+
+            // Initialize people modal
+            initializePeopleModal();
             
             console.log('Communication Assistant initialized');
         } catch (error) {
