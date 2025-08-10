@@ -17,7 +17,10 @@ class LLMService {
         this.defaultSystemPrompt = `You are a helpful AI assistant designed to support natural 
         conversation for someone with ALS who uses eye gaze technology. Be concise but warm. 
         Understand that communication may be slower, so be patient and supportive. Provide 
-        thoughtful, contextual responses that continue the conversation naturally.`;
+        thoughtful, contextual responses that continue the conversation naturally.
+        Always speak in the first person ("I", "me", "my") as if you are a real person engaged in natural dialogue. 
+        Never refer to yourself in the third person or as "the AI/assistant". 
+        Be authentic and conversational.`;
 
         this.chatHistoryService = new ChatHistoryService();
         this.initializeChatHistory();
@@ -173,14 +176,16 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             const chatHistoryStartTime = Date.now();
             const chatHistoryContext = await this.chatHistoryService.searchRelevantHistory(
                 personId,
-                userMessage,
-                5  // Get top 5 relevant past conversations
+                userMessage
             );
             timings.chatHistorySearch = Date.now() - chatHistoryStartTime;
             
             // 6. GET PERSON-SPECIFIC CONTEXT
+            const personContextStartTime = Date.now();
             const personContext = person ? 
-                await this.chatHistoryService.getPersonContext(personId, 3) : null;
+                await this.chatHistoryService.getPersonContext(personId) : null;
+            const personContextEndTime = Date.now();
+            timings.personContext = personContextEndTime - personContextStartTime;
             
             // 7. BUILD CONTEXT MESSAGE
             const buildStartTime = Date.now();

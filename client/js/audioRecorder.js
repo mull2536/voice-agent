@@ -151,10 +151,13 @@ class AudioRecorder {
                     this.speechFrames = 0;
                     this.silenceFrames = 0;
                     
+                    // LOG SPEECH START
+                    console.log('🎤 Speech detected - started speaking');
+                    
                     // Start MediaRecorder
                     if (this.mediaRecorder && this.mediaRecorder.state === 'inactive') {
                         this.mediaRecorder.start();
-                        console.log('Started recording speech');
+                        console.log('🔴 Recording started');
                         this.socket.emit('recording-status', { status: 'recording' });
                     }
                 }
@@ -168,15 +171,16 @@ class AudioRecorder {
                     this.isSpeaking = false;
                     this.silenceFrames = 0;
                     
+                    // LOG SPEECH END
+                    console.log('🔇 Speech ended - stopped speaking');
+                    
                     // Stop MediaRecorder and send audio
                     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
                         this.mediaRecorder.stop();
-                        console.log('Stopped recording speech');
+                        console.log('⏹️ Recording stopped');
                         this.socket.emit('recording-status', { status: 'listening' });
                     }
                 }
-            } else {
-                this.speechFrames = 0;
             }
         }
     }

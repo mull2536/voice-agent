@@ -19,6 +19,7 @@ const { startFileWatcher } = require('./utils/fileIndexer');
 const logger = require('./utils/logger');
 const dataStore = require('./utils/simpleDataStore');
 const sessionQueueManager = require('./utils/sessionQueueManager');
+const { getTimingLogger } = require('./utils/timingLogger');
 
 // Import routes
 const conversationRoutes = require('./routes/conversation');
@@ -82,7 +83,6 @@ function checkMemoryUsage() {
   const heapTotalMB = Math.round(used.heapTotal / 1024 / 1024);
   const rssMB = Math.round(used.rss / 1024 / 1024);
   
-  logger.info(`Memory Usage - Heap: ${heapUsedMB}/${heapTotalMB} MB, RSS: ${rssMB} MB`);
   
   // Warn if memory usage is high
   if (heapUsedMB > 500) {
@@ -137,6 +137,8 @@ async function initializeServices() {
     // Start memory monitoring
     memoryCheckInterval = setInterval(checkMemoryUsage, 60 * 1000); // Every minute
     
+    const timingLogger = getTimingLogger();
+
   } catch (error) {
     logger.error('❌ Failed to initialize services:', error);
     process.exit(1);
@@ -198,119 +200,140 @@ io.on('connection', (socket) => {
     
     // Process audio from client - WITH TIMING ADDED
     socket.on('audio-data', async (data) => {
-      const pipelineStartTime = performance.now();
-      
-      try {
-        // Check if we're shutting down
-        if (isShuttingDown) {
-          logger.warn('Ignoring audio data during shutdown');
-          return;
-        }
+        const pipelineStartTime = performance.now();
         
-        // 1. AUDIO PROCESSING
-        const audioStartTime = performance.now();
-        const audioInfo = await audioRecorder.processAudioData(data.audio, {
-          finalChunk: data.finalChunk || false
-        });
-        const audioEndTime = performance.now();
-        
-        // 2. TRANSCRIPTION
-        const transcriptionStartTime = performance.now();
-        const transcript = await transcriptionService.transcribe(audioInfo.filepath);
-        const transcriptionEndTime = performance.now();
-        
-        // Only proceed if we got meaningful transcription
-        if (transcript && transcript.trim().length > 0) {
-          socket.emit('transcription', { text: transcript });
-          
-          // Add transcript to session queue with deduplication
-          const addedToQueue = sessionQueueManager.addTranscript(socket.id, transcript);
-          let llmResult = null;
-          
-          if (addedToQueue) {
-            // Clean up old unresponded transcripts
-            sessionQueueManager.cleanupOldTranscripts(socket.id);
+        try {
+            // Check if we're shutting down
+            if (isShuttingDown) {
+                logger.warn('Ignoring audio data during shutdown');
+                return;
+            }
             
-            // 3. LLM PROCESSING WITH DETAILED TIMING
-            const llmStartTime = performance.now();
-            const personId = socket.data.currentPerson?.id || 'other';
-            llmResult = await llmService.generateResponses(transcript, personId, socket.id);
-            const llmEndTime = performance.now();
-            
-            // Store context for later use in response selection
-            socket.data.lastContext = {
-              userMessage: transcript,
-              personName: llmResult.personName,
-              personNotes: llmResult.personNotes,
-              conversationId: llmResult.conversationId
-            };
-            
-            socket.emit('responses-generated', { 
-              responses: llmResult.responses,
-              conversationId: llmResult.conversationId,
-              userMessage: transcript,
-              personName: llmResult.personName,
-              personNotes: llmResult.personNotes
+            // 1. AUDIO PROCESSING
+            const audioStartTime = performance.now();
+            const audioInfo = await audioRecorder.processAudioData(data.audio, {
+                finalChunk: data.finalChunk || false
             });
+            const audioEndTime = performance.now();
             
-            // Log queue status
-            const queueStatus = sessionQueueManager.getQueueStatus(socket.id);
-            logger.info(`Queue status - Conv: ${queueStatus.conversationCount}, Transcripts: ${queueStatus.transcriptCount}, Unresponded: ${queueStatus.unrespondedCount}`);
+            // 2. TRANSCRIPTION
+            const transcriptionStartTime = performance.now();
+            const transcript = await transcriptionService.transcribe(audioInfo.filepath);
+            const transcriptionEndTime = performance.now();
             
-            // COMPREHENSIVE TIMING BREAKDOWN
-            const pipelineEndTime = performance.now();
-            const totalTime = pipelineEndTime - pipelineStartTime;
-            const audioTime = audioEndTime - audioStartTime;
-            const transcriptionTime = transcriptionEndTime - transcriptionStartTime;
-            const llmTotalTime = llmEndTime - llmStartTime;
-            
-            // Calculate auxiliary time (everything except LLM API call)
-            const auxiliaryTime = llmResult.timings ? 
-              Object.entries(llmResult.timings)
-                .filter(([key]) => key !== 'llmApi')
-                .reduce((sum, [, value]) => sum + value, 0) : 0;
-            
-            logger.info(`🚀 PIPELINE TIMING:
+            // Only proceed if we got meaningful transcription
+            if (transcript && transcript.trim().length > 0) {
+                socket.emit('transcription', { text: transcript });
+                
+                // Add transcript to session queue with deduplication
+                const addedToQueue = sessionQueueManager.addTranscript(socket.id, transcript);
+                let llmResult = null;
+                
+                if (addedToQueue) {
+                    // Clean up old unresponded transcripts
+                    sessionQueueManager.cleanupOldTranscripts(socket.id);
+                    
+                    // 3. LLM PROCESSING WITH DETAILED TIMING
+                    const llmStartTime = performance.now();
+                    const personId = socket.data.currentPerson?.id || 'other';
+                    llmResult = await llmService.generateResponses(transcript, personId, socket.id);
+                    const llmEndTime = performance.now();
+                    
+                    // Store context for later use in response selection
+                    socket.data.lastContext = {
+                        userMessage: transcript,
+                        personName: llmResult.personName,
+                        personNotes: llmResult.personNotes,
+                        conversationId: llmResult.conversationId
+                    };
+                    
+                    socket.emit('responses-generated', { 
+                        responses: llmResult.responses,
+                        conversationId: llmResult.conversationId,
+                        userMessage: transcript,
+                        personName: llmResult.personName,
+                        personNotes: llmResult.personNotes
+                    });
+                    
+                    // Log queue status
+                    const queueStatus = sessionQueueManager.getQueueStatus(socket.id);
+                    logger.info(`Queue status - Conv: ${queueStatus.conversationCount}, Transcripts: ${queueStatus.transcriptCount}, Unresponded: ${queueStatus.unrespondedCount}`);
+                    
+                    // COMPREHENSIVE TIMING BREAKDOWN
+                    const pipelineEndTime = performance.now();
+                    const totalTime = pipelineEndTime - pipelineStartTime;
+                    const audioTime = audioEndTime - audioStartTime;
+                    const transcriptionTime = transcriptionEndTime - transcriptionStartTime;
+                    const llmTotalTime = llmEndTime - llmStartTime;
+                    
+                    // Break down auxiliary services
+                    const ragTime = llmResult.timings?.ragLookup || 0;
+                    const chatHistoryTime = llmResult.timings?.chatHistorySearch || 0;
+                    const llmApiTime = llmResult.timings?.llmApi || 0;
+                    const otherAuxTime = llmResult.timings ? 
+                        Object.entries(llmResult.timings)
+                            .filter(([key]) => !['llmApi', 'ragLookup', 'chatHistorySearch'].includes(key))
+                            .reduce((sum, [, value]) => sum + value, 0) : 0;
+                    const totalAuxTime = ragTime + chatHistoryTime + otherAuxTime;
+                    
+                    logger.info(`🚀 PIPELINE TIMING:
 ├─ Total: ${totalTime.toFixed(2)}ms
 ├─ Audio processing: ${audioTime.toFixed(2)}ms (${((audioTime/totalTime)*100).toFixed(1)}%)
 ├─ Transcription: ${transcriptionTime.toFixed(2)}ms (${((transcriptionTime/totalTime)*100).toFixed(1)}%)
 └─ LLM processing: ${llmTotalTime.toFixed(2)}ms (${((llmTotalTime/totalTime)*100).toFixed(1)}%)
-   ├─ LLM API call: ${(llmResult.timings?.llmApi || 0).toFixed(2)}ms (${((llmResult.timings?.llmApi || 0)/llmTotalTime*100).toFixed(1)}% of LLM time)
-   └─ Auxiliary services: ${auxiliaryTime.toFixed(2)}ms (${(auxiliaryTime/llmTotalTime*100).toFixed(1)}% of LLM time)`);
-            
-            // Detailed LLM breakdown if timings are available
-            if (llmResult.timings) {
-              logger.info(`   📊 LLM Service Breakdown:
+   ├─ LLM API call: ${llmApiTime.toFixed(2)}ms (${(llmApiTime/llmTotalTime*100).toFixed(1)}% of LLM time)
+   └─ Auxiliary services: ${totalAuxTime.toFixed(2)}ms (${(totalAuxTime/llmTotalTime*100).toFixed(1)}% of LLM time)
+      ├─ RAG lookup: ${ragTime.toFixed(2)}ms
+      ├─ Chat history: ${chatHistoryTime.toFixed(2)}ms
+      └─ Other services: ${otherAuxTime.toFixed(2)}ms`);
+      
+                    await timingLogger.logTiming({
+                        total: totalTime,
+                        audio: audioTime,
+                        transcription: transcriptionTime,
+                        llmTotal: llmTotalTime,
+                        llmApi: llmApiTime,
+                        rag: ragTime,
+                        chatHistory: chatHistoryTime,
+                        otherAux: otherAuxTime,
+                        messageType: 'audio',
+                        llmModel: llmResult.llmModel || 'unknown'
+                    });
+                    // Detailed LLM breakdown if timings are available
+                    if (llmResult.timings) {
+                        logger.info(`   📊 Detailed Service Breakdown:
       ├─ Person lookup: ${llmResult.timings.personLookup.toFixed(2)}ms
       ├─ Recent context: ${llmResult.timings.recentContext.toFixed(2)}ms
       ├─ Session context: ${llmResult.timings.sessionContext.toFixed(2)}ms
       ├─ RAG lookup: ${llmResult.timings.ragLookup.toFixed(2)}ms
       ├─ Chat history search: ${llmResult.timings.chatHistorySearch.toFixed(2)}ms
+      ├─ Person context: ${(llmResult.timings.personContext || 0).toFixed(2)}ms
       ├─ Message building: ${llmResult.timings.messageBuilding.toFixed(2)}ms
+      ├─ LLM API call: ${llmResult.timings.llmApi.toFixed(2)}ms
       ├─ Response parsing: ${llmResult.timings.responseParsing.toFixed(2)}ms
       └─ Chat history save: ${llmResult.timings.chatHistorySave.toFixed(2)}ms`);
+                    }
+                    
+                } else {
+                    logger.info('Transcript was duplicate, responses not generated');
+                }
+                
+            } else {
+                logger.info('Empty or unclear transcription, skipping response generation');
+                
+                // If this was a final chunk before stop, still auto-restart recording
+                if (data.finalChunk) {
+                    setTimeout(() => {
+                        socket.emit('auto-start-recording');
+                    }, 1000);
+                }
             }
             
-          } else {
-            logger.info('Transcript was duplicate, responses not generated');
-          }
-          
-        } else {
-          logger.info('Empty or unclear transcription, skipping response generation');
-          
-          // If this was a final chunk before stop, still auto-restart recording
-          if (data.finalChunk) {
-            setTimeout(() => {
-              socket.emit('auto-start-recording');
-            }, 1000);
-          }
+        } catch (error) {
+            const pipelineEndTime = performance.now();
+            logger.error(`❌ Pipeline failed after ${(pipelineEndTime - pipelineStartTime).toFixed(2)}ms:`, error);
+            socket.emit('error', { message: 'Failed to process audio' });
         }
-        
-      } catch (error) {
-        const pipelineEndTime = performance.now();
-        logger.error(`❌ Pipeline failed after ${(pipelineEndTime - pipelineStartTime).toFixed(2)}ms:`, error);
-        socket.emit('error', { message: 'Failed to process audio' });
-      }
     });
     
     // Recording status updates
@@ -407,60 +430,204 @@ io.on('connection', (socket) => {
         });
       }
     });
+
+    // Regenerate responses
+    socket.on('regenerate-responses', async (data) => {
+        const startTime = performance.now();
+        
+        try {
+            if (isShuttingDown) {
+                logger.warn('Ignoring regenerate request during shutdown');
+                return;
+            }
+            
+            const { text, conversationId } = data;
+            const personId = socket.data.currentPerson?.id || 'other';
+            
+            logger.info(`Regenerating responses for: "${text.slice(0, 50)}..."`);
+            
+            // Generate new responses
+            const llmStartTime = performance.now();
+            const result = await llmService.generateResponses(text, personId, socket.id);
+            const llmEndTime = performance.now();
+            
+            // Update the last context with new conversation ID
+            socket.data.lastContext = {
+                userMessage: text,
+                personName: result.personName,
+                personNotes: result.personNotes,
+                conversationId: result.conversationId
+            };
+            
+            // Send new responses to client
+            socket.emit('responses-generated', { 
+                responses: result.responses,
+                conversationId: result.conversationId,
+                userMessage: text,
+                personName: result.personName,
+                personNotes: result.personNotes
+            });
+            
+            // COMPREHENSIVE TIMING BREAKDOWN
+            const totalTime = performance.now() - startTime;
+            const llmTime = llmEndTime - llmStartTime;
+            
+            // Break down auxiliary services
+            if (result.timings) {
+                const ragTime = result.timings.ragLookup || 0;
+                const chatHistoryTime = result.timings.chatHistorySearch || 0;
+                const llmApiTime = result.timings.llmApi || 0;
+                const otherAuxTime = Object.entries(result.timings)
+                    .filter(([key]) => !['llmApi', 'ragLookup', 'chatHistorySearch'].includes(key))
+                    .reduce((sum, [, value]) => sum + value, 0);
+                const totalAuxTime = ragTime + chatHistoryTime + otherAuxTime;
+                
+                logger.info(`🔄 Regenerate responses:
+├─ Total: ${totalTime.toFixed(2)}ms
+└─ LLM processing: ${llmTime.toFixed(2)}ms
+   ├─ LLM API call: ${llmApiTime.toFixed(2)}ms (${(llmApiTime/llmTime*100).toFixed(1)}%)
+   └─ Auxiliary services: ${totalAuxTime.toFixed(2)}ms (${(totalAuxTime/llmTime*100).toFixed(1)}%)
+      ├─ RAG lookup: ${ragTime.toFixed(2)}ms
+      ├─ Chat history: ${chatHistoryTime.toFixed(2)}ms
+      └─ Other services: ${otherAuxTime.toFixed(2)}ms`);
+
+                await timingLogger.logTiming({
+                    total: totalTime,
+                    llmTotal: llmTime,
+                    llmApi: llmApiTime,
+                    rag: ragTime,
+                    chatHistory: chatHistoryTime,
+                    otherAux: otherAuxTime,
+                    messageType: 'regenerate'
+                });
+                
+                // Optional: Detailed breakdown
+                logger.info(`   📊 Detailed Service Breakdown:
+      ├─ Person lookup: ${result.timings.personLookup.toFixed(2)}ms
+      ├─ Recent context: ${result.timings.recentContext.toFixed(2)}ms
+      ├─ Session context: ${result.timings.sessionContext.toFixed(2)}ms
+      ├─ RAG lookup: ${result.timings.ragLookup.toFixed(2)}ms
+      ├─ Chat history search: ${result.timings.chatHistorySearch.toFixed(2)}ms
+      ├─ Person context: ${(result.timings.personContext || 0).toFixed(2)}ms
+      ├─ Message building: ${result.timings.messageBuilding.toFixed(2)}ms
+      ├─ LLM API call: ${result.timings.llmApi.toFixed(2)}ms
+      ├─ Response parsing: ${result.timings.responseParsing.toFixed(2)}ms
+      └─ Chat history save: ${result.timings.chatHistorySave.toFixed(2)}ms`);
+            } else {
+                logger.info(`🔄 Regenerate responses: ${totalTime.toFixed(2)}ms (no detailed timings)`);
+            }
+            
+        } catch (error) {
+            const endTime = performance.now();
+            logger.error(`Failed to regenerate responses after ${(endTime - startTime).toFixed(2)}ms:`, error);
+            socket.emit('error', { message: 'Failed to regenerate responses' });
+        }
+    });
     
     // Manual text input - WITH TIMING ADDED
     socket.on('text-input', async (data) => {
-      const startTime = performance.now();
-      
-      try {
-        if (isShuttingDown) {
-          logger.warn('Ignoring text input during shutdown');
-          return;
+        const startTime = performance.now();
+        
+        try {
+            if (isShuttingDown) {
+                logger.warn('Ignoring text input during shutdown');
+                return;
+            }
+            
+            const { text } = data;
+            const personId = socket.data.currentPerson?.id || 'other';
+            
+            // Add transcript to session queue with deduplication
+            const addedToQueue = sessionQueueManager.addTranscript(socket.id, text);
+            
+            if (addedToQueue) {
+                // Clean up old unresponded transcripts
+                sessionQueueManager.cleanupOldTranscripts(socket.id);
+                
+                // Generate responses
+                const llmStartTime = performance.now();
+                const result = await llmService.generateResponses(text, personId, socket.id); // Pass socket ID
+                const llmEndTime = performance.now();
+                
+                // Store context for later use in response selection
+                socket.data.lastContext = {
+                    userMessage: text,
+                    personName: result.personName,
+                    personNotes: result.personNotes,
+                    conversationId: result.conversationId
+                };
+                
+                socket.emit('responses-generated', { 
+                    responses: result.responses,
+                    conversationId: result.conversationId,
+                    userMessage: text,
+                    personName: result.personName,
+                    personNotes: result.personNotes
+                });
+                
+                // Log queue status
+                const queueStatus = sessionQueueManager.getQueueStatus(socket.id);
+                logger.info(`Queue status - Conv: ${queueStatus.conversationCount}, Transcripts: ${queueStatus.transcriptCount}, Unresponded: ${queueStatus.unrespondedCount}`);
+                
+                // COMPREHENSIVE TIMING BREAKDOWN
+                const totalTime = performance.now() - startTime;
+                const llmTime = llmEndTime - llmStartTime;
+                
+                // Break down auxiliary services
+                if (result.timings) {
+                    const ragTime = result.timings.ragLookup || 0;
+                    const chatHistoryTime = result.timings.chatHistorySearch || 0;
+                    const llmApiTime = result.timings.llmApi || 0;
+                    const otherAuxTime = Object.entries(result.timings)
+                        .filter(([key]) => !['llmApi', 'ragLookup', 'chatHistorySearch'].includes(key))
+                        .reduce((sum, [, value]) => sum + value, 0);
+                    const totalAuxTime = ragTime + chatHistoryTime + otherAuxTime;
+                    
+                    logger.info(`📝 Text input processing:
+├─ Total: ${totalTime.toFixed(2)}ms
+└─ LLM processing: ${llmTime.toFixed(2)}ms
+   ├─ LLM API call: ${llmApiTime.toFixed(2)}ms (${(llmApiTime/llmTime*100).toFixed(1)}%)
+   └─ Auxiliary services: ${totalAuxTime.toFixed(2)}ms (${(totalAuxTime/llmTime*100).toFixed(1)}%)
+      ├─ RAG lookup: ${ragTime.toFixed(2)}ms
+      ├─ Chat history: ${chatHistoryTime.toFixed(2)}ms
+      └─ Other services: ${otherAuxTime.toFixed(2)}ms`);
+                    
+                    await timingLogger.logTiming({
+                        total: totalTime,
+                        audio: 0,
+                        transcription: 0,
+                        llmTotal: llmTime,
+                        llmApi: llmApiTime,
+                        rag: ragTime,
+                        chatHistory: chatHistoryTime,
+                        otherAux: otherAuxTime,
+                        messageType: 'text',
+                        llmModel: result.llmModel || 'unknown'
+                    });
+                    // Optional: Detailed breakdown
+                    logger.info(`   📊 Detailed Service Breakdown:
+      ├─ Person lookup: ${result.timings.personLookup.toFixed(2)}ms
+      ├─ Recent context: ${result.timings.recentContext.toFixed(2)}ms
+      ├─ Session context: ${result.timings.sessionContext.toFixed(2)}ms
+      ├─ RAG lookup: ${result.timings.ragLookup.toFixed(2)}ms
+      ├─ Chat history search: ${result.timings.chatHistorySearch.toFixed(2)}ms
+      ├─ Person context: ${(result.timings.personContext || 0).toFixed(2)}ms
+      ├─ Message building: ${result.timings.messageBuilding.toFixed(2)}ms
+      ├─ LLM API call: ${result.timings.llmApi.toFixed(2)}ms
+      ├─ Response parsing: ${result.timings.responseParsing.toFixed(2)}ms
+      └─ Chat history save: ${result.timings.chatHistorySave.toFixed(2)}ms`);
+                } else {
+                    logger.info(`📝 Text input processing: ${totalTime.toFixed(2)}ms (no detailed timings)`);
+                }
+            } else {
+                logger.info('Text input was duplicate, responses not generated');
+            }
+            
+        } catch (error) {
+            const endTime = performance.now();
+            logger.error(`Failed to process text input after ${(endTime - startTime).toFixed(2)}ms:`, error);
+            socket.emit('error', { message: 'Failed to process text input' });
         }
-        
-        const { text } = data;
-        const personId = socket.data.currentPerson?.id || 'other';
-        
-        // Add transcript to session queue with deduplication
-        const addedToQueue = sessionQueueManager.addTranscript(socket.id, text);
-        
-        if (addedToQueue) {
-          // Clean up old unresponded transcripts
-          sessionQueueManager.cleanupOldTranscripts(socket.id);
-          
-          // Generate responses
-          const result = await llmService.generateResponses(text, personId, socket.id); // Pass socket ID
-          
-          // Store context for later use in response selection
-          socket.data.lastContext = {
-            userMessage: text,
-            personName: result.personName,
-            personNotes: result.personNotes,
-            conversationId: result.conversationId
-          };
-          
-          socket.emit('responses-generated', { 
-            responses: result.responses,
-            conversationId: result.conversationId,
-            userMessage: text,
-            personName: result.personName,
-            personNotes: result.personNotes
-          });
-          
-          // Log queue status
-          const queueStatus = sessionQueueManager.getQueueStatus(socket.id);
-          logger.info(`Queue status - Conv: ${queueStatus.conversationCount}, Transcripts: ${queueStatus.transcriptCount}, Unresponded: ${queueStatus.unrespondedCount}`);
-        } else {
-          logger.info('Text input was duplicate, responses not generated');
-        }
-        
-        const endTime = performance.now();
-        logger.info(`📝 Text input processing: ${(endTime - startTime).toFixed(2)}ms`);
-        
-      } catch (error) {
-        logger.error('Failed to process text input:', error);
-        socket.emit('error', { message: 'Failed to process text input' });
-      }
     });
     
     // Handle client disconnect

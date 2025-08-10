@@ -384,6 +384,92 @@ body {
     color: var(--text-secondary);
 }
 
+/* Response Selection Header */
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.response-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.response-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.response-action-btn {
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cancel-btn {
+    background-color: #dc2626;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.cancel-btn:active {
+    transform: translateY(0);
+}
+
+.resend-btn {
+    background-color: #2563eb;
+    color: white;
+}
+
+.resend-btn:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.resend-btn:active {
+    transform: translateY(0);
+}
+
+/* Disabled state for buttons */
+.response-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Loading message style */
+.loading-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
 .response-options {
     display: flex;
     gap: 1rem;
@@ -569,6 +655,41 @@ body {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 1000;
+}
+
+/* Add this to properly center the modals */
+#fileManagerModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    /* Add these two lines */
+    justify-content: center;
+    align-items: center;
+}
+
+#peopleModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    /* Add these two lines */
+    justify-content: center;
+    align-items: center;
+}
+
+/* When the modals are shown, they need to use flex display */
+#fileManagerModal[style*="display: block"],
+#peopleModal[style*="display: block"] {
+    display: flex !important;
 }
 
 .modal.active {

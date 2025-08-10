@@ -35,7 +35,7 @@
   "rag": {
     "chunkSize": 1000,
     "chunkOverlap": 200,
-    "topK": 5
+    "topK": 3
   },
   "internetSearch": {
     "enabled": true,

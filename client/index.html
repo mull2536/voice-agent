@@ -40,7 +40,13 @@
 
             <!-- Response Selection -->
             <div class="response-selection" id="response-selection">
-                <h3>Choose your response:</h3>
+                <div class="response-header">
+                    <h3>Choose your response:</h3>
+                    <div class="response-actions">
+                        <button id="cancel-responses-btn" class="response-action-btn cancel-btn">Cancel</button>
+                        <button id="resend-responses-btn" class="response-action-btn resend-btn">Resend</button>
+                    </div>
+                </div>
                 <div class="response-options" id="response-options">
                     <!-- Response options will be dynamically added here -->
                 </div>
@@ -404,88 +410,88 @@
             </div>
         </div>
         <!-- File Manager Modal - Add this to index.html after the People Modal -->
-<div id="fileManagerModal" class="modal">
-    <div class="modal-content file-manager-modal-content">
-        <div class="modal-header">
-            <h2>Knowledge Base Manager</h2>
-            <span class="close-modal" onclick="closeFileManager()">&times;</span>
-        </div>
-        
-        <div class="file-manager-tabs">
-            <button class="tab-btn active" data-tab="files">Files</button>
-            <button class="tab-btn" data-tab="memories">Memories</button>
-        </div>
-        
-        <div class="modal-body">
-            <!-- Files Tab -->
-            <div id="files-tab" class="tab-content active">
-                <div class="files-container">
-                    <div class="files-header">
-                        <div class="files-header-labels">
-                            <span>File Name</span>
-                            <span>Index</span>
+        <div id="fileManagerModal" class="modal">
+            <div class="modal-content file-manager-modal-content">
+                <div class="modal-header">
+                    <h2>Knowledge Base Manager</h2>
+                    <span class="close-modal" onclick="closeFileManager()">&times;</span>
+                </div>
+                
+                <div class="file-manager-tabs">
+                    <button class="tab-btn active" data-tab="files">Files</button>
+                    <button class="tab-btn" data-tab="memories">Memories</button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Files Tab -->
+                    <div id="files-tab" class="tab-content active">
+                        <div class="files-container">
+                            <div class="files-header">
+                                <div class="files-header-labels">
+                                    <span>File Name</span>
+                                    <span>Index</span>
+                                </div>
+                            </div>
+                            
+                            <div id="filesList" class="files-list">
+                                <!-- Files will be dynamically loaded here -->
+                            </div>
+                            
+                            <button id="loadMoreFilesBtn" class="load-more-btn" style="display: none;">Load More</button>
+                        </div>
+                        
+                        <div class="files-bottom">
+                            <div class="files-info">
+                                <p>Supported: .txt, .pdf, .docx, .json, .md</p>
+                                <p>Auto-indexed for AI assistance</p>
+                            </div>
+                            
+                            <div class="file-actions">
+                                <button id="deleteFilesBtn" class="action-btn btn-danger" disabled>Delete</button>
+                                <button id="addFilesBtn" class="action-btn btn-success">Add</button>
+                                <input type="file" id="fileUploadInput" multiple accept=".txt,.pdf,.docx,.json,.md" style="display: none;">
+                            </div>
                         </div>
                     </div>
                     
-                    <div id="filesList" class="files-list">
-                        <!-- Files will be dynamically loaded here -->
+                    <!-- Memories Tab -->
+                    <div id="memories-tab" class="tab-content">
+                        <div class="memories-container">
+                            <div id="memoriesList" class="memories-list">
+                                <!-- Memories will be dynamically loaded here -->
+                            </div>
+                            
+                            <button id="loadMoreMemoriesBtn" class="load-more-btn" style="display: none;">Load More</button>
+                        </div>
+                        
+                        <!-- Memory Form (hidden by default) -->
+                        <div id="memoryForm" class="memory-form" style="display: none;">
+                            <div class="form-row">
+                                <input type="text" id="memoryTitle" placeholder="Title (e.g., Doctor's visit)" class="memory-input">
+                                <input type="date" id="memoryDate" class="memory-input">
+                            </div>
+                            
+                            <div class="form-row">
+                                <input type="text" id="memoryTags" placeholder="Tags (separated by commas, e.g., medical, appointment)" class="memory-input full-width">
+                            </div>
+                            
+                            <textarea id="memoryText" placeholder="Enter memory details here..." class="memory-textarea" rows="8"></textarea>
+                            
+                            <div class="form-actions">
+                                <button id="cancelMemoryBtn" class="action-btn btn-secondary">Cancel</button>
+                                <button id="saveMemoryBtn" class="action-btn btn-success">Save</button>
+                            </div>
+                        </div>
+                        
+                        <div id="memoryActions" class="memory-actions">
+                            <button id="deleteMemoriesBtn" class="action-btn btn-danger" disabled>Delete</button>
+                            <button id="editMemoryBtn" class="action-btn btn-primary" disabled>Edit</button>
+                            <button id="addMemoryBtn" class="action-btn btn-success">Add</button>
+                        </div>
                     </div>
-                    
-                    <button id="loadMoreFilesBtn" class="load-more-btn" style="display: none;">Load More</button>
-                </div>
-                
-                <div class="files-bottom">
-                    <div class="files-info">
-                        <p>Supported: .txt, .pdf, .docx, .json, .md</p>
-                        <p>Auto-indexed for AI assistance</p>
-                    </div>
-                    
-                    <div class="file-actions">
-                        <button id="deleteFilesBtn" class="action-btn btn-danger" disabled>Delete</button>
-                        <button id="addFilesBtn" class="action-btn btn-success">Add</button>
-                        <input type="file" id="fileUploadInput" multiple accept=".txt,.pdf,.docx,.json,.md" style="display: none;">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Memories Tab -->
-            <div id="memories-tab" class="tab-content">
-                <div class="memories-container">
-                    <div id="memoriesList" class="memories-list">
-                        <!-- Memories will be dynamically loaded here -->
-                    </div>
-                    
-                    <button id="loadMoreMemoriesBtn" class="load-more-btn" style="display: none;">Load More</button>
-                </div>
-                
-                <!-- Memory Form (hidden by default) -->
-                <div id="memoryForm" class="memory-form" style="display: none;">
-                    <div class="form-row">
-                        <input type="text" id="memoryTitle" placeholder="Title (e.g., Doctor's visit)" class="memory-input">
-                        <input type="date" id="memoryDate" class="memory-input">
-                    </div>
-                    
-                    <div class="form-row">
-                        <input type="text" id="memoryTags" placeholder="Tags (separated by commas, e.g., medical, appointment)" class="memory-input full-width">
-                    </div>
-                    
-                    <textarea id="memoryText" placeholder="Enter memory details here..." class="memory-textarea" rows="8"></textarea>
-                    
-                    <div class="form-actions">
-                        <button id="cancelMemoryBtn" class="action-btn btn-secondary">Cancel</button>
-                        <button id="saveMemoryBtn" class="action-btn btn-success">Save</button>
-                    </div>
-                </div>
-                
-                <div id="memoryActions" class="memory-actions">
-                    <button id="deleteMemoriesBtn" class="action-btn btn-danger" disabled>Delete</button>
-                    <button id="editMemoryBtn" class="action-btn btn-primary" disabled>Edit</button>
-                    <button id="addMemoryBtn" class="action-btn btn-success">Add</button>
                 </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 
     <!-- Scripts -->

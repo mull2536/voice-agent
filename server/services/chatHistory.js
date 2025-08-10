@@ -8,6 +8,7 @@ const { RecursiveCharacterTextSplitter } = require('langchain/text_splitter');
 const logger = require('../utils/logger');
 const { performance } = require('perf_hooks');
 const config = require('../config');
+const dataStore = require('../utils/simpleDataStore'); 
 
 class ChatHistoryService {
     constructor() {
@@ -20,6 +21,18 @@ class ChatHistoryService {
             openAIApiKey: process.env.OPENAI_API_KEY,
             modelName: config.rag.embeddingModel || 'text-embedding-ada-002'
         });
+
+        // Use RAG settings for text splitter
+        this.textSplitter = new RecursiveCharacterTextSplitter({
+            chunkSize: config.rag.chunkSize || 1000,
+            chunkOverlap: config.rag.chunkOverlap || 200
+        });
+        
+        // Use RAG topK setting
+        this.topK = config.rag.topK || 5;
+        
+        // Keep minSimilarity as instance property (different from RAG)
+        this.minSimilarity = 0.5;
         
         this.chatVectorStore = null;
         this.isInitialized = false;
@@ -51,6 +64,22 @@ class ChatHistoryService {
         } catch (error) {
             logger.error('Failed to initialize chat history service:', error);
             throw error;
+        }
+    }
+
+    async updateSettingsFromDataStore() {
+        try {
+            const settings = await dataStore.getSettings();
+            const ragSettings = settings?.rag || {};
+            
+            this.textSplitter = new RecursiveCharacterTextSplitter({
+                chunkSize: ragSettings.chunkSize || config.rag.chunkSize || 1000,
+                chunkOverlap: ragSettings.chunkOverlap || config.rag.chunkOverlap || 200
+            });
+            
+            this.topK = ragSettings.topK || config.rag.topK || 5;
+        } catch (error) {
+            logger.warn('Failed to update chat history settings:', error);
         }
     }
 
@@ -285,8 +314,14 @@ class ChatHistoryService {
         }
     }
 
-    async searchRelevantHistory(personId, query, topK = 5, minSimilarity = 0.6) {
+    async searchRelevantHistory(personId, query, topK, minSimilarity) {
         const startTime = performance.now();
+        // Update settings from dataStore before search
+        await this.updateSettingsFromDataStore();
+        
+        // Use provided values or instance defaults from RAG settings
+        const k = topK !== undefined ? topK : this.topK;
+        const threshold = minSimilarity !== undefined ? minSimilarity : this.minSimilarity;
         
         try {
             if (!this.chatVectorStore) {
@@ -297,16 +332,15 @@ class ChatHistoryService {
             // Search for similar conversations
             const searchResults = await this.chatVectorStore.similaritySearchWithScore(
                 query,
-                topK * 2 // Get more results to filter
+                k * 2 // Get more results to filter
             );
             
-            // Filter by similarity threshold and person
+            // Filter by similarity threshold
             const relevantResults = searchResults
                 .filter(([doc, score]) => {
-                    return score >= minSimilarity;
-                    // Optionally filter by person: && doc.metadata.person === personId
+                    return score >= threshold;
                 })
-                .slice(0, topK)
+                .slice(0, k)
                 .map(([doc, score]) => ({
                     userMessage: doc.metadata.exchange_user,
                     assistantResponse: doc.metadata.exchange_assistant,
@@ -326,9 +360,12 @@ class ChatHistoryService {
         }
     }
 
-    async getPersonContext(personId, limit = 5) {
+    async getPersonContext(personId, limit) {
         const startTime = performance.now();
         
+        // Use provided limit or topK from RAG settings
+        const maxResults = limit !== undefined ? limit : this.topK;
+
         try {
             const chatHistory = await this.loadChatHistory();
             
@@ -355,7 +392,7 @@ class ChatHistoryService {
             
             // Sort by timestamp and get most recent
             allExchanges.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            const recentExchanges = allExchanges.slice(0, limit);
+            const recentExchanges = allExchanges.slice(0, maxResults);
             
             // Build context string
             const contextParts = [];

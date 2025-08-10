@@ -1,4 +1,4 @@
-# SMF Communication Assistant
+# SMF Voice Agent
 
 A semi-autonomous conversational AI system designed for ALS patients using eye gaze technology. This system enables natural communication through continuous speech recognition, intelligent response generation, and eye gaze-controlled interface.
 

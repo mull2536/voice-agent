@@ -156,7 +156,7 @@
       "id": "conv_1754485254084_e7bf8295",
       "person": "Caregiver",
       "person_notes": "Daily care and assistance",
-      "timestamp": "2025-08-06T13:06:02.555Z",
+      "timestamp": "2025-08-10T15:48:08.120Z",
       "exchanges": [
         {
           "user": "dit is een test for chat history",
@@ -168,6 +168,18 @@
           "user": "en another one",
           "assistant": "\"You're keeping me on my toes! Anything specific you'd like to test or talk about next?\"",
           "timestamp": "2025-08-06T13:06:02.555Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoe was het bij hans klok in scheveningen",
+          "assistant": "Hans Klok & Friends gaven hun show in Scheveningen van 18 juli tot 3 augustus 2025. Het evenement vond plaats op het parkeerterrein Noordelijk Havenhoofd aan de Strandweg. (hansklokandfriends.com) Bezoekers konden genieten van magische illusies, internationale topacts en een zomerse sfeer met foodtrucks en entertainment. (scheveningen.com)",
+          "timestamp": "2025-08-10T12:16:48.161Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoe was hans klok in scheveningen",
+          "assistant": "Hans Klok in Scheveningen was echt een spectaculaire show vol illusies en verwondering. Het was een magische middag met indrukwekkende acts en een gezellige festivalsfeer in een circustent. Het publiek genoot volop van de wervelende optredens. De toegang voor rolstoelen was wel een uitdaging, maar alles verliep goed. Zelfs een backstage moment met Hans Klok zelf maakte het extra bijzonder. Heb je zelf de show gezien, of wil je er graag meer over horen?",
+          "timestamp": "2025-08-10T15:48:08.120Z",
           "vectorized": false
         }
       ]

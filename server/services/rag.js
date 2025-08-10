@@ -18,7 +18,7 @@ class RAGService {
     
     this.vectorStore = null;
     this.topK = config.rag.topK || 2;
-    this.similarityThreshold = 0.4;
+    this.similarityThreshold = 0.2;
     this.isInitialized = false;
     
     // File tracking - use config paths
@@ -520,41 +520,55 @@ class RAGService {
     }
   }
 
-  async search(query, minSimilarity = 0.7) {
+  async search(query, minSimilarity) {
     try {
-      if (!this.isInitialized || !this.vectorStore) {
-        logger.warn('RAG service not initialized');
-        return [];
-      }
+        if (!this.isInitialized || !this.vectorStore) {
+            logger.warn('RAG service not initialized');
+            return [];
+        }
 
-      // Update settings before search
-      await this.updateTextSplitterFromSettings();
+        const threshold = minSimilarity !== undefined ? minSimilarity : this.similarityThreshold;
+        await this.updateTextSplitterFromSettings();
 
-      // Get more results than needed to filter by similarity
-      const searchResults = await this.vectorStore.similaritySearchWithScore(
-        query,
-        this.topK * 2  // Get double to allow filtering
-      );
+        logger.info(`RAG search: query="${query}", topK=${this.topK}, threshold=${threshold}`);
 
-      // Filter by similarity threshold and limit to topK
-      const filteredResults = searchResults
-        .filter(([_, score]) => score >= minSimilarity)
-        .slice(0, this.topK)
-        .map(([doc, score]) => ({
-          content: doc.pageContent,
-          metadata: doc.metadata,
-          score: score
-        }));
+        // Get more results than needed
+        const searchResults = await this.vectorStore.similaritySearchWithScore(
+            query,this.topK
+        );
 
-      logger.info(`RAG search for "${query.substring(0, 50)}..." returned ${filteredResults.length} results`);
-      
-      return this.uniqueResults(filteredResults);
-      
+        // Log ALL scores to see what's happening
+        logger.info(`RAG raw results: ${searchResults.length} items`);
+        if (searchResults.length > 0) {
+            // Log first 5 results with scores
+            searchResults.slice(0, 5).forEach(([doc, score], i) => {
+                logger.info(`Result ${i + 1}: score=${score.toFixed(4)}, source=${doc.metadata?.filename || 'unknown'}, content preview: "${doc.pageContent.substring(0, 50)}..."`);
+            });
+            
+            // Check if ANY results meet threshold
+            const passingResults = searchResults.filter(([_, score]) => score >= threshold);
+            logger.info(`Results passing threshold ${threshold}: ${passingResults.length}`);
+        }
+
+        // Filter and return
+        const filteredResults = searchResults
+            .filter(([_, score]) => score >= threshold)
+            .slice(0, this.topK)
+            .map(([doc, score]) => ({
+                content: doc.pageContent,
+                metadata: doc.metadata,
+                score: score,
+                source: doc.metadata?.filename || doc.metadata?.source || 'unknown'
+            }));
+
+        logger.info(`RAG search final: ${filteredResults.length} results returned`);
+        
+        return filteredResults;
     } catch (error) {
-      logger.error('RAG search failed:', error);
-      return [];
+        logger.error('RAG search failed:', error);
+        return [];
     }
-  }
+}
 
   uniqueResults(results) {
     const seen = new Set();
@@ -769,7 +783,7 @@ async function initializeRAG() {
   return ragService;
 }
 
-async function getRAGContext(query, minSimilarity = 0.7) {
+async function getRAGContext(query, minSimilarity) {
   if (!ragService) {
     logger.warn('RAG service not initialized');
     return [];

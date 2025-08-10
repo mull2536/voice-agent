@@ -23,7 +23,7 @@ class CommunicationAssistant {
             
             // Make socket globally available for other modules
             window.socket = this.socket;
-            
+
             // Initialize modules
             this.api = new API();
             this.conversationUI = new ConversationUI();
@@ -47,10 +47,28 @@ class CommunicationAssistant {
             // Initialize people modal
             initializePeopleModal();
             
-            console.log('Communication Assistant initialized');
+            console.log('Voice Agent initialized');
         } catch (error) {
             console.error('Failed to initialize:', error);
             this.showError('Failed to initialize application');
+        }
+    }
+
+    initializeResponseActionButtons() {
+        // Cancel button handler
+        const cancelBtn = document.getElementById('cancel-responses-btn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                this.cancelResponses();
+            });
+        }
+        
+        // Resend button handler
+        const resendBtn = document.getElementById('resend-responses-btn');
+        if (resendBtn) {
+            resendBtn.addEventListener('click', () => {
+                this.resendResponses();
+            });
         }
     }
     
@@ -112,6 +130,15 @@ class CommunicationAssistant {
         this.socket.on('responses-generated', (data) => {
             console.log('Responses generated:', data.responses);
             this.currentConversationId = data.conversationId;
+            // Store the complete response data including userMessage for potential resend
+            this.lastResponseData = {
+                userMessage: data.userMessage,
+                conversationId: data.conversationId,
+                personName: data.personName,
+                personNotes: data.personNotes,
+                responses: data.responses
+
+            };
             this.displayResponseOptions(data.responses);
         });
         
@@ -181,6 +208,9 @@ class CommunicationAssistant {
         settingsBtn.addEventListener('click', () => {
             this.settingsUI.open();
         });
+
+        // Initialize response action buttons
+        this.initializeResponseActionButtons();
     }
     
     async loadInitialData() {
@@ -418,14 +448,74 @@ class CommunicationAssistant {
         const responseSelection = document.getElementById('response-selection');
         responseSelection.classList.remove('active');
         
-        // CRITICAL: Clear eye gaze targets when hiding options
+        // Clear eye gaze targets
         this.eyeGazeControls.clearTargets();
+        
+        // Clear last response data since a response was selected
+        this.lastResponseData = null;
         
         // Send selection to server
         this.socket.emit('select-response', {
             responseText: responseText,
             conversationId: this.currentConversationId
         });
+    }
+    
+    cancelResponses() {
+        console.log('Canceling response selection');
+        
+        // Hide response selection UI
+        const responseSelection = document.getElementById('response-selection');
+        responseSelection.classList.remove('active');
+        
+        // Clear eye gaze targets
+        this.eyeGazeControls.clearTargets();
+        
+        // Clear current conversation ID and last response data
+        this.currentConversationId = null;
+        this.lastResponseData = null;
+        
+        // Start recording immediately
+        this.socket.emit('start-recording');
+    }
+    
+    resendResponses() {
+        console.log('Requesting new responses');
+        
+        // Disable the resend button temporarily to prevent spam
+        const resendBtn = document.getElementById('resend-responses-btn');
+        if (resendBtn) {
+            resendBtn.disabled = true;
+        }
+        
+        // Get the last conversation data from responses-generated event
+        if (this.lastResponseData && this.lastResponseData.userMessage) {
+            const userMessage = this.lastResponseData.userMessage;
+            
+            // Clear current response options
+            const responseOptions = document.getElementById('response-options');
+            responseOptions.innerHTML = '<div class="loading-message">Generating new responses...</div>';
+            
+            // Clear eye gaze targets
+            this.eyeGazeControls.clearTargets();
+            
+            // Emit socket event to regenerate responses
+            this.socket.emit('regenerate-responses', {
+                text: userMessage,
+                conversationId: this.currentConversationId
+            });
+        } else {
+            // If no context available, just hide the response selection
+            this.cancelResponses();
+            this.showError('Unable to regenerate responses. Please try speaking again.');
+        }
+        
+        // Re-enable button after 2 seconds
+        setTimeout(() => {
+            if (resendBtn) {
+                resendBtn.disabled = false;
+            }
+        }, 2000);
     }
     
     playAudio(base64Audio, onComplete = null) {

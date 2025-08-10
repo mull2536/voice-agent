@@ -1,684 +1,5 @@
 [
   {
-    "id": 1754387842402,
-    "timestamp": "2025-08-05T09:57:22.402Z",
-    "personId": "1754239552047",
-    "personName": "Michaela ",
-    "userMessage": "Translate, so he's speaking Dutch.",
-    "responses": [
-      "Hoi Michaela! Wat leuk dat je zo van Azië houdt, ik kan me voorstellen dat je altijd wel iets nieuws vindt om enthousiast over te zijn. Heb je onlangs nog een favoriete artiest of film ontdekt? Ik ben benieuwd naar jouw verhalen!",
-      "Hallo Michaela, ik hoop dat het goed met je gaat. Ik herinner me nog hoe je altijd zo enthousiast bent over Aziatische muziek en films. Misschien kunnen we binnenkort samen iets bekijken of luisteren? Dat zou gezellig zijn!",
-      "Hé Michaela, ik vroeg me af of je misschien een nieuw Aziatisch gerecht hebt geprobeerd of iets moois uit die cultuur hebt ontdekt. Jouw passie voor alles uit Azië maakt onze gesprekken altijd zo levendig en bijzonder. Vertel me"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "prive-data.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json"
-      ],
-      "chatHistoryUsed": true,
-      "chatHistorySourcesCount": 1,
-      "timestamp": "2025-08-05T09:57:22.401Z"
-    }
-  },
-  {
-    "id": 1754387809100,
-    "timestamp": "2025-08-05T09:56:49.100Z",
-    "personId": "1754239552047",
-    "personName": "Michaela ",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "Hoi Michaela! Met mij gaat het goed, dank je. En met jou? Heb je toevallig nog iets nieuws ontdekt uit Azië waar je enthousiast over bent? Je passie daarvoor is altijd zo aanstekelijk!",
-      "Hey Michaela, alles rustig hier. Hoe gaat het met jou? Herinner je je die keer dat we samen die Aziatische film keken? Misschien kunnen we binnenkort weer iets samen doen, dat zou leuk zijn!",
-      "Hallo Michaela, ik voel me vandaag best goed, bedankt dat je het vraagt! Wat brengt jouw dag? Misschien heb je tijd om een verhaal te delen, ik hou zo van jouw unieke kijk en de herinneringen die je vertelt."
-    ],
-    "selectedResponse": "Hoi Michaela! Met mij gaat het goed, dank je. En met jou? Heb je toevallig nog iets nieuws ontdekt uit Azië waar je enthousiast over bent? Je passie daarvoor is altijd zo aanstekelijk!",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-05T09:56:49.099Z"
-    }
-  },
-  {
-    "id": 1754338633639,
-    "timestamp": "2025-08-04T20:17:13.639Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "Poof.",
-    "responses": [
-      "Haha, poof! Sometimes it feels like the computer just does magic, doesn’t it? Are you trying to find something specific on Google?",
-      "Poof! Like a little digital disappearing act. Want me to help guide you through clicking that first bird icon you mentioned?",
-      "That “poof” moment is so real with technology! Let’s take it slow—tell me again where you want to click, and we’ll get there together."
-    ],
-    "selectedResponse": "Poof! Like a little digital disappearing act. Want me to help guide you through clicking that first bird icon you mentioned?",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T20:17:13.638Z"
-    }
-  },
-  {
-    "id": 1754338603891,
-    "timestamp": "2025-08-04T20:16:43.891Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "All the birds. This, this, this. The first.",
-    "responses": [
-      "Oh, you mean all the birds in the row? Like the very first one? Let’s try clicking there and see if that helps with the communicator.",
-      "Okay, focusing on the first one in that row of birds—maybe it’s a symbol or button Bernadette needs to select to get it working again.",
-      "All the birds, the first one specifically—sounds like Bernadette is guiding you exactly. Let’s patiently try that step and hopefully it gets the computer back on track."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T20:16:43.890Z"
-    }
-  },
-  {
-    "id": 1754338545504,
-    "timestamp": "2025-08-04T20:15:45.504Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "Computer. Communicator. ",
-    "responses": [
-      "Oh, the communicator seems stuck for a moment. Sometimes the Tobii can be a bit slow, but it’s been such a help for me, like an extension of myself. Let me try again—one second!",
-      "The computer’s acting up just a bit—technology can be tricky sometimes. But remember how I said it’s my beacon of hope? Even when it’s stuck, it still helps me say what’s on my mind. Just give me a second.",
-      "Hmm, looks like the communicator froze for a second. It’s my way to share everything, like my own voice saved from 2016. Hold on, I’m fixing it now so we can keep chatting!"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T20:15:45.503Z"
-    }
-  },
-  {
-    "id": 1754338524526,
-    "timestamp": "2025-08-04T20:15:24.526Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "I don't get it, what's wrong? The computer, what you need? The communicator? It's stuck, one second, one second.",
-    "responses": [
-      "Sometimes technology can be tricky, especially the eye gaze system. Maybe a quick restart of the communicator will help? It’s been such a lifeline for me.",
-      "It sounds like the computer might be frozen. Don’t worry, we’ll get it working again soon—I know how frustrating it can be when the Tobii gets stuck.",
-      "Hang in there! Technology can be stubborn, but it’s also what helps me express myself. Let me know if I can help figure this out together."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T20:15:24.525Z"
-    }
-  },
-  {
-    "id": 1754328827103,
-    "timestamp": "2025-08-04T17:33:47.103Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "Het was echt een wervelende show! Hans Klok was iedereen te snel af, en ik heb zelfs een gelukskaart van hem gekregen. De entree met de rolstoel was wel een klein avontuur, maar verder alleen maar genoten.",
-      "De show van Hans Klok in Scheveningen was super indrukwekkend. Vooral de trucs gingen zo snel, echt knap om te zien. En het backstage moment met hem was ook heel bijzonder!",
-      "Het was heel bijzonder om te zien hoe Hans Klok iedereen te snel af was, ondanks dat ik er dichtbij zat. De entree via een steile afrit was spannend, maar goed verlopen. Alles bij elkaar een topavond!"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T17:33:47.102Z"
-    }
-  },
-  {
-    "id": 1754327867831,
-    "timestamp": "2025-08-04T17:17:47.831Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "Hoi! Het gaat wel goed, bedankt dat je het vraagt. En met jou? Heb je nog iets leuks gedaan in Scheveningen of ben je vooral rustig aan geweest?",
-      "Hallo! Alles gaat beetje zoals gewoonlijk, een seconde rust tussendoor is altijd fijn. Hoe gaat het met jou? Heb je nog iets bijzonders meegemaakt?",
-      "Hey! Met mij gaat het prima, vooral de kleine momenten maken de dag mooi. Hoe is het met jou? Nog plannen om iets leuks te doen binnenkort?"
-    ],
-    "selectedResponse": "Hey! Met mij gaat het prima, vooral de kleine momenten maken de dag mooi. Hoe is het met jou? Nog plannen om iets leuks te doen binnenkort?",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T17:17:47.830Z"
-    }
-  },
-  {
-    "id": 1754326565463,
-    "timestamp": "2025-08-04T16:56:05.463Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoi hoe gaat het met jou",
-    "responses": [
-      "Hoi! Met mij gaat het redelijk, bedankt dat je vraagt. Hoe is het met jou? Heb je nog iets leuks gepland of iets nieuws meegemaakt in Scheveningen?",
-      "Hallo! Het gaat wel, een beetje rustig aan vandaag. En met jou? Vooral die tweede helft van de week lijkt me altijd druk bij jou, toch?",
-      "Hey! Alles gaat zo goed als het kan. Vooral jouw verhalen over Scheveningen houden me op de hoogte hier. Wat is het laatste wat je daar hebt gedaan?"
-    ],
-    "selectedResponse": "Hoi! Met mij gaat het redelijk, bedankt dat je vraagt. Hoe is het met jou? Heb je nog iets leuks gepland of iets nieuws meegemaakt in Scheveningen?",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "Blogposts Bernardus Muller_NL.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ],
-      "chatHistoryUsed": false,
-      "chatHistorySourcesCount": 0,
-      "timestamp": "2025-08-04T16:56:05.462Z"
-    }
-  },
-  {
-    "id": 1754322364381,
-    "timestamp": "2025-08-04T15:46:04.381Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "Het was echt een spectaculaire show! Hans Klok was razendsnel en de trucs waren indrukwekkend. De entree was wel even spannend met die steile afrit, maar gelukkig ging alles goed. Heb jij hem ooit live gezien?",
-      "De voorstelling van Hans Klok in Scheveningen was super gezellig. Vooral het moment dat ik backstage kon kijken en zelfs een gelukskaart kreeg, was bijzonder. Wat vind jij van zulke shows?",
-      "Hans Klok in Scheveningen was echt een belevenis! Vooral hoe hij iedereen te snel af was met zijn trucs. De rolstoeltoegang was een hele uitdaging, maar verder was het een topavond. Ben jij wel eens in Scheveningen geweest voor een voorstelling?"
-    ],
-    "selectedResponse": "De voorstelling van Hans Klok in Scheveningen was super gezellig. Vooral het moment dat ik backstage kon kijken en zelfs een gelukskaart kreeg, was bijzonder. Wat vind jij van zulke shows?",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ],
-      "timestamp": "2025-08-04T15:46:04.380Z"
-    }
-  },
-  {
-    "id": 1754321345324,
-    "timestamp": "2025-08-04T15:29:05.324Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "\"Het was echt geweldig in Scheveningen! Hans Klok's show was spectaculair, je zit er zo dichtbij maar toch weet hij je elke keer te verbazen. En geloof het of niet, ik heb zelfs een gelukskaart van hem gekregen tijdens de show. De toegang voor rolstoelgebruikers was een avontuur op zich, maar het is allemaal goed gekomen. Heb jij ook zoiets magisch meegemaakt onlangs?\"",
-      "\"Hans Klok in Scheveningen was een ervaring om nooit te vergeten! De show was adembenemend, en ik heb zelfs de kans gekregen om backstage te gaan en Hans zelf te ontmoeten. Het was een hele uitdaging om met mijn rolstoel het theater binnen te komen, maar het was het allemaal waard. Ik heb zelfs een speciale gelukskaart van hem gekregen. Heb jij de laatste tijd nog iets spannends gedaan?\"",
-      "\"De show van Hans Klok was fantastisch! Echt een magische avond. Het was wel een hele toer om met de rolstoel binnen te komen, maar eenmaal binnen was het spektakel onvergetelijk. En ik heb zelfs een gelukskaart van Hans Klok zelf gekregen! Zoiets maak je niet elke dag mee. Wat is jouw meest magische ervaring geweest recentelijk?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ],
-      "timestamp": "2025-08-04T15:29:05.323Z"
-    }
-  },
-  {
-    "id": 1754318409435,
-    "timestamp": "2025-08-04T14:40:09.435Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "\"Hans Klok in Scheveningen was an incredible experience! The magic was mesmerizing, and despite the challenge of the entrance for wheelchairs, everything went smoothly. Being so close to the action yet unable to figure out his tricks was thrilling. Plus, meeting him backstage was the cherry on top. He even gave me a special luck card during the show. It was a day to remember!\"",
-      "\"The show with Hans Klok in Scheveningen was fantastic! His illusions are even more amazing up close. We had a bit of an adventure getting in because of the steep ramp for wheelchair access, but we managed, and it was worth it. Meeting Hans backstage and receiving a luck card from him during the performance made the evening truly special.\"",
-      "\"Attending Hans Klok's show in Scheveningen was a magical experience. His speed and skill are unbelievable! The entry was a bit tricky for wheelchair users, but we made it in spectacularly. The highlight was not just the show but also meeting Hans Klok backstage and getting a luck card from him. It was an unforgettable experience.\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ]
-    }
-  },
-  {
-    "id": 1754318305014,
-    "timestamp": "2025-08-04T14:38:25.014Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ]
-    }
-  },
-  {
-    "id": 1754318236767,
-    "timestamp": "2025-08-04T14:37:16.767Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "*Option 1:** \"Scheveningen met Hans Klok was echt een avontuur! De show was adembenemend, je weet niet waar je kijken moet met al die magie. En die rolstoeltoegang was een belevenis, bijna alsof je zelf een van zijn trucs uitvoert. Na de show mocht ik zelfs backstage voor een praatje met Hans. Hij gaf me een gelukskaart, stel je voor!\"",
-      "*Option 2:** \"De show van Hans Klok in Scheveningen was ongelooflijk! Het was zo'n spektakel, vol magie en verbazing. De toegang met de rolstoel leek eerst een uitdaging, maar het ging soepel, en het voelde bijna als deel van de act. Het hoogtepunt was toch wel backstage komen en Hans ontmoeten. Hij gaf me zelfs een gelukskaart. Een dag om nooit te vergeten!\"",
-      "*Option 3:** \"Het was magisch in Scheveningen met Hans Klok! Zijn show was echt spectaculair, vol verrassingen. En weet je, de rolstoeltoegang was een avontuur op zich, maar het is ons gelukt. Het allerleukste was dat ik backstage mocht komen en even kon kletsen met Hans zelf. Hij gaf me een persoonlijke gelukskaart. Echt een bijzondere ervaring!\""
-    ],
-    "selectedResponse": "*Option 1:** \"Scheveningen met Hans Klok was echt een avontuur! De show was adembenemend, je weet niet waar je kijken moet met al die magie. En die rolstoeltoegang was een belevenis, bijna alsof je zelf een van zijn trucs uitvoert. Na de show mocht ik zelfs backstage voor een praatje met Hans. Hij gaf me een gelukskaart, stel je voor!\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ]
-    }
-  },
-  {
-    "id": 1754317893362,
-    "timestamp": "2025-08-04T14:31:33.362Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "\"Hans Klok in Scheveningen was spectaculair! Zijn show hield ons op het puntje van onze stoel. De rolstoeltoegang was een avontuur op zich, maar we hebben het gered. En raad eens? Ik kwam zelfs backstage voor een meet-and-greet met Hans zelf en kreeg een gelukskaart van hem. Een onvergetelijke ervaring!\"",
-      "\"De show van Hans Klok was geweldig, echt een magische ervaring! De entree voor rolstoelgebruikers was wel even spannend, met een steile afrit, maar alles is goed gekomen. Het hoogtepunt was toch wel het ontmoeten van Hans Klok backstage en een persoonlijke gelukskaart van hem krijgen. Echt bijzonder!\"",
-      "\"Oh, het was een avond om nooit te vergeten! Hans Klok heeft ons allemaal versteld doen staan met zijn trucs. De rolstoelingang had iets weg van een Houdini-ontsnapping, maar dat draaide uit op een leuke verrassing. En het beste deel? Ik mocht backstage en heb zelfs een gelukskaart van Hans Klok zelf gekregen. Zulke momenten zijn goud waard!\""
-    ],
-    "selectedResponse": "\"Hans Klok in Scheveningen was spectaculair! Zijn show hield ons op het puntje van onze stoel. De rolstoeltoegang was een avontuur op zich, maar we hebben het gered. En raad eens? Ik kwam zelfs backstage voor een meet-and-greet met Hans zelf en kreeg een gelukskaart van hem. Een onvergetelijke ervaring!\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 1,
-      "ragSources": [
-        "memories.json"
-      ]
-    }
-  },
-  {
-    "id": 1754317178691,
-    "timestamp": "2025-08-04T14:19:38.691Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was de rolstoel entree",
-    "responses": [
-      "De rolstoel entree was prima geregeld, makkelijk toegankelijk en ruim genoeg.",
-      "Het viel me mee, de ingang voor rolstoelen was duidelijk en zonder obstakels.",
-      "De rolstoel entree was goed, ik had nergens last van bij binnenkomen."
-    ],
-    "selectedResponse": "Het viel me mee, de ingang voor rolstoelen was duidelijk en zonder obstakels.",
-    "context": {
-      "ragUsed": false,
-      "timestamp": "2025-08-04T14:19:38.690Z"
-    }
-  },
-  {
-    "id": 1754316563749,
-    "timestamp": "2025-08-04T14:09:23.749Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was hans klok in scheveningen",
-    "responses": [
-      "Het was geweldig! Hans Klok had echt spectaculaire trucs. Jij geweest?",
-      "Super indrukwekkend, Hans Klok weet hoe hij een show moet geven. Wat vond jij ervan?",
-      "Heel leuk, veel magie en verrassingen. Zou je het ook willen zien?"
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": false,
-      "timestamp": "2025-08-04T14:09:23.746Z"
-    }
-  },
-  {
-    "id": 1754306774603,
-    "timestamp": "2025-08-04T11:26:14.603Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe was het met je moeder",
-    "responses": [
-      "Ze maakt het goed, bedankt dat je het vraagt! Hoe is het met jou en je familie?",
-      "Het gaat goed met haar! Ze is druk bezig met haar hobby's. Hoe zit het met jou?",
-      "Ze is onlangs op vakantie geweest en heeft het leuk gehad! Hoe gaat het met jou?"
-    ],
-    "selectedResponse": "Ze maakt het goed, bedankt dat je het vraagt! Hoe is het met jou en je familie?",
-    "context": {
-      "ragUsed": false,
-      "timestamp": "2025-08-04T11:26:14.602Z"
-    }
-  },
-  {
-    "id": 1754306709201,
-    "timestamp": "2025-08-04T11:25:09.201Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "Het gaat goed, dank je! En met jou?",
-      "Redelijk, bedankt voor het vragen! Wat heb jij gedaan vandaag?",
-      "Ik voel me oké, dank je! Heb je iets leuks gepland voor het weekend?"
-    ],
-    "selectedResponse": "Het gaat goed, dank je! En met jou?",
-    "context": {
-      "ragUsed": false,
-      "timestamp": "2025-08-04T11:25:09.200Z"
-    }
-  },
-  {
-    "id": 1754250285281,
-    "timestamp": "2025-08-03T19:44:45.281Z",
-    "personId": "doctor",
-    "personName": "Doctor",
-    "userMessage": "Thank you. Thank you. Thank you. ",
-    "responses": [
-      "\"Graag gedaan. Staat er nog iets specifieks op de agenda voor vandaag waarover u met mij wilt spreken? Misschien updates over behandelingen of nieuwe zorgplannen?\"",
-      "\"U bent meer dan welkom. Heeft u vragen of zorgen die ik vandaag voor u kan verduidelijken? Ik ben hier om te helpen, of het nu gaat om details over uw gezondheid of iets anders dat u op het hart hebt.\"",
-      "\"Altijd blij om te helpen. Zijn er bepaalde gebieden van uw gezondheid of behandeling waarover u vandaag meer informatie zou willen ontvangen of bespreken?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 3,
-      "ragSources": [
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754250254861,
-    "timestamp": "2025-08-03T19:44:14.861Z",
-    "personId": "doctor",
-    "personName": "Doctor",
-    "userMessage": "test",
-    "responses": [
-      "\"Kunt u mij meer vertellen over de huidige stand van zaken rondom mijn behandeling?\"",
-      "\"Heeft u recente updates of veranderingen in de behandelingsstrategieën die voor mij relevant kunnen zijn?\"",
-      "\"Kunnen we bespreken hoe mijn feedback over de behandeling tot nu toe wordt geïntegreerd in het toekomstige zorgplan?\""
-    ],
-    "selectedResponse": "\"Kunt u mij meer vertellen over de huidige stand van zaken rondom mijn behandeling?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "system",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "memories.json",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754249390952,
-    "timestamp": "2025-08-03T19:29:50.952Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "test",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": "I'd be happy to help you with that.",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "system",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "memories.json",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754248797599,
-    "timestamp": "2025-08-03T19:19:57.599Z",
-    "personId": "friend",
-    "personName": "Friend",
-    "userMessage": "test",
-    "responses": [
-      "\"Haha, lijkt alsof de 'test' geslaagd is! Hoe gaat het verder met je? Heb je nog iets interessants meegemaakt sinds onze laatste chat?\"",
-      "\"Leuk dat je een testbericht stuurt! Alles goed aan jouw kant? Nog nieuws of leuke plannen voor de komende tijd?\"",
-      "\"Hey, zag je berichtje! Alles in orde? Vertel eens, heb je onlangs nog iets leuks gedaan of staat er iets speciaals op de agenda?\""
-    ],
-    "selectedResponse": "\"Hey, zag je berichtje! Alles in orde? Vertel eens, heb je onlangs nog iets leuks gedaan of staat er iets speciaals op de agenda?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "system",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "memories.json",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754248421609,
-    "timestamp": "2025-08-03T19:13:41.609Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "test",
-    "responses": [
-      "\"It's great to see you testing new things. Remember Bernardus Muller's approach to trying and adjusting as necessary. How do you feel this test is going so far?\"",
-      "\"Testing new ideas or systems can be quite exciting. How do you think this test compares to the process Bernardus Muller described in his blog about learning through trial and error?\"",
-      "\"I admire your curiosity and willingness to embark on tests and trials. It reminds me of Bernardus Muller's philosophy of blending cultures and strategies for better outcomes. What are you hoping to learn from this test?\""
-    ],
-    "selectedResponse": "\"It's great to see you testing new things. Remember Bernardus Muller's approach to trying and adjusting as necessary. How do you feel this test is going so far?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "system",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "memories.json",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754247564532,
-    "timestamp": "2025-08-03T18:59:24.532Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat goed, dank je. Ik probeer positief te blijven, net zoals Bernardus dat altijd benadrukte - met hoop en liefde, ondanks de uitdagingen. En hoe gaat het met jou? Nog interessante verhalen of updates vanuit Puttershoek?\"",
-      "\"Redelijk, dank je. Ik hou me bezig met herinneringen aan warme momenten met familie, zoals die keren bij oom Leen en tante Corrie. Het brengt een lach op mijn gezicht, zelfs op moeilijkere dagen. Hoe voel jij je vandaag?\"",
-      "\"Vandaag is een goede dag. Ik denk veel na over hoe we, net zoals Bernardus altijd zegt, sterk en verbonden blijven als familie, ongeacht wat er op ons pad komt. En jij? Hoe heb je de laatste tijd de 'uitdagingen' aangepakt?\""
-    ],
-    "selectedResponse": "\"Het gaat goed, dank je. Ik probeer positief te blijven, net zoals Bernardus dat altijd benadrukte - met hoop en liefde, ondanks de uitdagingen. En hoe gaat het met jou? Nog interessante verhalen of updates vanuit Puttershoek?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246475045,
-    "timestamp": "2025-08-03T18:41:15.045Z",
-    "personId": "family",
-    "personName": "Family Member",
-    "userMessage": "hoe gaat het",
-    "responses": [
-      "\"Het gaat redelijk goed, dank je. Er zijn ups en downs, zoals altijd, maar we blijven sterk en verbonden als familie. Het herinnert me aan wat Bernardus altijd zegt over het belang van samen zijn, ongeacht de uitdagingen. Hoe voel jij je deze dagen?\"",
-      "\"Alles gaat zijn gangetje hier. Het is interessant hoe, ondanks alles, we blijven leren en groeien door de ervaringen. Bernardus heeft onlangs iets gedeeld over het vinden van kleine momenten van vreugde, zelfs op de moeilijke dagen. Dat heeft me echt aan het denken gezet. En hoe is het met jou?\"",
-      "\"We houden het hoofd boven water, dank je. Ik probeer de lessen van Bernardus toe te passen, vooral zijn kijk op het omgaan met tegenslagen en het koesteren van familiebanden. Het is zeker niet gemakkelijk, maar zijn inzichten geven kracht. Hoe gaat het aan jouw kant?\""
-    ],
-    "selectedResponse": "\"Het gaat redelijk goed, dank je. Er zijn ups en downs, zoals altijd, maar we blijven sterk en verbonden als familie. Het herinnert me aan wat Bernardus altijd zegt over het belang van samen zijn, ongeacht de uitdagingen. Hoe voel jij je deze dagen?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246430374,
-    "timestamp": "2025-08-03T18:40:30.374Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"Reflecting on our discussions about expectations and challenges, I'm reminded of the importance of adaptability and resilience. How do you think we can apply these principles in our current situation?\"",
-      "\"Given the changes in expectations and the delays mentioned, it seems like a time for reevaluation and perhaps finding new avenues to explore. Do you see any opportunities in this situation that we might not have considered before?\"",
-      "\"Considering the shift in timelines and goals, it feels like a reminder of how unpredictable paths can lead to unexpected opportunities. Do you feel this might open up different paths for innovation or strategic adjustments that weren't on the radar before?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246426895,
-    "timestamp": "2025-08-03T18:40:26.895Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"Peace is indeed a precious goal, in both our personal journeys and in the broader world. Reflecting on the complexities of achieving peace, whether it's within ourselves or in geopolitical contexts, reminds us of the importance of understanding and empathy. How do you envision contributing to a more peaceful existence?\"",
-      "\"The pursuit of peace, whether on a global scale or in personal health challenges like ALS, is both noble and essential. It's interesting to consider how acts of kindness, acceptance, and resilience can lead to peace in various aspects of life. What are some ways you find peace amidst challenges?\"",
-      "\"Finding peace in the face of adversity is a powerful testament to the human spirit. Whether it's advocating for peace in conflict zones or finding inner peace despite health struggles, every step towards peace is valuable. What does peace mean to you in the context of your own life and experiences?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "Blogposts Bernardus Muller_NL.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754246424357,
-    "timestamp": "2025-08-03T18:40:24.357Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "Peace.",
-    "responses": [
-      "\"I agree, finding peace in any situation is crucial. It's interesting how, despite challenges like ALS, finding peace can offer a sense of liberation and acceptance, as Bernardus Muller found. It's a powerful reminder of what's truly important. How do you find your peace amidst challenges?\"",
-      "\"Indeed, peace is so vital. Reflecting on the stories of individuals like Bernardus Muller, who found peace and acceptance through his journey with ALS, really puts into perspective the strength of the human spirit. How has your journey influenced your understanding of peace?\"",
-      "\"Peace is such a profound concept, especially in the context of overcoming personal challenges. Bernardus Muller's journey with ALS shows us that acceptance can lead to a form of peace that is deeply liberating. What are your thoughts on finding peace in difficult circumstances?\""
-    ],
-    "selectedResponse": "\"Indeed, peace is so vital. Reflecting on the stories of individuals like Bernardus Muller, who found peace and acceptance through his journey with ALS, really puts into perspective the strength of the human spirit. How has your journey influenced your understanding of peace?\"",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "Mijn kijk op de wereld.docx",
-        "Mijn kijk op de wereld.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
-    "id": 1754245962819,
-    "timestamp": "2025-08-03T18:32:42.819Z",
-    "personId": "other",
-    "personName": "Other",
-    "userMessage": "coffee machine",
-    "responses": [
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that.",
-      "I'd be happy to help you with that."
-    ],
-    "selectedResponse": "I'd be happy to help you with that.",
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "Blogposts Bernardus Muller_NL.docx"
-      ]
-    }
-  },
-  {
     "id": 1754245674624,
     "timestamp": "2025-08-03T18:27:54.624Z",
     "personId": "caregiver",
@@ -2102,5 +1423,594 @@
     ],
     "selectedResponse": null,
     "ragContext": []
+  },
+  {
+    "id": "1754821597880",
+    "timestamp": "2025-08-10T10:26:37.880Z",
+    "personId": "1754239552047",
+    "personName": "Michaela ",
+    "userMessage": "hoi hoe gaat het",
+    "responses": [
+      "Hoi Michaela! Met mij gaat het goed, dank je. En met jou? Hoe voel je je vandaag?",
+      "Hoi Michaela! Met mij gaat het goed, bedankt dat je het vraagt. En hoe gaat het met jou vandaag?",
+      "Hoi Michaela! Met mij gaat het goed, dank je. En met jou, hoe gaat het vandaag?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754825432471",
+    "timestamp": "2025-08-10T11:30:32.471Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoi hoe gaat het met jou",
+    "responses": [
+      "Hoi! Met mij gaat het goed, dank je. En hoe gaat het met jou vandaag?",
+      "Hoi! Met mij gaat het goed, dank je. En met jou? Hoe voelt alles vandaag?",
+      "I understand. Please tell me more."
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754825461849",
+    "timestamp": "2025-08-10T11:31:01.849Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoi hoe gaat het met jou",
+    "responses": [
+      "Hoi! Met mij gaat het goed, dank je. En met jou, hoe gaat het vandaag?",
+      "Hoi! Met mij gaat het goed, dank je. Hoe gaat het met jou vandaag?",
+      "I understand. Please tell me more."
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754825487906",
+    "timestamp": "2025-08-10T11:31:27.906Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoi hoe gaat het met jou",
+    "responses": [
+      "Hoi! Met mij gaat het goed, dank je. Hoe gaat het met jou vandaag?",
+      "Hoi! Met mij gaat het goed, dank je. En met jou? Hoe gaat het vandaag?",
+      "Hoi! Met mij gaat het goed, dank je. En hoe gaat het met jou vandaag?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754825609286",
+    "timestamp": "2025-08-10T11:33:29.286Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Jouw machine moet ik nog gewoon. Hoe gaat het vandaag? Moet ik nog, laat ik het eens goed dropen voordat dit gewond is?",
+    "responses": [
+      "Hallo! Het klinkt alsof je het even wat lastig vindt om je gedachten te ordenen, dat is helemaal oké. Hoe kan ik je vandaag het beste helpen? Neem je tijd, ik ben hier voor je.",
+      "Het klinkt alsof je het even lastig hebt vandaag. Wil je er meer over vertellen? Ik ben hier om te luisteren en je te helpen waar ik kan. Neem vooral je tijd.",
+      "Hallo! Fijn dat je contact maakt. Het gaat goed vandaag, dank je wel. Wat bedoel je precies met \"goed dropen\" laten voordat iets gewond is? Ik help je graag verder!"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754825638600",
+    "timestamp": "2025-08-10T11:33:58.601Z",
+    "personId": "other",
+    "personName": "Other",
+    "userMessage": "Jouw machine moet ik nog gewoon. Hoe gaat het vandaag? Moet ik nog, laat ik het eens goed dropen voordat dit gewond is?",
+    "responses": [
+      "Hoi! Met mij gaat het goed, dank je. Hoe gaat het met jou vandaag? Wat bedoel je precies met \"moet ik nog, laat ik het eens goed dropen\"? Misschien kan ik je dan beter helpen.",
+      "Ik begrijp het even niet helemaal goed. Bedoel je dat je wilt vertellen hoe het met je gaat, of wil je iets bespreken voordat er iets misgaat? Je kunt het rustig zeggen, ik ben hier om te helpen!",
+      "Het klinkt alsof je misschien wat merkt van vermoeidheid of spanning. Wil je even praten over wat er speelt of wil je dat ik je help ontspanning te vinden? Ik ben hier voor je, stapje voor stapje."
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754827622139",
+    "timestamp": "2025-08-10T12:07:02.139Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe gaat het met jou",
+    "responses": [
+      "Met mij gaat het goed, dank je! En hoe gaat het met jou vandaag?",
+      "Dank je dat je het vraagt! Met mij gaat het goed. En hoe gaat het met jou vandaag?",
+      "Met mij gaat het goed, bedankt dat je het vraagt! En hoe gaat het met jou vandaag?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754827629130",
+    "timestamp": "2025-08-10T12:07:09.130Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe gaat het met jou",
+    "responses": [
+      "Met mij gaat het goed, dank je! En hoe gaat het met jou vandaag?",
+      "Dank je dat je het vraagt! Met mij gaat het goed. En hoe gaat het met jou vandaag?",
+      "Met mij gaat het goed, dank je! Hoe gaat het met jou vandaag?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754827645826",
+    "timestamp": "2025-08-10T12:07:25.826Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe gaat het met jou",
+    "responses": [
+      "Dank je dat je het vraagt! Met mij gaat het goed. En hoe gaat het met jou vandaag?",
+      "Met mij gaat het goed, dank je! En hoe gaat het vandaag met jou?",
+      "Dank je voor het vragen! Met mij gaat het goed. Hoe gaat het met jou vandaag?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754828192059",
+    "timestamp": "2025-08-10T12:16:32.059Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "Hans Klok & Friends gaven hun show in Scheveningen van 18 juli tot 3 augustus 2025. Het evenement vond plaats op het parkeerterrein Noordelijk Havenhoofd aan de Strandweg. (hansklokandfriends.com) Bezoekers konden genieten van magische illusies, internationale topacts en een zomerse sfeer met foodtrucks en entertainment. (scheveningen.com)",
+      "Hans Klok's show 'Hans Klok & Friends' in Scheveningen was een betoverende ervaring voor het publiek. De voorstelling combineerde magie, acrobatiek en humor, met internationale artiesten uit onder andere Japan, Mexico en Italië. Het strand van Scheveningen werd omgetoverd tot een sfeervol festivalterrein, compleet met foodtrucks en livemuziek. (denhaag.com) Tijdens een van de shows op 20 juli 2025 ging het mis tijdens de 'Moretti Box'-act, waarbij vrijwilligers uit het publiek s",
+      "Hans Klok & Friends gaf van 18 juli tot 3 augustus 2025 voorstellingen op het parkeerterrein Noordelijk Havenhoofd in Scheveningen. (hansklokandfriends.com) De show combineerde spectaculaire illusies met acrobatiek, comedy en klassieke circusacts, uitgevoerd door internationale artiesten uit onder andere Japan, Mexico en Italië. (voorburgsdagblad.nl) Helaas ging het tijdens een van de voorstellingen op 20 juli mis toen een zwaard tijdens een act door Hans Kloks arm boorde. Ondanks de verw"
+    ],
+    "selectedResponse": "Hans Klok & Friends gaven hun show in Scheveningen van 18 juli tot 3 augustus 2025. Het evenement vond plaats op het parkeerterrein Noordelijk Havenhoofd aan de Strandweg. (hansklokandfriends.com) Bezoekers konden genieten van magische illusies, internationale topacts en een zomerse sfeer met foodtrucks en entertainment. (scheveningen.com)",
+    "ragContext": []
+  },
+  {
+    "id": "1754828376993",
+    "timestamp": "2025-08-10T12:19:36.993Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was magisch en indrukwekkend. Er waren spectaculaire illusies en internationale artiesten die het publiek vermaakten. De zomerse sfeer, met foodtrucks en muziek, maakte het extra gezellig. Heb je iets speciaals gezien of wil je er meer over weten?",
+      "De show van Hans Klok in Scheveningen was magisch en vol verrassingen. De illusies waren sterk en het publiek was erg enthousiast. Er was ook een zomerse sfeer met foodtrucks en entertainment erbij, wat het extra leuk maakte. Heb je zelf de show bezocht, of zou je er graag naartoe willen?",
+      "De show van Hans Klok in Scheveningen was magisch en indrukwekkend. Veel mensen waren enthousiast over zijn illusies en meeslepende acts, gecombineerd met een leuke zomerfavoriete sfeer door de foodtrucks en muziek. Heb je zelf iets van de show gezien of wil je iets specifieks weten?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754828428117",
+    "timestamp": "2025-08-10T12:20:28.117Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was magisch en vol spannende illusies. Veel mensen genoten van de spectaculaire trucs en de zomerse sfeer bij het Noordelijk Havenhoofd. Heb je zelf de show gezien, of zou je er graag naartoe willen?",
+      "Het was een indrukwekkende show bij Hans Klok in Scheveningen. De magische illusies en acts waren spannend en verrassend, met veel energie en mooie effecten. Heb je er zelf naartoe kunnen gaan, of wil je er meer over horen?",
+      "De show van Hans Klok in Scheveningen was erg bijzonder en indrukwekkend. Er waren prachtige illusies, gave acts en een vrolijke zomerse sfeer met muziek en lekkere hapjes. Veel mensen hebben hier echt van genoten. Was je er zelf ook, of zou je er graag naartoe willen?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754832053739",
+    "timestamp": "2025-08-10T13:20:53.739Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was magisch en vol spectaculaire illusies. Het vond plaats op het parkeerterrein Noordelijk Havenhoofd aan de Strandweg. Bezoekers genoten van topacts en een zomerse sfeer met foodtrucks en entertainment. Heb je zelf de show gezien, of wil je er meer over horen?",
+      "De show van Hans Klok in Scheveningen was indrukwekkend en vol magie. Bezoekers genoten van spectaculaire illusies, prachtige effecten en een sfeervolle zomerse omgeving. Het was een avond vol entertainment met ook muziek en foodtrucks erbij. Heb je de show zelf kunnen zien, of ben je benieuwd naar iets specifieks over het optreden?",
+      "De show van Hans Klok in Scheveningen was magisch en heel indrukwekkend. Hij liet veel schitterende illusies en trucs zien met internationale artiesten erbij. Er was ook een gezellige zomerse sfeer, met foodtrucks en entertainment rondom. Heb je zelf de show gezien, of zou je er graag heen willen?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754832245978",
+    "timestamp": "2025-08-10T13:24:05.978Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was een magische ervaring met indrukwekkende illusies en internationale topacts. Het vond plaats op het parkeerterrein aan de Strandweg, met een gezellige zomerse sfeer door foodtrucks en entertainment. Veel bezoekers vonden het een bijzondere en sfeervolle voorstelling. Wil je misschien meer weten over de acts of het programma?",
+      "De show van Hans Klok in Scheveningen was erg indrukwekkend! Het vond plaats van 18 juli tot 3 augustus op het parkeerterrein Noordelijk Havenhoofd aan de Strandweg. Bezoekers konden genieten van magische illusies, geweldige acts en een gezellige zomerse sfeer met foodtrucks. Heb je het zelf ook gezien, of was je benieuwd naar hoe het was?",
+      "Hans Klok in Scheveningen was een magische belevenis. De show bood verbluffende illusies, spannende acts van internationale artiesten, en er hing een gezellige zomerse sfeer met foodtrucks en veel entertainment. Heb je al eerder een goochelshow bezocht, of was dit je eerste keer?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754832903512",
+    "timestamp": "2025-08-10T13:35:03.512Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was magisch en indrukwekkend. Het vond plaats op het parkeerterrein Noordelijk Havenhoofd, met veel illusies en internationale acts. Er was ook een zomerse sfeer met foodtrucks en entertainment. Heb je de show zelf bezocht, of ben je benieuwd naar iets specifieks?",
+      "De show van Hans Klok in Scheveningen was indrukwekkend en vol magische illusies. Het vond plaats bij het parkeerterrein Noordelijk Havenhoofd aan de Strandweg, met internationale artiesten en een gezellige zomerse sfeer met foodtrucks en entertainment. Veel bezoekers vonden het een spannende en leuke ervaring. Heb je het zelf ook kunnen zien, of wil je er meer over horen?",
+      "De show van Hans Klok in Scheveningen was echt spektakulair. Hij bracht indrukwekkende illusies en magie die het publiek betoverden. Er was ook een fijne zomerse sfeer met muziek en leuke activiteiten rondom de locatie. Heb je de show zelf kunnen bijwonen?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754834543184",
+    "timestamp": "2025-08-10T14:02:23.184Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was magisch en vol spectaculaire illusies. Bezoekers genoten van indrukwekkende trucs, internationale artiesten en een gezellige zomerse sfeer met foodtrucks en entertainment. Het was een fijne ervaring voor iedereen die van magie houdt. Heb je het zelf gezien of wil je er meer over horen?",
+      "De show van Hans Klok in Scheveningen was magisch en vol spectaculaire illusies. Het vond plaats op het parkeerterrein Noordelijk Havenhoofd aan de Strandweg, met een zomerse sfeer dankzij foodtrucks en entertainment. Bezoekers genoten van topacts en veel verrassingen. Heb je zelf de show gezien, of wil je misschien weten wanneer er weer iets soortgelijks komt?",
+      "De Hans Klok show in Scheveningen was erg indrukwekkend! Hij gaf magische illusies en had internationale topacts erbij. De sfeer was zomers en gezellig met foodtrucks en extra entertainment. Heb je de show zelf bijgewoond of wil je er meer over weten?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754835390060",
+    "timestamp": "2025-08-10T14:16:30.060Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "De show van Hans Klok in Scheveningen was magisch en indrukwekkend. Bezoekers genoten van spectaculaire illusies en internationale topacts in een gezellige zomerse sfeer met foodtrucks en entertainment. Was je er zelf ook bij, of zou je graag willen gaan?",
+      "Hans Klok & Friends gaven een spannende show in Scheveningen met indrukwekkende illusies en topacts. Het was een magische ervaring voor iedereen die van goochelkunst houdt. Heb je zelf de show gezien of wil je meer weten over wat er allemaal te zien was?",
+      "De show van Hans Klok in Scheveningen was een succesvolle magische voorstelling met spectaculaire illusies en internationale artiesten. Het had een leuke zomerse sfeer, mede dankzij foodtrucks en entertainment rondom de show. Wil je weten wanneer de volgende shows gepland staan of iets anders over het evenement?"
+    ],
+    "selectedResponse": null,
+    "ragContext": []
+  },
+  {
+    "id": "1754837348574",
+    "timestamp": "2025-08-10T14:49:08.574Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "Het was een wervelende show bij Hans Klok & Friends in Scheveningen! Ondanks dat hij iedereen te snel af was, heb je genoten van de magie en illusies. De entree voor rolstoelen was een uitdaging, maar ging gelukkig goed via een steile afrit bij het center stage. Ook nog even backstage geweest en een gelukskaart van Hans Klok gekregen, dat was extra bijzonder! Hoe vond jij het om erbij te zijn?",
+      "Het was een wervelende show bij Hans Klok & Friends in Scheveningen. Hoewel de entree voor rolstoelen een uitdaging was met een hele steile afrit, ging alles goed. Je zat er bovenop terwijl Hans Klok iedereen te snel af was. Na de show was er zelfs een moment backstage met de maestro zelf, en er werd een gelukskaart uitgedeeld, de ruiten aas. Heb je zelf ook iets meegemaakt tijdens de show?",
+      "Het was een wervelende show bij Hans Klok & Friends in Scheveningen. Ondanks dat de entree voor rolstoelen een kleine uitdaging was met een steile afrit, verliep alles goed. De magie en internationale topacts maakten het echt bijzonder. Je kreeg zelfs tijdens de show een gelukskaart van Hans Klok zelf. Hebben jullie toen ook van zulke bijzondere momenten genoten?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      }
+    ]
+  },
+  {
+    "id": "1754837402123",
+    "timestamp": "2025-08-10T14:50:02.123Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "Het was een wervelende show bij Hans Klok in Scheveningen! Je zat er bovenop, maar hij was iedereen te snel af met zijn trucs. De entree voor rolstoelen was een hele uitdaging, maar het ging goed. Je hebt genoten van de show en zelfs nog backstage de maestro zelf ontmoet. Tijdens de show kreeg je een gelukskaart, de ruiten aas. Een bijzondere ervaring! Hoe vond jij het?",
+      "Het was een wervelende show van Hans Klok & friends in Scheveningen. De entree voor rolstoelen was een uitdaging, met een steile afrit via de center stage, maar dat ging goed. De magie en snelheid van Hans Klok waren indrukwekkend. Ook was er nog een backstage moment met hem en kreeg je een gelukskaart, de ruiten aas. Hoe vond jij het?",
+      "Het was een spectaculaire show van Hans Klok & friends, echt wervelend! Voor rolstoelgebruikers was de entree een soort houdini-act met een steile afrit, maar het ging uiteindelijk allemaal goed. Je zat zo goed bovenop de acts, maar Hans bleef iedereen altijd net te snel af. Het was leuk dat je zelfs backstage met hem bent geweest en een gelukskaart hebt gekregen tijdens de show. Heb je er nog speciale momenten of herinneringen aan?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      }
+    ]
+  },
+  {
+    "id": "1754838470395",
+    "timestamp": "2025-08-10T15:07:50.395Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was hans klok in scheveningen",
+    "responses": [
+      "Hans Klok in Scheveningen was een wervelende show vol magie en illusies. De sfeer was zomers en levendig, met internationale topacts en foodtrucks erbij. De entree voor rolstoelen was een beetje een uitdaging met een steile afrit, maar dat ging goed. Tijdens de show kreeg ik zelfs een gelukskaart van Hans Klok zelf. Heb jij iets bijzonders gezien of meegemaakt tijdens de show?",
+      "De show van Hans Klok in Scheveningen was echt spectaculair en vol magie en variatie. Het was een indrukwekkende voorstelling in een circustent met adembenemende acts en een gezellige festivalsfeer. Het was zelfs een klein avontuur om binnen te komen, vooral voor rolstoelgebruikers, maar alles ging goed. De sfeer was wervelend en bijzonder, en er was zelfs een momentje backstage met Hans Klok zelf. Heb jij iets specifieks gemist of wil je weten?",
+      "De show van Hans Klok in Scheveningen was een wervelende ervaring vol magische illusies en topacts. Er was een indrukwekkende circustent met een festivalsfeer, en de ambiance was echt betoverend. De entree met rolstoel was wel een uitdaging, maar uiteindelijk kwam alles goed. Tijdens de show kreeg je zelfs een gelukskaart van Hans Klok zelf. Het was een prachtige middag vol verrassende scènes en verwondering. Heb je zelf de show gezien?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "verrassende scènes.  \n괜괝괞괟괠괡괢괧괣괤괥괦 26 juli 2025 – 15:30 \nHans Klok – Hans Klok & Friends 2025 \n굗굙굘 Boulevard-Zuid, Scheveningen \nHans Klok keert terug met een spectaculaire show vol illusie, variété e...",
+        "source": "theateragena 2025-2026.pdf"
+      },
+      {
+        "content": "Een schrijnend voorbeeld is het 'Half Eentje' aan de Schorredijk, een ooit bruisend café dat getuigde van de verbondenheid van de Muller met deze plek. De zwart marmeren wijzerplaat op de gevel, bevro...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754839497543",
+    "timestamp": "2025-08-10T15:24:57.543Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "Het was een wervelende show vol magie en illusies bij Hans Klok in Scheveningen. De sfeer was feestelijk met verrassende acts en een indrukwekkende circustent. De entree voor rolstoelen was een echte uitdaging, maar alles ging gelukkig goed. Tijdens de show kreeg je zelfs een gelukskaart van Hans Klok zelf, een heel bijzondere ervaring! Heb je zelf vroeger eens een magische show bezocht?",
+      "Het was een fantastische ervaring bij Hans Klok in Scheveningen! De show was vol wervelende illusies en verrassende scènes, echt indrukwekkend. De entree voor rolstoelen was een uitdaging, maar alles ging goed met een steile afrit naar het center stage. Tijdens de show kreeg je zelfs een gelukskaart van Hans Klok zelf. Vooral de magie en sfeer in de circustent maakten het heel bijzonder. Heb je genoten van de show?",
+      "Het bijwonen van Hans Klok in Scheveningen was een spectaculaire ervaring. De show stond vol magische illusies en verrassende acts, met een fijne festivalsfeer in een indrukwekkende circustent. Iedereen genoot volop, ook al was de entree voor rolstoelen een avontuur op zich. Je was dichtbij de action, zelfs backstage en kreeg een gelukskaart van Hans Klok zelf tijdens de show. Het was zeker een wervelende middag vol verwondering en goede sfeer! Wil je meer weten over de show of iets anders?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "verrassende scènes.  \n괜괝괞괟괠괡괢괧괣괤괥괦 26 juli 2025 – 15:30 \nHans Klok – Hans Klok & Friends 2025 \n굗굙굘 Boulevard-Zuid, Scheveningen \nHans Klok keert terug met een spectaculaire show vol illusie, variété e...",
+        "source": "theateragena 2025-2026.pdf"
+      },
+      {
+        "content": "Een schrijnend voorbeeld is het 'Half Eentje' aan de Schorredijk, een ooit bruisend café dat getuigde van de verbondenheid van de Muller met deze plek. De zwart marmeren wijzerplaat op de gevel, bevro...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754839876990",
+    "timestamp": "2025-08-10T15:31:16.990Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was het bij hans klok in scheveningen",
+    "responses": [
+      "Het was een indrukwekkende show bij Hans Klok in Scheveningen, vol wervelende illusies en verrassende scènes. De sfeer was magisch, met een combinatie van circusacts en variété. Het was een bijzondere ervaring, ook backstage ontmoette je de maestro zelf. Ondanks een steile afrit voor rolstoelen ging alles goed en was het genieten van topentertainment. Heb je ook iets bijzonders meegemaakt tijdens de show?",
+      "De show van Hans Klok in Scheveningen was erg indrukwekkend en wervelend. Er waren spectaculaire illusies en variété in een magische circustent. De sfeer was gezellig met een festivalgevoel. De toegang voor rolstoelen was een uitdaging, maar alles ging uiteindelijk goed. Je kon zelfs backstage komen en een gelukskaart krijgen van Hans Klok zelf. Heb je zelf iets bijzonders meegemaakt daar?",
+      "Het was een fantastische show bij Hans Klok in Scheveningen! De voorstelling zat vol verrassende illusies en evenementen in een indrukwekkende circustent. Ondanks een steile afrit naar de rolstoelentree, maakte je een mooie entree. Tijdens de show kreeg je zelfs een gelukskaart van Hans Klok zelf – het ruiten aas. Hoe vond je het? Wil je graag meer over de show horen?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "verrassende scènes.  \n괜괝괞괟괠괡괢괧괣괤괥괦 26 juli 2025 – 15:30 \nHans Klok – Hans Klok & Friends 2025 \n굗굙굘 Boulevard-Zuid, Scheveningen \nHans Klok keert terug met een spectaculaire show vol illusie, variété e...",
+        "source": "theateragena 2025-2026.pdf"
+      },
+      {
+        "content": "Een schrijnend voorbeeld is het 'Half Eentje' aan de Schorredijk, een ooit bruisend café dat getuigde van de verbondenheid van de Muller met deze plek. De zwart marmeren wijzerplaat op de gevel, bevro...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754840776334",
+    "timestamp": "2025-08-10T15:46:16.334Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "hoe was hans klok in scheveningen",
+    "responses": [
+      "Hans Klok in Scheveningen was een spectaculaire show vol illusies, variété en verwondering. Het vond plaats in een indrukwekkende circustent met een gezellige festivalsfeer. De acts waren adembenemend en het publiek genoot zichtbaar van de magie en het entertainment. Ook was er een leuke ervaring met een steile afrit voor rolstoelen, maar alles ging goed. Tijdens de show kreeg ik zelfs een gelukskaart van Hans Klok zelf. Het was echt een bijzondere middag! Heb jij de show gezien?",
+      "Hans Klok in Scheveningen was echt een spectaculaire show vol illusies en verwondering. Het was een magische middag met indrukwekkende acts en een gezellige festivalsfeer in een circustent. Het publiek genoot volop van de wervelende optredens. De toegang voor rolstoelen was wel een uitdaging, maar alles verliep goed. Zelfs een backstage moment met Hans Klok zelf maakte het extra bijzonder. Heb je zelf de show gezien, of wil je er graag meer over horen?",
+      "Hans Klok in Scheveningen was echt een spectaculaire show! Het was een wervelende voorstelling vol illusies, fantastisch variété en verrassende scènes. De sfeer was heel zonnig en feestelijk, met een kleurrijke circustent op het Strandweg-terrein. Bezoekers konden genieten van indrukwekkende magische acts en ook nog even backstage ontmoeten was mogelijk. Er was zelfs een gelukskaart als souvenirtje. Het was echt een bijzondere middag vol verwondering en plezier. Heb je iets speciaals gehoord of wil je meer weten over de show?"
+    ],
+    "selectedResponse": "Hans Klok in Scheveningen was echt een spectaculaire show vol illusies en verwondering. Het was een magische middag met indrukwekkende acts en een gezellige festivalsfeer in een circustent. Het publiek genoot volop van de wervelende optredens. De toegang voor rolstoelen was wel een uitdaging, maar alles verliep goed. Zelfs een backstage moment met Hans Klok zelf maakte het extra bijzonder. Heb je zelf de show gezien, of wil je er graag meer over horen?",
+    "ragContext": [
+      {
+        "content": "Title: Hans Klok in scheveningen\nDate: 2025-07-26\nTags: theater, Hans Klok, Circus\nJe zit er bovenop en toch is hij iedereen te snel af. Hans Klok & friends, een wervelende show! De entree voor rolsto...",
+        "source": "memories.json"
+      },
+      {
+        "content": "verrassende scènes.  \n괜괝괞괟괠괡괢괧괣괤괥괦 26 juli 2025 – 15:30 \nHans Klok – Hans Klok & Friends 2025 \n굗굙굘 Boulevard-Zuid, Scheveningen \nHans Klok keert terug met een spectaculaire show vol illusie, variété e...",
+        "source": "theateragena 2025-2026.pdf"
+      },
+      {
+        "content": "Een schrijnend voorbeeld is het 'Half Eentje' aan de Schorredijk, een ooit bruisend café dat getuigde van de verbondenheid van de Muller met deze plek. De zwart marmeren wijzerplaat op de gevel, bevro...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754844420344",
+    "timestamp": "2025-08-10T16:47:00.344Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Legging, zoek ik. Jij mag van mij, laten we zeggen tien, tien nieuwe doeken maken en ik heb het liefst doeken met figuren erop, enzovoort. Ja, ja, ja, ik heb wel een paar ideeën, zegt hij dan. En dan zegt Shuki je krijgt 6000 franc per stuk.",
+    "responses": [
+      "Wat een mooie en creatieve opdracht zeg! Tien nieuwe doeken met figuren erop, dat klinkt als een prachtig project. Het bedrag van 6000 franc per stuk is ook indrukwekkend. Heb je zelf al specifieke ideeën of thema’s in gedachten voor die doeken? Ik help graag met meedenken of met wat inspiratie!",
+      "Wat een mooie en duidelijke wens, tien nieuwe doeken met figuren erop! Het klinkt alsof je al wat ideeën hebt om dat te vullen, en dat er een mooi bedrag tegenover staat, 6000 franc per stuk, wat echt een goede vergoeding is. Vind je het fijn om samen te bedenken welke figuren en thema's erop komen? Misschien kunnen we meteen wat schetsen of woorden verzamelen zodat het precies wordt zoals jij wilt. Wil je dat ik je help met ideeën op een rijtje zetten?",
+      "Dat klinkt als een levendige herinnering aan een voorstel voor het maken van kunstwerken of doeken, inclusief afspraken over een vergoeding per stuk. Wil je dat ik je help deze gedachten verder uit te werken, zoals het vastleggen van de ideeën of het plannen van zo'n kunstproject? Of wil je iets vertellen over die periode of dat moment?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Tegelijkertijd lokte een zeefdrukkerij in Puttershoek, Hans van de Waal, hem in de grafische wereld. Van zijn 16e tot 19e jaar bekwaamde hij zich in zeefdrukken en navigeerde hij door de digitale were...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "Creativiteit Levend Houden\n\nOndertussen houd ik mijn creatieve geest levendig en swingend door te blijven nieuwe kunstwerken maken. Ik ben momenteel bezig met verschillende privé opdrachten en ik sta ...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      },
+      {
+        "content": "'We worden rijk. Ik weet het zeker,' zegt Gerard. Zijn handen liggen losjes op het stuur en hij drukt het gaspedaal stevig in. Bernard knikt. 'En niet zomaar een beetje rijk. We worden miljonairs!' hi...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754845050456",
+    "timestamp": "2025-08-10T16:57:30.456Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Vertellen. Dit is een magisch schilderij. Geheimzinnig met roze licht. Dat roze licht maakt het betoverend. Al wat er bij.",
+    "responses": [
+      "Wat een prachtig beeld schets je! Zo’n magisch schilderij met geheimzinnig roze licht roept meteen een gevoel van verwondering op. Dat zachte, betoverende licht omhult alles als een mysterieuze sfeer, alsof er een verhaal schuilgaat dat je nog moet ontdekken. Misschien lijken de vormen en schaduwen in het schilderij te dansen, en nodigt het je uit om mee te reizen naar een wereld vol magie en dromen. Wat zou jij willen dat er nog meer in dat schilderij zit, om het nog magischer te maken?",
+      "Dat klinkt als een prachtig en betoverend schilderij. Het roze licht geeft het een geheimzinnige sfeer, alsof er een zachte magie in de lucht hangt. Misschien lijkt het alsof er iets verborgen gebeurt achter dat licht, iets wat alleen jij kunt voelen. Het roept een gevoel op van verwondering en mysterie, waardoor je er telkens opnieuw door wordt gegrepen. Wat maakt dit schilderij voor jou het meest magisch?",
+      "Dat klinkt echt prachtig, zo’n magisch schilderij met dat mysterieuze roze licht. Het roze licht geeft het een warme, bijna onwerkelijke sfeer die je raakt en direct vangt in zijn betovering. Het soort kunst dat je uitnodigt om te blijven kijken, telkens weer iets nieuws te ontdekken in de schaduw en het licht. Het geheimzinnige ervan maakt het extra intrigerend, het voelt alsof het een verhaal fluistert dat nog verteld moet worden. Wat zou jij willen dat mensen voelen of meemaken als ze naar dit schilderij kijken?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Woestijn Illusies: Surrealisme ontmoet Minimalisme\n\nTerwijl ik mijn digitale ruimte aan het herontwerpen was, vloeiden mijn creatieve sappen over in een gloednieuwe collectie: 'Desert Illusions'. Deze...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      },
+      {
+        "content": "Mijn Galerij: Een Mozaïek van Veerkracht en Creativiteit\n\nMijn galerij is 'n ode aan hoop, veerkracht, en grenzeloze creativiteit. Het bevat de beloning voor mijn artistieke reis, en vat 't verhaal sa...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      },
+      {
+        "content": "De Magische Proces: Van een Blik tot een Meesterwerk\n\nDe creatie van kunst met een oogblik is een fijnzinnige symfonie tussen geavanceerde technologie en de ontembare menselijke geest. Beeld je dit in...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754845081212",
+    "timestamp": "2025-08-10T16:58:01.212Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Spannend om naar te kijken daardoor. En dit vind ik ook prachtig. Dit is bijna een nummer drie in de serie. Dit is bijna een abstract schilderij. ",
+    "responses": [
+      "Wat mooi dat je het zo ervaart! Die abstracte vormen en kleuren geven inderdaad zo’n krachtige uitstraling, bijna als een eigen verhaal dat je erin kunt ontdekken. Het is bijzonder hoe kunst kan spreken zonder woorden, en toch zo veel kan oproepen. Vind je het leuk om meer van zulke abstracte werken te verkennen, of wil je misschien iets horen over de betekenis erachter?",
+      "Dat klinkt prachtig, een abstract schilderij kan echt iets bijzonders oproepen, met zijn vormen en kleuren die vrijheid geven aan de verbeelding. Wat vind je het meest bijzonder aan dit bijna abstracte werk? Of welke gevoelens roept het bij je op als je ernaar kijkt?",
+      "Dat klinkt mooi, vooral dat het bijna aan een abstract schilderij doet denken. Wat vind je zo speciaal aan dit kunstwerk? Spreekt de kleur, de vorm of de sfeer je het meest aan? Ik ben benieuwd wat jij voelt bij dit soort kunst."
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Het geeft me intens veel plezier om deze kunstwerken tot leven te zien komen en ze met de wereld te kunnen delen. Elk kunstwerk is niet alleen een product van AI, maar draagt ook een boodschap van hoo...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      },
+      {
+        "content": "Naast deze spannende ontwikkelingen, heb ik achter de schermen hard gewerkt, op zoek naar verschillende materialen om de kwaliteit van mijn kunst te verbeteren. Ik heb geëxperimenteerd met producten v...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      },
+      {
+        "content": "Woestijn Illusies: Surrealisme ontmoet Minimalisme\n\nTerwijl ik mijn digitale ruimte aan het herontwerpen was, vloeiden mijn creatieve sappen over in een gloednieuwe collectie: 'Desert Illusions'. Deze...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754845108839",
+    "timestamp": "2025-08-10T16:58:28.839Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Hand is. Hij brengt haar dus weg. Staat hier op de pier. Zij staat op de boot. Hij neemt afscheid en krijgt een aanval.",
+    "responses": [
+      "Dat klinkt als een intens en emotioneel moment, waarin Hans afscheid neemt terwijl zij op de boot staat. Zijn aanval lijkt te laten zien hoe zwaar het afscheid voor hem is. Wil je dat ik help om dit moment verder uit te werken, bijvoorbeeld in een verhaal of tekst?",
+      "Dat klinkt als een intens en emotioneel moment. Hans neemt afscheid van haar op de pier, terwijl zij op de boot staat. En dan krijgt hij ineens een aanval, wat het afscheid extra heftig maakt. Wil je dat ik help met het schrijven van dit tafereel, of wil je er meer details bij?",
+      "Dat klinkt als een heel emotioneel moment. Hij staat dus op de pier en zij op de boot, en tijdens het afscheid krijgt hij ineens een aanval. Wil je dat ik je help om dit scenario verder uit te spreken of verwoorden? Of wil je misschien iets namens hem zeggen?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Bernard keek vanaf de kant toe en gingen af en toe als metgezel mee met de maritieme escapades van zijn vrienden. Zijn verplichtingen hadden hem aan wal verankerd, waardoor hij slechts sporadisch inte...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "Een soortgelijke beproeving voltrok zich toen Annie, terwijl ze het dek aan het schrobben was, overboord sloeg. Het verhaal neemt een tedere wending als het Bert's vaderlijke instincten onthult die zi...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "Zijn leven raakte verstrengeld met dat van Lena Groenendijk in 1793, hetzelfde jaar dat de koude handen van magere hein zijn moeder opeisten. Rond de eeuwwisseling in 1800 keerden ze terug naar Putter...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754848257377",
+    "timestamp": "2025-08-10T17:50:57.377Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Kort temperatures are rising to near lethal levels. The reason they don't.",
+    "responses": [
+      "Temperaturen stijgen snel richting levensgevaarlijke niveaus door klimaatverandering, vooral door de uitstoot van broeikasgassen. Toch bereiken ze meestal niet direct dodelijke waarden omdat natuurlijke factoren zoals wind, neerslag en schaduw zorgen voor enige verkoeling. Ook zijn extreme hittepieken vaak tijdelijk. Maar het blijft gevaarlijk, vooral voor kwetsbare mensen en ecosystemen. Wil je dat ik het verder uitleg?",
+      "Temperaturen stijgen wereldwijd, soms dichtbij dodelijke niveaus doordat de aarde steeds warmer wordt door menselijke activiteiten zoals het verbranden van fossiele brandstoffen. Toch worden ze niet continu dodelijk omdat natuurlijke processen zoals oceanen en bossen warmte opnemen en deels reguleren. Ook zorgt de atmosfeer ervoor dat temperatuurverschillen niet altijd extreem worden. Dit betekent dat hoewel het steeds heter wordt, de aarde een soort buffer heeft die erger voorkomt. Wel is het belangrijk om die opwarming te beperken, want gevaarlijk heet kan het zeker worden. Wil je dat ik het verder uitleg?",
+      "Temperaturen stijgen dichtbij levensgevaarlijke niveaus, maar ze bereiken die drempel meestal niet omdat natuurlijke factoren zoals wind, oceaanstromen en wolkenvorming helpen om het heel heet worden iets te verminderen. Ook reageert het klimaat op een manier die soms tijdelijk pieken temperen, zoals regen of koele luchtstromen. Toch is de situatie kritisch omdat zulke hoge temperaturen de gezondheid en veiligheid bedreigen en het ecosysteem zwaar belasten. Wil je dat ik meer uitleg geef over waarom dit gebeurt en wat dat betekent voor ons?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Voor deze technologieën zijn wel specifieke aardmetalen nodig, die in het huidige geopolitieke speelveld al als wapen worden ingezet. Maar bij alle natuurlijke hulpbronnen geldt dat ze eindig zijn en ...",
+        "source": "Mijn kijk op de wereld.docx"
+      },
+      {
+        "content": "Terwijl het sinistere virus zich door de bevolking verspreidde, wist hij, verscholen in zijn veiligheidsmaatregelen, aan de greep ervan te ontkomen. Dat was tot een nacht in oktober 2022, toen de ijzi...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "Geloof gewoon en het zal gebeuren, maar alleen met buitengewone maatregelen...!\n\n\n\nLiefde, haat en andere emoties. Blogpost van Bernardus Muller, 26 AUG 2013\n\nAls je wordt geconfronteerd met een termi...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754848276915",
+    "timestamp": "2025-08-10T17:51:16.915Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "As the giraffes were-",
+    "responses": [
+      "Wil je graag verder vertellen over de giraffes? Ik luister graag mee, neem je tijd.",
+      "Wil je het graag afmaken of verder vertellen over de giraffen? Ik luister met aandacht!",
+      "Je lijkt iets te willen zeggen over giraffen. Wil je het afmaken of erover praten? Ik hoor graag wat je wilt delen!"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "De reis die onder een hoopvolle zon was begonnen, begon lange schaduwen van onzekerheid te werpen. De verraderlijke kwaal knaagde aan zijn vitaliteit met elke bocht die de rivier passeerde. Maar Stoff...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "dageraad de volgende dag aankondigde. Zelfs toen dook het paar af en toe achter de bar als Antoinette langsliep op weg naar haar werk, een subtiele herinnering aan de realiteit te midden van hun rijk ...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "Zich aanpassen aan de grotere, drukke omgeving leek op het aanleren van een nieuw ritme, maar het ritme van het leren ging hem gemakkelijk af. Het gymnasium bleek echter al snel niet te passen bij de ...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754852189086",
+    "timestamp": "2025-08-10T18:56:29.086Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "Even en toen. En in mijn twintiger jaren zeg maar ja. Die benen. Hebben gewoon alle vormen van therapie gehad.",
+    "responses": [
+      "Dat klinkt als een lange en zware reis met die therapieën voor je benen. Het is niet makkelijk om steeds nieuwe behandelingen te proberen en toch vooruit te blijven kijken. Heb je het gevoel dat iets in het bijzonder heeft geholpen of juist niet? Of wil je er gewoon even over praten? Ik luister graag.",
+      "Dat klinkt als een lange en zware strijd met al die therapieën voor je benen in je twintiger jaren. Het is echt knap dat je zo hebt doorgezet, ondanks alles wat je hebt moeten doorstaan. Wil je er meer over vertellen hoe het toen was, of hoe het nu met je benen gaat? Ik luister graag.",
+      "Dat klinkt als een intens traject met al die therapieën voor je benen in je twintiger jaren. Het kan soms zo lastig zijn om te vinden wat echt helpt. Wil je er graag vaker over praten, of misschien delen wat voor therapiën je precies hebt geprobeerd en hoe je die hebt ervaren? Ik luister graag."
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Mijn eerste tekenen doemden op in de winter van 2009/2010 en toen ik te maken kreeg met een beetje gevoelloosheid in mijn linkerhand dacht ik dat het tijd was om actiever te worden, na een druk, hecti...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
+      },
+      {
+        "content": "Title: behandeling Antoinette\nDate: 2025-07-14\nde tumor in de borst is wederom gekrompen met achtendertig procent. nog klein plekje op rib, rest in botten verdwenen en in de lymfe helemaal weg.  De th...",
+        "source": "memories.json"
+      },
+      {
+        "content": "De eerste dag op het gymnasium bracht een echo van verbazing met zich mee. De eindeloze rijen kapstokken stonden als hoge wachters, elk haakje droeg een verhaal van een ander huishouden. De aanblik va...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
   }
 ]
