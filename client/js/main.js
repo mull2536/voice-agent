@@ -242,30 +242,38 @@ class CommunicationAssistant {
                     visualFeedback: true
                 });
             }
-            
-            // ADD THIS: Load people
+            // Load people
             try {
                 const peopleResponse = await this.api.getPeople();
                 this.people = peopleResponse.people || peopleResponse || [];
+                
+                const savedPersonId = localStorage.getItem('selectedPersonId');
+                if (savedPersonId && this.people.length > 0) {
+                    const savedPerson = this.people.find(p => p.id === savedPersonId);
+                    if (savedPerson) {
+                        this.currentPerson = savedPerson;
+                        this.socket.emit('set-person', savedPersonId);
+                        
+                        // Add a small delay to ensure DOM is ready
+                        setTimeout(() => {
+                            this.updatePersonDisplay(savedPerson);
+                        }, 100);
+                        
+                        console.log('Restored selected person:', savedPerson.name);
+                    } else {
+                        localStorage.removeItem('selectedPersonId');
+                        this.currentPerson = null;
+                        this.updatePersonDisplay(null);
+                    }
+                } else {
+                    this.currentPerson = null;
+                    this.updatePersonDisplay(null);
+                }
             } catch (err) {
                 console.error('Failed to load people:', err);
                 this.people = [];
-            }
-            
-            // ADD THIS: Check for saved person
-            const savedPersonId = localStorage.getItem('selectedPersonId');
-            if (savedPersonId && this.people && this.people.length > 0) {
-                const savedPerson = this.people.find(p => p.id === savedPersonId);
-                if (savedPerson) {
-                    this.currentPerson = savedPerson;
-                    this.socket.emit('set-person', savedPersonId);
-                    this.updatePersonDisplay(savedPerson);
-                    console.log('Restored selected person:', savedPerson.name);
-                } else {
-                    this.currentPerson = null;
-                }
-            } else {
                 this.currentPerson = null;
+                this.updatePersonDisplay(null);
             }
             
             // Load recent conversations
@@ -294,7 +302,13 @@ class CommunicationAssistant {
     updatePersonDisplay(person) {
         const indicator = document.getElementById('current-speaker');
         if (indicator) {
-            indicator.textContent = `Talking to: ${person.name}`;
+            if (person && person.name) {
+                indicator.textContent = `Talking to: ${person.name}`;
+            } else {
+                indicator.textContent = 'No one selected';
+            }
+        } else {
+            console.error('Current speaker indicator element not found!');
         }
     }
     

@@ -1,29 +1,5 @@
 [
   {
-    "id": 1754245674624,
-    "timestamp": "2025-08-03T18:27:54.624Z",
-    "personId": "caregiver",
-    "personName": "Caregiver",
-    "userMessage": "yeah yeah yeah yeah",
-    "responses": [
-      "\"Lijkt alsof we vandaag allemaal een beetje in de herhaalmodus zijn, net zoals Bernardus soms had met zijn avonturen. Hoe kan ik jou vandaag helpen om de routine een beetje te doorbreken?\"",
-      "\"Dat klinkt alsof je misschien een beetje verveeld bent. Zullen we kijken of we iets kunnen plannen dat net zo interessant is als een van Bernardus' reizen?\"",
-      "\"Herinner je je de verhalen van Bernardus over zijn onverwachte avonturen? Misschien is het tijd voor ons om vandaag ons eigen kleine avontuur te creëren. Wat denk je ervan?\""
-    ],
-    "selectedResponse": null,
-    "context": {
-      "ragUsed": true,
-      "ragSourcesCount": 5,
-      "ragSources": [
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx",
-        "memories.json",
-        "biografie Bernardus Muller a5 nl.docx",
-        "biografie Bernardus Muller a5 nl.docx"
-      ]
-    }
-  },
-  {
     "id": 1754245232768,
     "timestamp": "2025-08-03T18:20:32.768Z",
     "personId": "caregiver",
@@ -2010,6 +1986,33 @@
       {
         "content": "De eerste dag op het gymnasium bracht een echo van verbazing met zich mee. De eindeloze rijen kapstokken stonden als hoge wachters, elk haakje droeg een verhaal van een ander huishouden. De aanblik va...",
         "source": "biografie Bernardus Muller a5 nl.docx"
+      }
+    ]
+  },
+  {
+    "id": "1754904933301",
+    "timestamp": "2025-08-11T09:35:33.301Z",
+    "personId": "caregiver",
+    "personName": "Caregiver",
+    "userMessage": "test",
+    "responses": [
+      "Het werkt! Wil je iets proberen of bespreken? Ik ben er voor je.",
+      "Test ontvangen! Alles werkt goed. Waar wil je het vandaag over hebben?",
+      "Ik hoor je, test geslaagd! Wil je iets proberen of bespreken?"
+    ],
+    "selectedResponse": null,
+    "ragContext": [
+      {
+        "content": "Title: bbq bcw\nDate: 2025-08-09\ntest...",
+        "source": "memories.json"
+      },
+      {
+        "content": "Een Russische inval: de test van veerkracht\n\nHet enorme succes van STR weerklonk niet alleen binnen de grenzen van Rotterdam, maar vond kilometers verderop zijn weerklank, tot in het hart van Moskou. ...",
+        "source": "biografie Bernardus Muller a5 nl.docx"
+      },
+      {
+        "content": "Ten tweede, je voert uit, onthoud dat ideeën maar 1% van het werk zijn, de rest is bloed, zweet en tranen.\n\nTen derde evalueer je en kijk je of je strategie werkt en of je op weg bent om je doelen te ...",
+        "source": "Blogposts Bernardus Muller_NL.docx"
       }
     ]
   }

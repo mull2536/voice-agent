@@ -19,7 +19,7 @@
     "useFixedSeed": false
   },
   "transcription": {
-    "language": "en"
+    "language": "nl"
   },
   "vad": {
     "positiveSpeechThreshold": 0.4,

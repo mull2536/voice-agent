@@ -327,6 +327,23 @@ class SimpleDataStore {
             // Merge updates with current settings
             const newSettings = deepMerge(currentSettings, updates);
             
+            // Special handling: Synchronize language settings
+            // If system.defaultLanguage is updated, also update transcription.language
+            if (updates.system && updates.system.defaultLanguage) {
+                if (!newSettings.transcription) {
+                    newSettings.transcription = {};
+                }
+                newSettings.transcription.language = updates.system.defaultLanguage;
+            }
+            
+            // If transcription.language is updated, also update system.defaultLanguage
+            if (updates.transcription && updates.transcription.language) {
+                if (!newSettings.system) {
+                    newSettings.system = {};
+                }
+                newSettings.system.defaultLanguage = updates.transcription.language;
+            }
+            
             // Save to file
             await fs.writeFile(this.settingsFile, JSON.stringify(newSettings, null, 2));
             

@@ -94,6 +94,7 @@ class SettingsUI {
     }
     
     async open() {
+        // Show the modal first
         this.modal.classList.add('active');
         
         // Load latest settings
@@ -103,7 +104,6 @@ class SettingsUI {
             
             // Load voices
             const voicesResponse = await this.api.getVoices();
-            // Pass the entire response to loadVoices - it will handle the structure
             this.loadVoices(voicesResponse);
             
         } catch (error) {
@@ -230,9 +230,30 @@ class SettingsUI {
         if (visualFeedback && settings.eyeGaze) {
             visualFeedback.checked = settings.eyeGaze.visualFeedback !== false;
         }
+        
+        // Enhanced language setting with debugging
         if (defaultLanguage && settings.system && settings.system.defaultLanguage) {
+            console.log('Setting language dropdown to:', settings.system.defaultLanguage);
+            
+            // Force the value multiple ways to ensure it sticks
             defaultLanguage.value = settings.system.defaultLanguage;
+            
+            // Find and select the correct option
+            const options = defaultLanguage.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === settings.system.defaultLanguage) {
+                    options[i].selected = true;
+                    defaultLanguage.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            // Force a change event to ensure any listeners are triggered
+            defaultLanguage.dispatchEvent(new Event('change'));
+            
+            console.log('Language dropdown value after setting:', defaultLanguage.value);
         }
+        
         if (chunkSize && settings.rag && settings.rag.chunkSize) {
             chunkSize.value = settings.rag.chunkSize;
         }
@@ -241,6 +262,22 @@ class SettingsUI {
         }
         if (topKResults && settings.rag && settings.rag.topK) {
             topKResults.value = settings.rag.topK;
+        }
+    }
+
+    async loadInitialLanguage() {
+        try {
+            // Try to get settings from the server
+            const response = await this.api.getSettings();
+            if (response.settings && response.settings.system && response.settings.system.defaultLanguage) {
+                const defaultLanguage = document.getElementById('default-language');
+                if (defaultLanguage) {
+                    defaultLanguage.value = response.settings.system.defaultLanguage;
+                    console.log('Initial language set to:', response.settings.system.defaultLanguage);
+                }
+            }
+        } catch (error) {
+            console.warn('Could not load initial language settings:', error);
         }
     }
     
@@ -359,8 +396,17 @@ class SettingsUI {
                 visualFeedback: document.getElementById('visual-feedback').checked
             };
             
+            // Get the selected language
+            const selectedLanguage = document.getElementById('default-language').value;
+
+            // Save language to both system and transcription settings
             updates.system = {
-                defaultLanguage: document.getElementById('default-language').value
+                defaultLanguage: selectedLanguage
+            };
+
+            // Also update transcription.language to keep them synchronized
+            updates.transcription = {
+                language: selectedLanguage
             };
             
             updates.rag = {
