@@ -451,21 +451,15 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         const saveStartTime = Date.now();
         const conversationId = Date.now().toString();
         
-        const conversationEntry = {
-            id: conversationId,
-            timestamp: new Date().toISOString(),
-            personId: person?.id || 'other',
-            personName: person?.name || 'Other',
-            userMessage: userMessage,
-            responses: responses,
-            selectedResponse: null,
-            ragContext: ragContext.map(r => ({
-                content: r.content.substring(0, 200) + '...',
-                source: r.metadata?.filename || r.metadata?.source || 'unknown'
-            }))
-        };
+        // ALSO save to chat history with null assistant response
+        await this.chatHistoryService.saveConversation(
+            person?.id || 'other',
+            person?.name || 'Other', 
+            person?.notes || '',
+            userMessage,  // This parameter name is correct
+            null  // assistant response is null until selected
+        );
         
-        await dataStore.addConversation(conversationEntry);
         timings.chatHistorySave = Date.now() - saveStartTime;
         const settings = await dataStore.getSettings();
         const modelName = settings?.llm?.model || config.llm.model || 'gpt-4.1-mini';
@@ -483,19 +477,8 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
     }
 
     async selectResponse(conversationId, selectedText) {
-        try {
-            // Update the conversation with the selected response
-            const conversations = await dataStore.getConversations();
-            const conversation = conversations.find(c => c.id === conversationId);
-            
-            if (conversation) {
-                conversation.selectedResponse = selectedText;
-                await dataStore.updateConversation(conversationId, conversation);
-                logger.info(`Response selected for conversation ${conversationId}`);
-            }
-        } catch (error) {
-            logger.error('Failed to save selected response:', error);
-        }
+        // No longer needed - chat history is updated in socket handler
+        logger.info(`Response selected for conversation ${conversationId}`);
     }
 
     // Clean up old sessions periodically
@@ -516,3 +499,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
 }
 
 module.exports = LLMService;
+// At the bottom of llm.js, add:
+module.exports.getChatHistoryService = function() {
+    return llmService ? llmService.chatHistoryService : null;
+};

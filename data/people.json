@@ -1,0 +1,51 @@
+[
+  {
+    "id": "family",
+    "name": "Family Member",
+    "notes": "General family conversations",
+    "addedAt": "2025-08-01T14:56:56.290Z",
+    "lastConversation": "2025-08-05T12:14:01.636Z"
+  },
+  {
+    "id": "caregiver",
+    "name": "Caregiver",
+    "notes": "Daily care and assistance",
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-03T18:27:54.625Z"
+  },
+  {
+    "id": "doctor",
+    "name": "Doctor",
+    "notes": "Medical discussions",
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-03T19:44:45.281Z"
+  },
+  {
+    "id": "friend",
+    "name": "Friend",
+    "notes": "Social conversations",
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-05T12:04:11.639Z"
+  },
+  {
+    "id": "other",
+    "name": "Other",
+    "notes": "Anyone else",
+    "addedAt": "2025-08-01T14:56:56.291Z",
+    "lastConversation": "2025-08-04T14:40:09.436Z"
+  },
+  {
+    "id": "1754239552047",
+    "name": "Michaela ",
+    "notes": "My caregiver from Czech Republic, she's adorable, but impatient and loves everything from Asia! From boys till music and movies.",
+    "addedAt": "2025-08-03T16:45:52.047Z",
+    "lastConversation": "2025-08-05T11:11:00.543Z"
+  },
+  {
+    "id": "1754424056456",
+    "name": "Anonymous",
+    "notes": "anonymous user",
+    "addedAt": "2025-08-05T20:00:56.456Z",
+    "lastConversation": null
+  }
+]

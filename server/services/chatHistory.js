@@ -206,35 +206,6 @@ class ChatHistoryService {
         const startTime = performance.now();
         
         try {
-            // If selectedResponse is null, this is the initial save before responses are generated
-            if (!selectedResponse) {
-                // Just store temporarily - will be updated when response is selected
-                const conversation = {
-                    personId,
-                    personName,
-                    personNotes,
-                    userMessage,
-                    ragContext: ragContext ? ragContext.map(r => ({
-                        content: r.content.substring(0, 200) + '...',
-                        source: r.metadata?.filename || r.metadata?.source || 'unknown'
-                    })) : [],
-                    metadata: {
-                        ragUsed: ragContext ? ragContext.length > 0 : false,
-                        ragSourcesCount: ragContext ? ragContext.length : 0,
-                        ragSources: ragContext ? ragContext.map(r => r.source) : [],
-                        chatHistoryUsed: false,
-                        chatHistorySourcesCount: 0,
-                        timestamp: new Date().toISOString()
-                    }
-                };
-                
-                const endTime = performance.now();
-                logger.info(`Initial conversation saved in ${(endTime - startTime).toFixed(2)}ms`);
-                
-                return conversation;
-            }
-            
-            // Handle the case where a response has been selected
             const chatHistory = await this.loadChatHistory();
             const timestamp = new Date().toISOString();
             
@@ -252,27 +223,47 @@ class ChatHistoryService {
                 chatHistory.conversations.push(conversation);
             }
 
-            // Create exchange object - only save the selected response
-            const exchange = {
-                user: userMessage,
-                assistant: selectedResponse,
-                timestamp: timestamp,
-                vectorized: false
-            };
+            // Check if we're updating an existing unresponded exchange
+            let existingExchange = null;
+            if (selectedResponse) {
+                // Look for a recent exchange with same user message and null assistant
+                existingExchange = conversation.exchanges.find(exchange => 
+                    exchange.user === userMessage && 
+                    exchange.assistant === null &&
+                    // Must be recent (within last 5 minutes)
+                    (new Date() - new Date(exchange.timestamp)) < 5 * 60 * 1000
+                );
+            }
 
-            conversation.exchanges.push(exchange);
+            if (existingExchange) {
+                // Update existing exchange
+                existingExchange.assistant = selectedResponse;
+                existingExchange.timestamp = timestamp;
+                logger.info('Updated existing exchange with selected response');
+            } else {
+                // Create new exchange
+                const exchange = {
+                    user: userMessage,
+                    assistant: selectedResponse || null,
+                    timestamp: timestamp,
+                    vectorized: false
+                };
+                conversation.exchanges.push(exchange);
+            }
+
             conversation.timestamp = timestamp;
 
             // Save to file
             await this.saveChatHistory(chatHistory);
 
-            // Add to vector store immediately
-            if (selectedResponse) {
-                await this.addExchangeToVectorStore(exchange, conversation);
+            // Add to vector store if there's a complete exchange
+            if (selectedResponse || !existingExchange) {
+                const exchangeToVectorize = existingExchange || conversation.exchanges[conversation.exchanges.length - 1];
+                await this.addExchangeToVectorStore(exchangeToVectorize, conversation);
             }
 
             const endTime = performance.now();
-            logger.info(`Chat exchange saved in ${(endTime - startTime).toFixed(2)}ms`);
+            logger.info(`Chat exchange ${existingExchange ? 'updated' : 'saved'}${selectedResponse ? '' : ' (unresponded)'} in ${(endTime - startTime).toFixed(2)}ms`);
 
             return conversation;
             
@@ -289,7 +280,8 @@ class ChatHistoryService {
                 return;
             }
             
-            const combinedText = `User: ${exchange.user}\nAssistant: ${exchange.assistant}`;
+            // Modified to handle unresponded messages
+            const combinedText = `User: ${exchange.user}\nAssistant: ${exchange.assistant || '[No response selected]'}`;
             
             await this.chatVectorStore.addDocuments([{
                 pageContent: combinedText,
@@ -300,7 +292,7 @@ class ChatHistoryService {
                     timestamp: exchange.timestamp,
                     conversation_id: conversation.id,
                     exchange_user: exchange.user,
-                    exchange_assistant: exchange.assistant
+                    exchange_assistant: exchange.assistant  // This can be null now
                 }
             }]);
             

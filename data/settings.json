@@ -1,0 +1,47 @@
+{
+  "llm": {
+    "model": "gpt-5-chat-latest",
+    "temperature": 0.9,
+    "maxTokens": 150,
+    "systemPrompt": ""
+  },
+  "tts": {
+    "voiceId": "RRH9oZEaBFwuWBWtFxC4",
+    "speechRate": 1,
+    "stability": 0.5,
+    "similarityBoost": 0.75,
+    "style": 0,
+    "useSpeakerBoost": true,
+    "seed": null,
+    "fixedSeed": false,
+    "model": "eleven_multilingual_v2",
+    "outputQuality": "mp3_44100_192",
+    "useFixedSeed": false
+  },
+  "transcription": {
+    "language": "nl"
+  },
+  "vad": {
+    "positiveSpeechThreshold": 0.4,
+    "negativeSpeechThreshold": 0.55,
+    "minSpeechFrames": 8,
+    "preSpeechPadFrames": 3,
+    "redemptionFrames": 30
+  },
+  "eyeGaze": {
+    "hoverDuration": 3000,
+    "visualFeedback": true
+  },
+  "rag": {
+    "chunkSize": 1000,
+    "chunkOverlap": 200,
+    "topK": 3
+  },
+  "internetSearch": {
+    "enabled": true,
+    "maxResults": 3
+  },
+  "system": {
+    "defaultLanguage": "nl"
+  }
+}

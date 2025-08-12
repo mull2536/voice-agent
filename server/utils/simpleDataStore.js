@@ -5,7 +5,6 @@ const logger = require('../utils/logger');
 class SimpleDataStore {
     constructor() {
         this.dataPath = path.join(__dirname, '../../data');
-        this.conversationsFile = path.join(this.dataPath, 'conversations.json');
         this.settingsFile = path.join(this.dataPath, 'settings.json');
         this.peopleFile = path.join(this.dataPath, 'people.json');
         
@@ -16,13 +15,7 @@ class SimpleDataStore {
         // Create data directory if it doesn't exist
         try {
             await fs.mkdir(this.dataPath, { recursive: true });
-            
-            // Create empty files if they don't exist
-            try {
-                await fs.access(this.conversationsFile);
-            } catch {
-                await fs.writeFile(this.conversationsFile, '[]');
-            }
+        
             
             try {
                 await fs.access(this.peopleFile);
@@ -49,84 +42,6 @@ class SimpleDataStore {
             return true;
         } catch {
             return false;
-        }
-    }
-
-    // Conversations
-    async saveConversation(conversation) {
-        try {
-            const conversations = await this.getConversations();
-            
-            const newConversation = {
-                id: Date.now(),
-                timestamp: new Date().toISOString(),
-                personId: conversation.personId || 'other',
-                personName: conversation.personName || 'Other',
-                userMessage: conversation.userMessage,
-                responses: conversation.responses || [],
-                selectedResponse: conversation.selectedResponse || null
-            };
-            
-            conversations.push(newConversation);
-            
-            // Keep only last 100 conversations
-            if (conversations.length > 100) {
-                conversations.splice(0, conversations.length - 100);
-            }
-            
-            await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
-            
-            return newConversation;
-        } catch (error) {
-            console.error('Failed to save conversation:', error);
-            throw error;
-        }
-    }
-
-    async getConversations() {
-        try {
-            const data = await fs.readFile(this.conversationsFile, 'utf-8');
-            return JSON.parse(data);
-        } catch (error) {
-            console.error('Failed to get conversations:', error);
-            return [];
-        }
-    }
-
-    async addConversation(conversation) {
-        try {
-            const conversations = await this.getConversations();
-            conversations.push(conversation);
-            
-            // Keep only last 100 conversations
-            if (conversations.length > 100) {
-                conversations.splice(0, conversations.length - 100);
-            }
-            
-            await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
-            return conversation;
-        } catch (error) {
-            console.error('Failed to add conversation:', error);
-            throw error;
-        }
-    }
-
-    async updateConversation(conversationId, updates) {
-        try {
-            const conversations = await this.getConversations();
-            const index = conversations.findIndex(c => c.id === conversationId);
-            
-            if (index === -1) {
-                throw new Error('Conversation not found');
-            }
-            
-            conversations[index] = { ...conversations[index], ...updates };
-            await fs.writeFile(this.conversationsFile, JSON.stringify(conversations, null, 2));
-            
-            return conversations[index];
-        } catch (error) {
-            console.error('Failed to update conversation:', error);
-            throw error;
         }
     }
 
@@ -352,6 +267,44 @@ class SimpleDataStore {
             return newSettings;
         } catch (error) {
             console.error('Failed to update settings:', error);
+            throw error;
+        }
+    }
+
+    // Dummy implementations for routes that expect these methods
+    async getRecentContext(hoursBack = 24, personId = null) {
+        // TODO: Implement reading from chat history instead
+        logger.warn('getRecentContext called but not implemented - returning empty context');
+        return '';
+    }
+
+    async searchConversations(query) {
+        // TODO: Implement searching through chat history instead
+        logger.warn('searchConversations called but not implemented - returning empty results');
+        return [];
+    }
+
+    async getPersonContext(personId) {
+        // TODO: Implement getting person context from chat history
+        logger.warn('getPersonContext called but not implemented - returning null');
+        return null;
+    }
+
+    async exportData() {
+        // Export all data for backup
+        try {
+            const settings = await this.getSettings();
+            const people = await this.getPeople();
+            // Don't include conversations since we're moving away from it
+
+            return {
+                exportDate: new Date().toISOString(),
+                settings,
+                people,
+                conversations: [] // Empty for now
+            };
+        } catch (error) {
+            logger.error('Failed to export data:', error);
             throw error;
         }
     }
