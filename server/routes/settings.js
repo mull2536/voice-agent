@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
       vad: { ...config.vad, ...savedSettings.vad },
       eyeGaze: { ...config.eyeGaze, ...savedSettings.eyeGaze },
       rag: { ...config.rag, ...savedSettings.rag },
-      internetSearch: { ...config.internetSearch, ...savedSettings.internetSearch }
+      internetSearch: { ...config.internetSearch, ...savedSettings.internetSearch },
+      system: { ...config.system, ...savedSettings.system }
     };
     
     res.json({

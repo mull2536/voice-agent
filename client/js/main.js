@@ -4,7 +4,7 @@ class CommunicationAssistant {
         this.socket = null;
         this.api = null;
         this.conversationUI = null;
-        this.settingsUI = null;
+        this.settingsManager = null;
         this.eyeGazeControls = null;
         
         this.currentConversationId = null;
@@ -27,7 +27,7 @@ class CommunicationAssistant {
             // Initialize modules
             this.api = new API();
             this.conversationUI = new ConversationUI();
-            this.settingsUI = new SettingsUI(this.api);
+            this.settingsManager = new SettingsManager(this.api);
             this.eyeGazeControls = new EyeGazeControls();
             this.audioRecorder = new AudioRecorder(this.socket);
             
@@ -206,7 +206,7 @@ class CommunicationAssistant {
         // Settings button
         const settingsBtn = document.getElementById('settings-btn');
         settingsBtn.addEventListener('click', () => {
-            this.settingsUI.open();
+            this.settingsManager.open();
         });
 
         // Initialize response action buttons
@@ -215,9 +215,9 @@ class CommunicationAssistant {
     
     async loadInitialData() {
         try {
-            // Load settings first
-            const settingsResponse = await this.api.getSettings();
-            this.settingsUI.loadSettings(settingsResponse.settings);
+                    // Load settings first
+        const settingsResponse = await this.api.getSettings();
+        this.settingsManager.loadSettings(settingsResponse.settings);
             
             // Apply eye gaze settings to the controls - FIXED
             if (settingsResponse.settings.eyeGaze) {
@@ -592,6 +592,37 @@ class CommunicationAssistant {
         this.conversationUI.showNotification(message, 'error');
     }
 }
+
+// Info Modal functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const infoBtn = document.getElementById('info-btn');
+    const infoModal = document.getElementById('info-modal');
+    const closeInfoBtn = document.getElementById('close-info');
+    
+    // Open modal
+    infoBtn.addEventListener('click', () => {
+        infoModal.classList.add('active');
+    });
+    
+    // Close modal
+    closeInfoBtn.addEventListener('click', () => {
+        infoModal.classList.remove('active');
+    });
+    
+    // Close modal when clicking outside
+    infoModal.addEventListener('click', (e) => {
+        if (e.target === infoModal) {
+            infoModal.classList.remove('active');
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && infoModal.classList.contains('active')) {
+            infoModal.classList.remove('active');
+        }
+    });
+});
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {

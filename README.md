@@ -9,7 +9,6 @@ A semi-autonomous conversational AI system designed for ALS patients using eye g
 - **Intelligent Response Generation** with OpenAI GPT-4
 - **Natural Voice Synthesis** via ElevenLabs TTS
 - **Local Knowledge Base** with RAG (Retrieval-Augmented Generation)
-- **Automatic Speaker Recognition**
 - **Eye Gaze Interface** with visual feedback and customizable hover duration
 - **Context-Aware Conversations** with weighted chat history
 - **Internet Search Integration** for current information
@@ -20,8 +19,7 @@ A semi-autonomous conversational AI system designed for ALS patients using eye g
 - Python 3.8+ with pip
 - API Keys:
   - OpenAI API key
-  - ElevenLabs API key and voice ID
-  - Google Custom Search API key (optional, for internet search)
+  - ElevenLabs API key 
 
 ## Installation
 
@@ -50,7 +48,6 @@ cp .env.example .env
 ```env
 OPENAI_API_KEY=your_openai_api_key
 ELEVENLABS_API_KEY=your_elevenlabs_api_key
-ELEVENLABS_VOICE_ID=your_voice_id
 ```
 
 6. Create required directories:
@@ -100,10 +97,10 @@ Access settings by clicking the gear icon:
 
 ### Knowledge Base
 
-Add documents to `C:\AI\SMF\temp\data\kb`:
 - Supported formats: `.txt`, `.pdf`, `.docx`, `.json`
 - Files are automatically indexed and available to the AI
 - Updates are detected and processed in real-time
+- Create memories in the app
 
 ## Architecture
 
@@ -116,7 +113,6 @@ Add documents to `C:\AI\SMF\temp\data\kb`:
   - `llm.js`: Response generation with context management
   - `tts.js`: Text-to-speech synthesis
   - `rag.js`: Local knowledge base with vector search
-  - `speakerRecognition.js`: Automatic speaker identification
   - `internetSearch.js`: Web search integration
 
 ### Client Components

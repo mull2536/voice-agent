@@ -317,11 +317,17 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
     }
 
     async generateSingleResponse(userMessage, systemPrompt, settings, searchEnabled, temperature = 0.9) {
-        const tools = searchEnabled ? [{ type: "web_search_preview" }] : [];
+        const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
+        
+        // Simple logic for just two models
+        const isGPT5ChatLatest = modelName === 'gpt-5-chat-latest';
+        
+        // Determine tools - GPT-5 chat latest doesn't support web search
+        const tools = (searchEnabled && !isGPT5ChatLatest) ? [{ type: "web_search_preview" }] : [];
         
         // Build the request payload
         const requestPayload = {
-            model: settings?.llm?.model || config.llm.model || "gpt-4.1-mini",
+            model: modelName,
             input: [
                 {
                     role: "system",
@@ -336,6 +342,12 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             temperature: temperature,
             max_output_tokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150)
         };
+        
+        // Log if web search was disabled for GPT-5
+        if (searchEnabled && isGPT5ChatLatest) {
+            logger.info('Web search disabled for gpt-5-chat-latest (not supported)');
+        }
+        
         
         // LOG THE EXACT REQUEST
         logger.info('=== OPENAI RESPONSES API REQUEST ===');
@@ -367,17 +379,28 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
 
     // Fallback method using Chat Completions API (without web search)
     async fallbackToChatCompletions(userMessage, systemPrompt, settings, person, ragContext, timings, socketId) {
+        const modelName = settings?.llm?.model || config.llm.model || 'gpt-4.1-mini';
+        const isGPT5ChatLatest = modelName === 'gpt-5-chat-latest';
+        
         const messages = [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userMessage }
         ];
         
         const apiParams = {
-            model: settings?.llm?.model || config.llm.model || 'gpt-4.1-mini',
+            model: modelName,
             messages: messages,
-            temperature: 0.9,
-            max_tokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150)
+            temperature: 0.9
         };
+        
+        // Use correct token parameter based on model
+        if (isGPT5ChatLatest) {
+            // GPT-5 chat latest uses max_completion_tokens
+            apiParams.max_completion_tokens = parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150);
+        } else {
+            // Other models use max_tokens
+            apiParams.max_tokens = parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150);
+        }
         
         if (socketId) {
             // Manual mode - need 3 responses
@@ -444,6 +467,8 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         
         await dataStore.addConversation(conversationEntry);
         timings.chatHistorySave = Date.now() - saveStartTime;
+        const settings = await dataStore.getSettings();
+        const modelName = settings?.llm?.model || config.llm.model || 'gpt-4.1-mini';
         
         // RETURN STRUCTURED RESPONSE
         return {
@@ -451,8 +476,10 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             conversationId: conversationId,
             personName: person?.name || 'Other',
             personNotes: person?.notes || '',
-            timings: timings
-        };
+            timings: timings,
+            llmModel: modelName, 
+            internetSearch: settings?.internetSearch?.enabled !== false
+            };
     }
 
     async selectResponse(conversationId, selectedText) {

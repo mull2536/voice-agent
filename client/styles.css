@@ -1359,8 +1359,6 @@ input[type="checkbox"] {
     background-color: var(--primary-hover);
 }
 
-/* File Manager Modal Styles - Add to styles.css */
-
 /* File Manager Modal */
 .file-manager-modal-content {
     max-width: 900px;
@@ -1905,6 +1903,84 @@ input[type="checkbox"] {
     }
 }
 
+/* Info Button */
+.info-button {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 56px;
+    height: 56px;
+    background-color: var(--surface);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.info-button:hover {
+    background-color: var(--surface-hover);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.info-button img {
+    width: 28px;
+    height: 28px;
+    opacity: 0.8;
+    filter: invert(1);
+}
+
+/* Info Modal Content */
+.info-modal-content {
+    max-width: 700px;
+    width: 90%;
+}
+
+.info-body {
+    padding: 2rem;
+}
+
+.info-section {
+    margin-bottom: 3rem;  /* Increased from 2rem for more spacing */
+}
+
+.info-section h3 {
+    color: var(--primary-color);
+    font-size: 1.1rem;  /* Reduced from 1.2rem */
+    margin-bottom: 1rem;
+}
+
+.info-section p {
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 0.9rem;  /* Reduced from 1rem */
+}
+
+.info-section a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.info-section a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.foundation-tagline {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1rem;  /* Reduced from 1.1rem */
+}
 /* Notifications */
 .notification {
     position: fixed;

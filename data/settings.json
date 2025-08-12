@@ -1,6 +1,6 @@
 {
   "llm": {
-    "model": "gpt-4.1-mini",
+    "model": "gpt-5-chat-latest",
     "temperature": 0.9,
     "maxTokens": 150,
     "systemPrompt": ""

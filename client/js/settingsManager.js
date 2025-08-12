@@ -1,5 +1,5 @@
 // Settings UI management
-class SettingsUI {
+class SettingsManager {
     constructor(api) {
         this.api = api;
         this.modal = document.getElementById('settings-modal');
@@ -230,28 +230,22 @@ class SettingsUI {
         if (visualFeedback && settings.eyeGaze) {
             visualFeedback.checked = settings.eyeGaze.visualFeedback !== false;
         }
-        
-        // Enhanced language setting with debugging
+        // Enhanced language setting
         if (defaultLanguage && settings.system && settings.system.defaultLanguage) {
-            console.log('Setting language dropdown to:', settings.system.defaultLanguage);
-            
-            // Force the value multiple ways to ensure it sticks
-            defaultLanguage.value = settings.system.defaultLanguage;
-            
-            // Find and select the correct option
-            const options = defaultLanguage.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value === settings.system.defaultLanguage) {
-                    options[i].selected = true;
-                    defaultLanguage.selectedIndex = i;
-                    break;
+            setTimeout(() => {
+                defaultLanguage.value = settings.system.defaultLanguage;
+                
+                const options = defaultLanguage.options;
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === settings.system.defaultLanguage) {
+                        options[i].selected = true;
+                        defaultLanguage.selectedIndex = i;
+                        break;
+                    }
                 }
-            }
-            
-            // Force a change event to ensure any listeners are triggered
-            defaultLanguage.dispatchEvent(new Event('change'));
-            
-            console.log('Language dropdown value after setting:', defaultLanguage.value);
+                
+                defaultLanguage.dispatchEvent(new Event('change', { bubbles: true }));
+            }, 100);
         }
         
         if (chunkSize && settings.rag && settings.rag.chunkSize) {

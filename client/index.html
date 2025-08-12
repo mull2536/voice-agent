@@ -263,11 +263,8 @@
                             <div class="setting-item">
                                 <label for="llm-model">Model</label>
                                 <select id="llm-model" class="setting-control">
-                                    <option value="gpt-4-turbo-preview">GPT-4 Turbo</option>
-                                    <option value="gpt-4">GPT-4</option>
-                                    <option value="gpt-4-1106-preview">GPT-4 1106</option>
                                     <option value="gpt-4.1-mini" selected>GPT-4.1 Mini</option>
-                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                    <option value="gpt-5-chat-latest">GPT-5 Chat Latest (No Search)</option>
                                 </select>
                                 <p class="setting-description">Choose the AI model for generating responses</p>
                             </div>
@@ -492,6 +489,35 @@
                 </div>
             </div>
         </div>
+        <!-- Info Icon -->
+        <button id="info-btn" class="info-button" aria-label="About this app">
+            <img src="assets/info.ico" alt="Info" width="24" height="24">
+        </button>
+
+        <!-- Info Modal -->
+        <div id="info-modal" class="modal">
+            <div class="modal-content info-modal-content">
+                <div class="modal-header">
+                    <h2>About SMF Voice Agent</h2>
+                    <button class="close-btn" id="close-info">&times;</button>
+                </div>
+                <div class="modal-body info-body">
+                    <div class="info-section">
+                        <h3>About the App</h3>
+                        <p>The SMF Voice Agent is a semi-autonomous conversational AI designed to help people with ALS and similar conditions communicate naturally using only their voice and eye gaze. It combines real-time speech recognition, intelligent response generation, and natural-sounding voice synthesis with a fully eye-gaze-controlled interface. The system can draw on a local knowledge base, chat history, and even live internet search results to provide meaningful, context-aware conversations—without the need for constant clicking or typing.</p>
+                    </div>
+                    <div> </div>
+                    <div class="info-section">
+                        <h3>About the Foundation & Creator</h3>
+                        <p>This project was built in collaboration with the <a href="https://www.scott-morgan.org/" target="_blank" rel="noopener noreferrer">Scott-Morgan Foundation</a>, which empowers people with severe physical disabilities through assistive technology. It was created by Bernard Muller, an entrepreneur, AI artist, and ALS patient since 2010. Bernard, who communicates via eye-tracking technology, developed the SMF Voice Agent to restore the spontaneity of conversation he enjoyed before ALS—and to make that freedom available to others.</p>
+                    </div>
+                    
+                    <div class="foundation-tagline">
+                        <em>Rewriting the Future of Disability | The Scott-Morgan Foundation</em>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -506,8 +532,8 @@
     <script src="js/audioRecorder.js"></script>
     <script src="js/eyeGazeControls.js"></script>
     <script src="js/conversationUI.js"></script>
-    <script src="js/settingsUI.js"></script>
-    <script src="js/peopleModal.js"></script>
+    <script src="js/settingsManager.js"></script>
+    <script src="js/peopleManager.js"></script>
     <script src="js/fileManager.js"></script> 
     <script src="js/main.js"></script>
 </body>

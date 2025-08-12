@@ -76,6 +76,7 @@ let isShuttingDown = false;
 
 // Memory usage monitoring
 let memoryCheckInterval = null;
+let timingLogger = null;
 
 function checkMemoryUsage() {
   const used = process.memoryUsage();
@@ -137,7 +138,7 @@ async function initializeServices() {
     // Start memory monitoring
     memoryCheckInterval = setInterval(checkMemoryUsage, 60 * 1000); // Every minute
     
-    const timingLogger = getTimingLogger();
+    timingLogger = getTimingLogger();
 
   } catch (error) {
     logger.error('❌ Failed to initialize services:', error);
@@ -222,7 +223,7 @@ io.on('connection', (socket) => {
             const transcriptionEndTime = performance.now();
             
             // Only proceed if we got meaningful transcription
-            if (transcript && transcript.trim().length > 0) {
+            if (transcript && transcript.trim().length > 10) {
                 socket.emit('transcription', { text: transcript });
                 
                 // Add transcript to session queue with deduplication
@@ -275,6 +276,7 @@ io.on('connection', (socket) => {
                             .filter(([key]) => !['llmApi', 'ragLookup', 'chatHistorySearch'].includes(key))
                             .reduce((sum, [, value]) => sum + value, 0) : 0;
                     const totalAuxTime = ragTime + chatHistoryTime + otherAuxTime;
+                    const settings = await dataStore.getSettings();
                     
                     logger.info(`🚀 PIPELINE TIMING:
 ├─ Total: ${totalTime.toFixed(2)}ms
@@ -286,7 +288,6 @@ io.on('connection', (socket) => {
       ├─ RAG lookup: ${ragTime.toFixed(2)}ms
       ├─ Chat history: ${chatHistoryTime.toFixed(2)}ms
       └─ Other services: ${otherAuxTime.toFixed(2)}ms`);
-      
                     await timingLogger.logTiming({
                         total: totalTime,
                         audio: audioTime,
@@ -297,7 +298,11 @@ io.on('connection', (socket) => {
                         chatHistory: chatHistoryTime,
                         otherAux: otherAuxTime,
                         messageType: 'audio',
-                        llmModel: llmResult.llmModel || 'unknown'
+                        llmModel: llmResult.llmModel || 'unknown',
+                        internetSearch: settings?.internetSearch?.enabled !== false,
+                        prompt: transcript,
+                        selectedResponse: ''
+                        
                     });
                     // Detailed LLM breakdown if timings are available
                     if (llmResult.timings) {
@@ -319,14 +324,14 @@ io.on('connection', (socket) => {
                 }
                 
             } else {
-                logger.info('Empty or unclear transcription, skipping response generation');
-                
-                // If this was a final chunk before stop, still auto-restart recording
-                if (data.finalChunk) {
-                    setTimeout(() => {
-                        socket.emit('auto-start-recording');
-                    }, 1000);
+                // Log why we're skipping this transcript
+                const trimmedTranscript = transcript ? transcript.trim() : '';
+                if (trimmedTranscript.length > 0) {
+                    logger.info(`Transcript too short (${trimmedTranscript.length} chars): "${trimmedTranscript}" - ignoring as noise`);
+                } else {
+                    logger.info('Empty or unclear transcription, skipping response generation');
                 }
+                
             }
             
         } catch (error) {
@@ -481,6 +486,7 @@ io.on('connection', (socket) => {
                     .filter(([key]) => !['llmApi', 'ragLookup', 'chatHistorySearch'].includes(key))
                     .reduce((sum, [, value]) => sum + value, 0);
                 const totalAuxTime = ragTime + chatHistoryTime + otherAuxTime;
+                const settings = await dataStore.getSettings();
                 
                 logger.info(`🔄 Regenerate responses:
 ├─ Total: ${totalTime.toFixed(2)}ms
@@ -490,7 +496,6 @@ io.on('connection', (socket) => {
       ├─ RAG lookup: ${ragTime.toFixed(2)}ms
       ├─ Chat history: ${chatHistoryTime.toFixed(2)}ms
       └─ Other services: ${otherAuxTime.toFixed(2)}ms`);
-
                 await timingLogger.logTiming({
                     total: totalTime,
                     llmTotal: llmTime,
@@ -498,7 +503,11 @@ io.on('connection', (socket) => {
                     rag: ragTime,
                     chatHistory: chatHistoryTime,
                     otherAux: otherAuxTime,
-                    messageType: 'regenerate'
+                    messageType: 'regenerate',
+                    llmModel: result.llmModel || 'unknown',
+                    internetSearch: settings?.internetSearch?.enabled !== false,
+                    prompt: text,
+                    selectedResponse: ''
                 });
                 
                 // Optional: Detailed breakdown
@@ -582,6 +591,7 @@ io.on('connection', (socket) => {
                         .filter(([key]) => !['llmApi', 'ragLookup', 'chatHistorySearch'].includes(key))
                         .reduce((sum, [, value]) => sum + value, 0);
                     const totalAuxTime = ragTime + chatHistoryTime + otherAuxTime;
+                    const settings = await dataStore.getSettings();
                     
                     logger.info(`📝 Text input processing:
 ├─ Total: ${totalTime.toFixed(2)}ms
@@ -591,7 +601,7 @@ io.on('connection', (socket) => {
       ├─ RAG lookup: ${ragTime.toFixed(2)}ms
       ├─ Chat history: ${chatHistoryTime.toFixed(2)}ms
       └─ Other services: ${otherAuxTime.toFixed(2)}ms`);
-                    
+
                     await timingLogger.logTiming({
                         total: totalTime,
                         audio: 0,
@@ -602,7 +612,10 @@ io.on('connection', (socket) => {
                         chatHistory: chatHistoryTime,
                         otherAux: otherAuxTime,
                         messageType: 'text',
-                        llmModel: result.llmModel || 'unknown'
+                        llmModel: result.llmModel || 'unknown',
+                        internetSearch: settings?.internetSearch?.enabled !== false,
+                        prompt: text,
+                        selectedResponse: ''
                     });
                     // Optional: Detailed breakdown
                     logger.info(`   📊 Detailed Service Breakdown:
