@@ -15,13 +15,14 @@
     <div class="app-container">
         <!-- Header -->
         <header class="app-header">
-            <h1>SMF VOICE AGENT</h1>
+            <h1 data-i18n="app.title">SMF VOICE AGENT</h1>
             <div class="header-controls">
                 <img src="/assets/kb.ico" alt="Knowledge Base" class="kb-icon header-icon" onclick="openFileManager()" title="Knowledge Base Manager">
                 <img src="assets/people.ico" alt="People" class="header-icon people-icon" onclick="openPeopleModal()" title="Select Person">
                 <img src="assets/settings.ico" alt="Settings" class="header-icon settings-icon" id="settings-btn" title="Settings">
+                <img src="assets/help.ico" alt="Help" class="header-icon help-icon" id="help-btn" title="Help & User Guide">
                 <div class="speaker-indicator">
-                    <span id="current-speaker">No one selected</span>
+                    <span id="current-speaker" data-i18n="app.currentSpeaker">No one selected</span>
                 </div>
             </div>
         </header>
@@ -32,8 +33,8 @@
             <div class="conversation-display">
                 <div id="transcript-container" class="transcript-container">
                     <div class="welcome-message">
-                        <h2>Welcome!</h2>
-                        <p>Start a conversation by speaking or typing below.</p>
+                        <h2 data-i18n="app.welcomeTitle">Welcome!</h2>
+                        <p data-i18n="app.welcomeMessage">Start a conversation by speaking or typing below.</p>
                     </div>
                 </div>
             </div>
@@ -41,10 +42,11 @@
             <!-- Response Selection -->
             <div class="response-selection" id="response-selection">
                 <div class="response-header">
-                    <h3>Choose your response:</h3>
+                    <h3 data-i18n="app.chooseResponse">Choose your response:</h3>
                     <div class="response-actions">
-                        <button id="cancel-responses-btn" class="response-action-btn cancel-btn">Cancel</button>
-                        <button id="resend-responses-btn" class="response-action-btn resend-btn">Resend</button>
+                        <button id="cancel-responses-btn" class="response-action-btn cancel-btn" data-i18n="buttons.cancel">Cancel</button>
+                        <button id="compose-responses-btn" class="response-action-btn compose-btn" data-i18n="buttons.compose">Compose</button>
+                        <button id="resend-responses-btn" class="response-action-btn resend-btn" data-i18n="buttons.regenerate">Resend</button>
                     </div>
                 </div>
                 <div class="response-options" id="response-options">
@@ -56,7 +58,7 @@
             <div class="input-controls">
                 <div class="recording-indicator" id="recording-indicator">
                     <span class="pulse"></span>
-                    <span>Listening...</span>
+                    <span data-i18n="app.recording">Listening...</span>
                 </div>
                 
                 <div class="text-input-container">
@@ -64,6 +66,7 @@
                         id="text-input" 
                         class="text-input" 
                         placeholder="Type your message here..."
+                        data-i18n="app.typeMessage"
                         rows="3"
                     ></textarea>
                     <button id="send-text-btn" class="send-btn" aria-label="Send message">
@@ -85,7 +88,7 @@
                             <line x1="12" y1="19" x2="12" y2="23"></line>
                             <line x1="8" y1="23" x2="16" y2="23"></line>
                         </svg>
-                        <span>Start Recording</span>
+                        <span data-i18n="buttons.startRecording">Start Recording</span>
                     </button>
                 </div>
             </div>
@@ -95,110 +98,99 @@
         <div id="settings-modal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Voice Agent Settings</h2>
+                    <h2 data-i18n="modals.settings.title">Voice Agent Settings</h2>
                     <button class="close-btn" id="close-settings">&times;</button>
                 </div>
                 
                 <!-- Tab Navigation -->
                 <div class="settings-tabs">
-                    <button class="tab-btn active" data-tab="voice">Voice</button>
-                    <button class="tab-btn" data-tab="recorder">Recorder</button>
-                    <button class="tab-btn" data-tab="llm">LLM</button>
-                    <button class="tab-btn" data-tab="system">System</button>
+                    <button class="tab-btn active" data-tab="voice" data-i18n="modals.settings.tabs.voice">Voice</button>
+                    <button class="tab-btn" data-tab="recorder" data-i18n="modals.settings.tabs.recorder">Recorder</button>
+                    <button class="tab-btn" data-tab="llm" data-i18n="modals.settings.tabs.llm">LLM</button>
+                    <button class="tab-btn" data-tab="system" data-i18n="modals.settings.tabs.system">System</button>
                 </div>
                 
                 <div class="modal-body">
                     <!-- Voice Tab -->
                     <div id="voice-tab" class="tab-content active">
                         <div class="settings-section">
-                            <h3>Text-to-Speech Settings</h3>
+                            <h3 data-i18n="modals.settings.voice.ttsSettings">Text-to-Speech Settings</h3>
                             
                             <div class="setting-item horizontal-layout">
                                 <div class="control-row">
-                                    <label for="voice-select">Voice</label>
+                                    <label for="voice-select" data-i18n="modals.settings.voice.voiceLabel">Voice</label>
                                     <select id="voice-select" class="setting-control"></select>
                                 </div>
-                                <p class="setting-description">Choose the voice for text-to-speech output</p>
+                                <p class="setting-description" data-i18n="modals.settings.voice.voiceDescription">Choose the voice for text-to-speech output</p>
                             </div>
                             
                             <div class="setting-item horizontal-layout">
                                 <div class="control-row">
-                                    <label for="tts-model">Model</label>
+                                    <label for="tts-model" data-i18n="modals.settings.voice.modelLabel">Model</label>
                                     <select id="tts-model" class="setting-control">
-                                        <option value="eleven_monolingual_v1">Eleven Monolingual v1</option>
-                                        <option value="eleven_multilingual_v1">Eleven Multilingual v1</option>
-                                        <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2</option>
-                                        <option value="eleven_turbo_v2">Eleven Turbo v2</option>
+                                        <option value="eleven_turbo_v2_5">Turbo v2.5</option>
+                                        <option value="eleven_multilingual_v2">Multilingual v2</option>
                                     </select>
                                 </div>
-                                <p class="setting-description">Select the TTS model - v2 models provide better quality</p>
-                            </div>
-                            
-                            <div class="setting-item horizontal-layout">
-                                <div class="control-row">
-                                    <label for="output-quality">Output Quality</label>
-                                    <select id="output-quality" class="setting-control">
-                                        <option value="mp3_22050_32">Low (mp3 22kHz 32kbps)</option>
-                                        <option value="mp3_44100_64">Medium (mp3 44kHz 64kbps)</option>
-                                        <option value="mp3_44100_128">High (mp3 44kHz 128kbps)</option>
-                                        <option value="mp3_44100_192" selected>Ultra (mp3 44kHz 192kbps)</option>
-                                    </select>
-                                </div>
-                                <p class="setting-description">Higher quality means better audio but larger file sizes</p>
+                                <p class="setting-description" data-i18n="modals.settings.voice.modelDescription">Select the TTS model quality</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Stability (0-1)</span>
-                                    <span class="value-display">0.5</span>
-                                </div>
-                                <input type="range" id="stability" min="0" max="1" step="0.05" value="0.5" class="setting-control">
-                                <p class="setting-description">Higher values make speech more stable and consistent, lower values add expressiveness</p>
-                            </div>
-                            
-                            <div class="setting-item slider-group">
-                                <div class="slider-label">
-                                    <span>Similarity Boost (0-1)</span>
-                                    <span class="value-display">0.75</span>
-                                </div>
-                                <input type="range" id="similarity-boost" min="0" max="1" step="0.05" value="0.75" class="setting-control">
-                                <p class="setting-description">Higher values make output more similar to the original voice</p>
-                            </div>
-                            
-                            <div class="setting-item slider-group">
-                                <div class="slider-label">
-                                    <span>Speech Rate</span>
+                                    <span data-i18n="modals.settings.voice.speechRateLabel">Speech Rate</span>
                                     <span class="value-display">1.0x</span>
                                 </div>
                                 <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1" class="setting-control">
-                                <p class="setting-description">Adjust the speed of speech (0.5x = slower, 2x = faster)</p>
+                                <p class="setting-description" data-i18n="modals.settings.voice.speechRateDescription">Adjust the speaking speed (0.5 = slow, 2.0 = fast)</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Style Exaggeration (0-1)</span>
-                                    <span class="value-display">0.0</span>
+                                    <span data-i18n="modals.settings.voice.stabilityLabel">Stability</span>
+                                    <span class="value-display">0.5</span>
                                 </div>
-                                <input type="range" id="style-exaggeration" min="0" max="1" step="0.05" value="0" class="setting-control">
-                                <p class="setting-description">Exaggerate the style of the original voice (0 = no exaggeration)</p>
+                                <input type="range" id="stability" min="0" max="1" step="0.01" value="0.5" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.voice.stabilityDescription">Higher values make speech more consistent but less expressive</p>
                             </div>
                             
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="speaker-boost" checked>
-                                <span>Speaker Boost</span>
-                            </label>
-                            <p class="setting-description">Enhance clarity and reduce background artifacts</p>
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span data-i18n="modals.settings.voice.similarityLabel">Similarity Boost</span>
+                                    <span class="value-display">0.75</span>
+                                </div>
+                                <input type="range" id="similarity-boost" min="0" max="1" step="0.01" value="0.75" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.voice.similarityDescription">Higher values make voice more similar to original</p>
+                            </div>
                             
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="use-fixed-seed">
-                                <span>Use Fixed Seed</span>
-                            </label>
-                            <p class="setting-description">Enable for consistent voice generation across requests</p>
+                            <div class="setting-item slider-group">
+                                <div class="slider-label">
+                                    <span data-i18n="modals.settings.voice.styleLabel">Style Exaggeration</span>
+                                    <span class="value-display">0</span>
+                                </div>
+                                <input type="range" id="style-exaggeration" min="0" max="1" step="0.01" value="0" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.voice.styleDescription">Higher values make speech more expressive</p>
+                            </div>
                             
-                            <div class="setting-item" id="fixed-seed-container" style="display: none;">
-                                <label for="fixed-seed">Fixed Seed</label>
-                                <input type="number" id="fixed-seed" class="setting-control" placeholder="Enter seed value" min="1" pattern="[0-9]+">
-                                <p class="setting-description">Seed value for deterministic voice generation (must be > 0)</p>
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="speaker-boost" checked>
+                                    <span data-i18n="modals.settings.voice.speakerBoostLabel">Use Speaker Boost</span>
+                                </label>
+                                <p class="setting-description" data-i18n="modals.settings.voice.speakerBoostDescription">Enhance voice clarity and quality</p>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="use-fixed-seed">
+                                    <span>Use Fixed Seed</span>
+                                </label>
+                                <p class="setting-description">Enable consistent voice generation across sessions</p>
+                            </div>
+                            
+                            <div id="fixed-seed-container" class="setting-item" style="display: none;">
+                                <label for="fixed-seed">Voice Seed</label>
+                                <input type="number" id="fixed-seed" class="setting-control" placeholder="Enter seed value (0-4294967295)">
+                                <p class="setting-description">Seed value for consistent voice generation</p>
                             </div>
                         </div>
                     </div>
@@ -206,51 +198,51 @@
                     <!-- Recorder Tab -->
                     <div id="recorder-tab" class="tab-content">
                         <div class="settings-section">
-                            <h3>Audio Recorder Settings (Silero VAD)</h3>
+                            <h3 data-i18n="modals.settings.recorder.vadSettings">Voice Activity Detection (VAD) Settings</h3>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Positive Speech Threshold (0-1)</span>
+                                    <span data-i18n="modals.settings.recorder.positiveSpeechLabel">Positive Speech Threshold</span>
                                     <span class="value-display">0.4</span>
                                 </div>
-                                <input type="range" id="positive-threshold" min="0" max="1" step="0.05" value="0.4" class="setting-control">
-                                <p class="setting-description">Lower = more sensitive to speech. Default: 0.5</p>
+                                <input type="range" id="positive-threshold" min="0" max="1" step="0.01" value="0.4" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.recorder.positiveSpeechDescription">Confidence needed to start speech detection (lower = more sensitive)</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Negative Speech Threshold (0-1)</span>
+                                    <span data-i18n="modals.settings.recorder.negativeSpeechLabel">Negative Speech Threshold</span>
                                     <span class="value-display">0.55</span>
                                 </div>
-                                <input type="range" id="negative-threshold" min="0" max="1" step="0.05" value="0.55" class="setting-control">
-                                <p class="setting-description">Lower = more likely to cut off speech. Default: 0.35</p>
+                                <input type="range" id="negative-threshold" min="0" max="1" step="0.01" value="0.55" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.recorder.negativeSpeechDescription">Confidence needed to stop speech detection</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Min Speech Frames (1-20)</span>
+                                    <span data-i18n="modals.settings.recorder.minSpeechFramesLabel">Min Speech Frames</span>
                                     <span class="value-display">8</span>
                                 </div>
                                 <input type="range" id="min-speech-frames" min="1" max="20" step="1" value="8" class="setting-control">
-                                <p class="setting-description">Minimum consecutive speech frames to trigger. Default: 4</p>
+                                <p class="setting-description" data-i18n="modals.settings.recorder.minSpeechFramesDescription">Minimum frames to confirm speech started</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Pre Speech Pad Frames (0-10)</span>
+                                    <span data-i18n="modals.settings.recorder.preSpeechPadLabel">Pre-Speech Padding</span>
                                     <span class="value-display">3</span>
                                 </div>
                                 <input type="range" id="pre-speech-pad" min="0" max="10" step="1" value="3" class="setting-control">
-                                <p class="setting-description">Frames to include before speech starts. Default: 1</p>
+                                <p class="setting-description" data-i18n="modals.settings.recorder.preSpeechPadDescription">Frames to include before speech starts</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Redemption Frames (0-30)</span>
+                                    <span data-i18n="modals.settings.recorder.redemptionFramesLabel">Redemption Frames</span>
                                     <span class="value-display">30</span>
                                 </div>
-                                <input type="range" id="redemption-frames" min="0" max="30" step="1" value="30" class="setting-control">
-                                <p class="setting-description">Frames of non-speech allowed before ending. Default: 8</p>
+                                <input type="range" id="redemption-frames" min="10" max="50" step="1" value="30" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.recorder.redemptionFramesDescription">Frames to wait before ending speech</p>
                             </div>
                         </div>
                     </div>
@@ -258,150 +250,187 @@
                     <!-- LLM Tab -->
                     <div id="llm-tab" class="tab-content">
                         <div class="settings-section">
-                            <h3>Language Model Settings</h3>
+                            <h3 data-i18n="modals.settings.llm.llmSettings">Language Model Settings</h3>
                             
-                            <div class="setting-item">
-                                <label for="llm-model">Model</label>
-                                <select id="llm-model" class="setting-control">
-                                    <option value="gpt-4.1-mini" selected>GPT-4.1 Mini</option>
-                                    <option value="gpt-5-chat-latest">GPT-5 Chat Latest (No Search)</option>
-                                </select>
-                                <p class="setting-description">Choose the AI model for generating responses</p>
+                            <div class="setting-item horizontal-layout">
+                                <div class="control-row">
+                                    <label for="llm-model" data-i18n="modals.settings.llm.modelLabel">Model</label>
+                                    <select id="llm-model" class="setting-control">
+                                        <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
+                                        <option value="gpt-5-chat-latest">GPT-5 Chat Latest</option>
+                                        <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                                    </select>
+                                </div>
+                                <p class="setting-description" data-i18n="modals.settings.llm.modelDescription">Choose the AI model for generating responses</p>
                             </div>
                             
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
-                                    <span>Temperature (0-1)</span>
-                                    <span class="value-display">0.7</span>
+                                    <span data-i18n="modals.settings.llm.temperatureLabel">Temperature</span>
+                                    <span class="value-display">0.9</span>
                                 </div>
-                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7" class="setting-control">
-                                <p class="setting-description">Higher values make output more creative, lower values more focused</p>
+                                <input type="range" id="temperature" min="0" max="2" step="0.01" value="0.9" class="setting-control">
+                                <p class="setting-description" data-i18n="modals.settings.llm.temperatureDescription">Controls randomness (0 = focused, 2 = creative)</p>
                             </div>
                             
+                            <div class="setting-item horizontal-layout">
+                                <div class="control-row">
+                                    <label for="max-tokens" data-i18n="modals.settings.llm.maxTokensLabel">Max Tokens</label>
+                                    <input type="number" id="max-tokens" min="50" max="500" value="150" class="setting-control">
+                                </div>
+                                <p class="setting-description" data-i18n="modals.settings.llm.maxTokensDescription">Maximum length of generated responses</p>
+                            </div>
                             <div class="setting-item">
-                                <label for="max-tokens">Max Tokens</label>
-                                <input type="number" id="max-tokens" min="1" max="4294967295" value="150" class="setting-control" pattern="[0-9]+">
-                                <p class="setting-description">Maximum length of generated responses (1 token ≈ 0.75 words)</p>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="search-enabled" checked>
+                                    <span data-i18n="modals.settings.system.internetSearchLabel">Enable Internet Search</span>
+                                </label>
                             </div>
-                            
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="search-enabled" checked>
-                                <span>Enable Internet Search</span>
-                            </label>
-                            <p class="setting-description">Allow AI to search the internet for current information</p>
                         </div>
                     </div>
                     
                     <!-- System Tab -->
                     <div id="system-tab" class="tab-content">
                         <div class="settings-section">
-                            <h3>System Settings</h3>
+                            <h3 data-i18n="modals.settings.system.generalSettings">General Settings</h3>
                             
                             <div class="setting-item">
-                                <label for="system-prompt">System Prompt</label>
-                                <textarea id="system-prompt" rows="6" class="setting-control" 
-                                        placeholder="Enter custom instructions for the AI assistant..."></textarea>
-                                <p class="setting-description">Define how the AI assistant should behave and respond</p>
+                                <label for="system-prompt" data-i18n="modals.settings.llm.systemPromptLabel">System Prompt</label>
+                                <div class="custom-prompt-container">
+                                    <textarea id="system-prompt" class="custom-prompt-textarea" rows="4" placeholder="You are a helpful AI assistant..."></textarea>
+                                    <button class="custom-expand-btn" id="custom-expand-btn" title="Expand text area">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M7 17L17 7"></path>
+                                            <path d="M7 7h10v10"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="setting-description" data-i18n="modals.settings.llm.systemPromptDescription">Define how the AI assistant should behave and respond</p>
                             </div>
                             
                             <div class="horizontal-group">
                                 <div class="setting-item slider-group">
                                     <div class="slider-label">
-                                        <span>Eye Gaze Duration (seconds)</span>
+                                        <span data-i18n="modals.settings.system.eyeGazeLabel">Eye Gaze Duration (seconds)</span>
                                         <span class="value-display">3.0s</span>
                                     </div>
                                     <input type="range" id="hover-duration" min="1" max="5" step="0.5" value="3" class="setting-control">
-                                    <p class="setting-description">How long to look at an option before it's selected</p>
+                                    <p class="setting-description" data-i18n="modals.settings.system.eyeGazeDescription">How long to look at an option before it's selected</p>
                                 </div>
                                 
                                 <div class="setting-item">
                                     <label class="checkbox-label">
                                         <input type="checkbox" id="visual-feedback" checked>
-                                        <span>Eye Gaze Visual Feedback</span>
+                                        <span data-i18n="modals.settings.system.visualFeedbackLabel">Eye Gaze Visual Feedback</span>
                                     </label>
                                 </div>
                                 
                                 <div class="setting-item">
-                                    <label for="default-language">Default Language</label>
+                                    <label for="default-language" data-i18n="modals.settings.system.languageLabel">Default Language</label>
                                     <select id="default-language" class="setting-control">
-                                        <option value="en">English (English)</option>
-                                        <option value="nl">Dutch (Nederlands)</option>
-                                        <option value="es">Spanish (Español)</option>
+                                        <option value="en">English</option>
+                                        <option value="nl">Nederlands</option>
+                                        <option value="es">Español</option>
                                     </select>
+                                    <p class="setting-description" data-i18n="modals.settings.system.languageDescription">Select the interface language</p>
                                 </div>
+                                
                             </div>
                             
-                            <h3>RAG Settings</h3>
+                            <h3 data-i18n="modals.settings.system.ragSettings">Knowledge Base Settings</h3>
                             
-                            <div class="rag-grid">
+                            <div class="setting-item rag-settings">
                                 <div class="rag-labels">
-                                    <label>Chunk Size</label>
-                                    <label>Chunk Overlap</label>
-                                    <label>Number of Results</label>
+                                    <label data-i18n="modals.settings.system.chunkSizeLabel">Chunk Size</label>
+                                    <label data-i18n="modals.settings.system.chunkOverlapLabel">Chunk Overlap</label>
+                                    <label data-i18n="modals.settings.system.topKLabel">Top K Results</label>
                                 </div>
                                 <div class="rag-inputs">
-                                    <input type="number" id="chunk-size" min="100" max="2000" value="1000" class="setting-control" pattern="[0-9]+">
-                                    <input type="number" id="chunk-overlap" min="0" max="500" value="200" class="setting-control" pattern="[0-9]+">
-                                    <input type="number" id="top-k-results" min="1" max="20" value="5" class="setting-control" pattern="[0-9]+">
+                                    <input type="number" id="chunk-size" min="100" max="2000" value="1000" class="setting-control">
+                                    <input type="number" id="chunk-overlap" min="0" max="500" value="200" class="setting-control">
+                                    <input type="number" id="top-k-results" min="1" max="10" value="3" class="setting-control">
                                 </div>
-                                <p class="setting-description">Configure how documents are indexed and retrieved from the knowledge base. Chunk size determines text segment length, overlap maintains context between chunks, and number of results controls how many relevant documents are returned.</p>
+                                <p class="setting-description">Chunk size determines text segment length, overlap maintains context between chunks, and number of results controls how many relevant documents are returned.</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button class="save-btn" id="save-settings">Save Settings</button>
+                    <button class="save-btn" id="save-settings" data-i18n="buttons.saveSettings">Save Settings</button>
                 </div>
             </div>
         </div>
+        
+        <!-- Expanded System Prompt Modal -->
+        <div id="expanded-prompt-modal" class="modal">
+            <div class="modal-content expanded-prompt-content">
+                <div class="modal-header">
+                    <h2 data-i18n="modals.settings.llm.systemPromptLabel">System Prompt</h2>
+                    <button class="close-btn" id="close-expanded-prompt">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="expanded-prompt-container">
+                        <textarea id="expanded-system-prompt" class="expanded-prompt-textarea" placeholder="You are a helpful AI assistant..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="save-btn" id="save-expanded-prompt">Return to Settings</button>
+                </div>
+            </div>
+        </div>
+        
         <!-- People Selection Modal -->
         <div id="peopleModal" class="modal">
             <div class="modal-content people-modal-content">
                 <div class="modal-header">
-                    <h2>People Management</h2>
+                    <h2 data-i18n="modals.people.title">People Management</h2>
                     <span class="close-modal" onclick="closePeopleModal()">&times;</span>
                 </div>
                 
                 <div class="modal-body">
                     <div class="people-section">
-                        <h3>Select a Person:</h3>
+                        <h3 data-i18n="modals.people.selectPerson">Select a Person:</h3>
                         <div id="peopleGrid" class="people-grid">
                             <!-- People buttons will be dynamically loaded here -->
                         </div>
                     </div>
                     
                     <div class="edit-person-section" id="editPersonSection" style="display: none;">
-                        <h3>Edit Person</h3>
+                        <h3 data-i18n="modals.people.editPerson">Edit Person</h3>
                         <div class="edit-person-form">
                             <input type="text" 
                                    id="editPersonName" 
                                    placeholder="Person's name" 
+                                   data-i18n="modals.people.personNamePlaceholder"
                                    class="person-input">
                             <textarea id="editPersonNotes" 
                                       placeholder="Enter details about this person..." 
+                                      data-i18n="modals.people.personNotesPlaceholder"
                                       class="person-textarea"></textarea>
                         </div>
                     </div>
                     
                     <div class="add-person-section" id="addPersonSection">
-                        <h3>Add New Person</h3>
+                        <h3 data-i18n="modals.people.addNewPerson">Add New Person</h3>
                         <div class="add-person-form">
                             <input type="text" 
                                    id="newPersonName" 
                                    placeholder="Person's name (e.g. John)" 
+                                   data-i18n="modals.people.personNamePlaceholder"
                                    class="person-input">
                             <textarea id="newPersonNotes" 
                                       placeholder="Enter details about this person..." 
+                                      data-i18n="modals.people.personNotesPlaceholder"
                                       class="person-textarea"></textarea>
                         </div>
                     </div>
                     
                     <!-- Action buttons at bottom -->
                     <div id="personActions" class="person-actions">
-                        <button onclick="saveOrUpdatePerson()" class="btn-primary action-btn" id="saveBtn">Save</button>
-                        <button onclick="deletePerson()" class="btn-danger action-btn" id="deleteBtn" style="display: none;">Delete</button>
-                        <button onclick="usePerson()" class="btn-success action-btn" id="useBtn" style="display: none;">Use</button>
+                        <button onclick="saveOrUpdatePerson()" class="btn-primary action-btn" id="saveBtn" data-i18n="buttons.save">Save</button>
+                        <button onclick="deletePerson()" class="btn-danger action-btn" id="deleteBtn" style="display: none;" data-i18n="buttons.delete">Delete</button>
+                        <button onclick="usePerson()" class="btn-success action-btn" id="useBtn" style="display: none;" data-i18n="buttons.use">Use</button>
                     </div>
                 </div>
             </div>
@@ -410,13 +439,13 @@
         <div id="fileManagerModal" class="modal">
             <div class="modal-content file-manager-modal-content">
                 <div class="modal-header">
-                    <h2>Knowledge Base Manager</h2>
+                    <h2 data-i18n="modals.fileManager.title">Knowledge Base Manager</h2>
                     <span class="close-modal" onclick="closeFileManager()">&times;</span>
                 </div>
                 
                 <div class="file-manager-tabs">
-                    <button class="tab-btn active" data-tab="files">Files</button>
-                    <button class="tab-btn" data-tab="memories">Memories</button>
+                    <button class="tab-btn active" data-tab="files" data-i18n="modals.fileManager.tabs.files">Files</button>
+                    <button class="tab-btn" data-tab="memories" data-i18n="modals.fileManager.tabs.memories">Memories</button>
                 </div>
                 
                 <div class="modal-body">
@@ -425,8 +454,8 @@
                         <div class="files-container">
                             <div class="files-header">
                                 <div class="files-header-labels">
-                                    <span>File Name</span>
-                                    <span>Index</span>
+                                    <span data-i18n="modals.fileManager.fileName">File Name</span>
+                                    <span data-i18n="modals.fileManager.index">Index</span>
                                 </div>
                             </div>
                             
@@ -434,18 +463,18 @@
                                 <!-- Files will be dynamically loaded here -->
                             </div>
                             
-                            <button id="loadMoreFilesBtn" class="load-more-btn" style="display: none;">Load More</button>
+                            <button id="loadMoreFilesBtn" class="load-more-btn" style="display: none;" data-i18n="modals.fileManager.loadMore">Load More</button>
                         </div>
                         
                         <div class="files-bottom">
                             <div class="files-info">
-                                <p>Supported: .txt, .pdf, .docx, .json, .md</p>
-                                <p>Auto-indexed for AI assistance</p>
+                                <p data-i18n="modals.fileManager.supportedFormats">Supported: .txt, .pdf, .docx, .json, .md</p>
+                                <p data-i18n="modals.fileManager.autoIndexed">Auto-indexed for AI assistance</p>
                             </div>
                             
                             <div class="file-actions">
-                                <button id="deleteFilesBtn" class="action-btn btn-danger" disabled>Delete</button>
-                                <button id="addFilesBtn" class="action-btn btn-success">Add</button>
+                                <button id="deleteFilesBtn" class="action-btn btn-danger" disabled data-i18n="buttons.delete">Delete</button>
+                                <button id="addFilesBtn" class="action-btn btn-success" data-i18n="buttons.add">Add</button>
                                 <input type="file" id="fileUploadInput" multiple accept=".txt,.pdf,.docx,.json,.md" style="display: none;">
                             </div>
                         </div>
@@ -453,37 +482,29 @@
                     
                     <!-- Memories Tab -->
                     <div id="memories-tab" class="tab-content">
-                        <div class="memories-container">
-                            <div id="memoriesList" class="memories-list">
-                                <!-- Memories will be dynamically loaded here -->
-                            </div>
-                            
-                            <button id="loadMoreMemoriesBtn" class="load-more-btn" style="display: none;">Load More</button>
-                        </div>
-                        
-                        <!-- Memory Form (hidden by default) -->
-                        <div id="memoryForm" class="memory-form" style="display: none;">
+                        <div class="memory-form" id="memoryForm" style="display: none;">
                             <div class="form-row">
-                                <input type="text" id="memoryTitle" placeholder="Title (e.g., Doctor's visit)" class="memory-input">
+                                <input type="text" id="memoryTitle" placeholder="Title" data-i18n="modals.fileManager.memoryTitle" class="memory-input">
                                 <input type="date" id="memoryDate" class="memory-input">
                             </div>
-                            
-                            <div class="form-row">
-                                <input type="text" id="memoryTags" placeholder="Tags (separated by commas, e.g., medical, appointment)" class="memory-input full-width">
-                            </div>
-                            
-                            <textarea id="memoryText" placeholder="Enter memory details here..." class="memory-textarea" rows="8"></textarea>
-                            
+                            <input type="text" id="memoryTags" placeholder="Tags (comma separated)" data-i18n="modals.fileManager.memoryTags" class="memory-input">
+                            <textarea id="memoryText" placeholder="Enter memory content..." data-i18n="modals.fileManager.memoryContentPlaceholder" class="memory-textarea" rows="6"></textarea>
                             <div class="form-actions">
-                                <button id="cancelMemoryBtn" class="action-btn btn-secondary">Cancel</button>
-                                <button id="saveMemoryBtn" class="action-btn btn-success">Save</button>
+                                <button id="cancelMemoryBtn" class="action-btn btn-secondary" data-i18n="buttons.cancel">Cancel</button>
+                                <button id="saveMemoryBtn" class="action-btn btn-success" data-i18n="buttons.save">Save</button>
                             </div>
                         </div>
                         
+                        <div id="memoriesList" class="memories-list">
+                            <!-- Memories will be dynamically loaded here -->
+                        </div>
+                        
+                        <button id="loadMoreMemoriesBtn" class="load-more-btn" style="display: none;" data-i18n="modals.fileManager.loadMore">Load More</button>
+                        
                         <div id="memoryActions" class="memory-actions">
-                            <button id="deleteMemoriesBtn" class="action-btn btn-danger" disabled>Delete</button>
-                            <button id="editMemoryBtn" class="action-btn btn-primary" disabled>Edit</button>
-                            <button id="addMemoryBtn" class="action-btn btn-success">Add</button>
+                            <button id="deleteMemoriesBtn" class="action-btn btn-danger" disabled data-i18n="buttons.delete">Delete</button>
+                            <button id="editMemoryBtn" class="action-btn btn-primary" disabled data-i18n="buttons.edit">Edit</button>
+                            <button id="addMemoryBtn" class="action-btn btn-success" data-i18n="buttons.addMemory">Add</button>
                         </div>
                     </div>
                 </div>
@@ -498,26 +519,317 @@
         <div id="info-modal" class="modal">
             <div class="modal-content info-modal-content">
                 <div class="modal-header">
-                    <h2>About SMF Voice Agent</h2>
+                    <h2 data-i18n="modals.info.title">About SMF Voice Agent</h2>
                     <button class="close-btn" id="close-info">&times;</button>
                 </div>
                 <div class="modal-body info-body">
                     <div class="info-section">
-                        <h3>About the App</h3>
-                        <p>The SMF Voice Agent is a semi-autonomous conversational AI designed to help people with ALS and similar conditions communicate naturally using only their voice and eye gaze. It combines real-time speech recognition, intelligent response generation, and natural-sounding voice synthesis with a fully eye-gaze-controlled interface. The system can draw on a local knowledge base, chat history, and even live internet search results to provide meaningful, context-aware conversations—without the need for constant clicking or typing.</p>
+                        <h3 data-i18n="modals.info.aboutApp">About the App</h3>
+                        <p data-i18n="modals.info.aboutAppText">The SMF Voice Agent is a semi-autonomous conversational AI designed to help people with ALS and similar conditions communicate naturally using only their voice and eye gaze. It combines real-time speech recognition, intelligent response generation, and natural-sounding voice synthesis with a fully eye-gaze-controlled interface. The system can draw on a local knowledge base, chat history, and even live internet search results to provide meaningful, context-aware conversations—without the need for constant clicking or typing.</p>
                     </div>
                     <div> </div>
                     <div class="info-section">
-                        <h3>About the Foundation & Creator</h3>
-                        <p>This project was built in collaboration with the <a href="https://www.scott-morgan.org/" target="_blank" rel="noopener noreferrer">Scott-Morgan Foundation</a>, which empowers people with severe physical disabilities through assistive technology. It was created by Bernard Muller, an entrepreneur, AI artist, and ALS patient since 2010. Bernard, who communicates via eye-tracking technology, developed the SMF Voice Agent to restore the spontaneity of conversation he enjoyed before ALS—and to make that freedom available to others.</p>
+                        <h3 data-i18n="modals.info.aboutFoundation">About the Foundation & Creator</h3>
+                        <p data-i18n="modals.info.aboutFoundationText">This project was built in collaboration with the <a href="https://www.scott-morgan.org/" target="_blank" rel="noopener noreferrer">Scott-Morgan Foundation</a>, which empowers people with severe physical disabilities through assistive technology. It was created by Bernard Muller, an entrepreneur, AI artist, and ALS patient since 2010. Bernard, who communicates via eye-tracking technology, developed the SMF Voice Agent to restore the spontaneity of conversation he enjoyed before ALS—and to make that freedom available to others.</p>
                     </div>
                     
                     <div class="foundation-tagline">
-                        <em>Rewriting the Future of Disability | The Scott-Morgan Foundation</em>
+                        <em data-i18n="modals.info.tagline">Rewriting the Future of Disability | The Scott-Morgan Foundation</em>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Help Modal -->
+        <div id="help-modal" class="modal">
+            <div class="modal-content help-modal-content">
+                <div class="modal-header">
+                    <h2 data-i18n="help.title">SMF Voice Agent - User Guide</h2>
+                    <button class="close-btn" id="close-help">&times;</button>
+                </div>
+                <div class="modal-body help-body">
+                    <!-- Help Navigation -->
+                    <div class="help-nav">
+                        <button class="help-nav-btn active" data-section="overview" data-i18n="help.navigation.overview">Overview</button>
+                        <button class="help-nav-btn" data-section="gettingStarted" data-i18n="help.navigation.gettingStarted">Getting Started</button>
+                        <button class="help-nav-btn" data-section="voiceRecording" data-i18n="help.navigation.voiceRecording">Voice Recording</button>
+                        <button class="help-nav-btn" data-section="eyeGaze" data-i18n="help.navigation.eyeGaze">Eye Gaze Controls</button>
+                        <button class="help-nav-btn" data-section="people" data-i18n="help.navigation.people">People Management</button>
+                        <button class="help-nav-btn" data-section="knowledgeBase" data-i18n="help.navigation.knowledgeBase">Knowledge Base</button>
+                        <button class="help-nav-btn" data-section="settings" data-i18n="help.navigation.settings">Settings</button>
+                        <button class="help-nav-btn" data-section="troubleshooting" data-i18n="help.navigation.troubleshooting">Troubleshooting</button>
+                    </div>
+                    
+                    <!-- Help Content Sections -->
+                    <div class="help-content">
+                        <!-- Overview Section -->
+                        <div id="overview-section" class="help-section active">
+                            <h3 data-i18n="help.sections.overview.title">Welcome to SMF Voice Agent</h3>
+                            <p data-i18n="help.sections.overview.intro">The SMF Voice Agent is a semi-autonomous conversational AI designed to help people with ALS and similar conditions communicate naturally. This guide will help you understand and use all the features effectively.</p>
+                            
+                            <h4 data-i18n="help.sections.overview.keyFeatures">Key Features:</h4>
+                            <ul>
+                                <li><strong>Voice Recognition:</strong> Continuous recording with automatic speech detection</li>
+                                <li><strong>AI Responses:</strong> Choose from three intelligent response options</li>
+                                <li><strong>Eye Gaze Control:</strong> Fully accessible interface for eye-tracking users</li>
+                                <li><strong>Multiple Speakers:</strong> Support for different users with voice profiles</li>
+                                <li><strong>Knowledge Base:</strong> Store and access personal information and memories</li>
+                                <li><strong>Internet Search:</strong> Get current information when needed</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Getting Started Section -->
+                        <div id="gettingStarted-section" class="help-section">
+                            <h3 data-i18n="help.sections.gettingStarted.title">Getting Started</h3>
+                            
+                            <h4 data-i18n="help.sections.gettingStarted.firstTimeSetup">First-Time Setup</h4>
+                            <p>When you first open the app:</p>
+                            <ol>
+                                <li>Grant microphone permissions when prompted by your browser</li>
+                                <li>Click <img src="assets/settings.ico" alt="Settings" class="inline-icon"> to pick a voice from the voice list or try the default one</li>
+                                <li>Click <img src="assets/people.ico" alt="People" class="inline-icon"> to select who you're talking to</li>
+                            </ol>
+                            
+                            <h4 data-i18n="help.sections.gettingStarted.startConversation">Start a conversation</h4>
+                            <p data-i18n="help.sections.gettingStarted.startConversationIntro">Write a message in the text box and</p>
+                            <ul>
+                                <li><span data-i18n="help.sections.gettingStarted.startConversationOptions.speak">click</span> <button class="demo-btn speak-btn" style="padding: 0;"><img src="assets/speak.ico" alt="Speak" width="40" height="40"></button> <span data-i18n="help.sections.gettingStarted.startConversationOptions.speakSuffix">to speak your message or</span></li>
+                                <li><span data-i18n="help.sections.gettingStarted.startConversationOptions.send">click</span> <button class="demo-btn send-btn" style="padding: 5px; background-color: #3b82f6; border-color: #3b82f6;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button> <span data-i18n="help.sections.gettingStarted.startConversationOptions.sendSuffix">to generate three responses or</span></li>
+                                <li><span data-i18n="help.sections.gettingStarted.startConversationOptions.record">click</span> <button class="demo-btn record-btn"><svg><use href="#mic-icon"></use></svg> Start Recording</button> <span data-i18n="help.sections.gettingStarted.startConversationOptions.recordSuffix">to start recording a conversation</span></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Voice Recording Section -->
+                        <div id="voiceRecording-section" class="help-section">
+                            <h3 data-i18n="help.sections.voiceRecording.title">Voice Recording & Conversation</h3>
+                            
+                            <h4 data-i18n="help.sections.voiceRecording.startingConversation">Starting a Conversation</h4>
+                            <p>You have three ways to communicate:</p>
+                            
+                            <h5>1. Voice Recording (Recommended)</h5>
+                            <ol>
+                                <li>Click the <button class="demo-btn record-btn"><svg><use href="#mic-icon"></use></svg> Start Recording</button> button</li>
+                                <li>Speak naturally - the app detects when you start and stop talking</li>
+                                <li>The app automatically transcribes your speech</li>
+                                <li>Three response options will appear</li>
+                            </ol>
+                            
+                            <p class="help-tip">💡 <strong>Tip:</strong> The Voice Activity Detection (VAD) automatically detects speech, so you don't need to click for each sentence!</p>
+                            
+                            <h5>2. Speak Text Message</h5>
+                            <ol>
+                                <li>Type your message in the text box</li>
+                                <li>Click <button class="demo-btn speak-btn" style="padding: 0;"><img src="assets/speak.ico" alt="Speak" width="40" height="40"></button> </li>
+                                <li>The app will speak your typed message aloud and auto record</li>
+                            </ol>
+                            
+                            <h5>3. Text Input</h5>
+                            <ol>
+                                <li>Click in the text box at the bottom</li>
+                                <li>Type your instruction (e.g., "Tell me about the movie I watched with my family")</li>
+                                <li>Click <button class="demo-btn send-btn" style="padding: 5px; background-color: #3b82f6; border-color: #3b82f6;">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button></li>
+                            </ol>
+                            
+                            <h4 data-i18n="help.sections.voiceRecording.choosingResponses">Choosing Responses</h4>
+                            <p>After you speak or type, the AI generates three response options:</p>
+                            <ul>
+                                <li><strong>Mouse/Touch:</strong> Click on your preferred response</li>
+                                <li><strong>Eye Gaze:</strong> Look at a response for 3 seconds (adjustable)</li>
+                                <li><strong>Regenerate:</strong> Click <button class="demo-btn action-btn">↻</button> for new options</li>
+                                <li><strong>Cancel:</strong> Click <button class="demo-btn action-btn">✖</button> to cancel and continue recording</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Eye Gaze Section -->
+                        <div id="eyeGaze-section" class="help-section">
+                            <h3 data-i18n="help.sections.eyeGaze.title">Eye Gaze Controls</h3>
+                            
+                            <h4 data-i18n="help.sections.eyeGaze.howItWorks">How Eye Gaze Works</h4>
+                            <p>The interface supports eye gaze control through emulated eye gaze (hover and hold):</p>
+                            <ul>
+                                <li>Look at any button or response option</li>
+                                <li>A progress indicator shows selection progress</li>
+                                <li>Keep looking for the set duration (default: 3 seconds)</li>
+                                <li>The item is automatically selected when the timer completes</li>
+                            </ul>
+                            
+                            <p class="help-tip">💡 <strong>Note:</strong> This feature emulates eye gaze control through hover and hold, making it accessible for both eye-tracking devices and mouse users.</p>
+                            
+                            <h4 data-i18n="help.sections.eyeGaze.adjustingSettings">Adjusting Eye Gaze Settings</h4>
+                            <ol>
+                                <li>Click <img src="assets/settings.ico" alt="Settings" class="inline-icon"> to open settings</li>
+                                <li>Go to the "System" tab</li>
+                                <li>Adjust "Eye Gaze Duration" (1-5 seconds)</li>
+                                <li>Toggle "Eye Gaze Visual Feedback" on/off</li>
+                            </ol>
+                            
+                            <p class="help-tip">💡 <strong>Tip:</strong> Start with 3 seconds and adjust based on your comfort. Shorter times are faster but may cause accidental selections.</p>
+                        </div>
+                        
+                        <!-- People Management Section -->
+                        <div id="people-section" class="help-section">
+                            <h3 data-i18n="help.sections.people.title">People Management</h3>
+                            
+                            <h4 data-i18n="help.sections.people.selectingAdding">Selecting or Adding a Person</h4>
+                            <ol>
+                                <li>Click <img src="assets/people.ico" alt="People" class="inline-icon"> in the header</li>
+                                <li>Click on a person's name to select them and click <button class="demo-btn action-btn btn-primary">Use</button>, or double-click a person</li>
+                                <li>Enter a new person's name in the text field</li>
+                                <li>Click <button class="demo-btn action-btn btn-success">Add Person</button></li>
+                            </ol>
+                            
+                            <h4 data-i18n="help.sections.people.switchingPeople">Switching Between People</h4>
+                            <ol>
+                                <li>Click <img src="assets/people.ico" alt="People" class="inline-icon"></li>
+                                <li>Click on the person's name button</li>
+                                <li>The current person shows in the header</li>
+                            </ol>
+                            
+                            <h4 data-i18n="help.sections.people.managingPeople">Managing People</h4>
+                            <ul>
+                                <li><strong>Edit:</strong> Select a person and click <button class="demo-btn action-btn btn-primary">Edit</button></li>
+                                <li><strong>Delete:</strong> Select a person and click <button class="demo-btn action-btn btn-danger">Delete</button></li>
+                            </ul>
+                            
+                            <p class="help-tip">💡 <strong>Note:</strong> People represent who you're talking to, not who is using the app. The patient is the primary user guiding the assistant.</p>
+                        </div>
+                        
+                        <!-- Knowledge Base Section -->
+                        <div id="knowledgeBase-section" class="help-section">
+                            <h3 data-i18n="help.sections.knowledgeBase.title">Knowledge Base & Memories</h3>
+                            
+                            <h4 data-i18n="help.sections.knowledgeBase.kbFiles">Knowledge Base Files</h4>
+                            <p>Upload documents for the AI to reference:</p>
+                            <ol>
+                                <li>Click <img src="assets/kb.ico" alt="Knowledge Base" class="inline-icon"> in the header</li>
+                                <li>Click the "Files" tab</li>
+                                <li>Click <button class="demo-btn action-btn btn-success">Add</button></li>
+                                <li>Select files (supports .txt, .pdf, .docx, .json)</li>
+                            </ol>
+                            
+                            <p>Supported file types:</p>
+                            <ul>
+                                <li><strong>.txt:</strong> Plain text files</li>
+                                <li><strong>.pdf:</strong> PDF documents</li>
+                                <li><strong>.docx:</strong> Word documents</li>
+                                <li><strong>.json:</strong> Structured data</li>
+                            </ul>
+                            
+                            <h4 data-i18n="help.sections.knowledgeBase.creatingMemories">Creating Memories</h4>
+                            <p>Store important information as memories:</p>
+                            <ol>
+                                <li>Click <img src="assets/kb.ico" alt="Knowledge Base" class="inline-icon"></li>
+                                <li>Click the "Memories" tab</li>
+                                <li>Click <button class="demo-btn action-btn btn-success">Add Memory</button></li>
+                                <li>Enter a title and content</li>
+                                <li>Click <button class="demo-btn action-btn btn-success">Save</button></li>
+                            </ol>
+                            
+                            <p class="help-tip">💡 <strong>Tip:</strong> Use memories for personal information, preferences, medical details, or anything you want the AI to remember.</p>
+                        </div>
+                        
+                        <!-- Settings Section -->
+                        <div id="settings-section" class="help-section">
+                            <h3 data-i18n="help.sections.settings.title">Settings Configuration</h3>
+                            <p>Access settings by clicking <img src="assets/settings.ico" alt="Settings" class="inline-icon"> in the header.</p>
+                            
+                            <h4>Voice Settings</h4>
+                            <ul>
+                                <li><strong>Voice:</strong> Choose from available TTS voices</li>
+                                <li><strong>Model:</strong> Select quality (Turbo for speed, Multilingual for accuracy)</li>
+                                <li><strong>Speech Rate:</strong> Adjust speaking speed (0.5-2.0)</li>
+                                <li><strong>Voice Settings:</strong> Fine-tune stability, similarity, and style</li>
+                            </ul>
+                            
+                            <h4>Recorder Settings</h4>
+                            <ul>
+                                <li><strong>Speech Thresholds:</strong> Adjust voice detection sensitivity</li>
+                                <li><strong>Frame Settings:</strong> Control speech detection timing</li>
+                            </ul>
+                            
+                            <h4>LLM (AI) Settings</h4>
+                            <ul>
+                                <li><strong>Model:</strong> Choose AI model (GPT-4 or GPT-5)</li>
+                                <li><strong>Temperature:</strong> Control response creativity (0-2)</li>
+                                <li><strong>Max Tokens:</strong> Limit response length</li>
+                            </ul>
+                            
+                            <h4>System Settings</h4>
+                            <ul>
+                                <li><strong>Language:</strong> Set default language</li>
+                                <li><strong>Eye Gaze Duration:</strong> Adjust selection time</li>
+                                <li><strong>Visual Feedback:</strong> Toggle selection indicators</li>
+                                <li><strong>Internet Search:</strong> Enable/disable web search</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Troubleshooting Section -->
+                        <div id="troubleshooting-section" class="help-section">
+                            <h3 data-i18n="help.sections.troubleshooting.title">Troubleshooting</h3>
+                            
+                            <h4>Microphone Not Working</h4>
+                            <ul>
+                                <li>Check browser permissions (look for microphone icon in address bar)</li>
+                                <li>Ensure no other application is using the microphone</li>
+                                <li>Try refreshing the page and granting permissions again</li>
+                            </ul>
+                            
+                            <h4>Voice Not Detected</h4>
+                            <ul>
+                                <li>Speak louder and clearer</li>
+                                <li>Check recorder settings and lower the speech threshold</li>
+                                <li>Ensure you've clicked "Start Recording"</li>
+                            </ul>
+                            
+                            <h4>Eye Gaze Issues</h4>
+                            <ul>
+                                <li>Calibrate your eye tracking device</li>
+                                <li>Adjust the hover duration in settings</li>
+                                <li>Enable visual feedback to see selection progress</li>
+                                <li>Ensure good lighting and proper distance from screen</li>
+                            </ul>
+                            
+                            <h4>Responses Not Appearing</h4>
+                            <ul>
+                                <li>Check your internet connection</li>
+                                <li>Verify API keys are properly configured</li>
+                                <li>Look for error messages in the conversation area</li>
+                            </ul>
+                            
+                            <h4>Performance Issues</h4>
+                            <ul>
+                                <li>Close unnecessary browser tabs</li>
+                                <li>Use Chrome or Edge for best performance</li>
+                                <li>Clear browser cache if needed</li>
+                                <li>Reduce max tokens in LLM settings</li>
+                            </ul>
+                            
+                            <p class="help-tip">💡 <strong>Need more help?</strong> Check the browser console (F12) for detailed error messages.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SVG icon definition for the demo buttons -->
+        <svg style="display: none;">
+            <symbol id="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+            </symbol>
+        </svg>
     </div>
 
     <!-- Scripts -->
@@ -528,6 +840,7 @@
             document.write('<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"><\/script>');
         }
     </script>
+    <script src="js/translationManager.js"></script>
     <script src="js/api.js"></script>
     <script src="js/audioRecorder.js"></script>
     <script src="js/eyeGazeControls.js"></script>
@@ -536,5 +849,13 @@
     <script src="js/peopleManager.js"></script>
     <script src="js/fileManager.js"></script> 
     <script src="js/main.js"></script>
+<script>
+// Initialize translations before app
+document.addEventListener('DOMContentLoaded', async () => {
+    window.translationManager = new TranslationManager();
+    await window.translationManager.init();
+    window.app = new CommunicationAssistant();
+});
+</script>
 </body>
 </html>

@@ -6,6 +6,7 @@ class CommunicationAssistant {
         this.conversationUI = null;
         this.settingsManager = null;
         this.eyeGazeControls = null;
+        this.translationManager = window.translationManager; 
         
         this.currentConversationId = null;
         this.isRecording = false;
@@ -18,6 +19,12 @@ class CommunicationAssistant {
     
     async init() {
         try {
+            // Add this at the beginning
+            if (!this.translationManager) {
+                this.translationManager = new TranslationManager();
+                await this.translationManager.init();
+            }
+            
             // Initialize socket connection
             this.socket = io();
             
@@ -50,7 +57,7 @@ class CommunicationAssistant {
             console.log('Voice Agent initialized');
         } catch (error) {
             console.error('Failed to initialize:', error);
-            this.showError('Failed to initialize application');
+            this.showError('notifications.failedToInitialize');
         }
     }
 
@@ -68,6 +75,14 @@ class CommunicationAssistant {
         if (resendBtn) {
             resendBtn.addEventListener('click', () => {
                 this.resendResponses();
+            });
+        }
+        
+        // Compose button handler
+        const composeBtn = document.getElementById('compose-responses-btn');
+        if (composeBtn) {
+            composeBtn.addEventListener('click', () => {
+                this.composeResponses();
             });
         }
     }
@@ -161,7 +176,7 @@ class CommunicationAssistant {
         
         this.socket.on('speak-error', (data) => {
             console.error('Speak error:', data);
-            this.showError('Failed to synthesize speech: ' + data.message);
+            this.showError('notifications.failedToSynthesizeSpeech');
             
             // Re-enable speak button
             const speakBtn = document.getElementById('speak-text-btn');
@@ -209,8 +224,26 @@ class CommunicationAssistant {
             this.settingsManager.open();
         });
 
+        // Help button
+        const helpBtn = document.getElementById('help-btn');
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => {
+                openHelpModal();
+            });
+        }
+
         // Initialize response action buttons
         this.initializeResponseActionButtons();
+        
+        // Add this to handle language changes
+        const languageSelect = document.getElementById('default-language');
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (e) => {
+                const newLanguage = e.target.value;
+                this.translationManager.setLanguage(newLanguage);
+                this.updateDynamicTexts();
+            });
+        }
     }
     
     async loadInitialData() {
@@ -218,6 +251,13 @@ class CommunicationAssistant {
                     // Load settings first
         const settingsResponse = await this.api.getSettings();
         this.settingsManager.loadSettings(settingsResponse.settings);
+        
+        // Set initial language
+        if (settingsResponse.settings.system && settingsResponse.settings.system.defaultLanguage) {
+            this.translationManager.setLanguage(settingsResponse.settings.system.defaultLanguage);
+            // Add this line to apply translations immediately:
+            this.translationManager.applyTranslations();
+        }
             
             // Apply eye gaze settings to the controls - FIXED
             if (settingsResponse.settings.eyeGaze) {
@@ -277,8 +317,13 @@ class CommunicationAssistant {
             }
             
             // Load recent conversations
-            const conversations = await this.api.getRecentConversations(5);
-            // You could display these in a sidebar or history view
+            try {
+                const recentConversations = await this.api.getRecentConversations();
+                // ... handle conversations if needed ...
+            } catch (error) {
+                console.warn('Could not load recent conversations:', error);
+                // This is not critical, continue without it
+            }
             
         } catch (error) {
             console.error('Failed to load initial data:', error);
@@ -295,7 +340,7 @@ class CommunicationAssistant {
             this.updatePersonDisplay(person);
             
             // Show welcome message for this person
-            this.conversationUI.showNotification(`Now talking to ${person.name}`, 'info');
+            showTranslatedNotification('notifications.nowTalkingTo', 'info', { name: person.name });
         }
     }
     
@@ -314,7 +359,7 @@ class CommunicationAssistant {
     
     toggleRecording() {
         if (!this.currentPerson) {
-            this.showError('Please select who you\'re talking to first');
+            this.showError('notifications.pleaseSelectPerson');
             return;
         }
         
@@ -352,7 +397,7 @@ class CommunicationAssistant {
     
     sendTextMessage() {
         if (!this.currentPerson) {
-            this.showError('Please select who you\'re talking to first');
+            this.showError('notifications.pleaseSelectPerson');
             return;
         }
         
@@ -381,7 +426,7 @@ class CommunicationAssistant {
 
     speakTextMessage() {
         if (!this.currentPerson) {
-            this.showError('Please select who you\'re talking to first');
+            this.showError('notifications.pleaseSelectPerson');
             return;
         }
         
@@ -493,6 +538,30 @@ class CommunicationAssistant {
         this.socket.emit('start-recording');
     }
     
+    composeResponses() {
+        console.log('Composing response (returning to main screen)');
+        
+        // Hide response selection UI
+        const responseSelection = document.getElementById('response-selection');
+        responseSelection.classList.remove('active');
+        
+        // Clear eye gaze targets
+        this.eyeGazeControls.clearTargets();
+        
+        // Clear current conversation ID and last response data
+        this.currentConversationId = null;
+        this.lastResponseData = null;
+        
+        // Focus cursor on the text input box
+        const textInput = document.getElementById('text-input');
+        if (textInput) {
+            textInput.focus();
+        }
+        
+        // Note: Unlike cancelResponses(), we do NOT start recording automatically
+        // This allows the user to compose their own message or take other actions
+    }
+    
     resendResponses() {
         console.log('Requesting new responses');
         
@@ -521,7 +590,7 @@ class CommunicationAssistant {
         } else {
             // If no context available, just hide the response selection
             this.cancelResponses();
-            this.showError('Unable to regenerate responses. Please try speaking again.');
+            this.showError('notifications.unableToRegenerateResponses');
         }
         
         // Re-enable button after 2 seconds
@@ -562,7 +631,7 @@ class CommunicationAssistant {
             audio.onerror = (error) => {
                 console.error('Audio playback failed:', error);
                 URL.revokeObjectURL(audioUrl);
-                this.showError('Failed to play audio');
+                this.showError('notifications.failedToPlayAudio');
                 
                 // Still call completion callback even on error
                 if (onComplete && typeof onComplete === 'function') {
@@ -574,12 +643,12 @@ class CommunicationAssistant {
             audio.play().catch(error => {
                 console.error('Failed to start audio playback:', error);
                 URL.revokeObjectURL(audioUrl);
-                this.showError('Failed to play audio');
+                this.showError('notifications.failedToPlayAudio');
             });
             
         } catch (error) {
             console.error('Failed to process audio:', error);
-            this.showError('Failed to process audio');
+            this.showError('notifications.failedToProcessAudio');
             
             // Call completion callback even on error
             if (onComplete && typeof onComplete === 'function') {
@@ -588,8 +657,139 @@ class CommunicationAssistant {
         }
     }
     
+    
+    
     showError(message) {
-        this.conversationUI.showNotification(message, 'error');
+        showTranslatedNotification(message, 'error');
+    }
+    
+    updateDynamicTexts() {
+        // Update recording button text
+        const recordBtn = document.getElementById('record-btn');
+        if (recordBtn) {
+            const isRecording = this.audioRecorder && this.audioRecorder.isRecording;
+            const btnText = recordBtn.querySelector('span');
+            if (btnText) {
+                btnText.textContent = this.translationManager.getTranslation(
+                    isRecording ? 'buttons.stopRecording' : 'buttons.startRecording'
+                );
+            }
+        }
+    }
+}
+
+// Help Modal Functions
+function openHelpModal() {
+    const modal = document.getElementById('help-modal');
+    modal.style.display = 'block';
+    
+    // Generate help content in current language
+    generateHelpContent(window.translationManager);
+    
+    // Add event listeners for navigation buttons
+    const navButtons = modal.querySelectorAll('.help-nav-btn');
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            showHelpSection(btn.dataset.section);
+        });
+    });
+    
+    // Add event listener for close button
+    const closeBtn = modal.querySelector('#close-help');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeHelpModal);
+    }
+    
+    // Add eye gaze targets if available
+    if (window.app && window.app.eyeGazeControls && window.app.eyeGazeControls.isEnabled) {
+        setTimeout(() => {
+            const buttons = modal.querySelectorAll('.help-nav-btn, .close-btn');
+            buttons.forEach(btn => {
+                window.app.eyeGazeControls.addTarget(btn);
+            });
+        }, 100);
+    }
+}
+
+function closeHelpModal() {
+    const modal = document.getElementById('help-modal');
+    modal.style.display = 'none';
+    
+    // Remove eye gaze targets
+    if (window.app && window.app.eyeGazeControls && window.app.eyeGazeControls.isEnabled) {
+        const buttons = modal.querySelectorAll('.help-nav-btn, .close-btn');
+        buttons.forEach(btn => {
+            window.app.eyeGazeControls.removeTarget(btn);
+        });
+    }
+}
+
+function showHelpSection(sectionName) {
+    // Update navigation buttons
+    document.querySelectorAll('.help-nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.section === sectionName);
+    });
+    
+    // Update content sections
+    document.querySelectorAll('.help-section').forEach(section => {
+        section.classList.toggle('active', section.id === `${sectionName}-section`);
+    });
+}
+
+// Modified generateHelpContent function to preserve custom graphics
+function generateHelpContent(translationManager) {
+    // Instead of replacing content, just apply translations to existing content
+    // This preserves all the custom graphics and styling you've added
+    
+    // Apply translations to all elements with data-i18n attributes
+    const elementsWithTranslations = document.querySelectorAll('[data-i18n]');
+    elementsWithTranslations.forEach(element => {
+        const translationKey = element.getAttribute('data-i18n');
+        const translation = translationManager.getTranslation(translationKey);
+        if (translation && translation !== translationKey) {
+            // Preserve HTML content for elements that might contain graphics
+            if (element.innerHTML.includes('<img') || element.innerHTML.includes('<button') || element.innerHTML.includes('<svg')) {
+                // For elements with graphics, only translate text nodes
+                const textNodes = Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+                textNodes.forEach(textNode => {
+                    if (textNode.textContent.trim()) {
+                        textNode.textContent = translation;
+                    }
+                });
+            } else {
+                // For plain text elements, replace the entire content
+                element.textContent = translation;
+            }
+        }
+    });
+    
+    // Show overview by default
+    showHelpSection('overview');
+}
+
+// Removed createHelpSection function - no longer needed since we preserve existing HTML content
+
+// Global helper function for translated notifications
+window.showTranslatedNotification = function(translationKey, type = 'info', params = {}) {
+    if (!window.translationManager) {
+        console.warn('Translation manager not ready, showing key:', translationKey);
+        return;
+    }
+    
+    let message = window.translationManager.getTranslation(translationKey);
+    
+    // Replace parameters in the message
+    if (params && typeof params === 'object') {
+        Object.keys(params).forEach(key => {
+            const placeholder = `{${key}}`;
+            message = message.replace(new RegExp(placeholder, 'g'), params[key]);
+        });
+    }
+    
+    if (window.app && window.app.conversationUI && window.app.conversationUI.showNotification) {
+        window.app.conversationUI.showNotification(message, type);
+    } else {
+        console.log(`[${type}] ${message}`);
     }
 }
 
@@ -622,9 +822,23 @@ document.addEventListener('DOMContentLoaded', () => {
             infoModal.classList.remove('active');
         }
     });
-});
-
-// Initialize app when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.app = new CommunicationAssistant();
+    
+    // Help Modal functionality
+    const helpModal = document.getElementById('help-modal');
+    
+    // Close help modal when clicking outside
+    if (helpModal) {
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) {
+                closeHelpModal();
+            }
+        });
+    }
+    
+    // Close help modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && helpModal && helpModal.style.display === 'block') {
+            closeHelpModal();
+        }
+    });
 });

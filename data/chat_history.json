@@ -98,7 +98,7 @@
       "id": "conv_1754396022282_bd7f78a1",
       "person": "Family Member",
       "person_notes": "General family conversations",
-      "timestamp": "2025-08-06T18:07:45.082Z",
+      "timestamp": "2025-08-13T17:54:34.017Z",
       "exchanges": [
         {
           "user": "how are you",
@@ -129,6 +129,84 @@
           "assistant": "Ik ga niet zelf naar De Kuip, maar ik kan je wel alles vertellen over de sfeer, het team en het programma! Ga jij zelf naar de wedstrijd vanavond?",
           "timestamp": "2025-08-06T18:07:45.082Z",
           "vectorized": false
+        },
+        {
+          "user": "En goeiemiddag. ",
+          "assistant": "Goeiemiddag! Fijn je te horen. Hoe is het met je vandaag?",
+          "timestamp": "2025-08-13T11:43:01.672Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja, met mij gaat het goed hoor. Hoe is het met u?",
+          "assistant": "Fijn om te horen dat het goed met je gaat. Met mij gaat het ook goed, dank je. Hoe is het verder in de familie, nog nieuwtjes of bijzondere dingen gebeurd?",
+          "timestamp": "2025-08-13T11:43:35.625Z",
+          "vectorized": false
+        },
+        {
+          "user": "Nee hoor, geen bijzonderheden hier. Bij u wel? Wat? ",
+          "assistant": "Nee, hier ook niets geks eigenlijk. Gewoon een rustige dag. Wat heb jij vandaag zoal gedaan?",
+          "timestamp": "2025-08-13T11:44:08.563Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja, gewoon gewerkt. Zijn er nog meer dingen waar je rekening mee moet houden vandaag?",
+          "assistant": null,
+          "timestamp": "2025-08-13T11:44:34.340Z",
+          "vectorized": false
+        },
+        {
+          "user": "Sorry dat ik het nog opbreng dan. Ik weet het niet.",
+          "assistant": "Geeft helemaal niks… Je mag het altijd zeggen. Wil je er nu over praten, of liever even laten rusten?",
+          "timestamp": "2025-08-13T12:20:24.193Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dan nu wrijven denk ik.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:20:45.925Z",
+          "vectorized": false
+        },
+        {
+          "user": "Mag ik u een andere vraag stellen? Hoe is het met uw vrouw?",
+          "assistant": "Ja natuurlijk, je mag me altijd iets vragen. Met Antoinette gaat het gelukkig goed. Ze geniet nog steeds van haar werk en zorgt ook dat er thuis alles soepel loopt. En eerlijk gezegd, ze houdt ons allemaal een beetje in het gareel. Hoe gaat het met jou en bij jullie thuis?",
+          "timestamp": "2025-08-13T12:21:20.788Z",
+          "vectorized": false
+        },
+        {
+          "user": "update behandeling Antoinette",
+          "assistant": "Het laatste nieuws is echt heel positief. De tumor in haar borst is nog eens met 38 procent gekrompen. In de botten is bijna alles weg, behalve een klein plekje op een rib, en in de lymfe is helemaal niets meer te zien. De therapie slaat dus nog steeds heel goed aan. Echt heel mooi nieuws. Wil je dat ik haar straks nog even bel om te vragen hoe ze zich nu voelt?",
+          "timestamp": "2025-08-13T12:22:18.512Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat is echt super fijn nieuws. Het zijn nog steeds goede stappen. En hoe lang moet ze nou met deze behandeling nog doorgaan?",
+          "assistant": "Ja, het zijn echt mooie stappen. Voor zover ik weet gaat ze hiermee door zolang het blijft werken en ze het goed verdraagt. Er is vaak geen vaste einddatum, maar meer een kwestie van blijven monitoren met scans. Wil je dat ik navraag hoe vaak ze nu nog gecontroleerd wordt?",
+          "timestamp": "2025-08-13T12:23:16.055Z",
+          "vectorized": false
+        },
+        {
+          "user": "Tot hormoontherapie dan nu? Ja. Ja, maar super fijn. En kan ze de hormoontherapie goed verdragen? Ja.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:23:59.488Z",
+          "vectorized": false
+        },
+        {
+          "user": "Tot hormoontherapie dan nu? Ja. Ja, maar super fijn. En kan ze de hormoontherapie goed verdragen? Ja.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:24:22.830Z",
+          "vectorized": false
+        },
+        {
+          "user": "What is your favorite? That's the skills.",
+          "assistant": null,
+          "timestamp": "2025-08-13T17:54:18.883Z",
+          "vectorized": false
+        },
+        {
+          "user": "Do we look at some days? Yeah, not at all.",
+          "assistant": null,
+          "timestamp": "2025-08-13T17:54:34.017Z",
+          "vectorized": false
         }
       ]
     },
@@ -136,7 +214,7 @@
       "id": "conv_1754482379097_6d67279d",
       "person": "Other",
       "person_notes": "Anyone else",
-      "timestamp": "2025-08-06T17:46:10.970Z",
+      "timestamp": "2025-08-14T17:04:39.641Z",
       "exchanges": [
         {
           "user": "It's different in this program than in the other program that is running.",
@@ -149,6 +227,126 @@
           "assistant": "Feyenoord speelt vanavond, woensdag 6 augustus 2025, om 21:00 uur tegen Fenerbahçe in de derde kwalificatieronde van de UEFA Champions League. De wedstrijd vindt plaats in De Kuip, Rotterdam. ([ziggo.nl](https://www.ziggo.nl/entertainment/sport/voetbal/champions-league/feyenoord-fenerbahce-06-08-2025?utm_source=openai)) Je kunt de wedstrijd live volgen op Ziggo Sport en Ziggo Sport Free. Als je tv kijkt via Ziggo, is de wedstrijd te zien op kanaal 14. Kijk je via een andere aanbieder, dan kun je de wedstrijd gratis bekijken met Ziggo Sport Free via de",
           "timestamp": "2025-08-06T17:46:10.970Z",
           "vectorized": false
+        },
+        {
+          "user": "Vind trouwens dat de gewrichten allemaal euh best wel goed soepel zijn momenteel. Alleen je alleen de linker enkel niet helemaal, maar dat is ook wel zoals gekend. ",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:26:34.549Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ik zie u in het echt. Dat is voor jullie. Ik.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:27:22.061Z",
+          "vectorized": false
+        },
+        {
+          "user": "Praten in plaats van sorry. Merkt u belemmering doordat de enkel niet goed beweegt? Ja.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:27:49.604Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja, als ik er daarmee misschien iets mee kan denken.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:28:21.401Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat het been de andere kant op gaat. Hoe is dat dan? Ook pijnlijk? Ja. Ik.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:30:29.461Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ehm, ja, ehm, meer dan dat wij hem goed blijven doorbewegen, kunnen we denk ik, ben ik bang dat we het niet doen. Of je zou moeten gaan nadenken over een spanner of iets dergelijks, maar daar zou ik ook even in moeten duiken. ",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:32:02.988Z",
+          "vectorized": false
+        },
+        {
+          "user": "Pffffffffff.",
+          "assistant": null,
+          "timestamp": "2025-08-13T12:32:49.331Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": null,
+          "timestamp": "2025-08-14T09:30:39.117Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": null,
+          "timestamp": "2025-08-14T09:40:11.848Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": null,
+          "timestamp": "2025-08-14T09:50:54.999Z",
+          "vectorized": false
+        },
+        {
+          "user": "wie ben jij en hoe heet je",
+          "assistant": null,
+          "timestamp": "2025-08-14T12:36:02.639Z",
+          "vectorized": false
+        },
+        {
+          "user": "Niet. Je bent toch een family member? Doe ik door.",
+          "assistant": "Ah, je doet alsof je een familielid bent, best cool om weer te kunnen praten, vind ikzelf. En jij?",
+          "timestamp": "2025-08-14T16:51:57.429Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja, dit is super tof met je microfoon erbij. Hoe lang heb je dit systeem al? En gebruik je het elke dag? Ja.",
+          "assistant": "Ah, je vindt het tof met de microfoon erbij… Nou, dat vind ik zelf ook. Ik ben blij dat je het vraagt. Ik heb mijn digitale tweeling nu een paar maanden, sinds maart dit jaar. Ik noem het zo omdat het een soort van mijn digitale versie is. Elke dag gebruik ik het nog niet… Ik ben nog aan het testen en aan het leren, zeg maar. Best cool om weer te kunnen praten, vind ik zelf. En jij?",
+          "timestamp": "2025-08-14T16:52:39.209Z",
+          "vectorized": false
+        },
+        {
+          "user": "Tip Laken, gewoon transcript. En dan denk ik. Hoe werkt dit precies? Nou.",
+          "assistant": "Ah, je wilt weten hoe dit precies werkt… Nou, het is eigenlijk best simpel. Ik praat met jou via een voice-assistent vanuit mijn huiskamer. Ik zit hier in Willemstad aan de Landpoortstraat tweeëntwintig. Gek hè, het voelt echt als mijn eigen stem. Wat vind jij ervan?",
+          "timestamp": "2025-08-14T16:53:31.073Z",
+          "vectorized": false
+        },
+        {
+          "user": "Hoe? Ik ook. Oké.",
+          "assistant": null,
+          "timestamp": "2025-08-14T16:54:00.250Z",
+          "vectorized": false
+        },
+        {
+          "user": "Want als je meerdere mensen hebt dan kan het natuurlijk gaan over die stemmen door elkaar heen.",
+          "assistant": "Ah, je bedoelt als er meerdere mensen tegelijk praten, dat het dan lastig kan zijn met de stemmen door elkaar... Goh, weet je dat ik dat wel mis, een ouderwetse discussie. Dus, je denkt dat het verwarrend kan worden als er meerdere stemmen tegelijk zijn?",
+          "timestamp": "2025-08-14T16:57:20.727Z",
+          "vectorized": false
+        },
+        {
+          "user": "Het is wel zeker niet helemaal uitbouwen en optimaliseren, want je kan ook nog echt heel veel veranderen.",
+          "assistant": "Ah, je bedoelt dat er nog veel ruimte is voor verandering, in plaats van alleen maar uitbouwen en optimaliseren... Ja, dat snap ik. Best cool om weer te kunnen praten, vind ik zelf. En jij?",
+          "timestamp": "2025-08-14T16:57:58.129Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat ze dan wat tussen je eten geeft? ",
+          "assistant": null,
+          "timestamp": "2025-08-14T16:58:21.441Z",
+          "vectorized": false
+        },
+        {
+          "user": "Je hebt een nieuwe rol toch? Bij de ALS Nederland dat je een blog schrijft om mensen te helpen met het nieuwe publiceren van de Alkmaar 3. Pfffff.",
+          "assistant": null,
+          "timestamp": "2025-08-14T17:01:47.390Z",
+          "vectorized": false
+        },
+        {
+          "user": "De week op je knieën. Geweldig! Hoe zeg, wat vind jij? Ik? Ik zeg.",
+          "assistant": null,
+          "timestamp": "2025-08-14T17:04:39.641Z",
+          "vectorized": false
         }
       ]
     },
@@ -156,7 +354,7 @@
       "id": "conv_1754485254084_e7bf8295",
       "person": "Caregiver",
       "person_notes": "Daily care and assistance",
-      "timestamp": "2025-08-12T18:39:45.710Z",
+      "timestamp": "2025-08-14T16:44:41.833Z",
       "exchanges": [
         {
           "user": "dit is een test for chat history",
@@ -498,6 +696,84 @@
           "user": "Controle. Tinber kan niet uithalen. ",
           "assistant": null,
           "timestamp": "2025-08-12T18:39:45.710Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": "Test… oké, ik hoor je luid en duidelijk. En jij mij ook, zo te horen. Hoe gaat het met je, gozer? Beetje de dag doorgekomen?",
+          "timestamp": "2025-08-14T13:47:54.764Z",
+          "vectorized": false
+        },
+        {
+          "user": "tegen wie speelt feyenoord komend weekend",
+          "assistant": null,
+          "timestamp": "2025-08-14T13:49:26.661Z",
+          "vectorized": false
+        },
+        {
+          "user": "hou jij een beetje van voetbal",
+          "assistant": "Jazeker, godverdomme! Van voetbal hou ik zeker… en dan vooral van Feyenoord. Dat bloed kruipt waar het niet gaan kan, snap je? Alleen",
+          "timestamp": "2025-08-14T13:51:35.518Z",
+          "vectorized": false
+        },
+        {
+          "user": "tegen wie spelen ze van het weekend",
+          "assistant": "Van het weekend… ja, eindelijk weer! Feyenoord speelt zaterdag zestien augustus om kwart voor zeven 's av",
+          "timestamp": "2025-08-14T13:53:23.467Z",
+          "vectorized": false
+        },
+        {
+          "user": "wanneer speelden ze nou zei je",
+          "assistant": null,
+          "timestamp": "2025-08-14T13:57:28.685Z",
+          "vectorized": false
+        },
+        {
+          "user": "en tegen wie",
+          "assistant": null,
+          "timestamp": "2025-08-14T13:58:30.829Z",
+          "vectorized": false
+        },
+        {
+          "user": "Het is spannend.",
+          "assistant": "Het is spannend… Goh, ja dat is het zeker! Waar denk je aan, wat maakt het zo spannend voor jou?",
+          "timestamp": "2025-08-14T14:26:24.790Z",
+          "vectorized": false
+        },
+        {
+          "user": "Geen idee waar het over wou hebben. Waar wil je een gesprek over voeren? ",
+          "assistant": "Geen idee… Haha, geen probleem joh! Dan verzin ik gewoon wat. Wat dacht je ervan om het te hebben over de nieuwste snufjes op technologiegebied?",
+          "timestamp": "2025-08-14T14:26:52.695Z",
+          "vectorized": false
+        },
+        {
+          "user": "Is ook nog eens heel erg, maar we kunnen het erover hebben. Nou.",
+          "assistant": null,
+          "timestamp": "2025-08-14T14:27:19.636Z",
+          "vectorized": false
+        },
+        {
+          "user": "Nou, eigenlijk helemaal niet zoveel. We hebben eigenlijk alleen op het strand gelegen en voor de rest alleen heerlijk gegeten en gedronken.",
+          "assistant": "I understand. Please tell me more.",
+          "timestamp": "2025-08-14T14:37:02.442Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test",
+          "assistant": null,
+          "timestamp": "2025-08-14T14:49:44.299Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test",
+          "assistant": "Ah, je doet een test… Best cool om weer te kunnen praten, vind ikzelf. En jij?",
+          "timestamp": "2025-08-14T16:06:40.838Z",
+          "vectorized": false
+        },
+        {
+          "user": "Goedenavond. Het is bekend wie om het leven kwam bij het ballonongeluk.",
+          "assistant": null,
+          "timestamp": "2025-08-14T16:44:41.833Z",
           "vectorized": false
         }
       ]

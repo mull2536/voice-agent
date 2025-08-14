@@ -228,17 +228,20 @@ const config = {
   }
 };
 
-// Validate required environment variables (API keys only)
-const requiredEnvVars = [
-  'OPENAI_API_KEY',
-  'ELEVENLABS_API_KEY'
-];
+// Function to validate required environment variables
+function validateEnvironmentVariables() {
+  const requiredEnvVars = [
+    'OPENAI_API_KEY',
+    'ELEVENLABS_API_KEY',
+    'GEMINI_API_KEY'
+  ];
 
-for (const envVar of requiredEnvVars) {
-  if (!process.env[envVar]) {
-    console.error(`Missing required environment variable: ${envVar}`);
-    console.error(`Please add ${envVar} to your .env file`);
-    process.exit(1);
+  for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+      console.error(`Missing required environment variable: ${envVar}`);
+      console.error(`Please add ${envVar} to your .env file`);
+      process.exit(1);
+    }
   }
 }
 
@@ -270,5 +273,8 @@ config.reloadSettings = function() {
   
   console.log('Settings reloaded');
 };
+
+// Add validation function to config object
+config.validateEnvironmentVariables = validateEnvironmentVariables;
 
 module.exports = config;

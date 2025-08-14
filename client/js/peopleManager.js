@@ -84,7 +84,7 @@ async function loadPeople() {
         }
     } catch (error) {
         console.error('Failed to load people:', error);
-        showNotification('Failed to load people', 'error');
+        showTranslatedNotification('notifications.failedToLoadPeople', 'error');
     }
 }
 
@@ -104,7 +104,15 @@ function displayPeople() {
             button.classList.add('selected');
         }
         
-        button.onclick = () => selectPersonForAction(person);
+        button.onclick = () => selectPersonForAction(person);        
+        // Double click - use person immediately
+        button.ondblclick = () => {
+            // Set the selected person for action
+            selectedPersonForAction = person;
+            
+            // Use the person (this will close the modal)
+            usePerson();
+        };
         grid.appendChild(button);
     });
 }
@@ -188,7 +196,7 @@ async function saveNewPerson() {
     const notes = document.getElementById('newPersonNotes').value.trim();
     
     if (!name) {
-        showNotification('Please enter a name', 'error');
+        showTranslatedNotification('notifications.pleaseEnterName', 'error');
         return;
     }
     
@@ -204,18 +212,18 @@ async function saveNewPerson() {
         const data = await response.json();
         
         if (data.success) {
-            showNotification(`Added ${name}`, 'success');
+            showTranslatedNotification('notifications.personAdded', 'success');
             clearForms();
             await loadPeople();
             
             // Auto-select the new person for use
             selectPersonForAction(data.person);
         } else {
-            showNotification(data.error || 'Failed to add person', 'error');
+            showTranslatedNotification('notifications.failedToAddPerson', 'error');
         }
     } catch (error) {
         console.error('Failed to add person:', error);
-        showNotification('Failed to add person', 'error');
+        showTranslatedNotification('notifications.failedToAddPerson', 'error');
     }
 }
 
@@ -227,7 +235,7 @@ async function updatePerson() {
     const notes = document.getElementById('editPersonNotes').value.trim();
     
     if (!name) {
-        showNotification('Please enter a name', 'error');
+        showTranslatedNotification('notifications.pleaseEnterName', 'error');
         return;
     }
     
@@ -243,7 +251,7 @@ async function updatePerson() {
         const data = await response.json();
         
         if (data.success) {
-            showNotification(`Updated ${name}`, 'success');
+            showTranslatedNotification('notifications.personUpdated', 'success', { name: name });
             
             // Update the selected person object
             selectedPersonForAction.name = name;
@@ -257,11 +265,11 @@ async function updatePerson() {
                 updatePersonIndicator();
             }
         } else {
-            showNotification(data.error || 'Failed to update person', 'error');
+            showTranslatedNotification('notifications.failedToUpdatePerson', 'error');
         }
     } catch (error) {
         console.error('Failed to update person:', error);
-        showNotification('Failed to update person', 'error');
+        showTranslatedNotification('notifications.failedToUpdatePerson', 'error');
     }
 }
 
@@ -282,7 +290,7 @@ async function deletePerson() {
         const data = await response.json();
         
         if (data.success) {
-            showNotification('Person deleted', 'success');
+            showTranslatedNotification('notifications.personDeleted', 'success');
             
             // If deleted person was the active one, clear selection
             if (selectedPersonForAction.id === selectedPersonId) {
@@ -299,7 +307,7 @@ async function deletePerson() {
         }
     } catch (error) {
         console.error('Failed to delete person:', error);
-        showNotification('Failed to delete person', 'error');
+        showTranslatedNotification('notifications.failedToDeletePerson', 'error');
     }
 }
 
@@ -322,7 +330,7 @@ function usePerson() {
         window.app.selectPerson(selectedPersonForAction.id);
     }
     
-    showNotification(`Now talking to: ${selectedPersonForAction.name}`, 'success');
+    showTranslatedNotification('notifications.nowTalkingTo', 'success', { name: selectedPersonForAction.name });
     
     // Close modal after short delay
     setTimeout(() => {

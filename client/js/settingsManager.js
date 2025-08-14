@@ -91,6 +91,9 @@ class SettingsManager {
             // Trigger initial update
             input.dispatchEvent(new Event('input'));
         });
+        
+        // Expandable system prompt functionality
+        this.setupExpandablePrompt();
     }
     
     async open() {
@@ -348,50 +351,56 @@ class SettingsManager {
                 console.warn('No voice selected in settings');
             }
 
+            // Check which elements exist
+            console.log('Checking elements:');
+            console.log('voice-select:', document.getElementById('voice-select'));
+            console.log('tts-model:', document.getElementById('tts-model'));
+            console.log('use-fixed-seed:', document.getElementById('use-fixed-seed'));
+            console.log('fixed-seed:', document.getElementById('fixed-seed'));
             updates.tts = {
                 voiceId: selectedVoiceId || this.settings.tts?.voiceId || '',
-                model: document.getElementById('tts-model').value,
-                outputQuality: document.getElementById('output-quality').value,
-                stability: parseFloat(document.getElementById('stability').value),
-                similarityBoost: parseFloat(document.getElementById('similarity-boost').value),
-                speechRate: parseFloat(document.getElementById('speech-rate').value),
-                style: parseFloat(document.getElementById('style-exaggeration').value),
-                useSpeakerBoost: document.getElementById('speaker-boost').checked,
-                useFixedSeed: document.getElementById('use-fixed-seed').checked,
-                fixedSeed: document.getElementById('use-fixed-seed').checked ? 
-                           (parseInt(document.getElementById('fixed-seed').value) || null) : null
+                model: document.getElementById('tts-model')?.value || '',
+                outputQuality: document.getElementById('output-quality')?.value || '',
+                stability: parseFloat(document.getElementById('stability')?.value || '0.5'),
+                similarityBoost: parseFloat(document.getElementById('similarity-boost')?.value || '0.75'),
+                speechRate: parseFloat(document.getElementById('speech-rate')?.value || '1.0'),
+                style: parseFloat(document.getElementById('style-exaggeration')?.value || '0'),
+                useSpeakerBoost: document.getElementById('speaker-boost')?.checked || false,
+                useFixedSeed: document.getElementById('use-fixed-seed')?.checked || false,
+                fixedSeed: document.getElementById('use-fixed-seed')?.checked ? 
+                           (parseInt(document.getElementById('fixed-seed')?.value || '0') || null) : null
             };
             
             // Collect Recorder settings
             updates.vad = {
-                positiveSpeechThreshold: parseFloat(document.getElementById('positive-threshold').value),
-                negativeSpeechThreshold: parseFloat(document.getElementById('negative-threshold').value),
-                minSpeechFrames: parseInt(document.getElementById('min-speech-frames').value),
-                preSpeechPadFrames: parseInt(document.getElementById('pre-speech-pad').value),
-                redemptionFrames: parseInt(document.getElementById('redemption-frames').value)
+                positiveSpeechThreshold: parseFloat(document.getElementById('positive-threshold')?.value || '0.5'),
+                negativeSpeechThreshold: parseFloat(document.getElementById('negative-threshold')?.value || '0.5'),
+                minSpeechFrames: parseInt(document.getElementById('min-speech-frames')?.value || '10'),
+                preSpeechPadFrames: parseInt(document.getElementById('pre-speech-pad')?.value || '10'),
+                redemptionFrames: parseInt(document.getElementById('redemption-frames')?.value || '10')
             };
             
             // Collect LLM settings
             updates.llm = {
-                model: document.getElementById('llm-model').value,
-                temperature: parseFloat(document.getElementById('temperature').value),
-                maxTokens: parseInt(document.getElementById('max-tokens').value),
-                systemPrompt: document.getElementById('system-prompt').value
+                model: document.getElementById('llm-model')?.value || 'gpt-4o-mini',
+                temperature: parseFloat(document.getElementById('temperature')?.value || '0.7'),
+                maxTokens: parseInt(document.getElementById('max-tokens')?.value || '150'),
+                systemPrompt: document.getElementById('system-prompt')?.value || ''
             };
             
             // Collect Internet Search settings
             updates.internetSearch = {
-                enabled: document.getElementById('search-enabled').checked
+                enabled: document.getElementById('search-enabled')?.checked || false
             };
             
             // Collect System settings
             updates.eyeGaze = {
-                hoverDuration: parseFloat(document.getElementById('hover-duration').value) * 1000,
-                visualFeedback: document.getElementById('visual-feedback').checked
+                hoverDuration: parseFloat(document.getElementById('hover-duration')?.value || '3') * 1000,
+                visualFeedback: document.getElementById('visual-feedback')?.checked || true
             };
             
             // Get the selected language
-            const selectedLanguage = document.getElementById('default-language').value;
+            const selectedLanguage = document.getElementById('default-language')?.value || 'en';
 
             // Save language to both system and transcription settings
             updates.system = {
@@ -404,9 +413,9 @@ class SettingsManager {
             };
             
             updates.rag = {
-                chunkSize: parseInt(document.getElementById('chunk-size').value),
-                chunkOverlap: parseInt(document.getElementById('chunk-overlap').value),
-                topK: parseInt(document.getElementById('top-k-results').value)
+                chunkSize: parseInt(document.getElementById('chunk-size')?.value || '1000'),
+                chunkOverlap: parseInt(document.getElementById('chunk-overlap')?.value || '200'),
+                topK: parseInt(document.getElementById('top-k-results')?.value || '5')
             };
             
             // Save to server
@@ -415,12 +424,12 @@ class SettingsManager {
             // Update local eye gaze settings if needed
             if (window.app && window.app.eyeGazeControls) {
                 window.app.eyeGazeControls.updateSettings({
-                    hoverDuration: parseFloat(document.getElementById('hover-duration').value),
-                    visualFeedback: document.getElementById('visual-feedback').checked
+                    hoverDuration: parseFloat(document.getElementById('hover-duration')?.value || '3'),
+                    visualFeedback: document.getElementById('visual-feedback')?.checked || true
                 });
             }
             
-            this.showNotification('Settings saved successfully!', 'success');
+            showTranslatedNotification('notifications.settingsSaved', 'success');
             
             // Close modal after short delay
             setTimeout(() => {
@@ -438,5 +447,63 @@ class SettingsManager {
         if (window.app && window.app.conversationUI) {
             window.app.conversationUI.showNotification(message, type);
         }
+    }
+    
+    setupExpandablePrompt() {
+        const expandBtn = document.getElementById('custom-expand-btn');
+        const expandedModal = document.getElementById('expanded-prompt-modal');
+        const closeExpandedBtn = document.getElementById('close-expanded-prompt');
+        const saveExpandedBtn = document.getElementById('save-expanded-prompt');
+        const systemPrompt = document.getElementById('system-prompt');
+        const expandedPrompt = document.getElementById('expanded-system-prompt');
+        
+        if (!expandBtn || !expandedModal || !closeExpandedBtn || !saveExpandedBtn || !systemPrompt || !expandedPrompt) {
+            console.warn('Some expandable prompt elements not found');
+            return;
+        }
+        
+        // Expand button click
+        expandBtn.addEventListener('click', () => {
+            // Copy current content to expanded textarea
+            expandedPrompt.value = systemPrompt.value;
+            
+            // Show expanded modal
+            expandedModal.classList.add('active');
+            
+            // Focus on the expanded textarea
+            setTimeout(() => {
+                expandedPrompt.focus();
+            }, 100);
+        });
+        
+        // Close button click
+        closeExpandedBtn.addEventListener('click', () => {
+            expandedModal.classList.remove('active');
+        });
+        
+        // Click outside to close
+        expandedModal.addEventListener('click', (event) => {
+            if (event.target === expandedModal) {
+                expandedModal.classList.remove('active');
+            }
+        });
+        
+        // Return to settings button click
+        saveExpandedBtn.addEventListener('click', () => {
+            // Copy content back to original textarea
+            systemPrompt.value = expandedPrompt.value;
+            
+            // Close expanded modal
+            expandedModal.classList.remove('active');
+            
+            // Note: Settings are not saved automatically - user needs to click "Save Settings" in the main settings modal
+        });
+        
+        // Escape key to close
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && expandedModal.classList.contains('active')) {
+                expandedModal.classList.remove('active');
+            }
+        });
     }
 }

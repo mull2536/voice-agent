@@ -1,6 +1,6 @@
 // server/services/llm.js
 const { OpenAI } = require('openai');
-const axios = require('axios');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const dataStore = require('../utils/simpleDataStore');
 const { getRAGContext } = require('./rag');
 const logger = require('../utils/logger');
@@ -13,8 +13,8 @@ class LLMService {
         this.openai = new OpenAI({
             apiKey: process.env.OPENAI_API_KEY
         });
-        this.geminiApiKey = process.env.GEMINI_API_KEY;
-        this.geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
+        
+        this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         
         // Default system prompt (used when settings.llm.systemPrompt is empty)
         this.defaultSystemPrompt = `You are a helpful AI assistant designed to support natural 
@@ -47,6 +47,11 @@ class LLMService {
         };
         
         return languageInstructions[language] || languageInstructions['en'];
+    }
+
+    // Check if the current model is Gemini
+    isGeminiModel(modelName) {
+        return modelName && modelName.startsWith('gemini-');
     }
 
     // Append search instructions to the system prompt
@@ -151,30 +156,30 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
 
     async generateResponses(userMessage, personId, socketId = null) {
         const timings = {};
-
+        
         try {
             // 1. LOOK UP PERSON DETAILS
             const personStartTime = Date.now();
             const person = await dataStore.findPersonById(personId);
             timings.personLookup = Date.now() - personStartTime;
-
+            
             // 2. GET RECENT CONTEXT FROM SESSION QUEUE
             const recentStartTime = Date.now();
             const recentContext = socketId ? 
                 sessionQueueManager.getConversationExchanges(socketId) : [];
             timings.recentContext = Date.now() - recentStartTime;
-
+            
             // 3. GET SESSION CONVERSATION CONTEXT
             const sessionStartTime = Date.now();
             const sessionContext = socketId ? 
                 sessionQueueManager.getConversationExchanges(socketId) : [];
             timings.sessionContext = Date.now() - sessionStartTime;
-
+            
             // 4. GET RAG CONTEXT
             const ragStartTime = Date.now();
             const ragContext = await getRAGContext(userMessage);
             timings.ragLookup = Date.now() - ragStartTime;
-
+            
             // 5. GET RELEVANT CHAT HISTORY
             const chatHistoryStartTime = Date.now();
             const chatHistoryContext = await this.chatHistoryService.searchRelevantHistory(
@@ -182,14 +187,14 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                 userMessage
             );
             timings.chatHistorySearch = Date.now() - chatHistoryStartTime;
-
+            
             // 6. GET PERSON-SPECIFIC CONTEXT
             const personContextStartTime = Date.now();
             const personContext = person ? 
                 await this.chatHistoryService.getPersonContext(personId) : null;
             const personContextEndTime = Date.now();
             timings.personContext = personContextEndTime - personContextStartTime;
-
+            
             // 7. BUILD CONTEXT MESSAGE
             const buildStartTime = Date.now();
             let systemPromptContent = this.buildContextMessage(
@@ -201,69 +206,76 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                 sessionContext, 
                 personContext
             );
-
+            
             // Get settings from dataStore
             const settings = await dataStore.getSettings();
-
+            
             // Use custom system prompt if provided, otherwise use default
             const customSystemPrompt = settings?.llm?.systemPrompt || '';
             const baseSystemPrompt = customSystemPrompt.trim() || this.defaultSystemPrompt;
-
+            
             // Add language instruction based on default language setting
             const defaultLanguage = settings?.system?.defaultLanguage || 'en';
             const languageInstruction = this.getLanguageInstruction(defaultLanguage);
-
+            
             // Combine prompts: base + language + context
             systemPromptContent = baseSystemPrompt + languageInstruction + '\n\n' + systemPromptContent;
-
+            
             // Append search instructions if search is enabled
             const searchEnabled = settings?.internetSearch?.enabled !== false; // Default to true
             if (searchEnabled) {
                 systemPromptContent = this.appendSearchInstructions(systemPromptContent);
             }
-
+            
             logger.info(`Using language: ${defaultLanguage}, Search enabled: ${searchEnabled}`);
-
+            
             timings.messageBuilding = Date.now() - buildStartTime;
-
-            // Get the model name
-            const modelName = settings?.llm?.model || config.llm.model || 'gpt-4.1-mini';
-            const isGemini = modelName === 'gemini-2.5-flash';
-
-            // 8. USE RESPONSES API WITH WEB SEARCH or GEMINI API
+            
+            // 8. USE APPROPRIATE API BASED ON MODEL
             const llmStartTime = Date.now();
-
+            const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
+            
             try {
-                if (isGemini) {
-                    // GEMINI MODEL HANDLING
+                // Check if we're using Gemini model
+                if (this.isGeminiModel(modelName)) {
+                    // Use Gemini API
                     if (socketId) {
                         // Manual mode - generate 3 responses
                         const responses = [];
-
-                        // Generate responses with different temperatures for variety
-                        for (let i = 0; i < 3; i++) {
-                            const temp = Math.min(1.5, 0.9 + i * 0.2);
-                            const response = await this.callGeminiAPI(
-                                userMessage,
-                                systemPromptContent,
-                                settings,
+                        
+                        // Generate first response with potential web search
+                        const response1 = await this.generateGeminiResponse(
+                            userMessage, 
+                            systemPromptContent, 
+                            settings, 
+                            searchEnabled,
+                            settings?.llm?.temperature || 0.9
+                        );
+                        responses.push(response1);
+                        
+                        // Generate 2 more responses with slightly different temperatures
+                        for (let i = 1; i < 3; i++) {
+                            const baseTemp = settings?.llm?.temperature || 0.9;
+                            const response = await this.generateGeminiResponse(
+                                userMessage, 
+                                systemPromptContent, 
+                                settings, 
                                 searchEnabled,
-                                temp
+                                Math.min(1.5, baseTemp + i * 0.2)
                             );
-
                             if (!responses.includes(response)) {
                                 responses.push(response);
                             }
                         }
-
+                        
                         // Ensure we have 3 responses
                         while (responses.length < 3) {
                             responses.push("I understand. Please tell me more.");
                         }
-
+                        
                         timings.llmApi = Date.now() - llmStartTime;
                         timings.responseParsing = 0;
-
+                        
                         return await this.finalizeResponses(
                             responses.slice(0, 3),
                             person,
@@ -272,19 +284,20 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                             timings,
                             socketId
                         );
+                        
                     } else {
                         // Auto mode - single response
-                        const response = await this.callGeminiAPI(
-                            userMessage,
-                            systemPromptContent,
-                            settings,
+                        const response = await this.generateGeminiResponse(
+                            userMessage, 
+                            systemPromptContent, 
+                            settings, 
                             searchEnabled,
-                            0.9
+                            settings?.llm?.temperature || 0.9
                         );
-
+                        
                         timings.llmApi = Date.now() - llmStartTime;
                         timings.responseParsing = 0;
-
+                        
                         return await this.finalizeResponses(
                             [response],
                             person,
@@ -295,12 +308,11 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                         );
                     }
                 } else {
-                    // OPENAI MODELS - USE RESPONSES API WITH WEB SEARCH
-                    // Check if we're in manual mode (need multiple responses)
+                    // Use OpenAI API (existing logic)
                     if (socketId) {
                         // Manual mode - generate 3 responses
                         const responses = [];
-
+                        
                         // Generate first response with potential web search
                         const response1 = await this.generateSingleResponse(
                             userMessage, 
@@ -310,7 +322,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                             0.9
                         );
                         responses.push(response1);
-
+                        
                         // Generate 2 more responses with slightly different temperatures
                         for (let i = 1; i < 3; i++) {
                             const response = await this.generateSingleResponse(
@@ -322,17 +334,17 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                             );
                             if (!responses.includes(response)) {
                                 responses.push(response);
-                            }z
+                            }
                         }
-
+                        
                         // Ensure we have 3 responses
                         while (responses.length < 3) {
                             responses.push("I understand. Please tell me more.");
                         }
-
+                        
                         timings.llmApi = Date.now() - llmStartTime;
                         timings.responseParsing = 0; // No separate parsing needed
-
+                        
                         // Save conversation and return
                         return await this.finalizeResponses(
                             responses.slice(0, 3),
@@ -342,7 +354,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                             timings,
                             socketId
                         );
-
+                        
                     } else {
                         // Auto mode - single response
                         const response = await this.generateSingleResponse(
@@ -351,10 +363,10 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                             settings, 
                             searchEnabled
                         );
-
+                        
                         timings.llmApi = Date.now() - llmStartTime;
                         timings.responseParsing = 0;
-
+                        
                         return await this.finalizeResponses(
                             [response],
                             person,
@@ -365,101 +377,148 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                         );
                     }
                 }
-
+                
             } catch (error) {
-                // Fallback to Chat Completions API if Responses API fails
-                logger.warn('Responses API failed, falling back to Chat Completions API:', error);
-                return await this.fallbackToChatCompletions(
-                    userMessage,
-                    systemPromptContent,
-                    settings,
-                    person,
-                    ragContext,
-                    timings,
-                    socketId
-                );
+                // Fallback to Chat Completions API if Responses API fails (only for OpenAI models)
+                if (!this.isGeminiModel(modelName)) {
+                    logger.warn('Responses API failed, falling back to Chat Completions API:', error);
+                    return await this.fallbackToChatCompletions(
+                        userMessage,
+                        systemPromptContent,
+                        settings,
+                        person,
+                        ragContext,
+                        timings,
+                        socketId
+                    );
+                } else {
+                    // For Gemini, return fallback responses instead of throwing
+                    logger.error('Gemini API failed, using fallback responses:', error);
+                    
+                    if (socketId) {
+                        // Manual mode - return 3 fallback responses
+                        const fallbackResponses = [
+                            "I understand. Please tell me more.",
+                            "That's interesting. Could you elaborate?",
+                            "I'm here to help. What would you like to discuss?"
+                        ];
+                        
+                        return await this.finalizeResponses(
+                            fallbackResponses,
+                            person,
+                            userMessage,
+                            ragContext,
+                            timings,
+                            socketId
+                        );
+                    } else {
+                        // Auto mode - single fallback response
+                        return await this.finalizeResponses(
+                            ["I understand. Please tell me more."],
+                            person,
+                            userMessage,
+                            ragContext,
+                            timings,
+                            socketId
+                        );
+                    }
+                }
             }
-
+            
         } catch (error) {
             logger.error('Failed to generate responses:', error);
             throw error;
         }
     }
-    
-    async callGeminiAPI(userMessage, systemPrompt, settings, searchEnabled, temperature) {
-        try {
-            // Prepare the request payload
-            const payload = {
-                contents: [
-                    {
-                        role: "user",
-                        parts: [
-                            {
-                                text: userMessage
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: temperature,
-                    maxOutputTokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150),
-                    topP: 0.95,
-                    topK: 40
-                }
-            };
 
-            // Add system instruction if provided
-            if (systemPrompt) {
-                payload.systemInstruction = {
-                    role: "system",
+    // Generate response using Gemini API
+    async generateGeminiResponse(userMessage, systemPrompt, settings, searchEnabled, temperature) {
+        const modelName = settings?.llm?.model || config.llm.model || "gemini-2.5-flash";
+        const maxTokens = parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150);
+        
+        // Use Gemini 2.5 Flash model
+        const model = this.gemini.getGenerativeModel({ 
+            model: "gemini-2.5-flash",
+            generationConfig: {
+                temperature: temperature,
+                maxOutputTokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150)
+            }
+        });
+        
+        // Build the request payload
+        const requestPayload = {
+            contents: [
+                {
+                    role: "user",
                     parts: [
                         {
-                            text: systemPrompt
+                            text: userMessage
                         }
                     ]
-                };
-            }
-
-            // Add web search tool if enabled
-            if (searchEnabled) {
-                payload.tools = [
-                    {
-                        googleSearch: {}
-                    }
-                ];
-            }
-
-            // Make the API call
-            const response = await axios.post(
-                `${this.geminiApiUrl}?key=${this.geminiApiKey}`,
-                payload,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
                 }
-            );
-
-            // Extract the response text
-            if (response.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-                return this.cleanResponse(response.data.candidates[0].content.parts[0].text);
-            } else {
-                throw new Error('Invalid response format from Gemini API');
+            ]
+        };
+        
+        // Add system instruction if provided
+        if (systemPrompt && systemPrompt.trim()) {
+            requestPayload.system_instruction = {
+                role: "system",
+                parts: [
+                    {
+                        text: systemPrompt
+                    }
+                ]
+            };
+        }
+        
+        // Add web search if enabled
+        if (searchEnabled) {
+            requestPayload.tools = [
+                {
+                    google_search: {}
+                }
+            ];
+        }
+        
+        // LOG THE EXACT REQUEST
+        logger.info('=== GEMINI API REQUEST ===');
+        logger.info(`Search Enabled: ${searchEnabled}`);
+        logger.info(`Model: ${modelName}`);
+        logger.info(`Temperature: ${temperature}`);
+        logger.info(`Max Tokens: ${maxTokens}`);
+        logger.info(`Tools: ${JSON.stringify(requestPayload.tools || [])}`);
+        logger.info(`User Message: "${userMessage}"`);
+        logger.info(`System Prompt Length: ${systemPrompt.length} characters`);
+        
+        try {
+            const result = await model.generateContent(requestPayload);
+            const response = result.response;
+            const text = response.text();
+            
+            // LOG THE RESPONSE
+            logger.info('=== GEMINI API RESPONSE ===');
+            logger.info(`Response Text: "${text?.substring(0, 100)}..."`);
+            
+            // Ensure we have a valid response
+            if (!text || text.trim() === '') {
+                logger.warn('Gemini API returned empty response, using fallback');
+                return "I understand. Please tell me more.";
             }
-
+            
+            return this.cleanResponse(text);
         } catch (error) {
-            logger.error('Gemini API error:', error.response?.data || error.message);
-            throw error;
+            logger.error('=== GEMINI API ERROR ===');
+            logger.error('Error details:', error);
+            
+            // Return a fallback response instead of throwing
+            logger.warn('Gemini API failed, using fallback response');
+            return "I understand. Please tell me more.";
         }
     }
 
     async generateSingleResponse(userMessage, systemPrompt, settings, searchEnabled, temperature) {
         const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
         
-        // Check if it's Gemini model
-        if (modelName === 'gemini-2.5-flash') {
-            return await this.callGeminiAPI(userMessage, systemPrompt, settings, searchEnabled, temperature);
-        }
         // Simple logic for just two models
         const isGPT5ChatLatest = modelName === 'gpt-5-chat-latest';
         
@@ -531,7 +590,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
         const apiParams = {
             model: modelName,
             messages: messages,
-            temperature: 0.9
+            temperature: temperature
         };
         
         // Use correct token parameter based on model

@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@elevenlabs/elevenlabs-js": "^2.1.0",
+    "@google/generative-ai": "^0.21.0",
     "@langchain/community": "^0.0.50",
     "@langchain/openai": "^0.0.34",
     "axios": "^1.6.2",

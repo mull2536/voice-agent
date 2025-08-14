@@ -180,7 +180,7 @@ async function loadFiles(reset = true) {
         }
     } catch (error) {
         console.error('Failed to load files:', error);
-        showNotification('Failed to load files', 'error');
+        showTranslatedNotification('notifications.failedToLoadFiles', 'error');
     }
 }
 
@@ -300,7 +300,7 @@ async function handleFileUpload(e) {
     });
     
     try {
-        showNotification('Uploading files...', 'info');
+        showTranslatedNotification('notifications.uploadingFiles', 'info');
         
         const response = await fetch('/api/files/upload', {
             method: 'POST',
@@ -310,18 +310,18 @@ async function handleFileUpload(e) {
         const data = await response.json();
         
         if (data.success) {
-            showNotification(`Uploaded ${data.uploadedFiles.length} files`, 'success');
+            showTranslatedNotification('notifications.fileUploaded', 'success');
             // Reload files to show indexing progress
             await loadFiles();
             
             // Start polling for indexing status
             pollIndexingStatus(data.uploadedFiles);
         } else {
-            showNotification(data.error || 'Failed to upload files', 'error');
+            showTranslatedNotification('notifications.failedToUploadFiles', 'error');
         }
     } catch (error) {
         console.error('Failed to upload files:', error);
-        showNotification('Failed to upload files', 'error');
+        showTranslatedNotification('notifications.failedToUploadFiles', 'error');
     }
     
     // Clear the input
@@ -382,18 +382,18 @@ async function deleteSelectedFiles() {
         if (response.ok && data.success) {
             if (data.errors && data.errors.length > 0) {
                 const errorMsg = data.errors.map(e => `${e.filename}: ${e.error}`).join('\n');
-                showNotification(`Deleted ${data.deletedCount} files. Errors:\n${errorMsg}`, 'warning');
+                showTranslatedNotification('notifications.filesDeletedWithErrors', 'warning', { count: data.deletedCount, errors: errorMsg });
             } else {
-                showNotification(`Deleted ${data.deletedCount} files`, 'success');
+                showTranslatedNotification('notifications.filesDeleted', 'success', { count: data.deletedCount });
             }
             selectedFiles.clear();
             await loadFiles();
         } else {
-            showNotification(data.error || 'Failed to delete files', 'error');
+            showTranslatedNotification('notifications.failedToDeleteFiles', 'error');
         }
     } catch (error) {
         console.error('Failed to delete files:', error);
-        showNotification('Failed to delete files', 'error');
+        showTranslatedNotification('notifications.failedToDeleteFiles', 'error');
     }
 }
 
@@ -419,7 +419,7 @@ async function loadMemories(reset = true) {
         }
     } catch (error) {
         console.error('Failed to load memories:', error);
-        showNotification('Failed to load memories', 'error');
+        showTranslatedNotification('notifications.failedToLoadMemories', 'error');
     }
 }
 
@@ -584,7 +584,7 @@ async function saveMemory() {
     const text = document.getElementById('memoryText').value.trim();
     
     if (!title || !date || !text) {
-        showNotification('Please fill in all required fields', 'error');
+        showTranslatedNotification('notifications.pleaseFillRequiredFields', 'error');
         return;
     }
     
@@ -617,16 +617,16 @@ async function saveMemory() {
         const data = await response.json();
         
         if (response.ok && data.success) {
-            showNotification(editingMemory ? 'Memory updated' : 'Memory added', 'success');
+            showTranslatedNotification(editingMemory ? 'notifications.memoryUpdated' : 'notifications.memoryAdded', 'success');
             hideMemoryForm();
             memoriesOffset = 0; // Reset to beginning
             await loadMemories(true);
         } else {
-            showNotification(data.error || 'Failed to save memory', 'error');
+            showTranslatedNotification('notifications.failedToSaveMemory', 'error');
         }
     } catch (error) {
         console.error('Failed to save memory:', error);
-        showNotification('Failed to save memory', 'error');
+        showTranslatedNotification('notifications.failedToSaveMemory', 'error');
     }
 }
 
@@ -654,16 +654,16 @@ async function deleteSelectedMemories() {
         const data = await response.json();
         
         if (response.ok && data.success) {
-            showNotification(`Deleted ${data.deletedCount} memories`, 'success');
+            showTranslatedNotification('notifications.memoriesDeleted', 'success', { count: data.deletedCount });
             selectedMemories.clear();
             memoriesOffset = 0; // Reset to beginning
             await loadMemories(true);
         } else {
-            showNotification(data.error || 'Failed to delete memories', 'error');
+            showTranslatedNotification('notifications.failedToDeleteMemories', 'error');
         }
     } catch (error) {
         console.error('Failed to delete memories:', error);
-        showNotification('Failed to delete memories', 'error');
+        showTranslatedNotification('notifications.failedToDeleteMemories', 'error');
     }
 }
 

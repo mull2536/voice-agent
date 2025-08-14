@@ -14,6 +14,9 @@ const path = require('path');
 const { performance } = require('perf_hooks');
 
 const config = require('./config');
+
+// Validate environment variables after dotenv is loaded
+config.validateEnvironmentVariables();
 const { initializeRAG } = require('./services/rag');
 const { startFileWatcher } = require('./utils/fileIndexer');
 const logger = require('./utils/logger');
@@ -118,6 +121,7 @@ async function initializeServices() {
     audioRecorder = new AudioRecorder(io);
     transcriptionService = new TranscriptionService();
     llmService = new LLMService();
+    global.llmService = llmService; // Make it globally accessible
     ttsService = new TTSService();
     const servicesEndTime = performance.now();
     logger.info(`Services initialization: ${(servicesEndTime - servicesStartTime).toFixed(2)}ms`);

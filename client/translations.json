@@ -1,0 +1,1157 @@
+{
+    "en": {
+      "app": {
+        "title": "SMF VOICE AGENT",
+        "currentSpeaker": "No one selected",
+        "welcomeTitle": "Welcome!",
+        "welcomeMessage": "Start a conversation by speaking or typing below.",
+        "chooseResponse": "Choose your response:",
+        "typeMessage": "Type a message or instruction..."
+      },
+      "buttons": {
+        "startRecording": "Start Recording",
+        "stopRecording": "Stop Recording",
+        "send": "Send",
+        "speakMessage": "Speak Message",
+        "regenerate": "Regenerate",
+        "cancel": "Cancel",
+        "compose": "Compose",
+        "use": "Use",
+        "add": "Add",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "close": "Close",
+        "upload": "Upload Files",
+        "addPerson": "Add Person",
+        "addMemory": "Add Memory",
+        "saveSettings": "Save Settings"
+      },
+      "modals": {
+        "settings": {
+          "title": "Voice Agent Settings",
+          "tabs": {
+            "voice": "Voice",
+            "recorder": "Recorder",
+            "llm": "LLM",
+            "system": "System"
+          },
+          "voice": {
+            "ttsSettings": "Text-to-Speech Settings",
+            "voiceLabel": "Voice",
+            "voiceDescription": "Choose the voice for text-to-speech output",
+            "modelLabel": "Model",
+            "modelDescription": "Select the TTS model quality",
+            "speechRateLabel": "Speech Rate",
+            "speechRateDescription": "Adjust the speaking speed (0.5 = slow, 2.0 = fast)",
+            "stabilityLabel": "Stability",
+            "stabilityDescription": "Higher values make speech more consistent but less expressive",
+            "similarityLabel": "Similarity Boost",
+            "similarityDescription": "Higher values make voice more similar to original",
+            "styleLabel": "Style Exaggeration",
+            "styleDescription": "Higher values make speech more expressive",
+            "speakerBoostLabel": "Use Speaker Boost",
+            "speakerBoostDescription": "Enhance voice clarity and quality"
+          },
+          "recorder": {
+            "vadSettings": "Voice Activity Detection (VAD) Settings",
+            "positiveSpeechLabel": "Positive Speech Threshold",
+            "positiveSpeechDescription": "Confidence needed to start speech detection (lower = more sensitive)",
+            "negativeSpeechLabel": "Negative Speech Threshold",
+            "negativeSpeechDescription": "Confidence needed to stop speech detection",
+            "minSpeechFramesLabel": "Min Speech Frames",
+            "minSpeechFramesDescription": "Minimum frames to confirm speech started",
+            "preSpeechPadLabel": "Pre-Speech Padding",
+            "preSpeechPadDescription": "Frames to include before speech starts",
+            "redemptionFramesLabel": "Redemption Frames",
+            "redemptionFramesDescription": "Frames to wait before ending speech"
+          },
+          "llm": {
+            "llmSettings": "Language Model Settings",
+            "modelLabel": "Model",
+            "modelDescription": "Choose the AI model for generating responses (GPT-4.1 Mini: Fast & efficient, GPT-5 Chat Latest: Most advanced, Gemini 2.5 Flash: Google's latest with web search)",
+            "temperatureLabel": "Temperature",
+            "temperatureDescription": "Controls randomness (0 = focused, 2 = creative)",
+            "maxTokensLabel": "Max Tokens",
+            "maxTokensDescription": "Maximum length of generated responses",
+            "systemPromptLabel": "System Prompt",
+            "systemPromptDescription": "Define how the AI assistant should behave and respond"
+          },
+          "system": {
+            "generalSettings": "General Settings",
+            "languageLabel": "Default Language",
+            "languageDescription": "Select the interface language",
+            "eyeGazeLabel": "Eye Gaze Duration (seconds)",
+            "eyeGazeDescription": "How long to look at an option before it's selected",
+            "visualFeedbackLabel": "Eye Gaze Visual Feedback",
+            "internetSearchLabel": "Enable Internet Search",
+            "ragSettings": "Knowledge Base Settings",
+            "chunkSizeLabel": "Chunk Size",
+            "chunkOverlapLabel": "Chunk Overlap",
+            "topKLabel": "Top K Results"
+          }
+        },
+        "people": {
+          "title": "People Management",
+          "selectPerson": "Select a Person",
+          "editPerson": "Edit Person",
+          "addNewPerson": "Add New Person",
+          "personNamePlaceholder": "Enter person's name",
+          "personNotesPlaceholder": "Enter details about this person..."
+        },
+        "fileManager": {
+          "title": "Knowledge Base Manager",
+          "tabs": {
+            "files": "Files",
+            "memories": "Memories"
+          },
+          "uploadInstructions": "Drag and drop files here or click to upload",
+          "supportedFormats": "Supported formats: .txt, .pdf, .docx, .json",
+          "autoIndexed": "Auto-indexed for AI assistance",
+          "noFiles": "No files uploaded yet",
+          "noMemories": "No memories created yet",
+          "loadMore": "Load More",
+          "memoryTitle": "Title",
+          "memoryContent": "Content",
+          "memoryTags": "Tags (comma separated)",
+          "memoryContentPlaceholder": "Enter memory content...",
+          "selectedCount": "selected",
+          "fileName": "File Name",
+          "index": "Index"
+        },
+        "info": {
+          "title": "About SMF Voice Agent",
+          "aboutApp": "About the App",
+          "aboutAppText": "The SMF Voice Agent is a semi-autonomous conversational AI designed to help people with ALS and similar conditions communicate naturally using only their voice and eye gaze. It combines real-time speech recognition, intelligent response generation, and natural-sounding voice synthesis with a fully eye-gaze-controlled interface. The system can draw on a local knowledge base, chat history, and even live internet search results to provide meaningful, context-aware conversations—without the need for constant clicking or typing.",
+          "aboutFoundation": "About the Foundation & Creator",
+          "aboutFoundationText": "This project was built in collaboration with the Scott-Morgan Foundation, which empowers people with severe physical disabilities through assistive technology. It was created by Bernard Muller, an entrepreneur, AI artist, and ALS patient since 2010. Bernard, who communicates via eye-tracking technology, developed the SMF Voice Agent to restore the spontaneity of conversation he enjoyed before ALS—and to make that freedom available to others.",
+          "tagline": "Rewriting the Future of Disability | The Scott-Morgan Foundation"
+        }
+      },
+      "help": {
+        "title": "SMF Voice Agent - User Guide",
+        "navigation": {
+          "overview": "Overview",
+          "gettingStarted": "Getting Started",
+          "voiceRecording": "Voice Recording",
+          "eyeGaze": "Eye Gaze Controls",
+          "people": "People Management",
+          "knowledgeBase": "Knowledge Base",
+          "settings": "Settings",
+          "troubleshooting": "Troubleshooting"
+        },
+        "sections": {
+          "overview": {
+            "title": "Welcome to SMF Voice Agent",
+            "intro": "The SMF Voice Agent is a semi-autonomous conversational AI designed to help people with ALS and similar conditions communicate naturally. This guide will help you understand and use all the features effectively.",
+            "keyFeatures": "Key Features:",
+            "features": {
+              "voice": "Voice Recognition: Continuous recording with automatic speech detection",
+              "ai": "AI Responses: Choose from three intelligent response options",
+              "eyeGaze": "Eye Gaze Control: Fully accessible interface for eye-tracking users",
+              "speakers": "Multiple Speakers: Support for different users with voice profiles",
+              "knowledge": "Knowledge Base: Store and access personal information and memories",
+              "internet": "Internet Search: Get current information when needed"
+            }
+          },
+          "gettingStarted": {
+            "title": "Getting Started",
+            "firstTimeSetup": "First-Time Setup",
+            "firstTimeSteps": {
+              "1": "Grant microphone permissions when prompted by your browser",
+              "2": "Click Settings to pick a voice from the voice list or try the default one",
+              "3": "Click People to select who you're talking to"
+            },
+            "startConversation": "Start a conversation",
+            "startConversationIntro": "Write a message in the text box and",
+            "startConversationOptions": {
+              "speak": "click",
+              "speakSuffix": "to speak your message or",
+              "send": "click",
+              "sendSuffix": "to generate three responses or",
+              "record": "click",
+              "recordSuffix": "to start recording a conversation"
+            }
+          },
+          "voiceRecording": {
+            "title": "Voice Recording & Conversation",
+            "startingConversation": "Starting a Conversation",
+            "conversationIntro": "You have three ways to communicate:",
+            "method1Title": "1. Voice Recording (Recommended)",
+            "method1Steps": {
+              "1": "Click the Start Recording button",
+              "2": "Speak naturally - the app detects when you start and stop talking",
+              "3": "The app automatically transcribes your speech",
+              "4": "Three response options will appear"
+            },
+            "vadTip": "The Voice Activity Detection (VAD) automatically detects speech, so you don't need to click for each sentence!",
+            "method2Title": "2. Speak Text Message",
+            "method2Steps": {
+              "1": "Type your message in the text box",
+              "2": "Click the Speak Message green button",
+              "3": "The app will speak your typed message aloud and auto record"
+            },
+            "method3Title": "3. Text Input",
+            "method3Steps": {
+              "1": "Click in the text box at the bottom",
+              "2": "Type your instruction (e.g., \"Tell me about the movie I watched with my family\")",
+              "3": "Press Enter and wait for the three responses to choose from to continue or start the conversation"
+            },
+            "choosingResponses": "Choosing Responses",
+            "responseIntro": "After you speak or type, the AI generates three response options:",
+            "responseOptions": {
+              "mouse": "Mouse/Touch: Click on your preferred response",
+              "eyeGaze": "Eye Gaze: Look at a response for 3 seconds (adjustable)",
+              "regenerate": "Regenerate: Click ↻ for new options",
+              "cancel": "Cancel: Click ✖ to cancel and continue recording"
+            }
+          },
+          "eyeGaze": {
+            "title": "Eye Gaze Controls",
+            "howItWorks": "How Eye Gaze Works",
+            "workingIntro": "The interface supports eye gaze control through emulated eye gaze (hover and hold):",
+            "workingSteps": {
+              "1": "Look at any button or response option",
+              "2": "A progress indicator shows selection progress",
+              "3": "Keep looking for the set duration (default: 3 seconds)",
+              "4": "The item is automatically selected when the timer completes"
+            },
+            "emulationNote": "This feature emulates eye gaze control through hover and hold, making it accessible for both eye-tracking devices and mouse users.",
+            "adjustingSettings": "Adjusting Eye Gaze Settings",
+            "adjustSteps": {
+              "1": "Click Settings to open settings",
+              "2": "Go to the \"System\" tab",
+              "3": "Adjust \"Eye Gaze Duration\" (1-5 seconds)",
+              "4": "Toggle \"Eye Gaze Visual Feedback\" on/off"
+            },
+            "adjustTip": "Start with 3 seconds and adjust based on your comfort. Shorter times are faster but may cause accidental selections."
+          },
+          "people": {
+            "title": "People Management",
+            "selectingAdding": "Selecting or Adding a Person",
+            "selectSteps": {
+              "1": "Click People in the header",
+              "2": "Click on a person's name to select them and click Use, or double-click a person",
+              "3": "Enter a new person's name in the text field",
+              "4": "Click Add Person"
+            },
+            "switchingPeople": "Switching Between People",
+            "switchSteps": {
+              "1": "Click People",
+              "2": "Click on the person's name button",
+              "3": "The current person shows in the header"
+            },
+            "managingPeople": "Managing People",
+            "manageOptions": {
+              "edit": "Edit: Select a person and click Edit",
+              "delete": "Delete: Select a person and click Delete"
+            },
+            "peopleNote": "People represent who you're talking to, not who is using the app. The patient is the primary user guiding the assistant."
+          },
+          "knowledgeBase": {
+            "title": "Knowledge Base & Memories",
+            "kbFiles": "Knowledge Base Files",
+            "uploadIntro": "Upload documents for the AI to reference:",
+            "uploadSteps": {
+              "1": "Click Knowledge Base in the header",
+              "2": "Click the \"Files\" tab",
+              "3": "Click Upload Files",
+              "4": "Select files (supports .txt, .pdf, .docx, .json)"
+            },
+            "supportedTypes": "Supported file types:",
+            "fileTypes": {
+              "txt": ".txt: Plain text files",
+              "pdf": ".pdf: PDF documents",
+              "docx": ".docx: Word documents",
+              "json": ".json: Structured data"
+            },
+            "creatingMemories": "Creating Memories",
+            "memoryIntro": "Store important information as memories:",
+            "memorySteps": {
+              "1": "Click Knowledge Base",
+              "2": "Click the \"Memories\" tab",
+              "3": "Click Add Memory",
+              "4": "Enter a title and content",
+              "5": "Click Save"
+            },
+            "memoryTip": "Use memories for personal information, preferences, medical details, or anything you want the AI to remember."
+          },
+          "settings": {
+            "title": "Settings Configuration",
+            "intro": "Access settings by clicking Settings in the header.",
+            "voiceSettings": "Voice Settings",
+            "voiceOptions": {
+              "voice": "Voice: Choose from available TTS voices",
+              "model": "Model: Select quality (Turbo for speed, Multilingual for accuracy)",
+              "rate": "Speech Rate: Adjust speaking speed (0.5-2.0)",
+              "settings": "Voice Settings: Fine-tune stability, similarity, and style"
+            },
+            "recorderSettings": "Recorder Settings",
+            "recorderOptions": {
+              "thresholds": "Speech Thresholds: Adjust voice detection sensitivity",
+              "frames": "Frame Settings: Control speech detection timing"
+            },
+            "llmSettings": "LLM (AI) Settings",
+            "llmOptions": {
+              "model": "Model: Choose AI model (GPT-4 or GPT-5)",
+              "temperature": "Temperature: Control response creativity (0-2)",
+              "tokens": "Max Tokens: Limit response length",
+              "prompt": "System Prompt: Customize AI behavior"
+            },
+            "systemSettings": "System Settings",
+            "systemOptions": {
+              "language": "Language: Set default language",
+              "eyeGaze": "Eye Gaze Duration: Adjust selection time",
+              "feedback": "Visual Feedback: Toggle selection indicators",
+              "search": "Internet Search: Enable/disable web search"
+            }
+          },
+          "troubleshooting": {
+            "title": "Troubleshooting",
+            "micNotWorking": "Microphone Not Working",
+            "micSolutions": {
+              "1": "Check browser permissions (look for microphone icon in address bar)",
+              "2": "Ensure no other application is using the microphone",
+              "3": "Try refreshing the page and granting permissions again"
+            },
+            "voiceNotDetected": "Voice Not Detected",
+            "voiceSolutions": {
+              "1": "Speak louder and clearer",
+              "2": "Check recorder settings and lower the speech threshold",
+              "3": "Ensure you've clicked \"Start Recording\""
+            },
+            "eyeGazeIssues": "Eye Gaze Issues",
+            "eyeGazeSolutions": {
+              "1": "Calibrate your eye tracking device",
+              "2": "Adjust the hover duration in settings",
+              "3": "Enable visual feedback to see selection progress",
+              "4": "Ensure good lighting and proper distance from screen"
+            },
+            "responsesNotAppearing": "Responses Not Appearing",
+            "responseSolutions": {
+              "1": "Check your internet connection",
+              "2": "Verify API keys are properly configured",
+              "3": "Look for error messages in the conversation area"
+            },
+            "performanceIssues": "Performance Issues",
+            "performanceSolutions": {
+              "1": "Close unnecessary browser tabs",
+              "2": "Use Chrome or Edge for best performance",
+              "3": "Clear browser cache if needed",
+              "4": "Reduce max tokens in LLM settings"
+            },
+            "moreHelp": "Need more help? Check the browser console (F12) for detailed error messages."
+          }
+        },
+        "tips": {
+          "tip": "Tip",
+          "note": "Note"
+        }
+      },
+      "notifications": {
+        "settingsSaved": "Settings saved successfully!",
+        "personAdded": "Person added successfully!",
+        "personDeleted": "Person deleted successfully!",
+        "fileUploaded": "File uploaded successfully!",
+        "memoryAdded": "Memory added successfully!",
+        "error": "An error occurred. Please try again.",
+        "microphonePermission": "Please grant microphone permissions to use voice recording.",
+        "nowTalkingTo": "Now talking to {name}",
+        "failedToInitialize": "Failed to initialize application",
+        "failedToSynthesizeSpeech": "Failed to synthesize speech",
+        "pleaseSelectPerson": "Please select who you're talking to first",
+        "unableToRegenerateResponses": "Unable to regenerate responses. Please try speaking again.",
+        "failedToPlayAudio": "Failed to play audio",
+        "failedToProcessAudio": "Failed to process audio",
+        "personUpdated": "Updated {name}",
+        "failedToLoadPeople": "Failed to load people",
+        "pleaseEnterName": "Please enter a name",
+        "failedToAddPerson": "Failed to add person",
+        "failedToUpdatePerson": "Failed to update person",
+        "failedToDeletePerson": "Failed to delete person",
+        "failedToLoadFiles": "Failed to load files",
+        "uploadingFiles": "Uploading files...",
+        "failedToUploadFiles": "Failed to upload files",
+        "filesDeleted": "Deleted {count} files",
+        "filesDeletedWithErrors": "Deleted {count} files. Errors:\n{errors}",
+        "failedToDeleteFiles": "Failed to delete files",
+        "failedToLoadMemories": "Failed to load memories",
+        "pleaseFillRequiredFields": "Please fill in all required fields",
+        "memoryUpdated": "Memory updated",
+        "memoryAdded": "Memory added",
+        "failedToSaveMemory": "Failed to save memory",
+        "memoriesDeleted": "Deleted {count} memories",
+        "failedToDeleteMemories": "Failed to delete memories"
+      }
+    },
+    "nl": {
+      "app": {
+        "title": "SMF SPRAAKAGENT",
+        "currentSpeaker": "Niemand geselecteerd",
+        "welcomeTitle": "Welkom!",
+        "welcomeMessage": "Start een gesprek door te spreken of hieronder te typen.",
+        "chooseResponse": "Kies uw antwoord:",
+        "typeMessage": "Typ een bericht of instructie..."
+      },
+      "buttons": {
+        "startRecording": "Start Opname",
+        "stopRecording": "Stop Opname",
+        "send": "Verzenden",
+        "speakMessage": "Spreek Bericht",
+        "regenerate": "Opnieuw Genereren",
+        "cancel": "Annuleren",
+        "compose": "Componeren",
+        "use": "Gebruiken",
+        "add": "Toevoegen",
+        "edit": "Bewerken",
+        "delete": "Verwijderen",
+        "save": "Opslaan",
+        "close": "Sluiten",
+        "upload": "Bestanden Uploaden",
+        "addPerson": "Persoon Toevoegen",
+        "addMemory": "Geheugen Toevoegen",
+        "saveSettings": "Instellingen Opslaan"
+      },
+      "modals": {
+        "settings": {
+          "title": "Spraakagent Instellingen",
+          "tabs": {
+            "voice": "Stem",
+            "recorder": "Recorder",
+            "llm": "LLM",
+            "system": "Systeem"
+          },
+          "voice": {
+            "ttsSettings": "Tekst-naar-Spraak Instellingen",
+            "voiceLabel": "Stem",
+            "voiceDescription": "Kies de stem voor tekst-naar-spraak uitvoer",
+            "modelLabel": "Model",
+            "modelDescription": "Selecteer de TTS-modelkwaliteit",
+            "speechRateLabel": "Spreeksnelheid",
+            "speechRateDescription": "Pas de spreeksnelheid aan (0.5 = langzaam, 2.0 = snel)",
+            "stabilityLabel": "Stabiliteit",
+            "stabilityDescription": "Hogere waarden maken spraak consistenter maar minder expressief",
+            "similarityLabel": "Gelijkenis Boost",
+            "similarityDescription": "Hogere waarden maken de stem meer gelijk aan het origineel",
+            "styleLabel": "Stijl Overdrijving",
+            "styleDescription": "Hogere waarden maken spraak expressiever",
+            "speakerBoostLabel": "Gebruik Speaker Boost",
+            "speakerBoostDescription": "Verbeter stemhelderheid en kwaliteit"
+          },
+          "recorder": {
+            "vadSettings": "Stemactiviteitsdetectie (VAD) Instellingen",
+            "positiveSpeechLabel": "Positieve Spraakdrempel",
+            "positiveSpeechDescription": "Vertrouwen nodig om spraakdetectie te starten (lager = gevoeliger)",
+            "negativeSpeechLabel": "Negatieve Spraakdrempel",
+            "negativeSpeechDescription": "Vertrouwen nodig om spraakdetectie te stoppen",
+            "minSpeechFramesLabel": "Min Spraak Frames",
+            "minSpeechFramesDescription": "Minimum frames om te bevestigen dat spraak is gestart",
+            "preSpeechPadLabel": "Pre-Spraak Padding",
+            "preSpeechPadDescription": "Frames om op te nemen voordat spraak begint",
+            "redemptionFramesLabel": "Verlossing Frames",
+            "redemptionFramesDescription": "Frames om te wachten voordat spraak eindigt"
+          },
+          "llm": {
+            "llmSettings": "Taalmodel Instellingen",
+            "modelLabel": "Model",
+            "modelDescription": "Kies het AI-model voor het genereren van antwoorden",
+            "temperatureLabel": "Temperatuur",
+            "temperatureDescription": "Regelt willekeurigheid (0 = gefocust, 2 = creatief)",
+            "maxTokensLabel": "Max Tokens",
+            "maxTokensDescription": "Maximale lengte van gegenereerde antwoorden",
+            "systemPromptLabel": "Systeem Prompt",
+            "systemPromptDescription": "Definieer hoe de AI-assistent zich moet gedragen en reageren"
+          },
+          "system": {
+            "generalSettings": "Algemene Instellingen",
+            "languageLabel": "Standaardtaal",
+            "languageDescription": "Selecteer de interfacetaal",
+            "eyeGazeLabel": "Oogblik Duur (seconden)",
+            "eyeGazeDescription": "Hoe lang naar een optie kijken voordat deze wordt geselecteerd",
+            "visualFeedbackLabel": "Oogblik Visuele Feedback",
+            "internetSearchLabel": "Internet Zoeken Inschakelen",
+            "ragSettings": "Kennisbank Instellingen",
+            "chunkSizeLabel": "Chunk Grootte",
+            "chunkOverlapLabel": "Chunk Overlap",
+            "topKLabel": "Top K Resultaten"
+          }
+        },
+        "people": {
+          "title": "Personen Beheer",
+          "selectPerson": "Selecteer een Persoon",
+          "editPerson": "Persoon Bewerken",
+          "addNewPerson": "Nieuwe Persoon Toevoegen",
+          "personNamePlaceholder": "Voer de naam van de persoon in",
+          "personNotesPlaceholder": "Voer details over deze persoon in..."
+        },
+        "fileManager": {
+          "title": "Kennisbank Beheerder",
+          "tabs": {
+            "files": "Bestanden",
+            "memories": "Herinneringen"
+          },
+          "uploadInstructions": "Sleep bestanden hierheen of klik om te uploaden",
+          "supportedFormats": "Ondersteunde formaten: .txt, .pdf, .docx, .json",
+          "autoIndexed": "Automatisch geïndexeerd voor AI-assistentie",
+          "noFiles": "Nog geen bestanden geüpload",
+          "noMemories": "Nog geen herinneringen aangemaakt",
+          "loadMore": "Meer Laden",
+          "memoryTitle": "Titel",
+          "memoryContent": "Inhoud",
+          "memoryTags": "Tags (komma gescheiden)",
+          "memoryContentPlaceholder": "Voer geheugeninhoud in...",
+          "selectedCount": "geselecteerd",
+          "fileName": "Bestandsnaam",
+          "index": "Index"
+        },
+        "info": {
+          "title": "Over SMF Spraakagent",
+          "aboutApp": "Over de App",
+          "aboutAppText": "De SMF Spraakagent is een semi-autonome conversatie-AI ontworpen om mensen met ALS en vergelijkbare aandoeningen te helpen natuurlijk te communiceren met alleen hun stem en oogblik. Het combineert realtime spraakherkenning, intelligente responsgeneratie en natuurlijk klinkende spraaksynthese met een volledig oogblik-gestuurde interface. Het systeem kan putten uit een lokale kennisbank, chatgeschiedenis en zelfs live internetzoekresultaten om betekenisvolle, contextbewuste gesprekken te bieden—zonder de noodzaak voor constant klikken of typen.",
+          "aboutFoundation": "Over de Stichting & Maker",
+          "aboutFoundationText": "Dit project is gebouwd in samenwerking met de Scott-Morgan Foundation, die mensen met ernstige lichamelijke beperkingen ondersteunt door middel van hulptechnologie. Het is gemaakt door Bernard Muller, een ondernemer, AI-kunstenaar en ALS-patiënt sinds 2010. Bernard, die communiceert via oogvolgtechnologie, ontwikkelde de SMF Spraakagent om de spontaniteit van gesprekken die hij genoot vóór ALS te herstellen—en om die vrijheid beschikbaar te maken voor anderen.",
+          "tagline": "De Toekomst van Handicap Herschrijven | De Scott-Morgan Foundation"
+        }
+      },
+      "help": {
+        "title": "SMF Spraakagent - Gebruikershandleiding",
+        "navigation": {
+          "overview": "Overzicht",
+          "gettingStarted": "Aan de Slag",
+          "voiceRecording": "Spraakopname",
+          "eyeGaze": "Oogblik Bediening",
+          "people": "Personen Beheer",
+          "knowledgeBase": "Kennisbank",
+          "settings": "Instellingen",
+          "troubleshooting": "Probleemoplossing"
+        },
+        "sections": {
+          "overview": {
+            "title": "Welkom bij SMF Spraakagent",
+            "intro": "De SMF Spraakagent is een semi-autonome conversatie-AI ontworpen om mensen met ALS en vergelijkbare aandoeningen te helpen natuurlijk te communiceren. Deze handleiding helpt u alle functies effectief te begrijpen en te gebruiken.",
+            "keyFeatures": "Belangrijkste Functies:",
+            "features": {
+              "voice": "Spraakherkenning: Continue opname met automatische spraakdetectie",
+              "ai": "AI Antwoorden: Kies uit drie intelligente antwoordopties",
+              "eyeGaze": "Oogblik Bediening: Volledig toegankelijke interface voor oogvolg-gebruikers",
+              "speakers": "Meerdere Sprekers: Ondersteuning voor verschillende gebruikers met stemprofielen",
+              "knowledge": "Kennisbank: Bewaar en toegang tot persoonlijke informatie en herinneringen",
+              "internet": "Internet Zoeken: Krijg actuele informatie wanneer nodig"
+            }
+          },
+          "gettingStarted": {
+            "title": "Aan de Slag",
+            "firstTimeSetup": "Eerste Keer Instellen",
+            "firstTimeSteps": {
+              "1": "Geef microfoontoestemming wanneer uw browser daarom vraagt",
+              "2": "Klik op Instellingen om een stem uit de stemlijst te kiezen of probeer de standaard",
+              "3": "Klik op Personen om te selecteren met wie u praat"
+            },
+            "startConversation": "Start een gesprek",
+            "startConversationIntro": "Schrijf een bericht in het tekstvak en",
+            "startConversationOptions": {
+              "speak": "klik op",
+              "speakSuffix": "om uw bericht uit te spreken of",
+              "send": "klik op",
+              "sendSuffix": "om drie antwoorden te genereren of",
+              "record": "klik op",
+              "recordSuffix": "om een gesprek op te nemen"
+            }
+          },
+          "voiceRecording": {
+            "title": "Spraakopname & Gesprek",
+            "startingConversation": "Een Gesprek Starten",
+            "conversationIntro": "U heeft drie manieren om te communiceren:",
+            "method1Title": "1. Spraakopname (Aanbevolen)",
+            "method1Steps": {
+              "1": "Klik op de Start Opname knop",
+              "2": "Spreek natuurlijk - de app detecteert wanneer u begint en stopt met praten",
+              "3": "De app transcribeert automatisch uw spraak",
+              "4": "Drie antwoordopties verschijnen"
+            },
+            "vadTip": "De Stemactiviteitsdetectie (VAD) detecteert automatisch spraak, dus u hoeft niet voor elke zin te klikken!",
+            "method2Title": "2. Spreek Tekstbericht",
+            "method2Steps": {
+              "1": "Typ uw bericht in het tekstvak",
+              "2": "Klik op de groene Spreek Bericht knop",
+              "3": "De app spreekt uw getypte bericht hardop uit en neemt automatisch op"
+            },
+            "method3Title": "3. Tekstinvoer",
+            "method3Steps": {
+              "1": "Klik in het tekstvak onderaan",
+              "2": "Typ uw instructie (bijv. \"Vertel me over de film die ik met mijn familie heb gekeken\")",
+              "3": "Druk op Enter en wacht op de drie antwoorden om uit te kiezen om door te gaan of het gesprek te starten"
+            },
+            "choosingResponses": "Antwoorden Kiezen",
+            "responseIntro": "Nadat u spreekt of typt, genereert de AI drie antwoordopties:",
+            "responseOptions": {
+              "mouse": "Muis/Touch: Klik op uw voorkeursantwoord",
+              "eyeGaze": "Oogblik: Kijk 3 seconden naar een antwoord (aanpasbaar)",
+              "regenerate": "Opnieuw genereren: Klik ↻ voor nieuwe opties",
+              "cancel": "Annuleren: Klik ✖ om te annuleren en door te gaan met opnemen"
+            }
+          },
+          "eyeGaze": {
+            "title": "Oogblik Bediening",
+            "howItWorks": "Hoe Oogblik Werkt",
+            "workingIntro": "De interface ondersteunt oogblikbediening via geëmuleerde oogblik (hover en vasthouden):",
+            "workingSteps": {
+              "1": "Kijk naar een knop of antwoordoptie",
+              "2": "Een voortgangsindicator toont selectievoortgang",
+              "3": "Blijf kijken voor de ingestelde duur (standaard: 3 seconden)",
+              "4": "Het item wordt automatisch geselecteerd wanneer de timer voltooid is"
+            },
+            "emulationNote": "Deze functie emuleert oogblikbediening via hover en vasthouden, waardoor het toegankelijk is voor zowel oogvolgapparaten als muisgebruikers.",
+            "adjustingSettings": "Oogblik Instellingen Aanpassen",
+            "adjustSteps": {
+              "1": "Klik op Instellingen om instellingen te openen",
+              "2": "Ga naar het \"Systeem\" tabblad",
+              "3": "Pas \"Oogblik Duur\" aan (1-5 seconden)",
+              "4": "Schakel \"Oogblik Visuele Feedback\" aan/uit"
+            },
+            "adjustTip": "Begin met 3 seconden en pas aan op basis van uw comfort. Kortere tijden zijn sneller maar kunnen onbedoelde selecties veroorzaken."
+          },
+          "people": {
+            "title": "Personen Beheer",
+            "selectingAdding": "Een Persoon Selecteren of Toevoegen",
+            "selectSteps": {
+              "1": "Klik op Personen in de header",
+              "2": "Klik op de naam van een persoon om ze te selecteren en klik op Gebruiken, of dubbelklik op een persoon",
+              "3": "Voer de naam van een nieuwe persoon in het tekstveld in",
+              "4": "Klik op Persoon Toevoegen"
+            },
+            "switchingPeople": "Wisselen Tussen Personen",
+            "switchSteps": {
+              "1": "Klik op Personen",
+              "2": "Klik op de naamknop van de persoon",
+              "3": "De huidige persoon wordt in de header getoond"
+            },
+            "managingPeople": "Personen Beheren",
+            "manageOptions": {
+              "edit": "Bewerken: Selecteer een persoon en klik op Bewerken",
+              "delete": "Verwijderen: Selecteer een persoon en klik op Verwijderen"
+            },
+            "peopleNote": "Personen vertegenwoordigen met wie u praat, niet wie de app gebruikt. De patiënt is de primaire gebruiker die de assistent begeleidt."
+          },
+          "knowledgeBase": {
+            "title": "Kennisbank & Herinneringen",
+            "kbFiles": "Kennisbank Bestanden",
+            "uploadIntro": "Upload documenten voor de AI om te raadplegen:",
+            "uploadSteps": {
+              "1": "Klik op Kennisbank in de header",
+              "2": "Klik op het \"Bestanden\" tabblad",
+              "3": "Klik op Bestanden Uploaden",
+              "4": "Selecteer bestanden (ondersteunt .txt, .pdf, .docx, .json)"
+            },
+            "supportedTypes": "Ondersteunde bestandstypen:",
+            "fileTypes": {
+              "txt": ".txt: Platte tekstbestanden",
+              "pdf": ".pdf: PDF-documenten",
+              "docx": ".docx: Word-documenten",
+              "json": ".json: Gestructureerde gegevens"
+            },
+            "creatingMemories": "Herinneringen Maken",
+            "memoryIntro": "Bewaar belangrijke informatie als herinneringen:",
+            "memorySteps": {
+              "1": "Klik op Kennisbank",
+              "2": "Klik op het \"Herinneringen\" tabblad",
+              "3": "Klik op Geheugen Toevoegen",
+              "4": "Voer een titel en inhoud in",
+              "5": "Klik op Opslaan"
+            },
+            "memoryTip": "Gebruik herinneringen voor persoonlijke informatie, voorkeuren, medische details, of alles wat u wilt dat de AI onthoudt."
+          },
+          "settings": {
+            "title": "Instellingen Configuratie",
+            "intro": "Toegang tot instellingen door op Instellingen in de header te klikken.",
+            "voiceSettings": "Stem Instellingen",
+            "voiceOptions": {
+              "voice": "Stem: Kies uit beschikbare TTS-stemmen",
+              "model": "Model: Selecteer kwaliteit (Turbo voor snelheid, Meertalig voor nauwkeurigheid)",
+              "rate": "Spreeksnelheid: Pas spreeksnelheid aan (0.5-2.0)",
+              "settings": "Steminstellingen: Verfijn stabiliteit, gelijkenis en stijl"
+            },
+            "recorderSettings": "Recorder Instellingen",
+            "recorderOptions": {
+              "thresholds": "Spraakdrempels: Pas stemdetectiegevoeligheid aan",
+              "frames": "Frame-instellingen: Beheer spraakdetectietiming"
+            },
+            "llmSettings": "LLM (AI) Instellingen",
+            "llmOptions": {
+              "model": "Model: Kies AI-model (GPT-4 of GPT-5)",
+              "temperature": "Temperatuur: Beheer antwoordcreativiteit (0-2)",
+              "tokens": "Max Tokens: Beperk antwoordlengte",
+              "prompt": "Systeem Prompt: Pas AI-gedrag aan"
+            },
+            "systemSettings": "Systeem Instellingen",
+            "systemOptions": {
+              "language": "Taal: Stel standaardtaal in",
+              "eyeGaze": "Oogblik Duur: Pas selectietijd aan",
+              "feedback": "Visuele Feedback: Schakel selectie-indicatoren in/uit",
+              "search": "Internet Zoeken: In-/uitschakelen van webzoeken"
+            }
+          },
+          "troubleshooting": {
+            "title": "Probleemoplossing",
+            "micNotWorking": "Microfoon Werkt Niet",
+            "micSolutions": {
+              "1": "Controleer browsertoestemmingen (zoek naar microfoonpictogram in adresbalk)",
+              "2": "Zorg ervoor dat geen andere applicatie de microfoon gebruikt",
+              "3": "Probeer de pagina te vernieuwen en opnieuw toestemming te geven"
+            },
+            "voiceNotDetected": "Stem Niet Gedetecteerd",
+            "voiceSolutions": {
+              "1": "Spreek luider en duidelijker",
+              "2": "Controleer recorder-instellingen en verlaag de spraakdrempel",
+              "3": "Zorg ervoor dat u op \"Start Opname\" heeft geklikt"
+            },
+            "eyeGazeIssues": "Oogblik Problemen",
+            "eyeGazeSolutions": {
+              "1": "Kalibreer uw oogvolgapparaat",
+              "2": "Pas de hover-duur aan in instellingen",
+              "3": "Schakel visuele feedback in om selectievoortgang te zien",
+              "4": "Zorg voor goede verlichting en juiste afstand tot het scherm"
+            },
+            "responsesNotAppearing": "Antwoorden Verschijnen Niet",
+            "responseSolutions": {
+              "1": "Controleer uw internetverbinding",
+              "2": "Verifieer dat API-sleutels correct zijn geconfigureerd",
+              "3": "Busca mensajes de error en el área de conversación"
+            },
+            "performanceIssues": "Prestatieproblemen",
+            "performanceSolutions": {
+              "1": "Sluit onnodige browsertabbladen",
+              "2": "Gebruik Chrome of Edge voor beste prestaties",
+              "3": "Wis browsercache indien nodig",
+              "4": "Verminder max tokens in LLM-instellingen"
+            },
+            "moreHelp": "Meer hulp nodig? Controleer de browserconsole (F12) voor gedetailleerde foutmeldingen."
+          }
+        },
+        "tips": {
+          "tip": "Tip",
+          "note": "Let op"
+        }
+      },
+      "notifications": {
+        "settingsSaved": "Instellingen succesvol opgeslagen!",
+        "personAdded": "Persoon succesvol toegevoegd!",
+        "personDeleted": "Persoon succesvol verwijderd!",
+        "fileUploaded": "Bestand succesvol geüpload!",
+        "memoryAdded": "Herinnering succesvol toegevoegd!",
+        "error": "Er is een fout opgetreden. Probeer het opnieuw.",
+        "microphonePermission": "Geef microfoontoestemming om spraakopname te gebruiken.",
+        "nowTalkingTo": "Nu praten met {name}",
+        "failedToInitialize": "Toepassing initialiseren mislukt",
+        "failedToSynthesizeSpeech": "Spraaksynthese mislukt",
+        "pleaseSelectPerson": "Selecteer eerst met wie u praat",
+        "unableToRegenerateResponses": "Kan antwoorden niet opnieuw genereren. Probeer opnieuw te spreken.",
+        "failedToPlayAudio": "Audio afspelen mislukt",
+        "failedToProcessAudio": "Audio verwerken mislukt",
+        "personUpdated": "{name} bijgewerkt",
+        "failedToLoadPeople": "Mensen laden mislukt",
+        "pleaseEnterName": "Voer een naam in",
+        "failedToAddPerson": "Persoon toevoegen mislukt",
+        "failedToUpdatePerson": "Persoon bijwerken mislukt",
+        "failedToDeletePerson": "Persoon verwijderen mislukt",
+        "failedToLoadFiles": "Bestanden laden mislukt",
+        "uploadingFiles": "Bestanden uploaden...",
+        "failedToUploadFiles": "Bestanden uploaden mislukt",
+        "filesDeleted": "{count} bestanden verwijderd",
+        "filesDeletedWithErrors": "{count} bestanden verwijderd. Fouten:\n{errors}",
+        "failedToDeleteFiles": "Bestanden verwijderen mislukt",
+        "failedToLoadMemories": "Herinneringen laden mislukt",
+        "pleaseFillRequiredFields": "Vul alle verplichte velden in",
+        "memoryUpdated": "Herinnering bijgewerkt",
+        "memoryAdded": "Herinnering toegevoegd",
+        "failedToSaveMemory": "Herinnering opslaan mislukt",
+        "memoriesDeleted": "{count} herinneringen verwijderd",
+        "failedToDeleteMemories": "Herinneringen verwijderen mislukt"
+      }
+    },
+    "es": {
+      "app": {
+        "title": "AGENTE DE VOZ SMF",
+        "currentSpeaker": "Nadie seleccionado",
+        "welcomeTitle": "¡Bienvenido!",
+        "welcomeMessage": "Inicia una conversación hablando o escribiendo a continuación.",
+        "chooseResponse": "Elige tu respuesta:",
+        "typeMessage": "Escribe un mensaje o instrucción..."
+      },
+      "buttons": {
+        "startRecording": "Iniciar Grabación",
+        "stopRecording": "Detener Grabación",
+        "send": "Enviar",
+        "speakMessage": "Hablar Mensaje",
+        "regenerate": "Regenerar",
+        "cancel": "Cancelar",
+        "compose": "Componer",
+        "use": "Usar",
+        "add": "Agregar",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "save": "Guardar",
+        "close": "Cerrar",
+        "upload": "Subir Archivos",
+        "addPerson": "Agregar Persona",
+        "addMemory": "Agregar Memoria",
+        "saveSettings": "Guardar Configuración"
+      },
+      "modals": {
+        "settings": {
+          "title": "Configuración del Agente de Voz",
+          "tabs": {
+            "voice": "Voz",
+            "recorder": "Grabadora",
+            "llm": "LLM",
+            "system": "Sistema"
+          },
+          "voice": {
+            "ttsSettings": "Configuración de Texto a Voz",
+            "voiceLabel": "Voz",
+            "voiceDescription": "Elige la voz para la salida de texto a voz",
+            "modelLabel": "Modelo",
+            "modelDescription": "Selecciona la calidad del modelo TTS",
+            "speechRateLabel": "Velocidad de Habla",
+            "speechRateDescription": "Ajusta la velocidad del habla (0.5 = lento, 2.0 = rápido)",
+            "stabilityLabel": "Estabilidad",
+            "stabilityDescription": "Valores más altos hacen el habla más consistente pero menos expresiva",
+            "similarityLabel": "Impulso de Similitud",
+            "similarityDescription": "Valores más altos hacen la voz más similar a la original",
+            "styleLabel": "Exageración de Estilo",
+            "styleDescription": "Valores más altos hacen el habla más expresiva",
+            "speakerBoostLabel": "Usar Impulso de Altavoz",
+            "speakerBoostDescription": "Mejora la claridad y calidad de la voz"
+          },
+          "recorder": {
+            "vadSettings": "Configuración de Detección de Actividad de Voz (VAD)",
+            "positiveSpeechLabel": "Umbral de Habla Positiva",
+            "positiveSpeechDescription": "Confianza necesaria para iniciar la detección de voz (menor = más sensible)",
+            "negativeSpeechLabel": "Umbral de Habla Negativa",
+            "negativeSpeechDescription": "Confianza necesaria para detener la detección de voz",
+            "minSpeechFramesLabel": "Marcos de Habla Mínimos",
+            "minSpeechFramesDescription": "Marcos mínimos para confirmar que el habla comenzó",
+            "preSpeechPadLabel": "Relleno Pre-Habla",
+            "preSpeechPadDescription": "Marcos a incluir antes de que comience el habla",
+            "redemptionFramesLabel": "Marcos de Redención",
+            "redemptionFramesDescription": "Marcos a esperar antes de terminar el habla"
+          },
+          "llm": {
+            "llmSettings": "Configuración del Modelo de Lenguaje",
+            "modelLabel": "Modelo",
+            "modelDescription": "Elige el modelo de IA para generar respuestas",
+            "temperatureLabel": "Temperatura",
+            "temperatureDescription": "Controla la aleatoriedad (0 = enfocado, 2 = creativo)",
+            "maxTokensLabel": "Tokens Máximos",
+            "maxTokensDescription": "Longitud máxima de las respuestas generadas",
+            "systemPromptLabel": "Prompt del Sistema",
+            "systemPromptDescription": "Define cómo debe comportarse y responder el asistente de IA"
+          },
+          "system": {
+            "generalSettings": "Configuración General",
+            "languageLabel": "Idioma Predeterminado",
+            "languageDescription": "Selecciona el idioma de la interfaz",
+            "eyeGazeLabel": "Duración de la Mirada (segundos)",
+            "eyeGazeDescription": "Cuánto tiempo mirar una opción antes de que se seleccione",
+            "visualFeedbackLabel": "Retroalimentación Visual de la Mirada",
+            "internetSearchLabel": "Habilitar Búsqueda en Internet",
+            "ragSettings": "Configuración de la Base de Conocimiento",
+            "chunkSizeLabel": "Tamaño del Fragmento",
+            "chunkOverlapLabel": "Superposición del Fragmento",
+            "topKLabel": "Top K Resultados"
+          }
+        },
+        "people": {
+          "title": "Gestión de Personas",
+          "selectPerson": "Seleccionar una Persona",
+          "editPerson": "Editar Persona",
+          "addNewPerson": "Agregar Nueva Persona",
+          "personNamePlaceholder": "Ingrese el nombre de la persona",
+          "personNotesPlaceholder": "Ingrese detalles sobre esta persona..."
+        },
+        "fileManager": {
+          "title": "Gestor de Base de Conocimiento",
+          "tabs": {
+            "files": "Archivos",
+            "memories": "Memorias"
+          },
+          "uploadInstructions": "Arrastra y suelta archivos aquí o haz clic para subir",
+          "supportedFormats": "Formatos soportados: .txt, .pdf, .docx, .json",
+          "autoIndexed": "Auto-indexado para asistencia de IA",
+          "noFiles": "Aún no se han subido archivos",
+          "noMemories": "Aún no se han creado memorias",
+          "loadMore": "Cargar Más",
+          "memoryTitle": "Título",
+          "memoryContent": "Contenido",
+          "memoryTags": "Etiquetas (separadas por comas)",
+          "memoryContentPlaceholder": "Ingrese el contenido de la memoria...",
+          "selectedCount": "seleccionado",
+          "fileName": "Nombre del Archivo",
+          "index": "Índice"
+        },
+        "info": {
+          "title": "Acerca del Agente de Voz SMF",
+          "aboutApp": "Acerca de la Aplicación",
+          "aboutAppText": "El Agente de Voz SMF es una IA conversacional semiautónoma diseñada para ayudar a las personas con ELA y condiciones similares a comunicarse naturalmente usando solo su voz y mirada. Combina reconocimiento de voz en tiempo real, generación inteligente de respuestas y síntesis de voz de sonido natural con una interfaz completamente controlada por la mirada. El sistema puede recurrir a una base de conocimiento local, historial de chat e incluso resultados de búsqueda en Internet en vivo para proporcionar conversaciones significativas y conscientes del contexto, sin la necesidad de hacer clic o escribir constantemente.",
+          "aboutFoundation": "Acerca de la Fundación y el Creador",
+          "aboutFoundationText": "Este proyecto fue construido en colaboración con la Fundación Scott-Morgan, que empodera a las personas con discapacidades físicas severas a través de tecnología asistiva. Fue creado por Bernard Muller, un empresario, artista de IA y paciente con ELA desde 2010. Bernard, quien se comunica a través de tecnología de seguimiento ocular, desarrolló el Agente de Voz SMF para restaurar la espontaneidad de la conversación que disfrutaba antes de la ELA, y para hacer que esa libertad esté disponible para otros.",
+          "tagline": "Reescribiendo el Futuro de la Discapacidad | La Fundación Scott-Morgan"
+        }
+      },
+      "help": {
+        "title": "Agente de Voz SMF - Guía del Usuario",
+        "navigation": {
+          "overview": "Resumen",
+          "gettingStarted": "Comenzando",
+          "voiceRecording": "Grabación de Voz",
+          "eyeGaze": "Controles de Mirada",
+          "people": "Gestión de Personas",
+          "knowledgeBase": "Base de Conocimiento",
+          "settings": "Configuración",
+          "troubleshooting": "Solución de Problemas"
+        },
+        "sections": {
+          "overview": {
+            "title": "Bienvenido al Agente de Voz SMF",
+            "intro": "El Agente de Voz SMF es una IA conversacional semiautónoma diseñada para ayudar a las personas con ELA y condiciones similares a comunicarse naturalmente. Esta guía te ayudará a entender y usar todas las características de manera efectiva.",
+            "keyFeatures": "Características Principales:",
+            "features": {
+              "voice": "Reconocimiento de Voz: Grabación continua con detección automática de voz",
+              "ai": "Respuestas de IA: Elige entre tres opciones de respuesta inteligentes",
+              "eyeGaze": "Control de Mirada: Interfaz totalmente accesible para usuarios de seguimiento ocular",
+              "speakers": "Múltiples Hablantes: Soporte para diferentes usuarios con perfiles de voz",
+              "knowledge": "Base de Conocimiento: Almacena y accede a información personal y memorias",
+              "internet": "Búsqueda en Internet: Obtén información actual cuando sea necesario"
+            }
+          },
+          "gettingStarted": {
+            "title": "Comenzando",
+            "firstTimeSetup": "Configuración Inicial",
+            "firstTimeSteps": {
+              "1": "Otorga permisos de micrófono cuando tu navegador lo solicite",
+              "2": "Haz clic en Configuración para elegir una voz de la lista de voces o prueba la predeterminada",
+              "3": "Haz clic en Personas para seleccionar con quién estás hablando"
+            },
+            "startConversation": "Inicia una conversación",
+            "startConversationIntro": "Escribe un mensaje en el cuadro de texto y",
+            "startConversationOptions": {
+              "speak": "haz clic en",
+              "speakSuffix": "para hablar tu mensaje o",
+              "send": "haz clic en",
+              "sendSuffix": "para generar tres respuestas o",
+              "record": "haz clic en",
+              "recordSuffix": "para comenzar a grabar una conversación"
+            }
+          },
+          "voiceRecording": {
+            "title": "Grabación de Voz y Conversación",
+            "startingConversation": "Iniciando una Conversación",
+            "conversationIntro": "Tienes tres formas de comunicarte:",
+            "method1Title": "1. Grabación de Voz (Recomendado)",
+            "method1Steps": {
+              "1": "Haz clic en el botón Iniciar Grabación",
+              "2": "Habla naturalmente - la aplicación detecta cuándo comienzas y dejas de hablar",
+              "3": "La aplicación transcribe automáticamente tu voz",
+              "4": "Aparecerán tres opciones de respuesta"
+            },
+            "vadTip": "¡La Detección de Actividad de Voz (VAD) detecta automáticamente el habla, por lo que no necesitas hacer clic para cada oración!",
+            "method2Title": "2. Hablar Mensaje de Texto",
+            "method2Steps": {
+              "1": "Escribe tu mensaje en el cuadro de texto",
+              "2": "Haz clic en el botón verde Hablar Mensaje",
+              "3": "La aplicación hablará tu mensaje escrito en voz alta y grabará automáticamente"
+            },
+            "method3Title": "3. Entrada de Texto",
+            "method3Steps": {
+              "1": "Haz clic en el cuadro de texto en la parte inferior",
+              "2": "Escribe tu instrucción (por ejemplo, \"Cuéntame sobre la película que vi con mi familia\")",
+              "3": "Presiona Enter y espera las tres respuestas para elegir para continuar o iniciar la conversación"
+            },
+            "choosingResponses": "Eligiendo Respuestas",
+            "responseIntro": "Después de hablar o escribir, la IA genera tres opciones de respuesta:",
+            "responseOptions": {
+              "mouse": "Mouse/Táctil: Haz clic en tu respuesta preferida",
+              "eyeGaze": "Mirada: Mira una respuesta durante 3 segundos (ajustable)",
+              "regenerate": "Regenerar: Haz clic en ↻ para nuevas opciones",
+              "cancel": "Cancelar: Haz clic en ✖ para cancelar y continuar grabando"
+            }
+          },
+          "eyeGaze": {
+            "title": "Controles de Mirada",
+            "howItWorks": "Cómo Funciona la Mirada",
+            "workingIntro": "La interfaz admite el control de mirada a través de mirada emulada (mantener y sostener):",
+            "workingSteps": {
+              "1": "Mira cualquier botón u opción de respuesta",
+              "2": "Un indicador de progreso muestra el progreso de la selección",
+              "3": "Sigue mirando durante la duración establecida (predeterminado: 3 segundos)",
+              "4": "El elemento se selecciona automáticamente cuando se completa el temporizador"
+            },
+            "emulationNote": "Esta función emula el control de mirada a través de mantener y sostener, haciéndolo accesible tanto para dispositivos de seguimiento ocular como para usuarios de mouse.",
+            "adjustingSettings": "Ajustando la Configuración de Mirada",
+            "adjustSteps": {
+              "1": "Haz clic en Configuración para abrir la configuración",
+              "2": "Ve a la pestaña \"Sistema\"",
+              "3": "Ajusta \"Duración de la Mirada\" (1-5 segundos)",
+              "4": "Activa/desactiva \"Retroalimentación Visual de la Mirada\""
+            },
+            "adjustTip": "Comienza con 3 segundos y ajusta según tu comodidad. Los tiempos más cortos son más rápidos pero pueden causar selecciones accidentales."
+          },
+          "people": {
+            "title": "Gestión de Personas",
+            "selectingAdding": "Seleccionando o Agregando una Persona",
+            "selectSteps": {
+              "1": "Haz clic en Personas en el encabezado",
+              "2": "Haz clic en el nombre de una persona para seleccionarla y haz clic en Usar, o haz doble clic en una persona",
+              "3": "Ingresa el nombre de una nueva persona en el campo de texto",
+              "4": "Haz clic en Agregar Persona"
+            },
+            "switchingPeople": "Cambiando Entre Personas",
+            "switchSteps": {
+              "1": "Haz clic en Personas",
+              "2": "Haz clic en el botón del nombre de la persona",
+              "3": "La persona actual se muestra en el encabezado"
+            },
+            "managingPeople": "Gestionando Personas",
+            "manageOptions": {
+              "edit": "Editar: Selecciona una persona y haz clic en Editar",
+              "delete": "Eliminar: Selecciona una persona y haz clic en Eliminar"
+            },
+            "peopleNote": "Las personas representan con quién estás hablando, no quién está usando la aplicación. El paciente es el usuario principal que guía al asistente."
+          },
+          "knowledgeBase": {
+            "title": "Base de Conocimiento y Memorias",
+            "kbFiles": "Archivos de la Base de Conocimiento",
+            "uploadIntro": "Sube documentos para que la IA los consulte:",
+            "uploadSteps": {
+              "1": "Haz clic en Base de Conocimiento en el encabezado",
+              "2": "Haz clic en la pestaña \"Archivos\"",
+              "3": "Haz clic en Subir Archivos",
+              "4": "Selecciona archivos (admite .txt, .pdf, .docx, .json)"
+            },
+            "supportedTypes": "Tipos de archivo admitidos:",
+            "fileTypes": {
+              "txt": ".txt: Archivos de texto plano",
+              "pdf": ".pdf: Documentos PDF",
+              "docx": ".docx: Documentos de Word",
+              "json": ".json: Datos estructurados"
+            },
+            "creatingMemories": "Creando Memorias",
+            "memoryIntro": "Almacena información importante como memorias:",
+            "memorySteps": {
+              "1": "Haz clic en Base de Conocimiento",
+              "2": "Haz clic en la pestaña \"Memorias\"",
+              "3": "Haz clic en Agregar Memoria",
+              "4": "Ingresa un título y contenido",
+              "5": "Haz clic en Guardar"
+            },
+            "memoryTip": "Usa memorias para información personal, preferencias, detalles médicos o cualquier cosa que quieras que la IA recuerde."
+          },
+          "settings": {
+            "title": "Configuración",
+            "intro": "Accede a la configuración haciendo clic en Configuración en el encabezado.",
+            "voiceSettings": "Configuración de Voz",
+            "voiceOptions": {
+              "voice": "Voz: Elige entre las voces TTS disponibles",
+              "model": "Modelo: Selecciona calidad (Turbo para velocidad, Multilingüe para precisión)",
+              "rate": "Velocidad de Habla: Ajusta la velocidad del habla (0.5-2.0)",
+              "settings": "Configuración de Voz: Ajusta finamente la estabilidad, similitud y estilo"
+            },
+            "recorderSettings": "Configuración de la Grabadora",
+            "recorderOptions": {
+              "thresholds": "Umbrales de Habla: Ajusta la sensibilidad de detección de voz",
+              "frames": "Configuración de Marcos: Controla el tiempo de detección de voz"
+            },
+            "llmSettings": "Configuración LLM (IA)",
+            "llmOptions": {
+              "model": "Modelo: Elige el modelo de IA (GPT-4 o GPT-5)",
+              "temperature": "Temperatura: Controla la creatividad de la respuesta (0-2)",
+              "tokens": "Tokens Máximos: Limita la longitud de la respuesta",
+              "prompt": "Prompt del Sistema: Personaliza el comportamiento de la IA"
+            },
+            "systemSettings": "Configuración del Sistema",
+            "systemOptions": {
+              "language": "Idioma: Establece el idioma predeterminado",
+              "eyeGaze": "Duración de la Mirada: Ajusta el tiempo de selección",
+              "feedback": "Retroalimentación Visual: Activa/desactiva indicadores de selección",
+              "search": "Búsqueda en Internet: Habilita/deshabilita búsqueda web"
+            }
+          },
+          "troubleshooting": {
+            "title": "Solución de Problemas",
+            "micNotWorking": "El Micrófono No Funciona",
+            "micSolutions": {
+              "1": "Verifica los permisos del navegador (busca el ícono del micrófono en la barra de direcciones)",
+              "2": "Asegúrate de que ninguna otra aplicación esté usando el micrófono",
+              "3": "Intenta actualizar la página y otorgar permisos nuevamente"
+            },
+            "voiceNotDetected": "Voz No Detectada",
+            "voiceSolutions": {
+              "1": "Habla más fuerte y claro",
+              "2": "Verifica la configuración de la grabadora y reduce el umbral de habla",
+              "3": "Asegúrate de haber hecho clic en \"Iniciar Grabación\""
+            },
+            "eyeGazeIssues": "Problemas de Mirada",
+            "eyeGazeSolutions": {
+              "1": "Calibra tu dispositivo de seguimiento ocular",
+              "2": "Ajusta la duración de la mirada en la configuración",
+              "3": "Habilita la retroalimentación visual para ver el progreso de la selección",
+              "4": "Asegura buena iluminación y distancia adecuada de la pantalla"
+            },
+            "responsesNotAppearing": "Las Respuestas No Aparecen",
+            "responseSolutions": {
+              "1": "Verifica tu conexión a Internet",
+              "2": "Verifica que las claves API estén configuradas correctamente",
+              "3": "Busca mensajes de error en el área de conversación"
+            },
+            "performanceIssues": "Problemas de Rendimiento",
+            "performanceSolutions": {
+              "1": "Cierra las pestañas innecesarias del navegador",
+              "2": "Usa Chrome o Edge para mejor rendimiento",
+              "3": "Limpia la caché del navegador si es necesario",
+              "4": "Reduce los tokens máximos en la configuración LLM"
+            },
+            "moreHelp": "¿Necesitas más ayuda? Verifica la consola del navegador (F12) para mensajes de error detallados."
+          }
+        },
+        "tips": {
+          "tip": "Consejo",
+          "note": "Nota"
+        }
+      },
+      "notifications": {
+        "settingsSaved": "¡Configuración guardada exitosamente!",
+        "personAdded": "¡Persona agregada exitosamente!",
+        "personDeleted": "¡Persona eliminada exitosamente!",
+        "fileUploaded": "¡Archivo subido exitosamente!",
+        "memoryAdded": "¡Memoria agregada exitosamente!",
+        "error": "Ocurrió un error. Por favor intenta de nuevo.",
+        "microphonePermission": "Por favor otorga permisos de micrófono para usar la grabación de voz.",
+        "nowTalkingTo": "Ahora hablando con {name}",
+        "failedToInitialize": "Error al inicializar la aplicación",
+        "failedToSynthesizeSpeech": "Error al sintetizar el habla",
+        "pleaseSelectPerson": "Por favor selecciona con quién estás hablando primero",
+        "unableToRegenerateResponses": "No se pueden regenerar las respuestas. Por favor intenta hablar de nuevo.",
+        "failedToPlayAudio": "Error al reproducir audio",
+        "failedToProcessAudio": "Error al procesar audio",
+        "personUpdated": "{name} actualizado",
+        "failedToLoadPeople": "Error al cargar personas",
+        "pleaseEnterName": "Por favor ingresa un nombre",
+        "failedToAddPerson": "Error al agregar persona",
+        "failedToUpdatePerson": "Error al actualizar persona",
+        "failedToDeletePerson": "Error al eliminar persona",
+        "failedToLoadFiles": "Error al cargar archivos",
+        "uploadingFiles": "Subiendo archivos...",
+        "failedToUploadFiles": "Error al subir archivos",
+        "filesDeleted": "{count} archivos eliminados",
+        "filesDeletedWithErrors": "{count} archivos eliminados. Errores:\n{errors}",
+        "failedToDeleteFiles": "Error al eliminar archivos",
+        "failedToLoadMemories": "Error al cargar memorias",
+        "pleaseFillRequiredFields": "Por favor completa todos los campos requeridos",
+        "memoryUpdated": "Memoria actualizada",
+        "memoryAdded": "Memoria agregada",
+        "failedToSaveMemory": "Error al guardar memoria",
+        "memoriesDeleted": "{count} memorias eliminadas",
+        "failedToDeleteMemories": "Error al eliminar memorias"
+      }
+    }
+  }
