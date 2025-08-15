@@ -43,6 +43,7 @@ class TTSService {
   /**
    * Synthesize speech for the given text.
    * Returns a Base64-encoded MP3 string.
+   * KEPT FOR BACKWARD COMPATIBILITY
    */
   async synthesize(text) {
     try {
@@ -55,10 +56,13 @@ class TTSService {
       const fixedSeed = currentSettings.fixedSeed !== undefined ? currentSettings.fixedSeed : this.fixedSeed;
       const seed = fixedSeed && currentSettings.seed ? currentSettings.seed : null;
       
+      // Get model from settings or use default
+      const modelId = currentSettings.model || 'eleven_multilingual_v2';
+      
       // Prepare request options
       const options = {
         text,
-        modelId: 'eleven_multilingual_v2',
+        modelId: modelId,
         outputFormat: 'mp3_44100_192',
         enableLogging: false,
         voiceSettings: {
@@ -80,7 +84,7 @@ class TTSService {
         logger.info(`Using fixed seed for TTS: ${seed}`);
       }
       
-      logger.info(`TTS synthesis with voiceId: ${voiceId}, speed: ${speechRate}, seed: ${seed || 'random'}`);
+      logger.info(`TTS synthesis with voiceId: ${voiceId}, model: ${modelId}, speed: ${speechRate}, seed: ${seed || 'random'}`);
       
       // Use two arguments: (voiceId, options)
       const audioStream = await this.client.textToSpeech.convert(
@@ -106,6 +110,66 @@ class TTSService {
   }
 
   /**
+   * NEW STREAMING METHOD
+   * Stream synthesis - returns the raw ElevenLabs audio stream
+   */
+  async streamSynthesis(text) {
+    try {
+      // Get current settings
+      const currentSettings = await this.getCurrentSettings();
+      
+      // Use settings from dataStore, fallback to config/defaults
+      const voiceId = currentSettings.voiceId || this.voiceId;
+      const speechRate = currentSettings.speechRate !== undefined ? currentSettings.speechRate : this.speechRate;
+      const fixedSeed = currentSettings.fixedSeed !== undefined ? currentSettings.fixedSeed : this.fixedSeed;
+      const seed = fixedSeed && currentSettings.seed ? currentSettings.seed : null;
+      
+      // Get model from settings or use default
+      const modelId = currentSettings.model || 'eleven_multilingual_v2';
+      
+      // Prepare request options for streaming
+      const options = {
+        text,
+        modelId: modelId, // Now uses model from settings
+        voiceSettings: {
+          stability: currentSettings.stability !== undefined ? currentSettings.stability : this.voiceSettings.stability,
+          similarityBoost: currentSettings.similarityBoost !== undefined ? currentSettings.similarityBoost : this.voiceSettings.similarityBoost,
+          style: currentSettings.style !== undefined ? currentSettings.style : this.voiceSettings.style,
+          useSpeakerBoost: currentSettings.useSpeakerBoost !== undefined ? currentSettings.useSpeakerBoost : this.voiceSettings.useSpeakerBoost
+        }
+      };
+      
+      // Add speed (speechRate) to the payload - ElevenLabs expects 'speed' parameter
+      if (speechRate !== 1.0) {
+        options.speed = speechRate; // Value between 0-1, where 1.0 is normal speed
+      }
+      
+      // Add seed if enabled
+      if (seed !== null && fixedSeed) {
+        options.seed = parseInt(seed);
+        logger.info(`Using fixed seed for TTS streaming: ${seed}`);
+      }
+      
+      // Add optimize_streaming_latency for faster streaming
+      options.optimize_streaming_latency = 3; // Maximum optimization
+      
+      logger.info(`TTS streaming with voiceId: ${voiceId}, model: ${modelId}, speed: ${speechRate}, seed: ${seed || 'random'}`);
+      
+      // Use the stream method instead of convert
+      const audioStream = await this.client.textToSpeech.stream(
+        voiceId,
+        options
+      );
+
+      return audioStream;
+
+    } catch (error) {
+      logger.error('TTS streaming failed:', error);
+      throw error; // Let the caller handle the error
+    }
+  }
+
+  /**
    * Fallback method using direct ElevenLabs HTTP API.
    */
   async synthesizeFallback(text) {
@@ -116,11 +180,14 @@ class TTSService {
       const fixedSeed = currentSettings.fixedSeed !== undefined ? currentSettings.fixedSeed : this.fixedSeed;
       const seed = fixedSeed && currentSettings.seed ? parseInt(currentSettings.seed) : null;
       
+      // Get model from settings
+      const modelId = currentSettings.model || 'eleven_multilingual_v2';
+      
       const axios = require('axios');
       
       const payload = {
         text,
-        model_id: 'eleven_multilingual_v2',
+        model_id: modelId, // Now uses model from settings
         output_format: 'mp3_44100_192',
         voice_settings: {
           stability: currentSettings.stability !== undefined ? currentSettings.stability : this.voiceSettings.stability,

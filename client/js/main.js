@@ -130,6 +130,56 @@ class CommunicationAssistant {
             // Process the audio file
             this.socket.emit('process-audio', data);
         });
+
+        this.streamingPlayer = null; // Track current streaming player
+        
+        this.socket.on('tts-audio-chunk', (data) => {
+            // Initialize streaming player on first chunk
+            if (!this.streamingPlayer) {
+                console.log('Initializing streaming audio player');
+                
+                // Create audio element for streaming
+                const audioElement = new Audio();
+                audioElement.volume = 1.0;
+                
+                // Initialize streaming player
+                this.streamingPlayer = new StreamingAudioPlayer();
+                
+                this.streamingPlayer.initialize(audioElement, () => {
+                    console.log('Streaming audio playback completed');
+                    // Clean up
+                    this.streamingPlayer = null;
+                    // Auto-start recording after response audio finishes
+                    this.autoStartRecordingAfterDelay();
+                }).catch(error => {
+                    console.error('Failed to initialize streaming player:', error);
+                    // Fall back to buffered mode would happen on server side
+                    this.streamingPlayer = null;
+                });
+            }
+            
+            // Append chunk to stream
+            if (this.streamingPlayer) {
+                this.streamingPlayer.appendChunk(data.audio);
+            }
+        });
+        
+        this.socket.on('tts-audio-end', (data) => {
+            console.log(`TTS streaming completed: ${data.totalChunks} chunks, ${data.totalBytes} bytes`);
+            
+            if (this.streamingPlayer) {
+                this.streamingPlayer.endStream();
+            }
+        });
+        
+        // EXISTING: Buffered TTS audio (fallback)
+        this.socket.on('tts-audio', (data) => {
+            console.log('TTS audio received (buffered mode)');
+            this.playAudio(data.audio, () => {
+                // Auto-start recording after response audio finishes
+                this.autoStartRecordingAfterDelay();
+            });
+        });
         
         // Transcription and processing
         this.socket.on('transcription', (data) => {
@@ -557,22 +607,39 @@ class CommunicationAssistant {
             type: 'assistant',
             person: this.currentPerson?.name || 'Unknown'
         });
-        
-        // Hide response options
-        const responseSelection = document.getElementById('response-selection');
-        responseSelection.classList.remove('active');
-        
+
+        // Clear the response selection UI
+        this.cancelResponses();
+
         // Clear eye gaze targets
         this.eyeGazeControls.clearTargets();
+
+        // Hide response selection
+        const responseSelection = document.getElementById('response-selection');
+        if (responseSelection) {
+            responseSelection.classList.remove('active');
+        }
+
+        // Check if streaming is supported and enabled
+        const useStreaming = window.StreamingAudioPlayer &&
+            window.StreamingAudioPlayer.isSupported() &&
+            (window.currentSettings?.tts?.streaming !== false); // Default to true
+
+        // Send selected response to server with streaming preference
+        this.socket.emit('select-response', {
+            responseText: responseText,
+            conversationId: this.currentConversationId,
+            useStreaming: useStreaming
+        });
+
+        if (useStreaming) {
+            console.log('Using streaming TTS mode');
+        } else {
+            console.log('Using buffered TTS mode');
+        }
         
         // Clear last response data since a response was selected
         this.lastResponseData = null;
-        
-        // Send selection to server
-        this.socket.emit('select-response', {
-            responseText: responseText,
-            conversationId: this.currentConversationId
-        });
     }
     
     cancelResponses() {
@@ -657,58 +724,64 @@ class CommunicationAssistant {
     }
     
     playAudio(base64Audio, onComplete = null) {
-        try {
-            // Convert base64 to blob
-            const audioData = atob(base64Audio);
-            const arrayBuffer = new ArrayBuffer(audioData.length);
-            const view = new Uint8Array(arrayBuffer);
-            
-            for (let i = 0; i < audioData.length; i++) {
-                view[i] = audioData.charCodeAt(i);
-            }
-            
-            const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
-            const audioUrl = URL.createObjectURL(blob);
-            
-            const audio = new Audio(audioUrl);
-            
-            // Add event listeners
-            audio.onended = () => {
+        let audioUrl = null;
+        let audio = null;
+        let completed = false;
+
+        const cleanup = () => {
+            if (audioUrl) {
                 URL.revokeObjectURL(audioUrl);
-                console.log('Audio playback completed');
-                
-                // Call completion callback if provided
+                audioUrl = null;
+            }
+            if (audio) {
+                audio.onended = null;
+                audio.onerror = null;
+            }
+        };
+
+        const finish = () => {
+            if (!completed) {
+                completed = true;
+                cleanup();
                 if (onComplete && typeof onComplete === 'function') {
                     onComplete();
                 }
+            }
+        };
+
+        try {
+            // Convert base64 to ArrayBuffer
+            const binaryString = atob(base64Audio);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const blob = new Blob([bytes], { type: 'audio/mpeg' });
+            audioUrl = URL.createObjectURL(blob);
+
+            audio = new Audio(audioUrl);
+
+            audio.onended = () => {
+                console.log('Audio playback completed');
+                finish();
             };
-            
+
             audio.onerror = (error) => {
                 console.error('Audio playback failed:', error);
-                URL.revokeObjectURL(audioUrl);
                 this.showError('notifications.failedToPlayAudio');
-                
-                // Still call completion callback even on error
-                if (onComplete && typeof onComplete === 'function') {
-                    onComplete();
-                }
+                finish();
             };
-            
-            // Play the audio
+
             audio.play().catch(error => {
                 console.error('Failed to start audio playback:', error);
-                URL.revokeObjectURL(audioUrl);
                 this.showError('notifications.failedToPlayAudio');
+                finish();
             });
-            
         } catch (error) {
             console.error('Failed to process audio:', error);
             this.showError('notifications.failedToProcessAudio');
-            
-            // Call completion callback even on error
-            if (onComplete && typeof onComplete === 'function') {
-                onComplete();
-            }
+            finish();
         }
     }
     

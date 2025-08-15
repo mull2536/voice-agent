@@ -214,7 +214,7 @@
       "id": "conv_1754482379097_6d67279d",
       "person": "Other",
       "person_notes": "Anyone else",
-      "timestamp": "2025-08-15T16:07:46.233Z",
+      "timestamp": "2025-08-15T20:07:09.359Z",
       "exchanges": [
         {
           "user": "It's different in this program than in the other program that is running.",
@@ -538,6 +538,90 @@
           "user": "Sikankakila. Sikankakila. ",
           "assistant": "Ah, vaya… \"Sikankakila\" suena a algo divertido o misterioso... cuéntame, ¿qué significa para ti? ¿Es un código secreto, una palabra mágica, o solo te da ganas de repetirla? Me gusta ese aire curioso que traes. ¿Me enseñas más?",
           "timestamp": "2025-08-15T16:07:46.233Z",
+          "vectorized": false
+        },
+        {
+          "user": "Het spreek je heerlijk nog wel eens. ",
+          "assistant": "Haha, dat is mooi om te horen! Gek hè, het voelt echt als mijn eigen stem, ook al ben ik volledig afhankelijk van die assistent hier. Best cool om weer te kunnen praten, vind ikzelf. En jij, spreek jij nog weleens hardop voor jezelf of zing je stiekem onder de douche?",
+          "timestamp": "2025-08-15T16:54:43.362Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat je je hoortoestel kan bijstellen zodat je elk woord kunt verstaan? En wat als je de nieuwste technieken vrijblijvend kunt uitproberen? Bij Scholenberg horen zoals je nog nooit hebt gezien.",
+          "assistant": "Je hebt het over bij Scholenberg het hoortoestel echt tot leven laten komen, hè? Dat je elk woord kristalhelder hoort, dat klinkt als een droom voor iemand die worstelt met horen, zoals ik vroeger. En het nieuwste proberen zonder gedoe, dat is lekker spelen met technologie waar ik altijd wel blij van word. Goh, weet je wat ik wel mis? Dat gevoel van een goed gesprek waarbij je elk woord meekrijgt, zonder giswerk... Best cool idee, trouwens! Wat voor technieken hebben ze precies?",
+          "timestamp": "2025-08-15T18:32:53.192Z",
+          "vectorized": false
+        },
+        {
+          "user": "De mensen in de buurt bij elkaar brengen. Geweldig! Hey! Nieuw koffieapparaat? Prima. Lekker! Zo maken we Nederland samen een beetje mooier. Dat is de power van postcodes.",
+          "assistant": null,
+          "timestamp": "2025-08-15T18:33:04.178Z",
+          "vectorized": false
+        },
+        {
+          "user": "Om te meten. En dit is volgens mij 130. En was dit hem dan? Het huis van jullie dromen? Ja.",
+          "assistant": "Je hebt het over dat grote witte huis, het voormalige pastorie in Willemstad, dat wij ons droomhuis noemden. Ja, precies dat! Het voelde als thuiskomen, een plek met geschiedenis en karakter, net als onze liefde voor die stad. Dat was echt ons tweede thuis geworden... Wat maakt voor jou een huis eigenlijk een droomhuis?",
+          "timestamp": "2025-08-15T18:43:36.394Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat vind ik echt ontzettend lelijk. Het is hartstikke leuk! Ik kan het echt meer niet zeggen. Nee, het is echt niet meer leuk. Als het nog goed is kan ik het weer doorgeven. Maar we hebben ook hier een container. Gebeurt.",
+          "assistant": "Je zegt dat je iets echt ontzettend lelijk vindt, maar ook dat het hartstikke leuk is en dat je het eigenlijk niet beter kunt zeggen. Het klinkt alsof je een beetje worstelt met je gevoel erbij, toch? Wat is het precies dat je zo lelijk én leuk vindt? En die container waar je het over hebt, wat gebeurt daar dan mee? Goh, ik ben benieuwd!",
+          "timestamp": "2025-08-15T18:56:59.632Z",
+          "vectorized": false
+        },
+        {
+          "user": "En weggeven aan een ander die dat. Die het gewoon nodig heeft. En nu de kasten zijn uitgemest, rechts. Uit. Echt nog. Dit is apart. Oké.",
+          "assistant": "Je zegt dat je iets hebt weggegeven aan iemand die het écht nodig had, en dat de kasten nu helemaal zijn uitgeplunderd, vooral aan de rechterkant. Het klinkt alsof er een soort leegte of bijzondere verandering is ontstaan die je apart vindt. Wat was het eigenlijk precies dat weggegeven werd? Voelt het voor jou als iets moois, of juist gek?",
+          "timestamp": "2025-08-15T18:57:33.720Z",
+          "vectorized": false
+        },
+        {
+          "user": "Een huurparkeer hebben. Ik denk dat ik van jullie vier heb drie van mij. De eerste vraag is ja, zou je willen?",
+          "assistant": null,
+          "timestamp": "2025-08-15T18:57:43.034Z",
+          "vectorized": false
+        },
+        {
+          "user": "Power spray. Nu ben ik bloed, kort tegen.",
+          "assistant": "Je zegt iets over \"power spray\" en dat je nu bloed en kortademig bent. Dat klinkt niet echt best, zeker niet als je lichamelijk beperkt bent. Wat bedoel je precies met power spray? En voel je je nu echt benauwd? Gek hè, het klinkt alsof je lijf soms gewoon z’n eigen beslissingen neemt... Hoeveel last heb je nu?",
+          "timestamp": "2025-08-15T19:14:02.982Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ik denk dat die mensen die. Twee kilo. Met het allerlekkerste zomerassortiment van Jumbo. De koppen waren echt leuk.",
+          "assistant": null,
+          "timestamp": "2025-08-15T19:14:33.625Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja, goed geregeld. Ik iets minder denk ik. Dat moet je eens dan doen. Wel. Ja en snel want ja.",
+          "assistant": "Je zegt dat iets goed geregeld is, maar jijzelf iets minder. En dat het snel moet... Goh, dat klinkt alsof je wel wat haast hebt of dat er iets prangends speelt. Waar moet ik dan snel mee aan de slag, of wat moet er wel snel gebeuren volgens jou? Heb je iets spannends op de planning of zo?",
+          "timestamp": "2025-08-15T19:26:47.038Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dan nog even een snelvraag want ik zie nu weer die beelden. Jij bent een drunken er. Waarom heeft hij zijn jasje altijd open? Hij is een van de weinigen.",
+          "assistant": "Ah, die beelden… Jij zegt dus dat ik er eentje ben die wel eens lekker dronken is geweest, en dat ik mijn jasje altijd open had, terwijl dat bij de meesten dicht was. Grappig dat je dat opvalt! Dat open jasje was eigenlijk mijn soort van rebelsheid, een beetje nonchalant en vrij, alsof ik met een half open raam door het leven wilde gaan. Goh, weet je wat ik wel zou willen, weer een keer lekker dronken worden… al is het ook een soort chaos, precies zoals die sfeer toen. Jij hebt dat ook wel eens, dat soort vuige persoonlijke stijl?",
+          "timestamp": "2025-08-15T19:34:54.157Z",
+          "vectorized": false
+        },
+        {
+          "user": "Moeilijk te zeggen, omdat ze zo meteen tegenover elkaar zitten. En misschien lijkt",
+          "assistant": "Je zegt dat het moeilijk te zeggen is omdat ze zo meteen tegenover elkaar zitten, en het misschien lijkt... Ik ben nieuwsgierig, waar heb je het precies over? Wie zitten er tegenover elkaar en wat maakt het zo moeilijk om dat te zeggen?",
+          "timestamp": "2025-08-15T19:37:35.682Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat ze één op één met elkaar zitten. Want wie heeft het grootste plezier? Daar zijn we ook. Naast elkaar. Maar voorwerpen voorstellen? Ja, we gaan het vandaag over hebben. Er is toch voorwerk gedaan En op basis daarvan ga je toch met elkaar in Alaska komen? Ja.",
+          "assistant": null,
+          "timestamp": "2025-08-15T19:37:58.960Z",
+          "vectorized": false
+        },
+        {
+          "user": "De Oranje Zomer wordt mede mogelijk gemaakt door YouPhone.",
+          "assistant": "Je zegt dat de Oranje Zomer mede mogelijk wordt gemaakt door YouPhone. Dat klinkt als een mooi samenwerkingsverband! Ben je zelf nog van plan om van die Oranje Zomer te genieten? Hoe vier jij dat eigenlijk?",
+          "timestamp": "2025-08-15T20:07:09.359Z",
           "vectorized": false
         }
       ]

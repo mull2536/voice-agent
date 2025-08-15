@@ -367,16 +367,72 @@ io.on('connection', (socket) => {
       const startTime = performance.now();
       
       try {
-        const { responseText, conversationId } = data;
+        const { responseText, conversationId, useStreaming = true } = data; // Add streaming flag
         
-        // Generate speech
-        const ttsStartTime = performance.now();
-        const audioBuffer = await ttsService.synthesize(responseText);
-        const ttsEndTime = performance.now();
+        let ttsStartTime, ttsEndTime;
         
-        socket.emit('tts-audio', { audio: audioBuffer });
+        // Check if we should use streaming (can be disabled via client)
+        if (useStreaming) {
+          // STREAMING MODE
+          ttsStartTime = performance.now();
+          
+          try {
+            // Get the audio stream from ElevenLabs
+            const audioStream = await ttsService.streamSynthesis(responseText);
+            
+            // Stream chunks to client as they arrive
+            let chunkCount = 0;
+            let totalBytes = 0;
+            
+            for await (const chunk of audioStream) {
+              // Convert chunk to base64 and emit
+              const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+              const b64Chunk = buffer.toString('base64');
+              socket.emit('tts-audio-chunk', { 
+                audio: b64Chunk,
+                chunkIndex: chunkCount++
+              });
+              totalBytes += chunk.length;
+              
+              // Log first chunk timing for perceived latency
+              if (chunkCount === 1) {
+                const firstChunkTime = performance.now();
+                logger.info(`🎵 First audio chunk sent after ${(firstChunkTime - ttsStartTime).toFixed(2)}ms`);
+              }
+            }
+            
+            // Signal end of stream
+            socket.emit('tts-audio-end', { 
+              totalChunks: chunkCount,
+              totalBytes: totalBytes 
+            });
+            
+            ttsEndTime = performance.now();
+            logger.info(`🎵 TTS streaming completed: ${chunkCount} chunks, ${totalBytes} bytes in ${(ttsEndTime - ttsStartTime).toFixed(2)}ms`);
+            
+          } catch (streamError) {
+            logger.error('TTS streaming failed, falling back to buffered mode:', streamError);
+            
+            // FALLBACK TO BUFFERED MODE
+            const fallbackStartTime = performance.now();
+            const audioBuffer = await ttsService.synthesize(responseText);
+            ttsEndTime = performance.now();
+            
+            socket.emit('tts-audio', { audio: audioBuffer });
+            logger.info(`🎵 TTS fallback buffered synthesis: ${(ttsEndTime - fallbackStartTime).toFixed(2)}ms`);
+          }
+          
+        } else {
+          // BUFFERED MODE (original implementation)
+          ttsStartTime = performance.now();
+          const audioBuffer = await ttsService.synthesize(responseText);
+          ttsEndTime = performance.now();
+          
+          socket.emit('tts-audio', { audio: audioBuffer });
+          logger.info(`🎵 TTS buffered synthesis: ${(ttsEndTime - ttsStartTime).toFixed(2)}ms`);
+        }
         
-        // Update conversation with selected response
+        // Update conversation with selected response (same for both modes)
         const saveStartTime = performance.now();
         await llmService.selectResponse(conversationId, responseText);
         

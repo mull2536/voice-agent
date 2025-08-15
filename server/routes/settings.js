@@ -44,7 +44,6 @@ router.put('/', async (req, res) => {
     // Clean up any unwanted properties
     if (updates.tts) {
       // Remove properties that shouldn't be saved
-      delete updates.tts.model;
       delete updates.tts.outputQuality;
       delete updates.tts.useFixedSeed;
       
@@ -151,6 +150,7 @@ router.post('/reset', async (req, res) => {
       },
       tts: {
         voiceId: 'JBFqnCBsd6RMkjVDRZzb',
+        model: 'eleven_multilingual_v2',
         speechRate: 1.0,
         stability: 0.5,
         similarityBoost: 0.75,

@@ -14,7 +14,7 @@
     "useSpeakerBoost": true,
     "seed": null,
     "fixedSeed": false,
-    "model": "eleven_multilingual_v2",
+    "model": "eleven_flash_v2_5",
     "outputQuality": "mp3_44100_192",
     "useFixedSeed": false
   },
