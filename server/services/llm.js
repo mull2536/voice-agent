@@ -13,8 +13,6 @@ class LLMService {
         this.openai = new OpenAI({
             apiKey: process.env.OPENAI_API_KEY
         });
-        this.geminiApiKey = process.env.GEMINI_API_KEY;
-        this.geminiApiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
         
         // Default system prompt (used when settings.llm.systemPrompt is empty)
         this.defaultSystemPrompt = `You are a helpful AI assistant designed to support natural 
@@ -27,6 +25,14 @@ class LLMService {
 
         this.chatHistoryService = new ChatHistoryService();
         this.initializeChatHistory();
+        
+        // Socket reference for streaming (set by server)
+        this.io = null;
+    }
+
+    // Set socket.io instance for streaming
+    setSocketIO(io) {
+        this.io = io;
     }
 
     async initializeChatHistory() {
@@ -54,43 +60,20 @@ class LLMService {
         const searchInstructions = `
 
 When the user asks about current events, recent information, or anything that requires up-to-date knowledge, 
-you will automatically have access to web search results. Use this information to provide accurate, current responses.
-
-IMPORTANT FORMATTING RULES FOR VOICE OUTPUT:
-- Never include URLs, links, or web addresses in your response
-- Do not use markdown formatting like [text](url)
-- Avoid citation numbers or references like [1], (1), or superscripts
-- Do not mention sources inline - focus on the information itself
-- Keep responses concise and natural for text-to-speech
-- Use simple, clear language suitable for voice synthesis
-- Never mention that you performed a search - just integrate the information naturally into your response
-- Avoid phrases like "according to my search" or "I found online"
-- Present information as direct statements without attribution markers
-
-Remember: The user is using voice/eye-gaze technology, so the response must be clean, natural speech without any visual formatting or references.`;
-
+you will automatically have access to web search results. Use this information to provide accurate, current responses.`;
+        
         return systemPrompt + searchInstructions;
     }
 
-    // Clean response to remove any search artifacts
     cleanResponse(text) {
-        if (!text) return text;
+        if (!text) return '';
         
-        // Remove markdown links [text](url) -> text
-        text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+        // Remove search-related artifacts
+        text = text.replace(/\[\d+\]/g, ''); // Remove reference numbers
+        text = text.replace(/†[a-z]/g, ''); // Remove other reference markers
         
-        // Remove standalone URLs (http/https)
-        text = text.replace(/https?:\/\/[^\s<>"\{\}\|\\^\[\]`]+/g, '');
-        
-        // Remove citation numbers in various formats
-        text = text.replace(/\[\d+\]/g, '');
-        text = text.replace(/\(\d+\)/g, '');
-        text = text.replace(/\<\d+\>/g, '');
-        text = text.replace(/\{\d+\}/g, '');
-        text = text.replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]+/g, '');
-        
-        // Remove "according to" phrases that reference searches
-        text = text.replace(/according to (?:my |the )?(?:search|results|findings|web|internet|online sources)[^,.]*/gi, '');
+        // Remove common AI phrases about searching
+        text = text.replace(/(?:According to |Based on |From )(?:my |the )?(?:search|results|findings|web|internet|online sources)[^,.]*/gi, '');
         text = text.replace(/(?:I |I've |I have )?(?:searched|found|discovered|looked up)[^,.]*/gi, '');
         text = text.replace(/(?:from |based on |per )(?:my |the )?(?:search|results|findings|web|internet)[^,.]*/gi, '');
         
@@ -150,225 +133,166 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
     }
 
     async generateResponses(userMessage, personId, socketId = null) {
-        const timings = {};
-
+        const timings = {
+            personLookup: 0,
+            sessionContext: 0,
+            ragLookup: 0,
+            chatHistorySearch: 0,
+            personContext: 0,
+            messageBuilding: 0,
+            llmApi: 0,
+            responseParsing: 0,
+            chatHistorySave: 0,
+            recentContext: 0
+        };
+        
         try {
             // 1. LOOK UP PERSON DETAILS
             const personStartTime = Date.now();
             const person = await dataStore.findPersonById(personId);
             timings.personLookup = Date.now() - personStartTime;
-
-            // 2. GET RECENT CONTEXT FROM SESSION QUEUE
-            const recentStartTime = Date.now();
-            const recentContext = socketId ? 
-                sessionQueueManager.getConversationExchanges(socketId) : [];
-            timings.recentContext = Date.now() - recentStartTime;
-
-            // 3. GET SESSION CONVERSATION CONTEXT
+            
+            // 2. GET SESSION CONTEXT (only once, not twice)
             const sessionStartTime = Date.now();
             const sessionContext = socketId ? 
                 sessionQueueManager.getConversationExchanges(socketId) : [];
             timings.sessionContext = Date.now() - sessionStartTime;
-
-            // 4. GET RAG CONTEXT
-            const ragStartTime = Date.now();
-            const ragContext = await getRAGContext(userMessage);
-            timings.ragLookup = Date.now() - ragStartTime;
-
-            // 5. GET RELEVANT CHAT HISTORY
-            const chatHistoryStartTime = Date.now();
-            const chatHistoryContext = await this.chatHistoryService.searchRelevantHistory(
-                personId,
-                userMessage
-            );
-            timings.chatHistorySearch = Date.now() - chatHistoryStartTime;
-
-            // 6. GET PERSON-SPECIFIC CONTEXT
+            
+            // 3. PARALLEL CONTEXT RETRIEVAL - RAG and Chat History
+            const contextStartTime = Date.now();
+            
+            // Create promises with individual timing
+            const ragPromise = (async () => {
+                const ragStart = Date.now();
+                const result = await getRAGContext(userMessage);
+                timings.ragLookup = Date.now() - ragStart;
+                return result;
+            })();
+            
+            const chatHistoryPromise = (async () => {
+                const chatStart = Date.now();
+                const result = await this.chatHistoryService.searchRelevantHistory(personId, userMessage);
+                timings.chatHistorySearch = Date.now() - chatStart;
+                return result;
+            })();
+            
+            // Wait for both to complete
+            const [ragContext, chatHistoryContext] = await Promise.all([ragPromise, chatHistoryPromise]);
+            
+            // Log the actual individual times
+            logger.info(`Context retrieval completed - RAG: ${timings.ragLookup}ms, Chat History: ${timings.chatHistorySearch}ms`);
+            
+            // 4. GET PERSON-SPECIFIC CONTEXT
             const personContextStartTime = Date.now();
             const personContext = person ? 
                 await this.chatHistoryService.getPersonContext(personId) : null;
-            const personContextEndTime = Date.now();
-            timings.personContext = personContextEndTime - personContextStartTime;
-
-            // 7. BUILD CONTEXT MESSAGE
-            const buildStartTime = Date.now();
-            let systemPromptContent = this.buildContextMessage(
+            timings.personContext = Date.now() - personContextStartTime;
+            
+            // 5. BUILD SYSTEM PROMPT
+            const settings = await dataStore.getSettings();
+            
+            let systemPromptContent = settings?.llm?.systemPrompt || this.defaultSystemPrompt;
+            
+            // Add language instruction
+            const language = settings?.llm?.responseLanguage || settings?.system?.defaultLanguage || 'en';
+            systemPromptContent += this.getLanguageInstruction(language);
+            
+            // Add search instructions if enabled
+            const searchEnabled = settings?.internetSearch?.enabled !== false;
+            if (searchEnabled) {
+                systemPromptContent = this.appendSearchInstructions(systemPromptContent);
+            }
+            
+            // Add context to system prompt
+            const contextMessage = this.buildContextMessage(
                 userMessage, 
                 person, 
-                recentContext, 
+                sessionContext, // Using sessionContext instead of duplicate recentContext
                 ragContext, 
                 chatHistoryContext, 
                 sessionContext, 
                 personContext
             );
-
-            // Get settings from dataStore
-            const settings = await dataStore.getSettings();
-
-            // Use custom system prompt if provided, otherwise use default
-            const customSystemPrompt = settings?.llm?.systemPrompt || '';
-            const baseSystemPrompt = customSystemPrompt.trim() || this.defaultSystemPrompt;
-
-            // Add language instruction based on default language setting
-            const defaultLanguage = settings?.system?.defaultLanguage || 'en';
-            const languageInstruction = this.getLanguageInstruction(defaultLanguage);
-
-            // Combine prompts: base + language + context
-            systemPromptContent = baseSystemPrompt + languageInstruction + '\n\n' + systemPromptContent;
-
-            // Append search instructions if search is enabled
-            const searchEnabled = settings?.internetSearch?.enabled !== false; // Default to true
-            if (searchEnabled) {
-                systemPromptContent = this.appendSearchInstructions(systemPromptContent);
+            
+            if (contextMessage) {
+                systemPromptContent += '\n\nContext:\n' + contextMessage;
             }
-
-            logger.info(`Using language: ${defaultLanguage}, Search enabled: ${searchEnabled}`);
-
-            timings.messageBuilding = Date.now() - buildStartTime;
-
-            // Get the model name
+            
+            timings.messageBuilding = Date.now() - personContextStartTime;
+            
+            // 6. DETERMINE MODEL AND STREAMING PREFERENCES
             const modelName = settings?.llm?.model || config.llm.model || 'gpt-4.1-mini';
-            const isGemini = modelName === 'gemini-2.5-flash';
-
-            // 8. USE RESPONSES API WITH WEB SEARCH or GEMINI API
+            const streamingEnabled = settings?.llm?.streaming !== false;
+            
+            // 7. GENERATE RESPONSES BASED ON MODE
             const llmStartTime = Date.now();
-
+            
             try {
-                if (isGemini) {
-                    // GEMINI MODEL HANDLING
-                    if (socketId) {
-                        // Manual mode - generate 3 responses
-                        const responses = [];
-
-                        // Generate responses with different temperatures for variety
-                        for (let i = 0; i < 3; i++) {
-                            const temp = Math.min(1.5, 0.9 + i * 0.2);
-                            const response = await this.callGeminiAPI(
-                                userMessage,
-                                systemPromptContent,
-                                settings,
-                                searchEnabled,
-                                temp
-                            );
-
-                            if (!responses.includes(response)) {
-                                responses.push(response);
-                            }
-                        }
-
-                        // Ensure we have 3 responses
-                        while (responses.length < 3) {
-                            responses.push("I understand. Please tell me more.");
-                        }
-
-                        timings.llmApi = Date.now() - llmStartTime;
-                        timings.responseParsing = 0;
-
-                        return await this.finalizeResponses(
-                            responses.slice(0, 3),
-                            person,
-                            userMessage,
-                            ragContext,
-                            timings,
-                            socketId
-                        );
-                    } else {
-                        // Auto mode - single response
-                        const response = await this.callGeminiAPI(
-                            userMessage,
-                            systemPromptContent,
-                            settings,
+                // Check if we're in manual mode (need multiple responses)
+                if (socketId) {
+                    // Manual mode - generate 3 responses in PARALLEL
+                    const temperatures = [0.9, 1.1, 1.3];
+                    
+                    const responsePromises = temperatures.map((temp, index) => 
+                        this.generateSingleResponse(
+                            userMessage, 
+                            systemPromptContent, 
+                            settings, 
                             searchEnabled,
-                            0.9
-                        );
-
-                        timings.llmApi = Date.now() - llmStartTime;
-                        timings.responseParsing = 0;
-
-                        return await this.finalizeResponses(
-                            [response],
-                            person,
-                            userMessage,
-                            ragContext,
-                            timings,
+                            temp,
+                            streamingEnabled && index === 0, // Only stream first response
                             socketId
-                        );
+                        )
+                    );
+                    
+                    const responses = await Promise.all(responsePromises);
+                    
+                    // Ensure uniqueness and we have 3 responses
+                    const uniqueResponses = [...new Set(responses)];
+                    while (uniqueResponses.length < 3) {
+                        uniqueResponses.push("I understand. Please tell me more.");
                     }
+                    
+                    timings.llmApi = Date.now() - llmStartTime;
+                    timings.responseParsing = 0;
+                    
+                    return await this.finalizeResponses(
+                        uniqueResponses.slice(0, 3),
+                        person,
+                        userMessage,
+                        ragContext,
+                        timings,
+                        socketId
+                    );
+                    
                 } else {
-                    // OPENAI MODELS - USE RESPONSES API WITH WEB SEARCH
-                    // Check if we're in manual mode (need multiple responses)
-                    if (socketId) {
-                        // Manual mode - generate 3 responses
-                        const responses = [];
-
-                        // Generate first response with potential web search
-                        const response1 = await this.generateSingleResponse(
-                            userMessage, 
-                            systemPromptContent, 
-                            settings, 
-                            searchEnabled,
-                            0.9
-                        );
-                        responses.push(response1);
-
-                        // Generate 2 more responses with slightly different temperatures
-                        for (let i = 1; i < 3; i++) {
-                            const response = await this.generateSingleResponse(
-                                userMessage, 
-                                systemPromptContent, 
-                                settings, 
-                                searchEnabled,
-                                Math.min(1.5, 0.9 + i * 0.2)
-                            );
-                            if (!responses.includes(response)) {
-                                responses.push(response);
-                            }z
-                        }
-
-                        // Ensure we have 3 responses
-                        while (responses.length < 3) {
-                            responses.push("I understand. Please tell me more.");
-                        }
-
-                        timings.llmApi = Date.now() - llmStartTime;
-                        timings.responseParsing = 0; // No separate parsing needed
-
-                        // Save conversation and return
-                        return await this.finalizeResponses(
-                            responses.slice(0, 3),
-                            person,
-                            userMessage,
-                            ragContext,
-                            timings,
-                            socketId
-                        );
-
-                    } else {
-                        // Auto mode - single response
-                        const response = await this.generateSingleResponse(
-                            userMessage, 
-                            systemPromptContent, 
-                            settings, 
-                            searchEnabled
-                        );
-
-                        timings.llmApi = Date.now() - llmStartTime;
-                        timings.responseParsing = 0;
-
-                        return await this.finalizeResponses(
-                            [response],
-                            person,
-                            userMessage,
-                            ragContext,
-                            timings,
-                            socketId
-                        );
-                    }
+                    // Auto mode - single response with streaming
+                    const response = await this.generateSingleResponse(
+                        userMessage, 
+                        systemPromptContent, 
+                        settings, 
+                        searchEnabled,
+                        0.9,
+                        streamingEnabled,
+                        socketId
+                    );
+                    
+                    timings.llmApi = Date.now() - llmStartTime;
+                    timings.responseParsing = 0;
+                    
+                    return await this.finalizeResponses(
+                        [response],
+                        person,
+                        userMessage,
+                        ragContext,
+                        timings,
+                        socketId
+                    );
                 }
-
+                
             } catch (error) {
-                // Fallback to Chat Completions API if Responses API fails
-                logger.warn('Responses API failed, falling back to Chat Completions API:', error);
+                // Fallback to Chat Completions API if primary API fails
+                logger.warn('Primary API failed, falling back:', error);
                 return await this.fallbackToChatCompletions(
                     userMessage,
                     systemPromptContent,
@@ -379,92 +303,41 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
                     socketId
                 );
             }
-
+            
         } catch (error) {
             logger.error('Failed to generate responses:', error);
             throw error;
         }
     }
-    
-    async callGeminiAPI(userMessage, systemPrompt, settings, searchEnabled, temperature) {
-        try {
-            // Prepare the request payload
-            const payload = {
-                contents: [
-                    {
-                        role: "user",
-                        parts: [
-                            {
-                                text: userMessage
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    temperature: temperature,
-                    maxOutputTokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150),
-                    topP: 0.95,
-                    topK: 40
-                }
-            };
 
-            // Add system instruction if provided
-            if (systemPrompt) {
-                payload.systemInstruction = {
-                    role: "system",
-                    parts: [
-                        {
-                            text: systemPrompt
-                        }
-                    ]
-                };
-            }
-
-            // Add web search tool if enabled
-            if (searchEnabled) {
-                payload.tools = [
-                    {
-                        googleSearch: {}
-                    }
-                ];
-            }
-
-            // Make the API call
-            const response = await axios.post(
-                `${this.geminiApiUrl}?key=${this.geminiApiKey}`,
-                payload,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-
-            // Extract the response text
-            if (response.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-                return this.cleanResponse(response.data.candidates[0].content.parts[0].text);
-            } else {
-                throw new Error('Invalid response format from Gemini API');
-            }
-
-        } catch (error) {
-            logger.error('Gemini API error:', error.response?.data || error.message);
-            throw error;
+    async generateSingleResponse(userMessage, systemPrompt, settings, searchEnabled, temperature = 0.9, streamingEnabled = false, socketId = null) {
+        const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
+        
+        const useResponsesAPI = modelName.includes('gpt-5') || modelName.includes('gpt-4.1');
+        
+        // Determine if we should use streaming (only for non-Responses API and if enabled)
+        const shouldStream = streamingEnabled && !useResponsesAPI && socketId && this.io;
+        
+        if (useResponsesAPI) {
+            // Use Responses API (doesn't support streaming yet)
+            return await this.generateWithResponsesAPI(userMessage, systemPrompt, settings, searchEnabled, temperature);
+        } else if (shouldStream) {
+            // Use streaming Chat Completions API
+            return await this.generateWithStreaming(userMessage, systemPrompt, settings, temperature, socketId);
+        } else {
+            // Use regular Chat Completions API
+            return await this.generateWithChatCompletions(userMessage, systemPrompt, settings, temperature);
         }
     }
 
-    async generateSingleResponse(userMessage, systemPrompt, settings, searchEnabled, temperature) {
+    // OpenAI generation methods
+    async generateWithResponsesAPI(userMessage, systemPrompt, settings, searchEnabled, temperature) {
         const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
-        
-        // Check if it's Gemini model
-        if (modelName === 'gemini-2.5-flash') {
-            return await this.callGeminiAPI(userMessage, systemPrompt, settings, searchEnabled, temperature);
-        }
-        // Simple logic for just two models
         const isGPT5ChatLatest = modelName === 'gpt-5-chat-latest';
         
         // Determine tools - GPT-5 chat latest doesn't support web search
-        const tools = (searchEnabled && !isGPT5ChatLatest) ? [{ type: "web_search_preview" }] : [];
+        const tools = (searchEnabled && !isGPT5ChatLatest) ? 
+            [{ type: "web_search_preview" }] : [];
         
         // Build the request payload
         const requestPayload = {
@@ -489,31 +362,96 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             logger.info('Web search disabled for gpt-5-chat-latest (not supported)');
         }
         
-        
-        // LOG THE EXACT REQUEST
-        logger.info('=== OPENAI RESPONSES API REQUEST ===');
-        logger.info(`Search Enabled: ${searchEnabled}`);
-        logger.info(`Model: ${requestPayload.model}`);
-        logger.info(`Temperature: ${requestPayload.temperature}`);
-        logger.info(`Max Tokens: ${requestPayload.max_output_tokens}`);
-        logger.info(`Tools: ${JSON.stringify(tools)}`);
-        logger.info(`User Message: "${userMessage}"`);
-        logger.info(`System Prompt Length: ${systemPrompt.length} characters`);
+        logger.info('Using Responses API with settings:', {
+            model: modelName,
+            temperature,
+            searchEnabled: searchEnabled && !isGPT5ChatLatest,
+            maxTokens: requestPayload.max_output_tokens
+        });
         
         try {
             const response = await this.openai.responses.create(requestPayload);
-            
-            // LOG THE RESPONSE
-            logger.info('=== OPENAI RESPONSES API RESPONSE ===');
-            logger.info(`Response ID: ${response.id}`);
-            logger.info(`Output Text: "${response.output_text?.substring(0, 100)}..."`);
-            // Don't log full response to avoid verbose output
-            
-            // The response.output_text contains the complete response with search results already integrated
             return this.cleanResponse(response.output_text);
         } catch (error) {
-            logger.error('=== OPENAI RESPONSES API ERROR ===');
-            logger.error('Error details:', error);
+            logger.error('Responses API error:', error);
+            throw error;
+        }
+    }
+
+    async generateWithStreaming(userMessage, systemPrompt, settings, temperature, socketId) {
+        const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
+        
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMessage }
+        ];
+        
+        try {
+            logger.info('Starting OpenAI streaming response generation');
+            
+            const stream = await this.openai.chat.completions.create({
+                model: modelName,
+                messages: messages,
+                temperature: temperature,
+                max_tokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150),
+                stream: true
+            });
+            
+            let fullResponse = '';
+            
+            // Emit streaming chunks
+            for await (const chunk of stream) {
+                const token = chunk.choices[0]?.delta?.content || '';
+                if (token) {
+                    fullResponse += token;
+                    
+                    // Emit partial response to specific socket
+                    if (this.io && socketId) {
+                        this.io.to(socketId).emit('partial-response', {
+                            text: fullResponse,
+                            isComplete: false
+                        });
+                    }
+                }
+            }
+            
+            // Emit completion signal
+            if (this.io && socketId) {
+                this.io.to(socketId).emit('partial-response', {
+                    text: fullResponse,
+                    isComplete: true
+                });
+            }
+            
+            logger.info('OpenAI streaming response completed');
+            return this.cleanResponse(fullResponse);
+            
+        } catch (error) {
+            logger.error('OpenAI streaming generation error:', error);
+            throw error;
+        }
+    }
+
+    async generateWithChatCompletions(userMessage, systemPrompt, settings, temperature) {
+        const modelName = settings?.llm?.model || config.llm.model || "gpt-4.1-mini";
+        
+        const messages = [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMessage }
+        ];
+        
+        const apiParams = {
+            model: modelName,
+            messages: messages,
+            temperature: temperature,
+            max_tokens: parseInt(settings?.llm?.maxTokens || config.llm.maxTokens || 150)
+        };
+        
+        try {
+            const completion = await this.openai.chat.completions.create(apiParams);
+            return this.cleanResponse(completion.choices[0].message.content);
+        } catch (error) {
+            logger.error('Chat Completions API error:', error);
             throw error;
         }
     }
@@ -614,7 +552,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
             timings: timings,
             llmModel: modelName, 
             internetSearch: settings?.internetSearch?.enabled !== false
-            };
+        };
     }
 
     async selectResponse(conversationId, selectedText) {
@@ -640,6 +578,7 @@ Remember: The user is using voice/eye-gaze technology, so the response must be c
 }
 
 module.exports = LLMService;
+
 // At the bottom of llm.js, add:
 module.exports.getChatHistoryService = function() {
     // Access the global llmService instance from the main server

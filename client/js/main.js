@@ -156,6 +156,23 @@ class CommunicationAssistant {
             };
             this.displayResponseOptions(data.responses);
         });
+
+        // Streaming response handler
+        this.socket.on('partial-response', (data) => {
+            const { text, isComplete } = data;
+            
+            // Check if we're in auto-response mode
+            const settings = window.currentSettings || {};
+            const isAutoResponse = settings.interaction?.responseMode === 'auto';
+            
+            if (isAutoResponse) {
+                // Update the response display in real-time using existing UI elements
+                this.updateStreamingResponse(text, isComplete);
+            } else {
+                // In manual mode, show streaming for the first option
+                this.updateStreamingResponseOption(0, text, isComplete);
+            }
+        });
         
         this.socket.on('tts-audio', (data) => {
             console.log('TTS audio received');
@@ -460,7 +477,45 @@ class CommunicationAssistant {
         // Re-enable button after a short delay
         setTimeout(() => {
             speakBtn.disabled = false;
-        }, 1000);
+        }, 500);
+    }
+
+    updateStreamingResponse(text, isComplete) {
+        // Use existing response container
+        const responseContainer = document.querySelector('.assistant-message') || 
+                                  document.querySelector('.response-text') ||
+                                  document.querySelector('.message-content');
+        
+        if (responseContainer) {
+            // Update content with current text
+            responseContainer.textContent = text;
+            
+            // Add visual indicator for streaming (optional, using existing classes)
+            if (!isComplete) {
+                responseContainer.classList.add('streaming');
+            } else {
+                responseContainer.classList.remove('streaming');
+            }
+        }
+    }
+
+    updateStreamingResponseOption(index, text, isComplete) {
+        // For manual mode - update specific response option using existing UI
+        const responseOptions = document.querySelectorAll('.response-option');
+        
+        if (responseOptions[index]) {
+            const option = responseOptions[index];
+            const textElement = option.querySelector('.response-text') || option;
+            
+            textElement.textContent = text;
+            
+            // Use existing hover/active classes for visual feedback
+            if (!isComplete) {
+                option.classList.add('streaming');
+            } else {
+                option.classList.remove('streaming');
+            }
+        }
     }
     
     displayResponseOptions(responses) {

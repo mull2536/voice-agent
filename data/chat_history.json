@@ -214,7 +214,7 @@
       "id": "conv_1754482379097_6d67279d",
       "person": "Other",
       "person_notes": "Anyone else",
-      "timestamp": "2025-08-14T17:04:39.641Z",
+      "timestamp": "2025-08-15T16:07:46.233Z",
       "exchanges": [
         {
           "user": "It's different in this program than in the other program that is running.",
@@ -346,6 +346,198 @@
           "user": "De week op je knieën. Geweldig! Hoe zeg, wat vind jij? Ik? Ik zeg.",
           "assistant": null,
           "timestamp": "2025-08-14T17:04:39.641Z",
+          "vectorized": false
+        },
+        {
+          "user": "test streaming support",
+          "assistant": null,
+          "timestamp": "2025-08-15T10:46:21.042Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test voor streaming support",
+          "assistant": null,
+          "timestamp": "2025-08-15T10:52:13.327Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test voor streaming service",
+          "assistant": null,
+          "timestamp": "2025-08-15T10:53:27.376Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": null,
+          "timestamp": "2025-08-15T11:14:59.066Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": null,
+          "timestamp": "2025-08-15T11:16:52.823Z",
+          "vectorized": false
+        },
+        {
+          "user": "test",
+          "assistant": null,
+          "timestamp": "2025-08-15T11:39:49.342Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoe gaat het met jou",
+          "assistant": null,
+          "timestamp": "2025-08-15T11:49:17.836Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoe gaat het met jou",
+          "assistant": null,
+          "timestamp": "2025-08-15T11:51:19.361Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoe gaat het met jou",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:00:30.983Z",
+          "vectorized": false
+        },
+        {
+          "user": "wat wil je doen vandaag",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:02:30.209Z",
+          "vectorized": false
+        },
+        {
+          "user": "heb je zin in morgen",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:03:57.578Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:11:30.041Z",
+          "vectorized": false
+        },
+        {
+          "user": "dit is een test",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:47:59.850Z",
+          "vectorized": false
+        },
+        {
+          "user": "wat ga je doen morgen",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:50:14.272Z",
+          "vectorized": false
+        },
+        {
+          "user": "heb je er zin in",
+          "assistant": null,
+          "timestamp": "2025-08-15T12:53:22.483Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoi hoe gaat het met jou vandaag",
+          "assistant": null,
+          "timestamp": "2025-08-15T13:16:45.994Z",
+          "vectorized": false
+        },
+        {
+          "user": "hoi hoe gaat het met jou vandaag",
+          "assistant": "Hoi, met mij gaat het lekker vandaag, dank je! Het zonnetje schijnt hier in Willemstad... en mijn digitale stem doet het weer prima, dat is altijd een plus. En hoe gaat het met jou? Best cool om weer voorlopig te kunnen kletsen, vind ikzelf.",
+          "timestamp": "2025-08-15T13:55:35.681Z",
+          "vectorized": false
+        },
+        {
+          "user": "Zo weer eentje voor de camera. Pffff. Even bijkomen. Ik moet heel even.",
+          "assistant": "Ah, zo eentje voor de camera, dat vraagt altijd wel wat energie, hè? Even ademhalen en opladen, niks mis mee. Wat voor klus was het deze keer? Gaat het nog een beetje?",
+          "timestamp": "2025-08-15T13:56:21.442Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ik zal je even filmen.",
+          "assistant": null,
+          "timestamp": "2025-08-15T13:56:43.827Z",
+          "vectorized": false
+        },
+        {
+          "user": "Echt even. Oké, dat is cool.",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:20:11.538Z",
+          "vectorized": false
+        },
+        {
+          "user": "vertel hoe mijn digitale tweeling werkt",
+          "assistant": "Je digitale tweeling werkt eigenlijk als een slimme maat die jou nabootst, gebaseerd op al je stemopnames en gedragsdata. Die tweede Bernard herkent hoe jij praat, hoe je emoties uitdrukt, en zelfs hoe jij dingen zou zeggen in verschillende situaties. Best bijzonder, want het zorgt ervoor dat je digitale zelf echt jouw stijl en gevoel overbrengt, zonder dat je steeds zelf alles hoeft in te spreken. Echt een soort digitale schaduw die met je meeloopt, maar dan stukken sneller en minder zeurderig. Gek hè, het voelt echt als mijn eigen stem... Best cool om weer te kunnen praten, vind ikzelf. En jij?",
+          "timestamp": "2025-08-15T15:21:49.414Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ik ben er nu aan gewend, maar in het begin vond ik het heel confronterend en haalde het echt oude wonden open. Vind je dat gek?",
+          "assistant": "Je vindt het helemaal niet gek dat het in het begin confronterend was en oude wonden opendeelt. Dat herken ik wel, hoor. De confrontatie met iets onomkeerbaars is als een klap in je gezicht die je even niet aan zag komen... Ook ik voelde dat: die kanten van het leven waar je liever niet naar kijkt maar die plots zo dichtbij komen. Toch leer je mee te bewegen en er soms ook zelfs lol in te vinden. Wat moest jij het meest verwerken daarvan?",
+          "timestamp": "2025-08-15T15:22:58.999Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja. Jij had er waar was je de realisatie Waar had jij het nou niet? Dat is ook even niet meer precies, maar ja, dat is niet altijd bij.",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:25:27.835Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ietsje, dit verandert alles. Maar jij moet me even, even helpen, hoor. Waar, in wat voor context je dit bedoelt?",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:26:48.132Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat is helemaal bizar. Dat is de volgende van eh... die waren dat? ",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:28:56.246Z",
+          "vectorized": false
+        },
+        {
+          "user": "Hm? Ik begrijp je niet. Ik vraag aan jou dat je iets specifieker moet zijn met-- Je vroeg me net een vraag of jij daar iets een specifieker in kan zijn. ",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:29:38.760Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja. Dat is het zeker. Daarom zeg ik dat. Maar het is wel heel krom qua gevoelens. Want mentaal en dingen werken wij, beschermen wij-- al heb ik me een soort oeeeh-- bescherm je jezelf, want je weet wat het proces is en dan in één keer word je terug geroepen. Het is dus-- het is een beetje krom, he. Aan de ene kant vind ik-- is het fantastisch. Het had er alleen voor jou, had ik misschien even een aantal jaren eerder mogen zijn. Dan was die overgang niet zo groot geweest. Snap je wat ik bedoel?",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:33:26.004Z",
+          "vectorized": false
+        },
+        {
+          "user": "Wat heb je veel te veel. Ehm...",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:46:51.499Z",
+          "vectorized": false
+        },
+        {
+          "user": "Ja. Zou ik niet gewoon wat ijsjes halen? Plaatje van tafel.",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:48:19.134Z",
+          "vectorized": false
+        },
+        {
+          "user": "Dat standaard hebben, maar dat vind ik wel zeker met dit warme weer. Is dat wel lekker? Ja, die heb je maken joh.",
+          "assistant": null,
+          "timestamp": "2025-08-15T15:49:24.628Z",
+          "vectorized": false
+        },
+        {
+          "user": "ola como estas",
+          "assistant": "Hola, estoy de maravilla, como siempre positivo y con ganas de pasar un buen rato... ¿y tú cómo andas? ¿Algo divertido o interesante en tu día?",
+          "timestamp": "2025-08-15T16:07:15.319Z",
+          "vectorized": false
+        },
+        {
+          "user": "Sikankakila. Sikankakila. ",
+          "assistant": "Ah, vaya… \"Sikankakila\" suena a algo divertido o misterioso... cuéntame, ¿qué significa para ti? ¿Es un código secreto, una palabra mágica, o solo te da ganas de repetirla? Me gusta ese aire curioso que traes. ¿Me enseñas más?",
+          "timestamp": "2025-08-15T16:07:46.233Z",
           "vectorized": false
         }
       ]

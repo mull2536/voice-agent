@@ -232,8 +232,7 @@ const config = {
 function validateEnvironmentVariables() {
   const requiredEnvVars = [
     'OPENAI_API_KEY',
-    'ELEVENLABS_API_KEY',
-    'GEMINI_API_KEY'
+    'ELEVENLABS_API_KEY'
   ];
 
   for (const envVar of requiredEnvVars) {

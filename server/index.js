@@ -45,8 +45,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   },
   // Add ping timeout settings to prevent connection issues
-  pingTimeout: 60000,
-  pingInterval: 25000
+  pingTimeout: 300000,
+  pingInterval: 60000
 });
 
 // Add socket.io instance to app.locals so routes can access it
@@ -123,6 +123,8 @@ async function initializeServices() {
     llmService = new LLMService();
     global.llmService = llmService; // Make it globally accessible
     ttsService = new TTSService();
+    llmService.setSocketIO(io);
+    global.llmService = llmService;
     const servicesEndTime = performance.now();
     logger.info(`Services initialization: ${(servicesEndTime - servicesStartTime).toFixed(2)}ms`);
  
@@ -174,6 +176,16 @@ io.on('connection', (socket) => {
         logger.error('Failed to set person:', error);
         socket.emit('error', { message: 'Failed to set person' });
       }
+    });
+
+    socket.on('get-settings', async () => {
+        try {
+            const settings = await dataStore.getSettings();
+            socket.emit('settings-updated', settings);
+        } catch (error) {
+            logger.error('Failed to get settings:', error);
+            socket.emit('error', 'Failed to retrieve settings');
+        }
     });
     
     // Recording controls
@@ -743,7 +755,7 @@ async function gracefulShutdown(signal) {
   setTimeout(() => {
     logger.info('Shutdown complete');
     process.exit(0);
-  }, 2000);
+  }, 1000);
 }
 
 // Register shutdown handlers
