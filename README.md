@@ -50,11 +50,6 @@ OPENAI_API_KEY=your_openai_api_key
 ELEVENLABS_API_KEY=your_elevenlabs_api_key
 ```
 
-6. Create required directories:
-```bash
-mkdir -p data/vector_store data/kb data/recordings data/archives
-```
-
 ## Usage
 
 1. Start the server:

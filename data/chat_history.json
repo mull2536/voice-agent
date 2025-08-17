@@ -214,7 +214,7 @@
       "id": "conv_1754482379097_6d67279d",
       "person": "Other",
       "person_notes": "Anyone else",
-      "timestamp": "2025-08-15T20:07:09.359Z",
+      "timestamp": "2025-08-16T10:36:05.018Z",
       "exchanges": [
         {
           "user": "It's different in this program than in the other program that is running.",
@@ -622,6 +622,24 @@
           "user": "De Oranje Zomer wordt mede mogelijk gemaakt door YouPhone.",
           "assistant": "Je zegt dat de Oranje Zomer mede mogelijk wordt gemaakt door YouPhone. Dat klinkt als een mooi samenwerkingsverband! Ben je zelf nog van plan om van die Oranje Zomer te genieten? Hoe vier jij dat eigenlijk?",
           "timestamp": "2025-08-15T20:07:09.359Z",
+          "vectorized": false
+        },
+        {
+          "user": "wie is jeff koons",
+          "assistant": "Jeff Koons is een Amerikaanse kunstenaar, beroemd om zijn opvallende, kleurrijke en vaak enorme sculpturen. Hij staat bekend om het gebruik van alledaagse voorwerpen die hij transformeert tot kunst, zoals opgeblazen ballonnen in roestvrij staal. Hij maakt zowel bewonderaars als critici nieuwsgierig, soms een beetje kitscherig, maar altijd met een knipoog. Ken je zijn werk, of wil je dat ik je vertel over een specifiek kunstwerk?",
+          "timestamp": "2025-08-16T10:35:19.445Z",
+          "vectorized": false
+        },
+        {
+          "user": "Haha. Ja, dat is.",
+          "assistant": null,
+          "timestamp": "2025-08-16T10:35:29.559Z",
+          "vectorized": false
+        },
+        {
+          "user": "Heel raar. Ja, maar. Ik wil het weten. Nou, daar is ook. Altijd al. Ik heb dus een. De ballon komt als lamp in zwemmen voorbij staan. Als ik mijn telefoon heb, dan kan ik het laten zien. Wat jij Heel snel naar zoeken duurt wat langer.",
+          "assistant": null,
+          "timestamp": "2025-08-16T10:36:05.018Z",
           "vectorized": false
         }
       ]

@@ -126,7 +126,6 @@ requiredDirs.forEach(dir => {
 
 // Create required JSON files if they don't exist
 const requiredFiles = {
-  'conversations.json': '[]',
   'people.json': JSON.stringify([
     { id: 'family', name: 'Family Member', notes: 'General family conversations', addedAt: new Date().toISOString() },
     { id: 'caregiver', name: 'Caregiver', notes: 'Daily care and assistance', addedAt: new Date().toISOString() },

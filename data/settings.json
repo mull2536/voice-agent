@@ -23,10 +23,10 @@
   },
   "vad": {
     "positiveSpeechThreshold": 0.4,
-    "negativeSpeechThreshold": 0.55,
+    "negativeSpeechThreshold": 0.5,
     "minSpeechFrames": 8,
     "preSpeechPadFrames": 3,
-    "redemptionFrames": 24
+    "redemptionFrames": 20
   },
   "eyeGaze": {
     "hoverDuration": 3000,

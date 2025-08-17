@@ -1,5 +1,5 @@
 {
-  "name": "smf-communication-assistant",
+  "name": "smf-voice-agent",
   "version": "1.0.0",
   "description": "Semi-autonomous conversational AI for ALS patients using eye gaze technology",
   "main": "server/index.js",
