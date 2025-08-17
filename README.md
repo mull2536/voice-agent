@@ -25,8 +25,8 @@ A semi-autonomous conversational AI system designed for ALS patients using eye g
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/SMF-Communication-Assistant.git
-cd SMF-Communication-Assistant
+git clone https://github.com/mull2536/voice-agent
+cd voice-agent
 ```
 
 2. Install Node.js dependencies:
