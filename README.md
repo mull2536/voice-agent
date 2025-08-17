@@ -107,9 +107,9 @@ Access settings by clicking the gear icon:
   - `transcription.js`: Speech-to-text with ElevenLabs/OpenAI
   - `llm.js`: Response generation with context management
   - `tts.js`: Text-to-speech synthesis
-  - `rag.js`: Local knowledge base with vector search
-  - `internetSearch.js`: Web search integration
-
+  - `rag.js`: Local knowledge base with vector 
+  - `chatHistory.js`: Chat history vectorization and recording
+   
 ### Client Components
 
 - **Responsive UI** with dark theme optimized for eye strain
