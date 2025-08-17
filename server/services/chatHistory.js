@@ -110,12 +110,29 @@ class ChatHistoryService {
             
         } catch (error) {
             logger.error('Failed to initialize chat vector store:', error);
-            // Create empty vector store as fallback
-            this.chatVectorStore = await FaissStore.fromTexts(
-                [''], // Empty placeholder
-                [{ type: 'placeholder' }],
-                this.embeddings
-            );
+            
+            // If there's an error, try to create a minimal working vector store
+            try {
+                logger.info('Creating fallback empty vector store...');
+                const initText = 'Welcome to the SMF Communication Assistant. This is the initial setup of the chat history vector store.';
+                
+                this.chatVectorStore = await FaissStore.fromTexts(
+                    [initText],
+                    [{ 
+                        type: 'initialization',
+                        timestamp: new Date().toISOString(),
+                        info: 'Fallback initialization due to error'
+                    }],
+                    this.embeddings
+                );
+                
+                await this.chatVectorStore.save(this.chatVectorStorePath);
+                logger.info('Fallback vector store created successfully');
+            } catch (fallbackError) {
+                logger.error('Failed to create fallback vector store:', fallbackError);
+                // Continue without vector store - it will be created when first conversation is saved
+                this.chatVectorStore = null;
+            }
         }
     }
 
@@ -168,13 +185,22 @@ class ChatHistoryService {
                 
                 logger.info(`Built chat vector store with ${documents.length} exchanges in ${(performance.now() - startTime).toFixed(2)}ms`);
             } else {
-                // Create empty vector store
+                // Create empty vector store with a proper initialization text
+                // Using a meaningful initialization text instead of empty string
+                const initText = 'Welcome to the SMF Communication Assistant. This is the initial setup of the chat history vector store.';
+                
                 this.chatVectorStore = await FaissStore.fromTexts(
-                    [''], 
-                    [{ type: 'placeholder' }], 
+                    [initText], 
+                    [{ 
+                        type: 'initialization',
+                        timestamp: new Date().toISOString(),
+                        info: 'Empty chat history initialized'
+                    }], 
                     this.embeddings
                 );
-                logger.info('Created empty chat vector store');
+                
+                await this.chatVectorStore.save(this.chatVectorStorePath);
+                logger.info('Created empty chat vector store with initialization text');
             }
             
         } catch (error) {
