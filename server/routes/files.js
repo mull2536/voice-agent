@@ -35,19 +35,31 @@ const storage = multer.diskStorage({
     }
 });
 
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = [
+        '.txt', 
+        '.md', 
+        '.json', 
+        '.pdf', 
+        '.docx',
+        '.csv',   // ADD THIS
+        '.xlsx'   // ADD THIS
+    ];
+    
+    const ext = path.extname(file.originalname).toLowerCase();
+    
+    if (allowedTypes.includes(ext)) {
+        cb(null, true);
+    } else {
+        cb(new Error(`File type ${ext} not supported`));
+    }
+};
+
 const upload = multer({
     storage,
+    fileFilter: fileFilter,
     limits: {
         fileSize: 10 * 1024 * 1024 // 10MB limit
-    },
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = ['.txt', '.pdf', '.docx', '.json', '.md'];
-        const ext = path.extname(file.originalname).toLowerCase();
-        if (allowedTypes.includes(ext)) {
-            cb(null, true);
-        } else {
-            cb(new Error(`File type ${ext} not supported`));
-        }
     }
 });
 

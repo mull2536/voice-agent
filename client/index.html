@@ -453,6 +453,7 @@
                 <div class="file-manager-tabs">
                     <button class="tab-btn active" data-tab="files" data-i18n="modals.fileManager.tabs.files">Files</button>
                     <button class="tab-btn" data-tab="memories" data-i18n="modals.fileManager.tabs.memories">Memories</button>
+                    <button class="tab-btn" data-tab="urls" data-i18n="modals.fileManager.tabs.urls">URLs</button>
                 </div>
                 
                 <div class="modal-body">
@@ -475,14 +476,14 @@
                         
                         <div class="files-bottom">
                             <div class="files-info">
-                                <p data-i18n="modals.fileManager.supportedFormats">Supported: .txt, .pdf, .docx, .json, .md</p>
+                                <p data-i18n="modals.fileManager.supportedFormats">Supported: .txt, .pdf, .docx, .json, .md, .csv, .xlsx</p>
                                 <p data-i18n="modals.fileManager.autoIndexed">Auto-indexed for AI assistance</p>
                             </div>
                             
                             <div class="file-actions">
                                 <button id="deleteFilesBtn" class="action-btn btn-danger" disabled data-i18n="buttons.delete">Delete</button>
                                 <button id="addFilesBtn" class="action-btn btn-success" data-i18n="buttons.add">Add</button>
-                                <input type="file" id="fileUploadInput" multiple accept=".txt,.pdf,.docx,.json,.md" style="display: none;">
+                                <input type="file" id="fileUploadInput" multiple accept=".txt,.md,.json,.pdf,.docx,.csv,.xlsx" style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -512,6 +513,60 @@
                             <button id="deleteMemoriesBtn" class="action-btn btn-danger" disabled data-i18n="buttons.delete">Delete</button>
                             <button id="editMemoryBtn" class="action-btn btn-primary" disabled data-i18n="buttons.edit">Edit</button>
                             <button id="addMemoryBtn" class="action-btn btn-success" data-i18n="buttons.addMemory">Add</button>
+                        </div>
+                    </div>
+                    <div id="urls-tab" class="tab-content" style="display: none;">
+                        <!-- URL Input Section -->
+                        <div class="url-input-section">
+                            <div class="url-explainer">
+                                <div class="info-box">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div>
+                                        <strong>Web Page Indexing Guidelines:</strong>
+                                        <ul style="margin: 5px 0; padding-left: 20px;">
+                                            <li>Index specific articles, blog posts, or individual pages</li>
+                                            <li>Best for: Documentation pages, tutorials, research papers, news articles</li>
+                                            <li>NOT suitable for: Entire websites, dynamic content, or pages requiring login</li>
+                                            <li>Content is fetched once and stored locally for fast searching</li>
+                                            <li>Large sites may fail or only partially index</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="url-input-wrapper">
+                                <input type="url" 
+                                    id="url-input" 
+                                    class="url-input" 
+                                    placeholder="https://example.com/specific-article"
+                                    autocomplete="url">
+                                <button id="add-url-btn" class="add-url-btn">
+                                    <i class="fas fa-plus"></i> Add URL
+                                </button>
+                            </div>
+                            <div id="url-error-message" class="error-message" style="display: none;"></div>
+                        </div>
+                        
+                        <!-- URLs List -->
+                        <div class="urls-section">
+                            <div class="section-header">
+                                <h3>Indexed Web Pages</h3>
+                                <span id="url-count" class="count-badge">0</span>
+                            </div>
+                            
+                            <div id="urls-loading" class="loading-spinner" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading URLs...
+                            </div>
+                            
+                            <div id="urls-list" class="urls-list">
+                                <!-- URLs will be dynamically added here -->
+                            </div>
+                            
+                            <div id="no-urls" class="empty-state" style="display: none;">
+                                <i class="fas fa-globe" style="font-size: 48px; color: #ccc;"></i>
+                                <p>No web pages indexed yet</p>
+                                <p style="font-size: 14px; color: #888;">Add a URL above to get started</p>
+                            </div>
                         </div>
                     </div>
                 </div>

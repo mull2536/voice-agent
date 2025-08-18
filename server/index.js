@@ -30,6 +30,7 @@ const settingsRoutes = require('./routes/settings');
 const peopleRoutes = require('./routes/people');
 const filesRoutes = require('./routes/files');
 const memoriesRoutes = require('./routes/memories');
+const urlRoutes = require('./routes/urls');
 
 // Import services
 const AudioRecorder = require('./services/audioRecorder');
@@ -64,6 +65,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/files', filesRoutes);
 app.use('/api/memories', memoriesRoutes);
+app.use('/api/urls', urlRoutes);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {

@@ -1441,6 +1441,11 @@ input[type="checkbox"] {
     position: relative;
 }
 
+/* URLs Tab Specific */
+#urls-tab {
+    position: relative;
+}
+
 .files-container {
     flex: 1;
     display: flex;
@@ -2748,3 +2753,376 @@ button, .response-option {
     opacity: 0.7;
 }
 
+/* URL Input Section */
+.url-input-section {
+    margin-bottom: 20px;
+}
+
+.url-explainer {
+    margin-bottom: 15px;
+}
+
+.info-box {
+    background: #f0f8ff;
+    border: 1px solid #4a90e2;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    color: #333;
+}
+
+.info-box i {
+    color: #4a90e2;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-box ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.info-box li {
+    margin: 3px 0;
+}
+
+.url-input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.url-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.url-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.add-url-btn {
+    padding: 10px 20px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.add-url-btn:hover:not(:disabled) {
+    background: #357abd;
+}
+
+.add-url-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* URLs Section */
+.urls-section {
+    margin-top: 20px;
+}
+
+.urls-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.urls-section h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.count-badge {
+    background: #e0e0e0;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+}
+
+/* URLs List */
+.urls-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.urls-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.urls-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.urls-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.urls-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* URL Item */
+.url-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.url-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: #d0d0d0;
+}
+
+.url-info {
+    flex: 1;
+    min-width: 0;
+    padding-right: 10px;
+}
+
+.url-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.url-title i {
+    color: #666;
+    font-size: 12px;
+}
+
+.url-title strong {
+    color: #333;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.url-link {
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+.url-link a {
+    color: #4a90e2;
+    text-decoration: none;
+    word-break: break-all;
+    display: inline-flex;
+    align-items: center;
+}
+
+.url-link a:hover {
+    text-decoration: underline;
+}
+
+.url-link .fa-external-link-alt {
+    font-size: 10px;
+    margin-left: 4px;
+    opacity: 0.7;
+}
+
+.url-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 11px;
+    color: #666;
+}
+
+.url-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.url-meta i {
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+/* URL Actions */
+.url-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.url-action-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #666;
+}
+
+.url-action-btn:hover {
+    background: #f5f5f5;
+}
+
+.url-action-btn.refresh-url:hover {
+    color: #4a90e2;
+    border-color: #4a90e2;
+    background: #f0f8ff;
+}
+
+.url-action-btn.remove-url:hover {
+    color: #e74c3c;
+    border-color: #e74c3c;
+    background: #ffe6e6;
+}
+
+.url-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Error Message */
+#url-error-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #ffe6e6;
+    border-radius: 4px;
+    border: 1px solid #ffcccc;
+    display: none;
+}
+
+#url-error-message.show {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+/* Empty State */
+#no-urls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #999;
+    text-align: center;
+}
+
+#no-urls i {
+    font-size: 48px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+#no-urls p {
+    margin: 5px 0;
+}
+
+#no-urls p:first-of-type {
+    font-size: 16px;
+    color: #666;
+    font-weight: 500;
+}
+
+#no-urls p:last-of-type {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Loading State */
+#urls-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+#urls-loading i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .url-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .url-info {
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .url-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .url-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .info-box {
+        flex-direction: column;
+        text-align: left;
+    }
+    
+    .info-box i {
+        align-self: flex-start;
+    }
+}

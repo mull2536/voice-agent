@@ -188,7 +188,7 @@ class RAGService {
       await fs.mkdir(kbPath, { recursive: true });
       
       const files = await fs.readdir(kbPath);
-      const supportedExtensions = ['.txt', '.md', '.json', '.pdf', '.docx'];
+      const supportedExtensions = ['.txt', '.md', '.json', '.pdf', '.docx', '.csv', '.xlsx'];
       
       let addedCount = 0;
       let updatedCount = 0;
@@ -240,7 +240,7 @@ class RAGService {
       await fs.mkdir(kbPath, { recursive: true });
       
       const files = await fs.readdir(kbPath);
-      const supportedExtensions = ['.txt', '.md', '.json', '.pdf', '.docx'];
+      const supportedExtensions = ['.txt', '.md', '.json', '.pdf', '.docx', '.csv', '.xlsx'];
       let indexedCount = 0;
       
       logger.info(`Found ${files.length} files in knowledge base`);
@@ -288,44 +288,245 @@ class RAGService {
   }
 
   async indexFile(filePath, fileInfo = {}) {
+    const ext = path.extname(filePath).toLowerCase();
+    const filename = path.basename(filePath);
+
+    // Check if file exists
     try {
-      const filename = path.basename(filePath);
-      const stats = await fs.stat(filePath);
-      
-      // Special handling for memories.json
-      if (filename.toLowerCase() === 'memories.json') {
-        return await this.indexMemoriesFile(filePath, fileInfo, stats);
+      await fs.access(filePath);
+    } catch (error) {
+      logger.error(`File not found: ${filePath}`);
+      throw new Error(`File not found: ${filePath}`);
+    }
+
+    const stats = await fs.stat(filePath);
+
+    // Special handling for memories.json
+    if (filename === 'memories.json') {
+      await this.indexMemoriesFile(filePath, fileInfo, stats);
+      await this.vectorStore.save(this.vectorStorePath);
+      await this.saveFileIndex();
+      return;
+    }
+
+    try {
+      let chunks = [];
+      let metadatas = [];
+
+      // Handle CSV files
+      if (ext === '.csv') {
+        const content = await fs.readFile(filePath, 'utf-8');
+
+        // Parse CSV - try to detect delimiter
+        const lines = content.split('\n').slice(0, 5);
+        let delimiter = ',';
+
+        // Simple delimiter detection
+        const delimiters = [',', ';', '\t', '|'];
+        let maxCount = 0;
+        for (const delim of delimiters) {
+          const count = (lines[0] || '').split(delim).length;
+          if (count > maxCount) {
+            maxCount = count;
+            delimiter = delim;
+          }
+        }
+
+        const rows = content.split('\n').filter(line => line.trim());
+        if (rows.length === 0) {
+          logger.warn(`Empty CSV file: ${filename}`);
+          return;
+        }
+
+        // Parse headers and data
+        const headers = rows[0].split(delimiter).map(h => h.trim().replace(/^["']|["']$/g, ''));
+        const data = rows.slice(1).map(row => {
+          const values = row.split(delimiter).map(v => v.trim().replace(/^["']|["']$/g, ''));
+          const record = {};
+          headers.forEach((header, i) => {
+            record[header] = values[i] || '';
+          });
+          return record;
+        });
+
+        // Create searchable content chunks
+        const chunkSize = 20; // Number of rows per chunk
+
+        for (let i = 0; i < data.length; i += chunkSize) {
+          const chunkData = data.slice(i, Math.min(i + chunkSize, data.length));
+
+          // Create a text representation of the chunk
+          let chunkContent = `CSV Data from ${filename}\n`;
+          chunkContent += `Columns: ${headers.join(', ')}\n\n`;
+
+          chunkData.forEach((row, idx) => {
+            chunkContent += `Row ${i + idx + 2}:\n`;
+            headers.forEach(header => {
+              if (row[header]) {
+                chunkContent += `  ${header}: ${row[header]}\n`;
+              }
+            });
+            chunkContent += '\n';
+          });
+
+          chunks.push(chunkContent);
+        }
+
+        // Also create a summary chunk
+        const summaryChunk = `CSV File: ${filename}\n` +
+                            `Total Rows: ${data.length}\n` +
+                            `Columns: ${headers.join(', ')}\n` +
+                            `Sample Data (first 3 rows):\n` +
+                            data.slice(0, 3).map((row, idx) => 
+                              `Row ${idx + 1}: ${JSON.stringify(row)}`
+                            ).join('\n');
+
+        chunks.unshift(summaryChunk);
+
+        // Create metadata for CSV chunks
+        metadatas = chunks.map((_, index) => ({
+          source: filePath,
+          filename: filename,
+          type: ext,
+          chunk_index: index,
+          total_chunks: chunks.length,
+          indexed_at: new Date().toISOString(),
+          file_size: stats.size,
+          last_modified: fileInfo.lastModified || stats.mtime.toISOString(),
+          csv_metadata: {
+            total_rows: data.length,
+            columns: headers,
+            delimiter: delimiter
+          }
+        }));
+
+      // Handle Excel files
+      } else if (ext === '.xlsx') {
+        const XLSX = require('xlsx');
+
+        // Read the workbook
+        const workbook = XLSX.readFile(filePath);
+        let totalRows = 0;
+
+        // Process each sheet
+        for (const sheetName of workbook.SheetNames) {
+          const worksheet = workbook.Sheets[sheetName];
+
+          // Convert to JSON
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+            header: 1, // Use array of arrays
+            defval: '', // Default value for empty cells
+            blankrows: false // Skip blank rows
+          });
+
+          if (jsonData.length === 0) continue;
+
+          // Get headers (first row)
+          const headers = jsonData[0].map(h => String(h || '').trim());
+          const data = jsonData.slice(1);
+
+          totalRows += data.length;
+
+          // Create chunks for this sheet
+          const chunkSize = 20;
+
+          for (let i = 0; i < data.length; i += chunkSize) {
+            const chunkData = data.slice(i, Math.min(i + chunkSize, data.length));
+
+            let chunkContent = `Excel Sheet: ${sheetName} from ${filename}\n`;
+            chunkContent += `Columns: ${headers.filter(h => h).join(', ')}\n\n`;
+
+            chunkData.forEach((row, idx) => {
+              chunkContent += `Row ${i + idx + 2}:\n`;
+              headers.forEach((header, colIdx) => {
+                if (header && row[colIdx] !== undefined && row[colIdx] !== '') {
+                  chunkContent += `  ${header}: ${row[colIdx]}\n`;
+                }
+              });
+              chunkContent += '\n';
+            });
+
+            chunks.push(chunkContent);
+          }
+
+          // Add sheet summary
+          const sheetSummary = `Excel Sheet Summary: ${sheetName} in ${filename}\n` +
+                              `Total Rows: ${data.length}\n` +
+                              `Columns: ${headers.filter(h => h).join(', ')}\n` +
+                              `Sample Data (first 3 rows):\n` +
+                              data.slice(0, 3).map((row, idx) => {
+                                const rowObj = {};
+                                headers.forEach((h, i) => {
+                                  if (h && row[i] !== undefined) rowObj[h] = row[i];
+                                });
+                                return `Row ${idx + 2}: ${JSON.stringify(rowObj)}`;
+                              }).join('\n');
+
+          chunks.unshift(sheetSummary);
+        }
+
+        // Create metadata for Excel chunks
+        metadatas = chunks.map((_, index) => ({
+          source: filePath,
+          filename: filename,
+          type: ext,
+          chunk_index: index,
+          total_chunks: chunks.length,
+          indexed_at: new Date().toISOString(),
+          file_size: stats.size,
+          last_modified: fileInfo.lastModified || stats.mtime.toISOString(),
+          excel_metadata: {
+            total_sheets: workbook.SheetNames.length
+          }
+        }));
+
+      // Handle all other file types (existing logic)
+      } else {
+        // Extract content based on file type
+        let content = '';
+
+        if (ext === '.txt' || ext === '.md') {
+          content = await fs.readFile(filePath, 'utf-8');
+        } else if (ext === '.json') {
+          const jsonContent = await fs.readFile(filePath, 'utf-8');
+          try {
+            const data = JSON.parse(jsonContent);
+            content = JSON.stringify(data, null, 2);
+          } catch (e) {
+            content = jsonContent;
+          }
+        } else if (ext === '.pdf') {
+          const pdfParse = require('pdf-parse');
+          const pdfBuffer = await fs.readFile(filePath);
+          const pdfData = await pdfParse(pdfBuffer);
+          content = pdfData.text;
+        } else if (ext === '.docx') {
+          const mammoth = require('mammoth');
+          const docxBuffer = await fs.readFile(filePath);
+          const result = await mammoth.extractRawText({ buffer: docxBuffer });
+          content = result.value;
+        } else {
+          logger.warn(`Unsupported file type: ${ext}`);
+          return;
+        }
+
+        // Split content into chunks
+        chunks = await this.textSplitter.splitText(content);
+
+        // Create metadata for regular file chunks
+        metadatas = chunks.map((_, index) => ({
+          source: filePath,
+          filename: filename,
+          type: ext,
+          chunk_index: index,
+          total_chunks: chunks.length,
+          indexed_at: new Date().toISOString(),
+          file_size: stats.size,
+          last_modified: fileInfo.lastModified || stats.mtime.toISOString()
+        }));
       }
-      
-      // Regular file indexing for all other files
-      const content = await this.extractContent(filePath);
-      
-      if (!content || !content.trim()) {
-        logger.warn(`No content extracted from ${filename}`);
-        return;
-      }
 
-      // Update text splitter with current settings
-      await this.updateTextSplitterFromSettings();
-
-      const chunks = await this.textSplitter.splitText(content);
-      
-      if (chunks.length === 0) {
-        logger.warn(`No chunks created from ${filename}`);
-        return;
-      }
-
-      const metadatas = chunks.map((_, index) => ({
-        source: filePath,
-        filename: filename,
-        type: path.extname(filePath),
-        chunk_index: index,
-        total_chunks: chunks.length,
-        indexed_at: new Date().toISOString(),
-        file_size: stats.size,
-        last_modified: fileInfo.lastModified || stats.mtime.toISOString()
-      }));
-
+      // Add documents to vector store
       await this.vectorStore.addDocuments(
         chunks.map((chunk, index) => ({
           pageContent: chunk,
@@ -333,6 +534,7 @@ class RAGService {
         }))
       );
 
+      // Update file index
       this.fileIndex.set(filename, {
         hash: fileInfo.hash || await this.calculateFileHash(filePath),
         lastModified: fileInfo.lastModified || stats.mtime.toISOString(),
@@ -342,7 +544,7 @@ class RAGService {
       });
 
       logger.info(`Indexed ${filename}: ${chunks.length} chunks`);
-      
+
     } catch (error) {
       logger.error(`Failed to index file ${filePath}:`, error);
       throw error;
@@ -415,6 +617,127 @@ class RAGService {
       logger.error(`Failed to index memories file ${filePath}:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Index URL content - URLs are not files, so they need separate handling
+   */
+  async indexURL(url, urlId = null) {
+    try {
+      const { getInternetSearchService } = require('./internetSearch');
+      const searchService = getInternetSearchService();
+      
+      // Fetch and extract content from web
+      logger.info(`Fetching content from URL: ${url}`);
+      const extracted = await searchService.fetchAndExtract(url);
+      
+      // Split content into chunks using the existing text splitter
+      const chunks = await this.textSplitter.splitText(extracted.content);
+      
+      // Create metadata for each chunk
+      const metadatas = chunks.map((_, index) => ({
+        source: url,
+        type: 'url',
+        url: url,
+        title: extracted.title,
+        chunk_index: index,
+        total_chunks: chunks.length,
+        indexed_at: new Date().toISOString(),
+        fetched_at: extracted.fetchedAt,
+        content_type: extracted.contentType,
+        ...extracted.metadata
+      }));
+      
+      // Add to vector store
+      await this.vectorStore.addDocuments(
+        chunks.map((chunk, index) => ({
+          pageContent: chunk,
+          metadata: metadatas[index]
+        }))
+      );
+      
+      // Use URL as key in file index (or urlId if provided)
+      const key = urlId || `url_${Buffer.from(url).toString('base64').substring(0, 20)}`;
+      
+      // Store URL info in the file index (even though it's not a file)
+      this.fileIndex.set(key, {
+        url: url,
+        title: extracted.title,
+        chunks: chunks.length,
+        indexed_at: new Date().toISOString(),
+        fetched_at: extracted.fetchedAt,
+        content_type: extracted.contentType,
+        type: 'url',
+        metadata: extracted.metadata
+      });
+      
+      // Save after adding URL
+      await this.saveFileIndex();
+      await this.vectorStore.save(this.vectorStorePath);
+      
+      logger.info(`Indexed URL ${url}: ${chunks.length} chunks`);
+      
+      return {
+        success: true,
+        url: url,
+        title: extracted.title,
+        chunks: chunks.length,
+        key: key
+      };
+      
+    } catch (error) {
+      logger.error(`Failed to index URL ${url}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Remove URL from index
+   */
+  async removeURL(urlKey) {
+    try {
+      const urlInfo = this.fileIndex.get(urlKey);
+      if (!urlInfo || urlInfo.type !== 'url') {
+        throw new Error('URL not found in index');
+      }
+      
+      // Remove from file index
+      this.fileIndex.delete(urlKey);
+      await this.saveFileIndex();
+      
+      logger.info(`Removed URL from index: ${urlInfo.url}`);
+      
+      // Note: Vectors remain in FAISS store, would need rebuild to fully remove
+      // You might want to call rebuildVectorStore() if you want complete removal
+      
+      return { success: true };
+      
+    } catch (error) {
+      logger.error(`Failed to remove URL ${urlKey}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get all indexed URLs from the file index
+   */
+  getIndexedURLs() {
+    const urls = [];
+    
+    for (const [key, info] of this.fileIndex.entries()) {
+      if (info.type === 'url') {
+        urls.push({
+          key: key,
+          url: info.url,
+          title: info.title,
+          indexed_at: info.indexed_at,
+          chunks: info.chunks,
+          metadata: info.metadata
+        });
+      }
+    }
+    
+    return urls;
   }
 
   async extractContent(filePath) {

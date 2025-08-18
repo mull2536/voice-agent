@@ -11,6 +11,8 @@ const FILES_PER_PAGE = 8;
 let currentTab = 'files';
 let editingMemory = null;
 let allFilesLoaded = false;
+let currentURLs = [];
+let urlsLoading = false;
 
 // Helper function to show notifications
 function showNotification(message, type) {
@@ -32,8 +34,8 @@ async function initializeFileManager() {
 
     // Tab switching
     document.querySelectorAll('#fileManagerModal .tab-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            switchTab(e.target.dataset.tab);
+        btn.addEventListener('click', async (e) => {
+            await switchTab(e.target.dataset.tab);
         });
     });
 
@@ -71,6 +73,14 @@ async function initializeFileManager() {
     // File selection
     document.getElementById('filesList').addEventListener('click', handleFileSelection);
     document.getElementById('memoriesList').addEventListener('click', handleMemorySelection);
+
+    // URL functionality
+    document.getElementById('add-url-btn')?.addEventListener('click', addURL);
+    document.getElementById('url-input')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addURL();
+        }
+    });
 }
 
 // Open file manager
@@ -117,7 +127,7 @@ function closeFileManager() {
 }
 
 // Switch tabs
-function switchTab(tab) {
+async function switchTab(tab) {
     currentTab = tab;
     
     // Update tab buttons
@@ -127,7 +137,9 @@ function switchTab(tab) {
     
     // Update tab content
     document.querySelectorAll('#fileManagerModal .tab-content').forEach(content => {
-        content.classList.toggle('active', content.id === `${tab}-tab`);
+        const shouldBeActive = content.id === `${tab}-tab`;
+        content.classList.toggle('active', shouldBeActive);
+        content.style.display = shouldBeActive ? 'block' : 'none';
     });
     
     // Reset offsets when switching tabs
@@ -137,12 +149,14 @@ function switchTab(tab) {
     // Load data for the selected tab
     if (tab === 'files') {
         loadFiles(true);
-    } else {
+    } else if (tab === 'memories') {
         // Hide memory form and show list when switching to memories tab
         document.getElementById('memoryForm').style.display = 'none';
         document.getElementById('memoriesList').style.display = 'block';
         document.getElementById('memoryActions').style.display = 'flex';
         loadMemories(true);
+    } else if (tab === 'urls') {
+        await loadURLs();
     }
 }
 
@@ -681,4 +695,252 @@ function setupSocketListeners() {
             }
         });
     }
+}
+
+// Load indexed URLs
+async function loadURLs() {
+    try {
+        urlsLoading = true;
+        document.getElementById('urls-loading').style.display = 'block';
+        document.getElementById('urls-list').style.display = 'none';
+        document.getElementById('no-urls').style.display = 'none';
+        
+        const response = await fetch('/api/urls');
+        const data = await response.json();
+        
+        if (data.success) {
+            currentURLs = data.urls || [];
+            displayURLs();
+        } else {
+            console.error('Failed to load URLs:', data.error);
+            showURLError('Failed to load indexed URLs');
+        }
+    } catch (error) {
+        console.error('Failed to load URLs:', error);
+        showURLError('Failed to load indexed URLs');
+    } finally {
+        urlsLoading = false;
+        document.getElementById('urls-loading').style.display = 'none';
+    }
+}
+
+// Display URLs list
+function displayURLs() {
+    const urlsList = document.getElementById('urls-list');
+    const noUrls = document.getElementById('no-urls');
+    const urlCount = document.getElementById('url-count');
+    
+    urlCount.textContent = currentURLs.length;
+    
+    if (currentURLs.length === 0) {
+        urlsList.style.display = 'none';
+        noUrls.style.display = 'flex';
+        return;
+    }
+    
+    urlsList.style.display = 'block';
+    noUrls.style.display = 'none';
+    
+    urlsList.innerHTML = currentURLs.map(urlInfo => {
+        const truncatedUrl = urlInfo.url.length > 60 
+            ? urlInfo.url.substring(0, 60) + '...' 
+            : urlInfo.url;
+        
+        const indexedDate = new Date(urlInfo.indexed_at).toLocaleDateString();
+        
+        return `
+            <div class="url-item" data-key="${urlInfo.key}">
+                <div class="url-info">
+                    <div class="url-title">
+                        <i class="fas fa-link"></i>
+                        <strong>${escapeHtml(urlInfo.title || 'Untitled')}</strong>
+                    </div>
+                    <div class="url-link">
+                        <a href="${urlInfo.url}" target="_blank" rel="noopener noreferrer" 
+                           title="${urlInfo.url}">
+                            ${escapeHtml(truncatedUrl)}
+                            <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 4px;"></i>
+                        </a>
+                    </div>
+                    <div class="url-meta">
+                        <span><i class="fas fa-calendar"></i> Indexed: ${indexedDate}</span>
+                        <span><i class="fas fa-file-alt"></i> ${urlInfo.chunks} chunks</span>
+                    </div>
+                </div>
+                <div class="url-actions">
+                    <button class="url-action-btn refresh-url" 
+                            data-key="${urlInfo.key}" 
+                            title="Re-fetch and update">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="url-action-btn remove-url" 
+                            data-key="${urlInfo.key}" 
+                            title="Remove from index">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Add event listeners for the buttons
+    addURLEventListeners();
+}
+
+// Add URL to index
+async function addURL() {
+    const urlInput = document.getElementById('url-input');
+    const url = urlInput.value.trim();
+    
+    if (!url) {
+        showURLError('Please enter a URL');
+        return;
+    }
+    
+    // Basic URL validation
+    try {
+        new URL(url);
+    } catch (e) {
+        showURLError('Please enter a valid URL (e.g., https://example.com/article)');
+        return;
+    }
+    
+    const addBtn = document.getElementById('add-url-btn');
+    const originalContent = addBtn.innerHTML;
+    
+    try {
+        addBtn.disabled = true;
+        addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Indexing...';
+        hideURLError();
+        
+        const response = await fetch('/api/urls/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showTranslatedNotification('notifications.urlIndexed', 'success');
+            urlInput.value = '';
+            await loadURLs(); // Reload the list
+        } else {
+            showURLError(data.error || 'Failed to index URL');
+        }
+    } catch (error) {
+        console.error('Failed to add URL:', error);
+        showURLError('Failed to index URL. Please try again.');
+    } finally {
+        addBtn.disabled = false;
+        addBtn.innerHTML = originalContent;
+    }
+}
+
+// Refresh URL
+async function refreshURL(key) {
+    const urlItem = document.querySelector(`.url-item[data-key="${key}"]`);
+    if (!urlItem) return;
+    
+    const refreshBtn = urlItem.querySelector('.refresh-url');
+    const originalContent = refreshBtn.innerHTML;
+    
+    try {
+        refreshBtn.disabled = true;
+        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+        const response = await fetch(`/api/urls/${key}/refresh`, {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showTranslatedNotification('notifications.urlRefreshed', 'success');
+            await loadURLs();
+        } else {
+            showURLError(data.error || 'Failed to refresh URL');
+        }
+    } catch (error) {
+        console.error('Failed to refresh URL:', error);
+        showURLError('Failed to refresh URL');
+    } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = originalContent;
+    }
+}
+
+// Remove URL
+async function removeURL(key) {
+    const urlInfo = currentURLs.find(u => u.key === key);
+    if (!urlInfo) return;
+    
+    if (!confirm(`Are you sure you want to remove this URL from the index?\n\n${urlInfo.url}`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/urls/${key}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showTranslatedNotification('notifications.urlRemoved', 'success');
+            await loadURLs();
+        } else {
+            showURLError(data.error || 'Failed to remove URL');
+        }
+    } catch (error) {
+        console.error('Failed to remove URL:', error);
+        showURLError('Failed to remove URL');
+    }
+}
+
+// Add event listeners for URL action buttons
+function addURLEventListeners() {
+    // Refresh buttons
+    document.querySelectorAll('.refresh-url').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            refreshURL(btn.dataset.key);
+        });
+    });
+    
+    // Remove buttons
+    document.querySelectorAll('.remove-url').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeURL(btn.dataset.key);
+        });
+    });
+}
+
+// Show/hide URL error messages
+function showURLError(message) {
+    const errorElement = document.getElementById('url-error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            hideURLError();
+        }, 5000);
+    }
+}
+
+function hideURLError() {
+    const errorElement = document.getElementById('url-error-message');
+    if (errorElement) {
+        errorElement.style.display = 'none';
+    }
+}
+
+// Utility function to escape HTML (add only if not already present)
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }

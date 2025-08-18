@@ -101,10 +101,11 @@
           "title": "Knowledge Base Manager",
           "tabs": {
             "files": "Files",
-            "memories": "Memories"
+            "memories": "Memories",
+            "urls": "URLs"
           },
           "uploadInstructions": "Drag and drop files here or click to upload",
-          "supportedFormats": "Supported formats: .txt, .pdf, .docx, .json",
+          "supportedFormats": "Supported formats: .txt, .pdf, .docx, .json, .csv, .xlsx",
           "autoIndexed": "Auto-indexed for AI assistance",
           "noFiles": "No files uploaded yet",
           "noMemories": "No memories created yet",
@@ -484,10 +485,11 @@
           "title": "Kennisbank Beheerder",
           "tabs": {
             "files": "Bestanden",
-            "memories": "Herinneringen"
+            "memories": "Herinneringen",
+            "urls": "URLs"
           },
           "uploadInstructions": "Sleep bestanden hierheen of klik om te uploaden",
-          "supportedFormats": "Ondersteunde formaten: .txt, .pdf, .docx, .json",
+          "supportedFormats": "Ondersteunde formaten: .txt, .pdf, .docx, .json, .csv, .xlsx",
           "autoIndexed": "Automatisch geïndexeerd voor AI-assistentie",
           "noFiles": "Nog geen bestanden geüpload",
           "noMemories": "Nog geen herinneringen aangemaakt",
@@ -867,10 +869,11 @@
           "title": "Gestor de Base de Conocimiento",
           "tabs": {
             "files": "Archivos",
-            "memories": "Memorias"
+            "memories": "Memorias",
+            "urls": "URLs"
           },
           "uploadInstructions": "Arrastra y suelta archivos aquí o haz clic para subir",
-          "supportedFormats": "Formatos soportados: .txt, .pdf, .docx, .json",
+          "supportedFormats": "Formatos soportados: .txt, .pdf, .docx, .json, .csv, .xlsx",
           "autoIndexed": "Auto-indexado para asistencia de IA",
           "noFiles": "Aún no se han subido archivos",
           "noMemories": "Aún no se han creado memorias",
