@@ -450,6 +450,10 @@ body {
     color: white;
 }
 
+.compose-btn img {
+    filter: invert(1);
+}
+
 .compose-btn:hover {
     background-color: #059669;
     transform: translateY(-1px);

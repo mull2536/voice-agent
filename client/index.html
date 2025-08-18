@@ -45,8 +45,15 @@
                     <h3 data-i18n="app.chooseResponse">Choose your response:</h3>
                     <div class="response-actions">
                         <button id="cancel-responses-btn" class="response-action-btn cancel-btn" data-i18n="buttons.cancel">Cancel</button>
-                        <button id="compose-responses-btn" class="response-action-btn compose-btn" data-i18n="buttons.compose">Compose</button>
-                        <button id="resend-responses-btn" class="response-action-btn resend-btn" data-i18n="buttons.regenerate">Resend</button>
+                        <button id="compose-responses-btn" class="response-action-btn compose-btn">
+                            <img src="assets/write.ico" alt="Write" width="48" height="48">
+                        </button>
+                        <button id="resend-responses-btn" class="response-action-btn resend-btn">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
                     </div>
                 </div>
                 <div class="response-options" id="response-options">
