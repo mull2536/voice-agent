@@ -23,7 +23,8 @@
         "upload": "Upload Files",
         "addPerson": "Add Person",
         "addMemory": "Add Memory",
-        "saveSettings": "Save Settings"
+        "saveSettings": "Save Settings",
+        "update": "Update"
       },
       "modals": {
         "settings": {
@@ -116,7 +117,21 @@
           "memoryContentPlaceholder": "Enter memory content...",
           "selectedCount": "selected",
           "fileName": "File Name",
-          "index": "Index"
+          "index": "Index",
+          "urlName": "URL Name",
+          "status": "Status",
+          "importantGuidelines": "Important Guidelines",
+          "totalURLs": "Total URLs:",
+          "noURLs": "No URLs indexed yet",
+          "urlPlaceholder": "https://example.com/specific-article",
+          "indexURL": "Index URL",
+          "guidelinesTitle": "URL Indexing Guidelines",
+          "guideline1": "Index specific pages, not entire websites",
+          "guideline2": "Best for: Documentation, articles, tutorials",
+          "guideline3": "Avoid: Dynamic content, login-required pages",
+          "guideline4": "Content is fetched once and stored locally",
+          "guideline5": "Large pages may take time to index",
+          "guideline6": "Use Update button to re-fetch changed content"
         },
         "info": {
           "title": "About SMF Voice Agent",
@@ -380,7 +395,13 @@
         "memoryAdded": "Memory added",
         "failedToSaveMemory": "Failed to save memory",
         "memoriesDeleted": "Deleted {count} memories",
-        "failedToDeleteMemories": "Failed to delete memories"
+        "failedToDeleteMemories": "Failed to delete memories",
+        "urlIndexed": "URL successfully indexed",
+        "urlsRemoved": "URL(s) removed from index",
+        "urlsUpdated": "URL(s) updated successfully",
+        "failedToDeleteURLs": "Failed to delete URL(s)",
+        "failedToUpdateURLs": "Failed to update URL(s)",
+        "urlAlreadyIndexed": "This URL is already indexed. Use the Update button to refresh it."
       }
     },
     "nl": {
@@ -406,8 +427,9 @@
         "close": "Sluiten",
         "upload": "Bestanden Uploaden",
         "addPerson": "Persoon Toevoegen",
-        "addMemory": "Geheugen Toevoegen",
-        "saveSettings": "Instellingen Opslaan"
+        "addMemory": "Herinnering Toevoegen",
+        "saveSettings": "Instellingen Opslaan",
+        "update": "Bijwerken"
       },
       "modals": {
         "settings": {
@@ -486,7 +508,7 @@
           "tabs": {
             "files": "Bestanden",
             "memories": "Herinneringen",
-            "urls": "URLs"
+            "urls": "Urls"
           },
           "uploadInstructions": "Sleep bestanden hierheen of klik om te uploaden",
           "supportedFormats": "Ondersteunde formaten: .txt, .pdf, .docx, .json, .csv, .xlsx",
@@ -500,7 +522,21 @@
           "memoryContentPlaceholder": "Voer geheugeninhoud in...",
           "selectedCount": "geselecteerd",
           "fileName": "Bestandsnaam",
-          "index": "Index"
+          "index": "Index",
+          "urlName": "URL Naam",
+          "status": "Status",
+          "importantGuidelines": "Belangrijke Richtlijnen",
+          "totalURLs": "Totaal URLs:",
+          "noURLs": "Nog geen URLs geïndexeerd",
+          "urlPlaceholder": "https://voorbeeld.nl/specifiek-artikel",
+          "indexURL": "Indexeer URL",
+          "guidelinesTitle": "URL Indexering Richtlijnen",
+          "guideline1": "Indexeer specifieke pagina's, geen hele websites",
+          "guideline2": "Beste voor: Documentatie, artikelen, tutorials",
+          "guideline3": "Vermijd: Dynamische content, pagina's met login",
+          "guideline4": "Content wordt eenmalig opgehaald en lokaal opgeslagen",
+          "guideline5": "Grote pagina's kunnen tijd kosten om te indexeren",
+          "guideline6": "Gebruik Bijwerken knop om gewijzigde content opnieuw op te halen"
         },
         "info": {
           "title": "Over SMF Spraakagent",
@@ -764,7 +800,13 @@
         "memoryAdded": "Herinnering toegevoegd",
         "failedToSaveMemory": "Herinnering opslaan mislukt",
         "memoriesDeleted": "{count} herinneringen verwijderd",
-        "failedToDeleteMemories": "Herinneringen verwijderen mislukt"
+        "failedToDeleteMemories": "Herinneringen verwijderen mislukt",
+        "urlIndexed": "URL succesvol geïndexeerd",
+        "urlsRemoved": "URL(s) verwijderd uit index",
+        "urlsUpdated": "URL(s) succesvol bijgewerkt",
+        "failedToDeleteURLs": "Fout bij verwijderen URL(s)",
+        "failedToUpdateURLs": "Fout bij bijwerken URL(s)",
+        "urlAlreadyIndexed": "Deze URL is al geïndexeerd. Gebruik de Bijwerken knop om de inhoud te vernieuwen."
       }
     },
     "es": {
@@ -791,7 +833,8 @@
         "upload": "Subir Archivos",
         "addPerson": "Agregar Persona",
         "addMemory": "Agregar Memoria",
-        "saveSettings": "Guardar Configuración"
+        "saveSettings": "Guardar Configuración",
+        "update": "Actualizar"
       },
       "modals": {
         "settings": {
@@ -870,7 +913,7 @@
           "tabs": {
             "files": "Archivos",
             "memories": "Memorias",
-            "urls": "URLs"
+            "urls": "Urls"
           },
           "uploadInstructions": "Arrastra y suelta archivos aquí o haz clic para subir",
           "supportedFormats": "Formatos soportados: .txt, .pdf, .docx, .json, .csv, .xlsx",
@@ -884,7 +927,21 @@
           "memoryContentPlaceholder": "Ingrese el contenido de la memoria...",
           "selectedCount": "seleccionado",
           "fileName": "Nombre del Archivo",
-          "index": "Índice"
+          "index": "Índice",
+          "urlName": "Nombre de URL",
+          "status": "Estado",
+          "importantGuidelines": "Pautas Importantes",
+          "totalURLs": "URLs Totales:",
+          "noURLs": "No hay URLs indexadas todavía",
+          "urlPlaceholder": "https://ejemplo.com/articulo-especifico",
+          "indexURL": "Indexar URL",
+          "guidelinesTitle": "Pautas de Indexación de URL",
+          "guideline1": "Indexa páginas específicas, no sitios web completos",
+          "guideline2": "Mejor para: Documentación, artículos, tutoriales",
+          "guideline3": "Evitar: Contenido dinámico, páginas con login",
+          "guideline4": "El contenido se obtiene una vez y se almacena localmente",
+          "guideline5": "Las páginas grandes pueden tardar en indexarse",
+          "guideline6": "Usa el botón Actualizar para volver a obtener contenido modificado"
         },
         "info": {
           "title": "Acerca del Agente de Voz SMF",
@@ -1148,7 +1205,13 @@
         "memoryAdded": "Memoria agregada",
         "failedToSaveMemory": "Error al guardar memoria",
         "memoriesDeleted": "{count} memorias eliminadas",
-        "failedToDeleteMemories": "Error al eliminar memorias"
+        "failedToDeleteMemories": "Error al eliminar memorias",
+        "urlIndexed": "URL indexada con éxito",
+        "urlsRemoved": "URL(s) eliminada(s) del índice",
+        "urlsUpdated": "URL(s) actualizada(s) con éxito",
+        "failedToDeleteURLs": "Error al eliminar URL(s)",
+        "failedToUpdateURLs": "Error al actualizar URL(s)",
+        "urlAlreadyIndexed": "Esta URL ya está indexada. Usa el botón Actualizar para refrescar su contenido."
       }
     }
   }

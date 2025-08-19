@@ -1430,6 +1430,7 @@ input[type="checkbox"] {
     flex-direction: column;
     height: 100%;
     padding: 1rem;
+    overflow: hidden;
 }
 
 .tab-content.active {
@@ -2789,252 +2790,259 @@ button, .response-option {
     margin: 3px 0;
 }
 
-.url-input-wrapper {
-    display: flex;
-    gap: 10px;
+/* URLs Tab Container */
+#urls-tab {
+    position: relative;
 }
 
-.url-input {
+.urls-container {
     flex: 1;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: inherit;
-    transition: border-color 0.2s;
-}
-
-.url-input:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
-}
-
-.add-url-btn {
-    padding: 10px 20px;
-    background: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
     display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: background-color 0.2s;
-    white-space: nowrap;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
 }
 
-.add-url-btn:hover:not(:disabled) {
-    background: #357abd;
+/* URLs Header - matching Files tab */
+.urls-header {
+    flex-shrink: 0;
 }
 
-.add-url-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-/* URLs Section */
-.urls-section {
-    margin-top: 20px;
-}
-
-.urls-section .section-header {
+.urls-header-labels {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.urls-section h3 {
-    margin: 0;
-    font-size: 16px;
+    padding: 0.4rem 0.75rem;
     font-weight: 600;
-    color: #333;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.875rem;
 }
 
-.count-badge {
-    background: #e0e0e0;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    color: #666;
-}
-
-/* URLs List */
+/* URLs List Container */
+/* Make URLs list consistent with files and memories */
 .urls-list {
-    max-height: 400px;
+    flex: 1;
     overflow-y: auto;
-    padding-right: 5px;
+    overflow-x: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0 !important;  /* Remove padding - files/memories have no padding */
+    margin-top: 0.5rem;  /* Add margin like files list */
 }
 
-.urls-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.urls-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.urls-list::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.urls-list::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* URL Item */
-.url-item {
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 12px 15px;
-    margin-bottom: 10px;
+/* Make URL rows exactly like file rows */
+.url-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.2s;
+    padding: 0.5rem 0.75rem !important;  /* Exact same as file-row */
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 0 !important;  /* No margin */
+    background: none !important;  /* No background */
+    border: none !important;  /* No border except bottom */
+    border-bottom: 1px solid var(--border-color) !important;  /* Only bottom border */
+    border-radius: 0 !important;  /* No radius */
 }
 
-.url-item:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border-color: #d0d0d0;
+.url-row:last-child {
+    border-bottom: none !important;
 }
 
-.url-info {
+.url-row:hover {
+    background-color: var(--surface-hover) !important;
+    transform: none !important;  /* No transform */
+}
+
+.url-row.selected {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    border-left: 3px solid var(--primary-color) !important;
+    color: inherit !important;  /* Don't change text color */
+}
+
+.url-name {
     flex: 1;
-    min-width: 0;
-    padding-right: 10px;
-}
-
-.url-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-    font-size: 14px;
-}
-
-.url-title i {
-    color: #666;
-    font-size: 12px;
-}
-
-.url-title strong {
-    color: #333;
-    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem !important;  /* Same as file-name */
+    font-weight: normal !important;  /* Same as file-name */
+    line-height: 1.4 !important;  /* Same line height */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.url-link {
-    margin-bottom: 6px;
-    font-size: 12px;
-}
-
-.url-link a {
-    color: #4a90e2;
-    text-decoration: none;
-    word-break: break-all;
-    display: inline-flex;
-    align-items: center;
-}
-
-.url-link a:hover {
-    text-decoration: underline;
-}
-
-.url-link .fa-external-link-alt {
-    font-size: 10px;
-    margin-left: 4px;
-    opacity: 0.7;
-}
-
-.url-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    font-size: 11px;
-    color: #666;
-}
-
-.url-meta span {
+.url-status {
     display: flex;
     align-items: center;
-    gap: 4px;
+    margin-left: 1rem;
 }
 
-.url-meta i {
-    font-size: 10px;
-    opacity: 0.7;
+/* Status Icons - matching Files tab */
+.status-icon {
+    font-size: 1.2rem;
 }
 
-/* URL Actions */
+.status-icon.indexed {
+    color: var(--success-color);
+}
+
+.status-icon.not-indexed {
+    color: var(--error-color);
+}
+
+.indexing-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--surface-hover);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* URLs Bottom Section */
+.urls-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface);
+}
+
+.urls-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Guidelines Button */
+.guidelines-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+}
+
+.guidelines-btn:hover {
+    background-color: var(--surface-hover);
+    color: var(--primary-color);
+}
+
+.guidelines-btn img {
+    width: 16px;
+    height: 16px;
+}
+
+/* URL Count Info */
+#url-count-info {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* URL Actions Buttons */
 .url-actions {
     display: flex;
-    gap: 8px;
-    flex-shrink: 0;
+    gap: 0.5rem;
 }
 
-.url-action-btn {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #ddd;
-    background: white;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    color: #666;
+/* Update button specific */
+.btn-warning {
+    background-color: #f59e0b;
+    color: white;
 }
 
-.url-action-btn:hover {
-    background: #f5f5f5;
+.btn-warning:hover:not(:disabled) {
+    background-color: #d97706;
 }
 
-.url-action-btn.refresh-url:hover {
-    color: #4a90e2;
-    border-color: #4a90e2;
-    background: #f0f8ff;
-}
-
-.url-action-btn.remove-url:hover {
-    color: #e74c3c;
-    border-color: #e74c3c;
-    background: #ffe6e6;
-}
-
-.url-action-btn:disabled {
+.btn-warning:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-/* Error Message */
-#url-error-message {
-    color: #e74c3c;
-    font-size: 13px;
-    margin-top: 8px;
-    padding: 8px 12px;
-    background: #ffe6e6;
-    border-radius: 4px;
-    border: 1px solid #ffcccc;
-    display: none;
+/* Add URL Form Section */
+.url-input-section {
+    padding: 1rem;
+    background-color: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-top: 1rem;
 }
 
-#url-error-message.show {
-    display: block;
-    animation: slideDown 0.3s ease;
+.url-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.url-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.url-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.add-url-btn, .cancel-url-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.add-url-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-url-btn:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.add-url-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cancel-url-btn {
+    background-color: var(--surface-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.cancel-url-btn:hover {
+    background-color: var(--surface);
+}
+
+/* Error Message */
+#url-error-message {
+    color: var(--error-color, #dc2626);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: rgba(220, 38, 38, 0.1);
+    border-radius: 0.25rem;
 }
 
 /* Empty State */
@@ -3043,86 +3051,577 @@ button, .response-option {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
-    color: #999;
+    padding: 3rem;
+    color: var(--text-secondary);
     text-align: center;
-}
-
-#no-urls i {
-    font-size: 48px;
-    color: #ccc;
-    margin-bottom: 15px;
-}
-
-#no-urls p {
-    margin: 5px 0;
-}
-
-#no-urls p:first-of-type {
-    font-size: 16px;
-    color: #666;
-    font-weight: 500;
-}
-
-#no-urls p:last-of-type {
-    font-size: 14px;
-    color: #888;
 }
 
 /* Loading State */
 #urls-loading {
     text-align: center;
-    padding: 40px 20px;
-    color: #666;
-    font-size: 14px;
+    padding: 2rem;
+    color: var(--text-secondary);
 }
 
-#urls-loading i {
-    margin-right: 8px;
-    font-size: 16px;
+/* Guidelines Modal Popup */
+.guidelines-modal {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Animations */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.guidelines-content {
+    padding: 1.5rem;
+    max-width: 500px;
+    position: relative;
 }
 
-/* Responsive Design */
+.guidelines-content h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.guidelines-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.guidelines-content li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.guidelines-content li:before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.close-guidelines {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.close-guidelines:hover {
+    color: var(--text-primary);
+}
+
+/* Responsive Design for URLs Tab */
 @media (max-width: 768px) {
-    .url-item {
-        flex-direction: column;
-        align-items: flex-start;
+    .urls-header-labels {
+        font-size: 0.875rem;
+        padding: 0.5rem;
     }
     
-    .url-info {
+    .url-row {
+        padding: 0.5rem;
+    }
+    
+    .url-name {
+        font-size: 0.875rem;
+    }
+    
+    .urls-bottom {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .urls-info {
         width: 100%;
-        padding-right: 0;
-        margin-bottom: 10px;
+        justify-content: space-between;
+        padding: 0.5rem;
+    }
+    
+    .urls-info p {
+        font-size: 0.75rem;
     }
     
     .url-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
+    .url-actions .action-btn {
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    .url-input-wrapper {
+        flex-direction: column;
+    }
+    
+    .add-url-btn,
+    .cancel-url-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .guidelines-modal {
+        width: 90%;
+        max-width: none;
+    }
+    
+    .guidelines-content {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .urls-list {
+        margin-top: 0.5rem;
+    }
+    
+    /* Stack URL info on small screens */
+    .urls-header-labels {
+        display: none;
+    }
+    
+    .url-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .url-status {
+        align-self: flex-end;
+        margin-left: 0;
+    }
+    
+    /* Smaller status icons on mobile */
+    .status-icon {
+        font-size: 1rem;
+    }
+    
+    .indexing-spinner {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .guidelines-btn {
+        font-size: 0.75rem;
+        padding: 0.25rem;
+    }
+    
+    .guidelines-btn img {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* Tab Content - Fix overflow */
+.tab-content {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    overflow: hidden; /* Keep hidden to let children handle scroll */
+    min-height: 0; /* IMPORTANT: Add this for flexbox */
+}
+
+.tab-content.active {
+    display: flex;
+    height: calc(100% - 2rem); /* Account for padding */
+}
+
+/* Files Container Fix */
+.files-container,
+.memories-container,
+.urls-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    min-height: 0; /* IMPORTANT: Add this */
+}
+
+/* Files/Memories/URLs Lists - Fix scrolling */
+.files-list,
+.memories-list,
+.urls-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0; /* IMPORTANT: Add this */
+    max-height: calc(80vh - 300px); /* Adjust based on your header/footer heights */
+}
+
+/* For Files tab specifically */
+.files-list {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0; /* Remove padding to avoid scroll issues */
+}
+
+/* For Memories tab specifically */
+.memories-list {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0; /* Remove padding to avoid scroll issues */
+}
+
+/* For URLs tab specifically */
+.urls-list {
+    padding: 0.5rem;
+    max-height: calc(80vh - 350px); /* Slightly less for URLs due to bottom section */
+}
+
+/* Load More Button - Make it visible */
+.load-more-btn {
+    display: block;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+    padding: 0.75rem;
+    background-color: var(--surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+    flex-shrink: 0; /* Don't let it shrink */
+}
+
+.load-more-btn:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* Files bottom section - Ensure it doesn't overlap */
+.files-bottom,
+.urls-bottom {
+    position: relative; /* Change from sticky to relative */
+    bottom: auto;
+    background-color: var(--surface);
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0; /* Don't let it shrink */
+}
+
+/* Memory actions - Ensure visibility */
+.memory-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface);
+    flex-shrink: 0; /* Don't let it shrink */
+}
+
+/* Modal body - Ensure proper height calculation */
+.file-manager-modal-content .modal-body {
+    flex: 1;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* IMPORTANT: Add this */
+    height: calc(80vh - 100px); /* Adjust based on header height */
+}
+
+/* Ensure file rows don't have issues */
+.file-row,
+.memory-row,
+.url-row {
+    flex-shrink: 0; /* Prevent rows from shrinking */
+}
+
+/* Fix for Memories List - leave room for Load More AND action buttons */
+#memoriesList, .memories-list {
+    flex: none !important;
+    height: calc(100% - 120px) !important; /* Leave 120px for buttons */
+    max-height: 300px !important; /* Maximum height */
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+
+/* Container should use flexbox properly */
+#memories-tab {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.memories-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Load More button positioning */
+#loadMoreMemoriesBtn {
+    flex-shrink: 0;
+    margin: 10px 0;
+}
+
+/* Memory actions at the bottom */
+.memory-actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface);
+    margin-top: auto;
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+    #memoriesList, .memories-list {
+        height: calc(100% - 140px) !important; /* More space for wrapped buttons */
+        max-height: 250px !important;
+    }
+    
+    .memory-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    .memory-actions .action-btn {
+        flex: 1;
+        min-width: 100px;
+    }
+    
+    #loadMoreMemoriesBtn {
+        margin: 8px 0;
+        padding: 0.6rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 480px) {
+    #memoriesList, .memories-list {
+        height: calc(100% - 160px) !important; /* Even more space for stacked buttons */
+        max-height: 200px !important;
+    }
+    
+    .memory-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    .memory-actions .action-btn {
+        width: 100%;
+        padding: 0.75rem;
+    }
+    
+    #loadMoreMemoriesBtn {
+        margin: 6px 0;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Adjust memory rows on small screens */
+    .memory-row {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .memory-title {
+        font-size: 0.85rem;
+    }
+    
+    .memory-date {
+        font-size: 0.75rem;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+    #memoriesList, .memories-list {
+        height: calc(100% - 180px) !important;
+        max-height: 150px !important;
+    }
+}
+
+/* Fix for Files List - leave room for info section AND action buttons */
+#filesList, .files-list {
+    flex: none !important;
+    height: calc(100% - 140px) !important; /* Leave space for bottom section */
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Files tab container */
+#files-tab {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+.files-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Files bottom section */
+.files-bottom {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface);
+    margin-top: auto;
+}
+
+/* Load More button for Files */
+#loadMoreFilesBtn {
+    flex-shrink: 0;
+    margin: 10px 0;
+}
+
+/* Files info section */
+.files-info {
+    background-color: var(--surface-hover);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    flex: 1;
+}
+
+.files-info p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.2;
+}
+
+/* File actions */
+.file-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+    #filesList, .files-list {
+        height: calc(100% - 160px) !important;
+        max-height: 250px !important;
+    }
+    
+    .files-bottom {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.5rem;
+    }
+    
+    .files-info {
+        width: 100%;
+        padding: 0.5rem;
+    }
+    
+    .file-actions {
         width: 100%;
         justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
     
-    .url-meta {
-        flex-direction: column;
-        gap: 5px;
+    .file-actions .action-btn {
+        flex: 1;
+        min-width: 100px;
     }
     
-    .info-box {
-        flex-direction: column;
-        text-align: left;
+    #loadMoreFilesBtn {
+        margin: 8px 0;
+        padding: 0.6rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 480px) {
+    #filesList, .files-list {
+        height: calc(100% - 180px) !important;
+        max-height: 200px !important;
     }
     
-    .info-box i {
-        align-self: flex-start;
+    .files-info p {
+        font-size: 0.7rem;
+    }
+    
+    .file-actions {
+        flex-direction: row;
+        width: 100%;
+    }
+    
+    .file-actions .action-btn {
+        flex: 1;
+        padding: 0.6rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    #loadMoreFilesBtn {
+        margin: 6px 0;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Adjust file rows on small screens */
+    .file-row {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .file-name {
+        font-size: 0.85rem;
+    }
+    
+    .files-header-labels {
+        display: none; /* Hide headers on mobile */
+    }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+    #filesList, .files-list {
+        height: calc(100% - 200px) !important;
+        max-height: 150px !important;
+    }
+    
+    .file-actions .action-btn {
+        padding: 0.5rem 0.3rem;
+        font-size: 0.8rem;
     }
 }

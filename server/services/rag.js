@@ -624,6 +624,24 @@ class RAGService {
    */
   async indexURL(url, urlId = null) {
     try {
+      // Check if this exact URL already exists (unless we're updating with urlId)
+      if (!urlId) {
+          for (const [k, v] of this.fileIndex.entries()) {
+              if (v.type === 'url' && v.url === url) {
+                  logger.info(`URL already indexed: ${url}`);
+                  return {
+                      success: false,
+                      error: 'URL already indexed',
+                      existing: true,
+                      key: k,
+                      url: v.url,
+                      title: v.title,
+                      chunks: v.chunks
+                  };
+              }
+          }
+      }
+      
       const { getInternetSearchService } = require('./internetSearch');
       const searchService = getInternetSearchService();
       
@@ -656,9 +674,11 @@ class RAGService {
         }))
       );
       
-      // Use URL as key in file index (or urlId if provided)
-      const key = urlId || `url_${Buffer.from(url).toString('base64').substring(0, 20)}`;
-      
+      // Generate a unique key for each URL indexing (allowing multiple indexes of same URL)
+      const timestamp = Date.now();
+      const randomStr = Math.random().toString(36).substring(2, 8);
+      const key = urlId || `url_${timestamp}_${randomStr}`;
+
       // Store URL info in the file index (even though it's not a file)
       this.fileIndex.set(key, {
         url: url,

@@ -13,6 +13,7 @@ let editingMemory = null;
 let allFilesLoaded = false;
 let currentURLs = [];
 let urlsLoading = false;
+let selectedURLs = new Set();
 
 // Helper function to show notifications
 function showNotification(message, type) {
@@ -81,7 +82,45 @@ async function initializeFileManager() {
             addURL();
         }
     });
+
+    // URL actions
+    const deleteURLsBtn = document.getElementById('deleteURLsBtn');
+    const updateURLsBtn = document.getElementById('updateURLsBtn');  
+    const addURLsBtn = document.getElementById('addURLsBtn');
+    const urlGuidelinesBtn = document.getElementById('urlGuidelinesBtn');
+
+    if (deleteURLsBtn) deleteURLsBtn.addEventListener('click', deleteSelectedURLs);
+    if (updateURLsBtn) updateURLsBtn.addEventListener('click', updateSelectedURLs);
+    if (addURLsBtn) addURLsBtn.addEventListener('click', showAddURLForm);
+    if (urlGuidelinesBtn) urlGuidelinesBtn.addEventListener('click', showURLGuidelines);
+
+    // URL selection handler
+    const urlsList = document.getElementById('urls-list');
+    if (urlsList) urlsList.addEventListener('click', handleURLSelection);
+
+    
 }
+
+// Initialize file manager - add this to run when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Set initial tab state
+    const filesTab = document.getElementById('files-tab');
+    const memoriesTab = document.getElementById('memories-tab');
+    const urlsTab = document.getElementById('urls-tab');
+    
+    if (filesTab) {
+        filesTab.classList.add('active');
+        filesTab.style.display = 'flex';
+    }
+    if (memoriesTab) {
+        memoriesTab.classList.remove('active');
+        memoriesTab.style.display = 'none';
+    }
+    if (urlsTab) {
+        urlsTab.classList.remove('active');
+        urlsTab.style.display = 'none';
+    }
+});
 
 // Open file manager
 async function openFileManager() {
@@ -91,15 +130,15 @@ async function openFileManager() {
     // Reset selections and offsets
     selectedFiles.clear();
     selectedMemories.clear();
+    if (typeof selectedURLs !== 'undefined') selectedURLs.clear();
     memoriesOffset = 0;
     filesOffset = 0;
     
-    // Load initial data
-    if (currentTab === 'files') {
-        await loadFiles();
-    } else {
-        await loadMemories();
-    }
+    // Force Files tab to be active
+    currentTab = 'files';
+    
+    // Use the switchTab function to properly set the tab
+    await switchTab('files');
     
     // Add eye gaze targets if available
     if (window.eyeGazeControls && window.eyeGazeControls.isEnabled) {
@@ -532,6 +571,48 @@ function updateMemoryActionButtons() {
     editBtn.disabled = selectedMemories.size !== 1;
 }
 
+// Handle URL selection
+function handleURLSelection(e) {
+    const row = e.target.closest('.url-row');
+    if (!row) return;
+    
+    const urlKey = row.dataset.key;
+    
+    if (e.ctrlKey || e.metaKey) {
+        // Toggle selection
+        if (selectedURLs.has(urlKey)) {
+            selectedURLs.delete(urlKey);
+            row.classList.remove('selected');
+        } else {
+            selectedURLs.add(urlKey);
+            row.classList.add('selected');
+        }
+    } else {
+        // Single selection
+        selectedURLs.clear();
+        document.querySelectorAll('.url-row').forEach(r => r.classList.remove('selected'));
+        selectedURLs.add(urlKey);
+        row.classList.add('selected');
+    }
+    
+    updateURLActionButtons();
+}
+
+// Update URL action buttons
+function updateURLActionButtons() {
+    const deleteBtn = document.getElementById('deleteURLsBtn');
+    const updateBtn = document.getElementById('updateURLsBtn');
+    const addBtn = document.getElementById('addURLsBtn');
+    
+    if (deleteBtn) {
+        deleteBtn.disabled = selectedURLs.size === 0;
+    }
+    
+    if (updateBtn) {
+        updateBtn.disabled = selectedURLs.size === 0;
+    }
+}
+
 // Load more memories
 function loadMoreMemories() {
     memoriesOffset += MEMORIES_PER_PAGE;
@@ -730,61 +811,38 @@ function displayURLs() {
     const noUrls = document.getElementById('no-urls');
     const urlCount = document.getElementById('url-count');
     
-    urlCount.textContent = currentURLs.length;
+    if (urlCount) urlCount.textContent = currentURLs.length;
     
     if (currentURLs.length === 0) {
-        urlsList.style.display = 'none';
-        noUrls.style.display = 'flex';
+        if (urlsList) urlsList.style.display = 'none';
+        if (noUrls) noUrls.style.display = 'flex';
+        updateURLActionButtons();
         return;
     }
     
-    urlsList.style.display = 'block';
-    noUrls.style.display = 'none';
+    if (urlsList) urlsList.style.display = 'block';
+    if (noUrls) noUrls.style.display = 'none';
     
+    // Change to display URLs similar to files with selection capability
     urlsList.innerHTML = currentURLs.map(urlInfo => {
+        const isSelected = selectedURLs.has(urlInfo.key);
         const truncatedUrl = urlInfo.url.length > 60 
             ? urlInfo.url.substring(0, 60) + '...' 
             : urlInfo.url;
         
-        const indexedDate = new Date(urlInfo.indexed_at).toLocaleDateString();
-        
         return `
-            <div class="url-item" data-key="${urlInfo.key}">
-                <div class="url-info">
-                    <div class="url-title">
-                        <i class="fas fa-link"></i>
-                        <strong>${escapeHtml(urlInfo.title || 'Untitled')}</strong>
-                    </div>
-                    <div class="url-link">
-                        <a href="${urlInfo.url}" target="_blank" rel="noopener noreferrer" 
-                           title="${urlInfo.url}">
-                            ${escapeHtml(truncatedUrl)}
-                            <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 4px;"></i>
-                        </a>
-                    </div>
-                    <div class="url-meta">
-                        <span><i class="fas fa-calendar"></i> Indexed: ${indexedDate}</span>
-                        <span><i class="fas fa-file-alt"></i> ${urlInfo.chunks} chunks</span>
-                    </div>
-                </div>
-                <div class="url-actions">
-                    <button class="url-action-btn refresh-url" 
-                            data-key="${urlInfo.key}" 
-                            title="Re-fetch and update">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <button class="url-action-btn remove-url" 
-                            data-key="${urlInfo.key}" 
-                            title="Remove from index">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+            <div class="url-row ${isSelected ? 'selected' : ''}" data-key="${urlInfo.key}">
+                <span class="url-name" title="${escapeHtml(urlInfo.url)}">
+                    ${escapeHtml(urlInfo.title || truncatedUrl)}
+                </span>
+                <span class="url-status">
+                    <span class="status-icon indexed">✓</span>
+                </span>
             </div>
         `;
     }).join('');
     
-    // Add event listeners for the buttons
-    addURLEventListeners();
+    updateURLActionButtons();
 }
 
 // Add URL to index
@@ -820,13 +878,31 @@ async function addURL() {
         });
         
         const data = await response.json();
-        
+        // Check response status first
+        if (!response.ok) {
+            // Handle error responses (status 400, 500, etc.)
+            if (data.existing) {
+                console.log('URL already exists in index:', url);
+                // Show translated notification
+                showTranslatedNotification('notifications.urlAlreadyIndexed', 'warning');
+                // Also show in the form error area
+                const errorMsg = window.app?.translationManager?.getTranslation('notifications.urlAlreadyIndexed') 
+                    || 'This URL is already indexed. Use the Update button to refresh it.';
+                showURLError(errorMsg);
+            } else {
+                // Show generic error
+                showURLError(data.error || 'Failed to index URL');
+                showTranslatedNotification('notifications.failedToIndexURL', 'error');
+            }
+            return; // Don't close form on error
+        }
+
+        // Success case (response.ok is true)
         if (data.success) {
             showTranslatedNotification('notifications.urlIndexed', 'success');
             urlInput.value = '';
-            await loadURLs(); // Reload the list
-        } else {
-            showURLError(data.error || 'Failed to index URL');
+            await loadURLs();
+            hideAddURLForm(); // Only close form on success
         }
     } catch (error) {
         console.error('Failed to add URL:', error);
@@ -837,85 +913,108 @@ async function addURL() {
     }
 }
 
-// Refresh URL
-async function refreshURL(key) {
-    const urlItem = document.querySelector(`.url-item[data-key="${key}"]`);
-    if (!urlItem) return;
-    
-    const refreshBtn = urlItem.querySelector('.refresh-url');
-    const originalContent = refreshBtn.innerHTML;
-    
-    try {
-        refreshBtn.disabled = true;
-        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        
-        const response = await fetch(`/api/urls/${key}/refresh`, {
-            method: 'POST'
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            showTranslatedNotification('notifications.urlRefreshed', 'success');
-            await loadURLs();
-        } else {
-            showURLError(data.error || 'Failed to refresh URL');
-        }
-    } catch (error) {
-        console.error('Failed to refresh URL:', error);
-        showURLError('Failed to refresh URL');
-    } finally {
-        refreshBtn.disabled = false;
-        refreshBtn.innerHTML = originalContent;
+// Show/hide add URL form
+function showAddURLForm() {
+    const urlInputSection = document.getElementById('urlInputSection');
+    if (urlInputSection) {
+        urlInputSection.style.display = 'block';
+        document.getElementById('url-input').focus();
     }
 }
 
-// Remove URL
-async function removeURL(key) {
-    const urlInfo = currentURLs.find(u => u.key === key);
-    if (!urlInfo) return;
-    
-    if (!confirm(`Are you sure you want to remove this URL from the index?\n\n${urlInfo.url}`)) {
-        return;
-    }
-    
-    try {
-        const response = await fetch(`/api/urls/${key}`, {
-            method: 'DELETE'
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            showTranslatedNotification('notifications.urlRemoved', 'success');
-            await loadURLs();
-        } else {
-            showURLError(data.error || 'Failed to remove URL');
-        }
-    } catch (error) {
-        console.error('Failed to remove URL:', error);
-        showURLError('Failed to remove URL');
+function hideAddURLForm() {
+    const urlInputSection = document.getElementById('urlInputSection');
+    if (urlInputSection) {
+        urlInputSection.style.display = 'none';
+        document.getElementById('url-input').value = '';
     }
 }
 
-// Add event listeners for URL action buttons
-function addURLEventListeners() {
-    // Refresh buttons
-    document.querySelectorAll('.refresh-url').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            refreshURL(btn.dataset.key);
-        });
+// Show URL guidelines
+function showURLGuidelines() {
+    // This will be replaced with a proper modal popup in HTML
+    const modal = document.getElementById('urlGuidelinesModal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+
+
+// Delete selected URLs
+async function deleteSelectedURLs() {
+    if (selectedURLs.size === 0) return;
+    
+    const count = selectedURLs.size;
+    const confirmMsg = count === 1 
+        ? 'Are you sure you want to remove this URL from the index?' 
+        : `Are you sure you want to remove ${count} URLs from the index?`;
+    
+    if (!confirm(confirmMsg)) return;
+    
+    try {
+        for (const urlKey of selectedURLs) {
+            const response = await fetch(`/api/urls/${urlKey}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) {
+                console.error(`Failed to delete URL ${urlKey}`);
+            }
+        }
+        
+        showTranslatedNotification('notifications.urlsRemoved', 'success');
+        selectedURLs.clear();
+        await loadURLs();
+    } catch (error) {
+        console.error('Failed to delete URLs:', error);
+        showTranslatedNotification('notifications.failedToDeleteURLs', 'error');
+    }
+}
+
+// Update selected URLs
+async function updateSelectedURLs() {
+    if (selectedURLs.size === 0) return;
+    
+    const count = selectedURLs.size;
+    const confirmMsg = count === 1 
+        ? 'Re-index this URL with latest content?' 
+        : `Re-index ${count} URLs with latest content?`;
+    
+    if (!confirm(confirmMsg)) return;
+    
+    // Show indexing state for all selected URLs
+    selectedURLs.forEach(urlKey => {
+        const row = document.querySelector(`.url-row[data-key="${urlKey}"]`);
+        if (row) {
+            const statusSpan = row.querySelector('.url-status');
+            if (statusSpan) {
+                statusSpan.innerHTML = '<div class="indexing-spinner"></div>';
+            }
+        }
     });
     
-    // Remove buttons
-    document.querySelectorAll('.remove-url').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            removeURL(btn.dataset.key);
-        });
-    });
+    try {
+        for (const urlKey of selectedURLs) {
+            const response = await fetch(`/api/urls/${urlKey}/refresh`, {
+                method: 'POST'
+            });
+            
+            if (!response.ok) {
+                console.error(`Failed to update URL ${urlKey}`);
+            }
+        }
+        
+        showTranslatedNotification('notifications.urlsUpdated', 'success');
+        selectedURLs.clear();
+        await loadURLs();
+    } catch (error) {
+        console.error('Failed to update URLs:', error);
+        showTranslatedNotification('notifications.failedToUpdateURLs', 'error');
+    }
 }
+
+
 
 // Show/hide URL error messages
 function showURLError(message) {
@@ -938,9 +1037,36 @@ function hideURLError() {
     }
 }
 
-// Utility function to escape HTML (add only if not already present)
+// Helper function for HTML escaping
 function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+function closeURLGuidelines() {
+    const modal = document.getElementById('urlGuidelinesModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function showURLError(message) {
+    const errorDiv = document.getElementById('url-error-message');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+    }
+}
+
+function hideURLError() {
+    const errorDiv = document.getElementById('url-error-message');
+    if (errorDiv) {
+        errorDiv.style.display = 'none';
+    }
 }

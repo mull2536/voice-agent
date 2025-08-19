@@ -75,6 +75,24 @@ router.post('/add', async (req, res) => {
         
         const result = await ragService.indexURL(url);
         
+        // Check if the result indicates existing URL
+        if (!result.success && result.existing) {
+            console.log('URL already exists:', url);
+            return res.status(400).json({
+                success: false,
+                existing: true,
+                error: 'This URL is already indexed. Use the Update button to refresh it.'
+            });
+        }
+
+        // Check for other failures
+        if (!result.success) {
+            return res.status(400).json({
+                success: false,
+                error: result.error || 'Failed to index URL'
+            });
+        }
+        
         res.json({
             success: true,
             url: result.url,

@@ -453,7 +453,7 @@
                 <div class="file-manager-tabs">
                     <button class="tab-btn active" data-tab="files" data-i18n="modals.fileManager.tabs.files">Files</button>
                     <button class="tab-btn" data-tab="memories" data-i18n="modals.fileManager.tabs.memories">Memories</button>
-                    <button class="tab-btn" data-tab="urls" data-i18n="modals.fileManager.tabs.urls">URLs</button>
+                    <button class="tab-btn" data-tab="urls" data-i18n="modals.fileManager.tabs.urls">Urls</button>
                 </div>
                 
                 <div class="modal-body">
@@ -490,7 +490,7 @@
                     
                     <!-- Memories Tab -->
                     <div id="memories-tab" class="tab-content">
-                        <div class="memory-form" id="memoryForm" style="display: none;">
+                        <div class="memory-form" id="memoryForm">
                             <div class="form-row">
                                 <input type="text" id="memoryTitle" placeholder="Title" data-i18n="modals.fileManager.memoryTitle" class="memory-input">
                                 <input type="date" id="memoryDate" class="memory-input">
@@ -515,58 +515,85 @@
                             <button id="addMemoryBtn" class="action-btn btn-success" data-i18n="buttons.addMemory">Add</button>
                         </div>
                     </div>
-                    <div id="urls-tab" class="tab-content" style="display: none;">
-                        <!-- URL Input Section -->
-                        <div class="url-input-section">
-                            <div class="url-explainer">
-                                <div class="info-box">
-                                    <i class="fas fa-info-circle"></i>
-                                    <div>
-                                        <strong>Web Page Indexing Guidelines:</strong>
-                                        <ul style="margin: 5px 0; padding-left: 20px;">
-                                            <li>Index specific articles, blog posts, or individual pages</li>
-                                            <li>Best for: Documentation pages, tutorials, research papers, news articles</li>
-                                            <li>NOT suitable for: Entire websites, dynamic content, or pages requiring login</li>
-                                            <li>Content is fetched once and stored locally for fast searching</li>
-                                            <li>Large sites may fail or only partially index</li>
-                                        </ul>
-                                    </div>
+                    <!-- URLs Tab -->
+                    <div id="urls-tab" class="tab-content">
+                        <div class="urls-container">
+                            <!-- URLs header similar to files -->
+                            <div class="urls-header">
+                                <div class="urls-header-labels">
+                                    <span data-i18n="modals.fileManager.urlName"> URL Name</span>
+                                    <span data-i18n="modals.fileManager.status">Status</span>
                                 </div>
                             </div>
                             
+                            <!-- URLs list -->
+                            <div id="urls-list" class="urls-list">
+                                <!-- URLs will be dynamically loaded here by JavaScript -->
+                            </div>
+                            
+                            <!-- Loading indicator -->
+                            <div id="urls-loading" style="display: none; text-align: center; padding: 2rem;">
+                                <div class="indexing-spinner"></div>
+                            </div>
+                            
+                            <!-- No URLs message -->
+                            <div id="no-urls" class="empty-state" style="display: none;">
+                                <p data-i18n="modals.fileManager.noURLs">No URLs indexed yet</p>
+                            </div>
+                        </div>
+                        
+                        <!-- URLs bottom section with actions -->
+                        <div class="urls-bottom">
+                            <!-- Guidelines section on the left -->
+                            <div class="urls-info">
+                                <button id="urlGuidelinesBtn" class="guidelines-btn" onclick="showURLGuidelines()">
+                                    <img src="/assets/tip.ico" alt="tip" style="width: 24px; height: 24px; filter: invert(100%);">
+                                    <span data-i18n="modals.fileManager.importantGuidelines">Important Guidelines</span>
+                                </button>
+                            </div>
+                            
+                            <!-- URL actions buttons on the right -->
+                            <div class="url-actions">
+                                <button id="deleteURLsBtn" class="action-btn btn-danger" disabled data-i18n="buttons.delete">Delete</button>
+                                <button id="updateURLsBtn" class="action-btn btn-warning" disabled data-i18n="buttons.update">Update</button>
+                                <button id="addURLsBtn" class="action-btn btn-success" onclick="showAddURLForm()" data-i18n="buttons.add">Add</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add URL form (initially hidden) -->
+                        <div id="urlInputSection" class="url-input-section" style="display: none;">
                             <div class="url-input-wrapper">
                                 <input type="url" 
                                     id="url-input" 
                                     class="url-input" 
                                     placeholder="https://example.com/specific-article"
+                                    data-i18n-placeholder="modals.fileManager.urlPlaceholder"
                                     autocomplete="url">
                                 <button id="add-url-btn" class="add-url-btn">
-                                    <i class="fas fa-plus"></i> Add URL
+                                    <i class="fas fa-plus"></i> 
+                                    <span data-i18n="modals.fileManager.indexURL">Index URL</span>
+                                </button>
+                                <button id="cancel-url-btn" class="cancel-url-btn" onclick="hideAddURLForm()">
+                                    <span data-i18n="buttons.cancel">Cancel</span>
                                 </button>
                             </div>
                             <div id="url-error-message" class="error-message" style="display: none;"></div>
                         </div>
-                        
-                        <!-- URLs List -->
-                        <div class="urls-section">
-                            <div class="section-header">
-                                <h3>Indexed Web Pages</h3>
-                                <span id="url-count" class="count-badge">0</span>
-                            </div>
-                            
-                            <div id="urls-loading" class="loading-spinner" style="display: none;">
-                                <i class="fas fa-spinner fa-spin"></i> Loading URLs...
-                            </div>
-                            
-                            <div id="urls-list" class="urls-list">
-                                <!-- URLs will be dynamically added here -->
-                            </div>
-                            
-                            <div id="no-urls" class="empty-state" style="display: none;">
-                                <i class="fas fa-globe" style="font-size: 48px; color: #ccc;"></i>
-                                <p>No web pages indexed yet</p>
-                                <p style="font-size: 14px; color: #888;">Add a URL above to get started</p>
-                            </div>
+                    </div>
+
+                    <!-- URL Guidelines Modal (popup) - Add this OUTSIDE the urls-tab div, at the end of the modal-body -->
+                    <div id="urlGuidelinesModal" class="guidelines-modal" style="display: none;" onclick="if(event.target === this) closeURLGuidelines()">
+                        <div class="guidelines-content">
+                            <span class="close-guidelines" onclick="closeURLGuidelines()">&times;</span>
+                            <h3 data-i18n="modals.fileManager.guidelinesTitle">URL Indexing Guidelines</h3>
+                            <ul>
+                                <li data-i18n="modals.fileManager.guideline1">Index specific pages, not entire websites</li>
+                                <li data-i18n="modals.fileManager.guideline2">Best for: Documentation, articles, tutorials</li>
+                                <li data-i18n="modals.fileManager.guideline3">Avoid: Dynamic content, login-required pages</li>
+                                <li data-i18n="modals.fileManager.guideline4">Content is fetched once and stored locally</li>
+                                <li data-i18n="modals.fileManager.guideline5">Large pages may take time to index</li>
+                                <li data-i18n="modals.fileManager.guideline6">Use Update button to re-fetch changed content</li>
+                            </ul>
                         </div>
                     </div>
                 </div>

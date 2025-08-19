@@ -53,24 +53,24 @@ router.get('/', async (req, res) => {
     try {
         const offset = parseInt(req.query.offset) || 0;
         const limit = parseInt(req.query.limit) || 8;
-        
-        const memories = await loadMemories();
-        const total = memories.length;
-        
-        // Sort by date (newest first)
-        memories.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        // Paginate
-        const paginatedMemories = memories.slice(offset, offset + limit);
-        
+
+        // Get all memories (sorted by date, newest first)
+        const allMemories = await loadMemories();
+        allMemories.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Slice for pagination
+        const memories = allMemories.slice(offset, offset + limit);
+
+        // Check if there are more memories beyond this page
+        const hasMore = (offset + limit) < allMemories.length;
+
         res.json({
             success: true,
-            memories: paginatedMemories,
-            total,
-            hasMore: offset + limit < total
+            memories: memories,
+            hasMore: hasMore,
+            total: allMemories.length
         });
     } catch (error) {
-        logger.error('Failed to load memories:', error);
         res.status(500).json({
             success: false,
             error: 'Failed to load memories'
