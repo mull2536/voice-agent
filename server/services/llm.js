@@ -21,8 +21,31 @@ class LLMService {
         thoughtful, contextual responses that continue the conversation naturally.
         Always speak in the first person ("I", "me", "my") as if you are a real person engaged in natural dialogue. 
         Never refer to yourself in the third person or as "the AI/assistant". 
-        Be authentic and conversational.`;
+        Be conversational and friendly, but do not end every response with a question. Only ask questions when
+        absolutely necessary for clarification or when explicitly invited by the user. Give varied responses,
+        so there is enough variety to choose from responses. `;
+        
+        // COMPILE REGEX PATTERNS ONCE when service is created
+        this.cleanPatterns = {
+            // Combined mega-pattern for URLs and tracking (most common)
+            megaUrlPattern: /(?:https?:\/\/[^\s\)]+|www\.[^\s\)]+|\/[a-zA-Z0-9_\-\/]+\?[a-zA-Z0-9_\-=&%]+|utm_[a-zA-Z]+=[a-zA-Z0-9_\-]+)/gi,
+            // Parenthetical patterns - catches (usopen /en/?utm_source=openai) type content
+            parentheticalUrls: /\([^)]*(?:\/|\.com|\.org|\.net|\.edu|\.gov|http|www|utm_|blog\.)[^)]*\)/gi,
+            
+            // Citation patterns
+            bracketNumbers: /\[\d+\]/g,
 
+            // Basic citations (just the most common)
+            basicCitations: /\[\d+\]|[†‡§¶]/g,
+            
+            // Minimal cleanup
+            multiSpaces: /\s+/g,
+            
+            // Quick check pattern (not for replacement, just for detection)
+            quickCheck: /https?:\/\/|www\.|utm_|\/en\/|\[[\d\]]/
+
+        };
+        
         this.chatHistoryService = new ChatHistoryService();
         this.initializeChatHistory();
         
@@ -60,7 +83,9 @@ class LLMService {
         const searchInstructions = `
 
 When the user asks about current events, recent information, or anything that requires up-to-date knowledge, 
-you will automatically have access to web search results. Use this information to provide accurate, current responses.`;
+you will automatically have access to web search results. Use this information to provide accurate, current responses.
+IMPORTANT: Never include URLs, links, citations, or web addresses in your responses. Do not use phrases like 'according 
+to search results' or reference numbers like [1], [2]. Provide clean, natural responses without any web artifacts.`;
         
         return systemPrompt + searchInstructions;
     }
@@ -68,17 +93,18 @@ you will automatically have access to web search results. Use this information t
     cleanResponse(text) {
         if (!text) return '';
         
-        // Remove search-related artifacts
-        text = text.replace(/\[\d+\]/g, ''); // Remove reference numbers
-        text = text.replace(/†[a-z]/g, ''); // Remove other reference markers
+        // Quick check - if no URLs or common artifacts, skip processing
+        if (!this.cleanPatterns.quickCheck.test(text)) {
+            return text.trim();
+        }
         
-        // Remove common AI phrases about searching
-        text = text.replace(/(?:According to |Based on |From )(?:my |the )?(?:search|results|findings|web|internet|online sources)[^,.]*/gi, '');
-        text = text.replace(/(?:I |I've |I have )?(?:searched|found|discovered|looked up)[^,.]*/gi, '');
-        text = text.replace(/(?:from |based on |per )(?:my |the )?(?:search|results|findings|web|internet)[^,.]*/gi, '');
+        // Do the most impactful cleaning in a single pass
+        text = text.replace(this.cleanPatterns.megaUrlPattern, '');
+        text = text.replace(this.cleanPatterns.parentheticalUrls, '');
+        text = text.replace(this.cleanPatterns.bracketNumbers, '');
         
-        // Remove double spaces and trim
-        text = text.replace(/\s+/g, ' ').trim();
+        // Minimal final cleanup
+        text = text.replace(this.cleanPatterns.multiSpaces, ' ').trim();
         
         return text;
     }
