@@ -372,6 +372,18 @@ io.on('connection', (socket) => {
         const { responseText, conversationId, useStreaming = true } = data; // Add streaming flag
         
         let ttsStartTime, ttsEndTime;
+
+        // ADD: Get settings to check for v3 model
+        const settings = await dataStore.getSettings();
+        const isV3Model = settings?.tts?.model === 'eleven_multilingual_v3';
+        const hasAudioTags = /\[[^\]]+\]/.test(responseText);
+        
+        // Check if we should use v3 (model selected AND audio tags present)
+        const useV3 = isV3Model && hasAudioTags;
+        
+        if (useV3) {
+          logger.info('Using v3 synthesis for response with audio tags');
+        }
         
         // Check if we should use streaming (can be disabled via client)
         if (useStreaming) {
@@ -380,7 +392,9 @@ io.on('connection', (socket) => {
           
           try {
             // Get the audio stream from ElevenLabs
-            const audioStream = await ttsService.streamSynthesis(responseText);
+            const audioStream = useV3 
+              ? await ttsService.streamSynthesisV3(responseText)
+              : await ttsService.streamSynthesis(responseText);
             
             // Stream chunks to client as they arrive
             let chunkCount = 0;

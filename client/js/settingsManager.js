@@ -53,6 +53,26 @@ class SettingsManager {
             });
         }
         
+        // Add TTS model change listener (add this after the fixed seed toggle listener)
+        const ttsModelSelect = document.getElementById('tts-model');
+        if (ttsModelSelect) {
+            ttsModelSelect.addEventListener('change', (e) => {
+                const isV3 = e.target.value === 'eleven_v3';
+                
+                // Toggle visibility of non-v3 settings
+                const similarityBoostItem = document.getElementById('similarity-boost')?.closest('.setting-item');
+                const styleItem = document.getElementById('style-exaggeration')?.closest('.setting-item');
+                
+                if (isV3) {
+                    if (similarityBoostItem) similarityBoostItem.style.display = 'none';
+                    if (styleItem) styleItem.style.display = 'none';
+                } else {
+                    if (similarityBoostItem) similarityBoostItem.style.display = '';
+                    if (styleItem) styleItem.style.display = '';
+                }
+            });
+        }
+        
         // Range inputs - show value
         const rangeInputs = this.modal.querySelectorAll('input[type="range"]');
         rangeInputs.forEach(input => {
@@ -137,6 +157,26 @@ class SettingsManager {
             }
             if (ttsModel && settings.tts.model) {
                 ttsModel.value = settings.tts.model;
+                // If v3 is already selected when loading, hide non-applicable settings
+                if (settings.tts.model === 'eleven_v3') {
+                    // Hide all non-v3 settings (v3 only uses stability and speaker boost)
+                    document.getElementById('similarity-boost')?.closest('.setting-item')?.style.setProperty('display', 'none');
+                    document.getElementById('style-exaggeration')?.closest('.setting-item')?.style.setProperty('display', 'none');
+                    document.getElementById('speech-rate')?.closest('.setting-item')?.style.setProperty('display', 'none');
+                    document.getElementById('use-fixed-seed')?.closest('.setting-item')?.style.setProperty('display', 'none');
+                    document.getElementById('fixed-seed-container')?.style.setProperty('display', 'none');
+                } else {
+                    // Make sure they're visible for other models
+                    document.getElementById('similarity-boost')?.closest('.setting-item')?.style.removeProperty('display');
+                    document.getElementById('style-exaggeration')?.closest('.setting-item')?.style.removeProperty('display');
+                    document.getElementById('speech-rate')?.closest('.setting-item')?.style.removeProperty('display');
+                    document.getElementById('use-fixed-seed')?.closest('.setting-item')?.style.removeProperty('display');
+                    // Fixed seed container visibility depends on checkbox state
+                    const useFixedSeed = document.getElementById('use-fixed-seed');
+                    if (useFixedSeed?.checked) {
+                        document.getElementById('fixed-seed-container')?.style.removeProperty('display');
+                    }
+                }
             }
             if (outputQuality && settings.tts.outputQuality) {
                 outputQuality.value = settings.tts.outputQuality;

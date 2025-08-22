@@ -109,10 +109,6 @@ class TTSService {
     }
   }
 
-  /**
-   * NEW STREAMING METHOD
-   * Stream synthesis - returns the raw ElevenLabs audio stream
-   */
   async streamSynthesis(text) {
     try {
       // Get current settings
@@ -168,6 +164,70 @@ class TTSService {
       throw error; // Let the caller handle the error
     }
   }
+
+  // Add these methods to the TTSService class
+async synthesizeV3(text) {
+  try {
+    const currentSettings = await this.getCurrentSettings();
+    const voiceId = currentSettings.voiceId || this.voiceId;
+    const modelId = currentSettings.model || 'eleven_v3'; // Get model from settings
+    
+    // V3 textToDialogue endpoint only accepts these parameters
+    const options = {
+      inputs: [{
+        text: text,
+        voice_id: voiceId
+      }],
+      model_id: modelId, // Use the model from settings
+      stability: currentSettings.stability !== undefined ? currentSettings.stability : this.voiceSettings.stability,
+      use_speaker_boost: currentSettings.useSpeakerBoost !== undefined ? currentSettings.useSpeakerBoost : this.voiceSettings.useSpeakerBoost
+    };
+    
+    logger.info(`TTS V3 synthesis with voiceId: ${voiceId}, model: ${modelId}`);
+    
+    const audioStream = await this.client.textToDialogue.stream(options);
+    
+    const chunks = [];
+    for await (const chunk of audioStream) {
+      chunks.push(chunk);
+    }
+    const audioBuffer = Buffer.concat(chunks);
+    
+    logger.info(`TTS V3 synthesis completed`);
+    return audioBuffer.toString('base64');
+    
+  } catch (error) {
+    logger.error('TTS V3 synthesis failed:', error);
+    throw error;
+  }
+}
+
+async streamSynthesisV3(text) {
+  try {
+    const currentSettings = await this.getCurrentSettings();
+    const voiceId = currentSettings.voiceId || this.voiceId;
+    const modelId = currentSettings.model || 'eleven_v3'; // Get model from settings
+    
+    const options = {
+      inputs: [{
+        text: text,
+        voice_id: voiceId
+      }],
+      model_id: modelId, // Use the model from settings
+      stability: currentSettings.stability !== undefined ? currentSettings.stability : this.voiceSettings.stability,
+      use_speaker_boost: currentSettings.useSpeakerBoost !== undefined ? currentSettings.useSpeakerBoost : this.voiceSettings.useSpeakerBoost
+    };
+    
+    logger.info(`TTS V3 streaming with voiceId: ${voiceId}, model: ${modelId}`);
+    
+    const audioStream = await this.client.textToDialogue.stream(options);
+    return audioStream;
+    
+  } catch (error) {
+    logger.error('TTS V3 streaming failed:', error);
+    throw error;
+  }
+}
 
   /**
    * Fallback method using direct ElevenLabs HTTP API.

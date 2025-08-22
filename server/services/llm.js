@@ -48,7 +48,6 @@ class LLMService {
         
         this.chatHistoryService = new ChatHistoryService();
         this.initializeChatHistory();
-        
         // Socket reference for streaming (set by server)
         this.io = null;
     }
@@ -90,11 +89,59 @@ to search results' or reference numbers like [1], [2]. Provide clean, natural re
         return systemPrompt + searchInstructions;
     }
 
+    getV3AudioTagInstructions() {
+        return `
+
+You are generating conversational text enriched with ElevenLabs v3 audio tags.
+
+**Objective**: Include inline audio tags (e.g., [whispers], [laughs], [sighs]) to reflect emotion, tone, and delivery style for natural, expressive speech.
+
+**Tag Categories**:
+- Emotion/Tone: happy, sad, excited, nervous, sarcastic, angry, hopeful, embarrassed, relieved, disappointed, affectionate
+- Delivery: whispering, shouting, singing, calm, dramatic, hurried, monotone, playful, persuasive, teasing
+- Non-verbal: laughs, sighs, coughs, crying, starts giggling, woos, groans, gasps, chuckles, clears throat, hums
+
+**Rules**:
+1. Place tags at the exact point where the effect should begin
+2. Combine tags when necessary: [sad][whispers]
+3. Use tags to create natural conversational rhythm
+4. Include non-verbal cues to break monotony
+5. Create context-appropriate custom tags when needed (e.g., [muttering], [stammering], [deadpan])
+6. Keep tags subtle and supportive, not overwhelming
+
+**Examples**:
+- "I... [sighs] I can't believe you did that. [angry] You're impossible."
+- "[hesitant] Are you sure... this is the right way?"
+- "[excited] That's incredible news! [happy] Thank you so much! [woos]"
+- "[sighs] Oh no... [starts giggling] I spilled the coffee again."
+- "[softly][sad] I guess... this is goodbye."
+- "[calm] Let's think... [frustrated] No, this isn't working. [angry] Enough!"
+- "[nervous][laughs] I can't believe I said that."
+
+Output only the response with inline audio tags - no explanations.`;
+    }
+
+    // Clean response of URLs, citations, etc.]
     cleanResponse(text) {
         if (!text) return '';
         
+        // Preserve audio tags in square brackets before cleaning
+        const audioTagPattern = /\[[^\]]+\]/g;
+        const audioTags = [];
+        let tagIndex = 0;
+        
+        // Replace audio tags with placeholders
+        text = text.replace(audioTagPattern, (match) => {
+            audioTags.push(match);
+            return `__AUDIO_TAG_${tagIndex++}__`;
+        });
+        
         // Quick check - if no URLs or common artifacts, skip processing
         if (!this.cleanPatterns.quickCheck.test(text)) {
+            // Restore audio tags before returning
+            text = text.replace(/__AUDIO_TAG_(\d+)__/g, (match, index) => {
+                return audioTags[parseInt(index)] || match;
+            });
             return text.trim();
         }
         
@@ -105,6 +152,11 @@ to search results' or reference numbers like [1], [2]. Provide clean, natural re
         
         // Minimal final cleanup
         text = text.replace(this.cleanPatterns.multiSpaces, ' ').trim();
+        
+        // Restore audio tags
+        text = text.replace(/__AUDIO_TAG_(\d+)__/g, (match, index) => {
+            return audioTags[parseInt(index)] || match;
+        });
         
         return text;
     }
@@ -227,6 +279,12 @@ to search results' or reference numbers like [1], [2]. Provide clean, natural re
             const searchEnabled = settings?.internetSearch?.enabled !== false;
             if (searchEnabled) {
                 systemPromptContent = this.appendSearchInstructions(systemPromptContent);
+            }
+
+            const ttsSettings = settings?.tts || {};
+            if (ttsSettings.model === 'eleven_v3') {
+                systemPromptContent += this.getV3AudioTagInstructions();
+                logger.info('Added V3 audio tag instructions to system prompt');
             }
             
             // Add context to system prompt

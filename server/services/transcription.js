@@ -66,6 +66,10 @@ class TranscriptionService {
     try {
       const language = await this.getTranscriptionLanguage();
       
+      // Check if v3 model is selected to enable audio event tagging
+      const settings = await dataStore.getSettings();
+      const isV3Model = settings?.tts?.model === 'eleven_v3';
+
       const url = 'https://api.elevenlabs.io/v1/speech-to-text';
       const headers = { 'xi-api-key': this.elevenLabsApiKey };
       
@@ -76,7 +80,12 @@ class TranscriptionService {
       });
       form.append('model_id', 'scribe_v1');
       form.append('language_code', language);
-      form.append('tag_audio_events', 'false');
+      form.append('tag_audio_events', isV3Model ? 'true' : 'false');
+      
+      // Log if audio event tagging is enabled
+      if (isV3Model) {
+        logger.info('Audio event tagging enabled for v3 model transcription');
+      }
       
       const formHeaders = form.getHeaders();
       
