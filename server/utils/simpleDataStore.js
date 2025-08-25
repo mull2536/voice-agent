@@ -106,6 +106,17 @@ class SimpleDataStore {
             const data = await fs.readFile(this.settingsFile, 'utf-8');
             const settings = JSON.parse(data);
             
+            // Migration: Remove old transcription.language if it exists
+            if (settings.transcription && settings.transcription.language !== undefined) {
+                delete settings.transcription.language;
+                // If transcription object is now empty, remove it
+                if (Object.keys(settings.transcription).length === 0) {
+                    delete settings.transcription;
+                }
+                // Save the cleaned settings
+                await fs.writeFile(this.settingsFile, JSON.stringify(settings, null, 2));
+            }
+            
             // Ensure all categories exist in loaded settings with proper defaults
             const defaultStructure = {
                 llm: {
@@ -242,21 +253,13 @@ class SimpleDataStore {
             // Merge updates with current settings
             const newSettings = deepMerge(currentSettings, updates);
             
-            // Special handling: Synchronize language settings
-            // If system.defaultLanguage is updated, also update transcription.language
-            if (updates.system && updates.system.defaultLanguage) {
-                if (!newSettings.transcription) {
-                    newSettings.transcription = {};
+            // Remove old transcription.language if it exists (migrating to recorder.transcriptionLanguage)
+            if (newSettings.transcription && newSettings.transcription.language !== undefined) {
+                delete newSettings.transcription.language;
+                // If transcription object is now empty, remove it
+                if (Object.keys(newSettings.transcription).length === 0) {
+                    delete newSettings.transcription;
                 }
-                newSettings.transcription.language = updates.system.defaultLanguage;
-            }
-            
-            // If transcription.language is updated, also update system.defaultLanguage
-            if (updates.transcription && updates.transcription.language) {
-                if (!newSettings.system) {
-                    newSettings.system = {};
-                }
-                newSettings.system.defaultLanguage = updates.transcription.language;
             }
             
             // Save to file

@@ -20,21 +20,29 @@ class AudioRecorder {
         this.audioBuffer = [];
         this.preSpeechBuffer = [];
         
-        // Suppress the deprecation warning in console
+        // Store original console.warn for restoration
+        this.originalWarn = console.warn;
         this.suppressDeprecationWarning();
         
         this.setupSocketListeners();
     }
 
     suppressDeprecationWarning() {
-        // Override console.warn temporarily during audio setup
-        const originalWarn = console.warn;
+        // Override console.warn to suppress ScriptProcessorNode deprecation
+        const self = this;
         console.warn = function(...args) {
-            if (args[0] && args[0].includes && args[0].includes('ScriptProcessorNode')) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('ScriptProcessorNode')) {
                 return; // Suppress ScriptProcessorNode deprecation warning
             }
-            originalWarn.apply(console, args);
+            self.originalWarn.apply(console, args);
         };
+    }
+    
+    restoreConsoleWarn() {
+        // Restore original console.warn
+        if (this.originalWarn) {
+            console.warn = this.originalWarn;
+        }
     }
 
     setupSocketListeners() {
@@ -245,6 +253,18 @@ class AudioRecorder {
     setAutoRecording(enabled) {
         this.autoRecordingEnabled = enabled;
         console.log(`Auto-recording ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    // Cleanup method to be called when recorder is no longer needed
+    cleanup() {
+        this.stopRecording();
+        this.restoreConsoleWarn();
+        
+        // Clean up audio context
+        if (this.audioContext) {
+            this.audioContext.close();
+            this.audioContext = null;
+        }
     }
 }
 

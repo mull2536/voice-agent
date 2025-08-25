@@ -40,7 +40,14 @@ class TranslationManager {
                 detail: { language } 
             }));
         } else {
-            console.warn(`Language ${language} not available`);
+            // Fallback to English if language not available in UI translations
+            // This is OK since system language can be different from UI language
+            if (language && language !== 'en') {
+                console.info(`UI translations for ${language} not available, using English for interface`);
+                this.currentLanguage = 'en';
+                localStorage.setItem('appLanguage', 'en');
+                this.applyTranslations();
+            }
         }
     }
 
@@ -122,8 +129,17 @@ class TranslationManager {
 
         // Update current speaker indicator
         const speakerIndicator = document.getElementById('current-speaker');
-        if (speakerIndicator && speakerIndicator.textContent === 'No one selected') {
-            speakerIndicator.textContent = this.getTranslation('app.currentSpeaker');
+        if (speakerIndicator) {
+            // Check if we have the current person from the app
+            if (window.app && window.app.currentPerson && window.app.currentPerson.name) {
+                // Update with the translated "Talking to" message
+                speakerIndicator.textContent = this.translate('notifications.nowTalkingTo', { 
+                    name: window.app.currentPerson.name 
+                });
+            } else {
+                // No person selected - use the translated "No one selected" message
+                speakerIndicator.textContent = this.getTranslation('app.currentSpeaker');
+            }
         }
 
         // Update welcome message

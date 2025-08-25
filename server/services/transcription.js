@@ -21,16 +21,23 @@ class TranscriptionService {
   async getTranscriptionLanguage() {
     try {
       const settings = await dataStore.getSettings();
-      const language = settings?.system?.defaultLanguage || settings?.transcription?.language || 'en';
       
-      // Map language codes to ElevenLabs language codes
-      const languageMap = {
-        'en': 'en',  // English
-        'nl': 'nl',  // Dutch
-        'es': 'es'   // Spanish
-      };
+      // Check for transcription language setting first
+      const transcriptionLang = settings?.recorder?.transcriptionLanguage;
       
-      return languageMap[language] || 'en';
+      // If set to 'auto' or null, return null for automatic detection
+      if (transcriptionLang === 'auto' || transcriptionLang === null) {
+        return null;
+      }
+      
+      // If specific language is set, use it
+      if (transcriptionLang) {
+        return transcriptionLang;
+      }
+      
+      // Fallback to system default language
+      const systemLang = settings?.system?.defaultLanguage || 'en';
+      return systemLang;
     } catch (error) {
       logger.warn('Failed to get transcription language, defaulting to English:', error);
       return 'en';
@@ -79,7 +86,12 @@ class TranscriptionService {
         contentType: clientContentType
       });
       form.append('model_id', 'scribe_v1');
-      form.append('language_code', language);
+      
+      // Only add language_code if not null (for automatic detection)
+      if (language !== null) {
+        form.append('language_code', language);
+      }
+      
       form.append('tag_audio_events', isV3Model ? 'true' : 'false');
       
       // Log if audio event tagging is enabled
@@ -89,7 +101,7 @@ class TranscriptionService {
       
       const formHeaders = form.getHeaders();
       
-      logger.info(`Starting ElevenLabs Scribe transcription (${language})...`);
+      logger.info(`Starting ElevenLabs Scribe transcription (${language || 'auto'})...`);
       
       const response = await axios.post(url, form, {
         headers: { ...headers, ...formHeaders },
@@ -99,7 +111,7 @@ class TranscriptionService {
       
       const transcript = response.data?.text || '';
       
-      logger.info(`ElevenLabs transcription completed (${language}): ${transcript.substring(0, 50)}...`);
+      logger.info(`ElevenLabs transcription completed (${language || 'auto'}): ${transcript.substring(0, 50)}...`);
       
       // Clean up the audio file after transcription
       try {
@@ -143,21 +155,28 @@ class TranscriptionService {
       // Create read stream for the audio file
       const audioStream = fs.createReadStream(audioFilePath);
       
-      logger.info(`Starting OpenAI Whisper transcription (${language})...`);
+      logger.info(`Starting OpenAI Whisper transcription (${language || 'auto'})...`);
       
-      // Use OpenAI Whisper for transcription with language parameter
-      const response = await openai.audio.transcriptions.create({
+      // Build transcription parameters
+      const transcriptionParams = {
         file: audioStream,
-        model: 'whisper-1',
-        language: language,
-        // Optional: add prompt to improve accuracy for specific terminology
-        prompt: language === 'nl' ? 'Dit is een gesprek in het Nederlands.' : 
-                language === 'es' ? 'Esta es una conversación en español.' : 
-                'This is a conversation in English.'
-      });
+        model: 'whisper-1'
+      };
+      
+      // Only add language parameter if not null (for automatic detection)
+      if (language !== null) {
+        transcriptionParams.language = language;
+        // Add language-specific prompt
+        transcriptionParams.prompt = language === 'nl' ? 'Dit is een gesprek in het Nederlands.' : 
+                                    language === 'es' ? 'Esta es una conversación en español.' : 
+                                    'This is a conversation in English.';
+      }
+      
+      // Use OpenAI Whisper for transcription
+      const response = await openai.audio.transcriptions.create(transcriptionParams);
       
       const transcript = response.text;
-      logger.info(`OpenAI transcription completed (${language}): ${transcript.substring(0, 50)}...`);
+      logger.info(`OpenAI transcription completed (${language || 'auto'}): ${transcript.substring(0, 50)}...`);
       
       // Clean up the audio file after transcription
       try {

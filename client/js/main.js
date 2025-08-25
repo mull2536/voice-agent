@@ -321,8 +321,17 @@ class CommunicationAssistant {
         
         // Set initial language
         if (settingsResponse.settings.system && settingsResponse.settings.system.defaultLanguage) {
-            this.translationManager.setLanguage(settingsResponse.settings.system.defaultLanguage);
-            // Add this line to apply translations immediately:
+            const systemLang = settingsResponse.settings.system.defaultLanguage;
+            // Only set UI language if it's one of the supported UI languages
+            const supportedUILanguages = ['en', 'nl', 'es'];
+            if (supportedUILanguages.includes(systemLang)) {
+                this.translationManager.setLanguage(systemLang);
+            } else {
+                // Use English for UI but keep system language for LLM/TTS
+                this.translationManager.setLanguage('en');
+                console.info(`System language is ${systemLang}, but UI will use English`);
+            }
+            // Apply translations immediately:
             this.translationManager.applyTranslations();
         }
             
@@ -415,9 +424,13 @@ class CommunicationAssistant {
         const indicator = document.getElementById('current-speaker');
         if (indicator) {
             if (person && person.name) {
-                indicator.textContent = `Talking to: ${person.name}`;
+                // Use translation for "Talking to" message
+                const talkingToText = this.translationManager.translate('notifications.nowTalkingTo', { name: person.name });
+                // Extract just the "Talking to" part for the indicator
+                indicator.textContent = talkingToText;
             } else {
-                indicator.textContent = 'No one selected';
+                // Use translation for "No one selected"
+                indicator.textContent = this.translationManager.getTranslation('app.currentSpeaker');
             }
         } else {
             console.error('Current speaker indicator element not found!');

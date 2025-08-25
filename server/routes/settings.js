@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
       llm: { ...config.llm, ...savedSettings.llm },
       tts: { ...config.tts, ...savedSettings.tts },
       vad: { ...config.vad, ...savedSettings.vad },
+      recorder: { ...config.recorder, ...savedSettings.recorder },
       eyeGaze: { ...config.eyeGaze, ...savedSettings.eyeGaze },
       rag: { ...config.rag, ...savedSettings.rag },
       internetSearch: { ...config.internetSearch, ...savedSettings.internetSearch },
@@ -99,7 +100,7 @@ router.put('/:category', async (req, res) => {
     const categorySettings = req.body;
     
     // Validate category
-    const validCategories = ['llm', 'tts', 'vad', 'eyeGaze', 'rag', 'internetSearch'];
+    const validCategories = ['llm', 'tts', 'vad', 'recorder', 'eyeGaze', 'rag', 'internetSearch', 'system'];
     if (!validCategories.includes(category)) {
       return res.status(400).json({
         success: false,
@@ -169,6 +170,9 @@ router.post('/reset', async (req, res) => {
         minSpeechDuration: 250,
         maxSpeechDuration: 10000
       },
+      recorder: {
+        transcriptionLanguage: null
+      },
       eyeGaze: {
         hoverDuration: 3000,
         visualFeedback: true
@@ -221,6 +225,34 @@ router.post('/reset', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to reset settings'
+    });
+  }
+});
+
+// Get available languages
+router.get('/languages', async (req, res) => {
+  try {
+    const { languages } = require('../config/languages');
+    
+    // Transform to array format for frontend
+    const languageList = Object.entries(languages).map(([code, info]) => ({
+      code,
+      name: info.name,
+      nativeName: info.nativeName
+    }));
+    
+    logger.info(`Retrieved ${languageList.length} languages`);
+    
+    res.json({
+      success: true,
+      languages: languageList
+    });
+  } catch (error) {
+    logger.error('Failed to get languages:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve languages',
+      languages: []
     });
   }
 });

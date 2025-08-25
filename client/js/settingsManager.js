@@ -125,6 +125,9 @@ class SettingsManager {
             const response = await this.api.getSettings();
             this.loadSettings(response.settings);
             
+            // Load languages
+            await this.loadLanguages();
+            
             // Load voices
             const voicesResponse = await this.api.getVoices();
             this.loadVoices(voicesResponse);
@@ -203,6 +206,15 @@ class SettingsManager {
         }
         
         // Recorder Tab Settings
+        // Transcription language
+        if (settings.recorder && settings.recorder.transcriptionLanguage !== undefined) {
+            const transcriptionLanguage = document.getElementById('transcription-language');
+            if (transcriptionLanguage) {
+                transcriptionLanguage.value = settings.recorder.transcriptionLanguage || 'auto';
+            }
+        }
+        
+        // VAD settings
         if (settings.vad) {
             const positiveThreshold = document.getElementById('positive-threshold');
             const negativeThreshold = document.getElementById('negative-threshold');
@@ -318,6 +330,75 @@ class SettingsManager {
         }
     }
     
+    async loadLanguages() {
+        try {
+            // Fetch languages from API
+            const response = await fetch('/api/settings/languages');
+            const data = await response.json();
+            
+            if (!data.success || !data.languages) {
+                console.error('Failed to load languages');
+                return;
+            }
+            
+            const languages = data.languages;
+            
+            // Populate system default language dropdown
+            const defaultLanguageSelect = document.getElementById('default-language');
+            if (defaultLanguageSelect) {
+                defaultLanguageSelect.innerHTML = '';
+                
+                languages.forEach(lang => {
+                    const option = document.createElement('option');
+                    option.value = lang.code;
+                    option.textContent = `${lang.name} (${lang.nativeName})`;
+                    defaultLanguageSelect.appendChild(option);
+                });
+                
+                // Set the current value if it exists
+                if (this.settings?.system?.defaultLanguage) {
+                    defaultLanguageSelect.value = this.settings.system.defaultLanguage;
+                }
+            }
+            
+            // Populate transcription language dropdown
+            const transcriptionLanguageSelect = document.getElementById('transcription-language');
+            if (transcriptionLanguageSelect) {
+                transcriptionLanguageSelect.innerHTML = '';
+                
+                // Add automatic option first
+                const autoOption = document.createElement('option');
+                autoOption.value = 'auto';
+                // Get translated text for "Automatic"
+                const translationManager = window.app?.translationManager;
+                if (translationManager) {
+                    autoOption.textContent = translationManager.getTranslation('modals.settings.recorder.transcriptionLanguageAutomatic');
+                } else {
+                    autoOption.textContent = 'Automatic';
+                }
+                transcriptionLanguageSelect.appendChild(autoOption);
+                
+                // Add language options
+                languages.forEach(lang => {
+                    const option = document.createElement('option');
+                    option.value = lang.code;
+                    option.textContent = `${lang.name} (${lang.nativeName})`;
+                    transcriptionLanguageSelect.appendChild(option);
+                });
+                
+                // Set the current value if it exists
+                if (this.settings?.recorder?.transcriptionLanguage) {
+                    transcriptionLanguageSelect.value = this.settings.recorder.transcriptionLanguage;
+                } else {
+                    transcriptionLanguageSelect.value = 'auto';
+                }
+            }
+            
+        } catch (error) {
+            console.error('Failed to load languages:', error);
+        }
+    }
+    
     loadVoices(voicesData) {
         const voiceSelect = document.getElementById('voice-select');
         if (!voiceSelect) return;
@@ -412,6 +493,11 @@ class SettingsManager {
             };
             
             // Collect Recorder settings
+            const transcriptionLang = document.getElementById('transcription-language')?.value;
+            updates.recorder = {
+                transcriptionLanguage: transcriptionLang === 'auto' ? null : transcriptionLang
+            };
+            
             updates.vad = {
                 positiveSpeechThreshold: parseFloat(document.getElementById('positive-threshold')?.value || '0.5'),
                 negativeSpeechThreshold: parseFloat(document.getElementById('negative-threshold')?.value || '0.5'),
@@ -442,14 +528,9 @@ class SettingsManager {
             // Get the selected language
             const selectedLanguage = document.getElementById('default-language')?.value || 'en';
 
-            // Save language to both system and transcription settings
+            // Save language to system settings only
             updates.system = {
                 defaultLanguage: selectedLanguage
-            };
-
-            // Also update transcription.language to keep them synchronized
-            updates.transcription = {
-                language: selectedLanguage
             };
             
             updates.rag = {

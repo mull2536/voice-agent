@@ -209,6 +209,14 @@
                         <div class="settings-section">
                             <h3 data-i18n="modals.settings.recorder.vadSettings">Voice Activity Detection (VAD) Settings</h3>
                             
+                            <div class="setting-item">
+                                <label for="transcription-language" data-i18n="modals.settings.recorder.transcriptionLanguageLabel">Transcription Language</label>
+                                <p class="setting-description" data-i18n="modals.settings.recorder.transcriptionLanguageDescription">Select the language for speech-to-text transcription. Choose 'Automatic' to let the system detect the language.</p>
+                                <select id="transcription-language" class="setting-control">
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
+                            
                             <div class="setting-item slider-group">
                                 <div class="slider-label">
                                     <span data-i18n="modals.settings.recorder.positiveSpeechLabel">Positive Speech Threshold</span>
@@ -336,9 +344,7 @@
                                 <div class="setting-item">
                                     <label for="default-language" data-i18n="modals.settings.system.languageLabel">Default Language</label>
                                     <select id="default-language" class="setting-control">
-                                        <option value="en">English</option>
-                                        <option value="nl">Nederlands</option>
-                                        <option value="es">Español</option>
+                                        <!-- Options will be populated dynamically -->
                                     </select>
                                     <p class="setting-description" data-i18n="modals.settings.system.languageDescription">Select the interface language</p>
                                 </div>

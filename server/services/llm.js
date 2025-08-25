@@ -68,13 +68,17 @@ class LLMService {
 
     // Get language instruction based on settings
     getLanguageInstruction(language) {
-        const languageInstructions = {
-            'en': '\n\nIMPORTANT: You MUST respond in English.',
-            'nl': '\n\nIMPORTANT: You MUST respond in Dutch (Nederlands).',
-            'es': '\n\nIMPORTANT: You MUST respond in Spanish (Español).'
-        };
+        // Get language info from config
+        const { languages } = require('../config/languages');
+        const langInfo = languages[language];
         
-        return languageInstructions[language] || languageInstructions['en'];
+        if (!langInfo) {
+            // Default to English if language not found
+            return '\n\nIMPORTANT: You MUST respond in English.';
+        }
+        
+        // Generate instruction dynamically
+        return `\n\nIMPORTANT: You MUST respond in ${langInfo.name} (${langInfo.nativeName}).`;
     }
 
     // Append search instructions to the system prompt
